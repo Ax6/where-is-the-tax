@@ -1,396 +1,739 @@
 # where-is-the-tax — Project Plan
 
-One page that answers, for your country and a given year: **where does tax money come from,
-and where does it go?**
+One page that answers two questions for Germany in a selected year:
 
-Starting with Germany as the case study, expanding country by country. Fully static,
-open-source, open-data, hosted free on GitHub Pages.
+1. Where does public revenue come from?
+2. What does general government spend money on?
+
+The first release is an English-language, desktop-first explanation for interested non-experts.
+It uses official statistics, exposes the accounting limits, and lets every displayed number be
+traced to an exact source observation.
 
 ---
 
-## 1. Vision & principles
+## 1. Product contract
 
-Official budget data exists, but it is scattered across statistical offices, written in
-administrative jargon ("Solidaritätszuschlag", "COFOG division 10"), and almost never shows
-both sides of the ledger in one place. This project puts the whole picture on one page.
+### Primary user and outcome
 
-Principles — these are commitments, not aspirations:
+The primary user is an English-speaking person who wants to understand German public finances
+but is not expected to know German administrative terminology or national-accounting jargon.
 
-1. **Every number carries a source.** Each row in our data files has a URL pointing to the
-   official publication it came from, plus the date it was retrieved. Every figure on the site
-   is one click away from its source.
-2. **Plain language first.** Every entry has a 1–3 sentence description a non-expert can
-   understand. Official names are shown too ("officially: *Solidaritätszuschlag*"), but the
-   explanation leads.
-3. **Honest visualization.** No fabricated flows, no implied precision the data doesn't have.
-   Provisional figures are badged as such. Deficits are shown, not hidden.
-4. **Reproducible data pipeline.** Data is collected roughly once a year via AI deep-research
-   sessions. The research prompts, collection playbook, and QA checklist live in this repo, so
-   anyone can audit or reproduce a dataset.
-5. **Data is a first-class citizen.** The `data/` directory sits at the repo root. Most
-   contributors and users will care about the CSVs, not the TypeScript.
-6. **Free and static.** No backend, no tracking, no accounts. Vite + TypeScript + D3, deployed
-   to GitHub Pages.
+Within a few minutes, that person should be able to:
 
-## 2. Prior art & the gap
+- identify total general-government revenue and expenditure for the selected year;
+- see the largest revenue and expenditure categories;
+- understand that the two sides describe one public-finance system but do not trace individual
+  taxes to individual services;
+- interpret the difference between revenue and expenditure as net lending or net borrowing,
+  not as a direct measure of the change in government debt;
+- drill into the deepest compatible official detail available; and
+- inspect the source, status, transformation, and caveats behind any number.
 
-| Project | What it does well | What's missing |
+### Principles
+
+1. **One accounting frame per hierarchy.** Additive parents and children must use the same
+   reference period, sector, accounting basis, unit, and compatible source vintage.
+2. **Every number is reproducible.** A generic webpage URL is not enough. Each value records
+   the exact table or API coordinates, release and retrieval dates, raw observation,
+   transformation, evidence snapshot or checksum, and review status.
+3. **Plain English leads.** English display names and explanations come first. The official
+   German name appears as secondary terminology when useful.
+4. **Uncertainty stays visible.** Provisional, estimated, and forecast observations remain
+   labelled. The project may publish a provisional coherent dataset; it never silently upgrades
+   one to final.
+5. **No fabricated causality.** The site does not imply that a particular tax pays for a
+   particular function. Public revenue is largely fungible.
+6. **Depth is earned by compatibility.** Include as much official detail as is statistically
+   defensible. Stop when deeper data would require mixing accounting frameworks or vintages.
+7. **Static and inspectable.** The product has no backend, account system, tracking, or runtime
+   dependency on an AI service. Data and research artifacts live in the repository.
+
+### Explicit v1 non-goals
+
+- German-language UI or bilingual content. English is the only interface and editorial language.
+- Internationalization infrastructure or translation sidecars.
+- A personalized tax receipt based on salary or household inputs.
+- Direct tax-to-spending flow claims.
+- Cross-country comparison in the public product.
+- Year-over-year comparison before at least two reconciled years exist.
+- Real-time or automatically changing official data.
+- A commitment to a Sankey, treemap, or any other chart type before comprehension testing.
+
+---
+
+## 2. Accounting contract
+
+### Scope
+
+The product uses **consolidated general government under ESA 2010, sector S.13**:
+
+- central government;
+- state government;
+- local government; and
+- social-security funds.
+
+Transfers inside general government are consolidated. The site must not build a national total
+by adding gross federal, state, municipal, and social-insurance accounts.
+
+Expenditure is classified by function using COFOG. This answers what government resources are
+used for—social protection, health, education, defence, and so on—rather than which ministry
+administers them.
+
+### Publication policy
+
+For each release, choose the newest reference year for which revenue and expenditure can form a
+complete, internally coherent ESA dataset. A coherent provisional year is preferable to an older
+year described incorrectly as current or final.
+
+The research run must determine and record:
+
+- the selected reference year and why it is the newest usable year;
+- the release/vintage of each official dataset used;
+- whether the resulting bundle is final, provisional, estimated, forecast, or mixed;
+- whether later revisions are expected; and
+- the previous final year, when showing it would materially help the reader understand the
+  provisional status.
+
+Germany 2024 is the initial candidate, not a fact hard-coded into the application plan. The data
+collection run must confirm the latest available observations and their status before creating
+the first dataset.
+
+### Revenue definition
+
+Top-level revenue uses ESA transactions from the same compatible `gov_10a_main` observation set:
+
+| Stable id | Display name | ESA anchor |
 |---|---|---|
-| [bundeshaushalt.de](https://www.bundeshaushalt.de) (official, BMF) | Both revenue and expenditure, interactive, plain-language "Erklärwelt" section | **Federal budget only** — no states, municipalities, or social insurance (i.e., most of the money) |
-| [steuertransparenz.de](https://steuertransparenz.de) | Personalized "where did my income tax + VAT go", federal + state | Expenditure only, personalized rather than the aggregate picture |
-| offenerhaushalt.de (OKF Germany) | Federal expenditure treemap for citizens | Discontinued; expenditure only |
-| [OpenSpending / Where Does My Money Go](https://app.wheredoesmymoneygo.org/) (UK) | Pioneered the citizen budget-viz pattern | Largely legacy/unmaintained |
-| [USAFacts](https://usafacts.org/articles/tax-receipt/) / [National Priorities Project](https://www.nationalpriorities.org/interactive-data/taxday/) tax receipts | Personalized spending receipts | Spend side only, US federal only |
+| `production_import_taxes` | Taxes on products and production | D.2 |
+| `income_wealth_taxes` | Taxes on income and wealth | D.5 |
+| `social_contributions` | Net social contributions | D.61 |
+| `capital_taxes` | Capital taxes | D.91 |
+| `other_revenue` | Other general-government revenue | Total revenue less the four categories above, or an equivalent exhaustive set of reported ESA components from the same vintage |
 
-**The gap we fill:** no existing project combines (a) *general government* scope — all levels
-of government plus social insurance, which is where most of the money actually is, (b) revenue
-**and** expenditure linked in one view, (c) plain-language explanations, and (d) a
-cross-country comparable category vocabulary. That combination is this project.
+`other_revenue` must be marked `derived` when calculated. Its provenance must list the total and
+all inputs, formula, sign convention, and rounding rule.
 
-## 3. Scope & data model
+Deeper tax detail should come from Eurostat `gov_10a_taxag` and the National Tax Lists when those
+observations are ESA-compatible with the parent totals. National cash-tax publications may add
+context, but their values must not be inserted as additive children beneath ESA accrual parents.
 
-### What counts as "the money"
+### Expenditure definition
 
-**Consolidated general government** (ESA 2010 definition): federal + state + municipal
-governments **plus social insurance funds**, with transfers between them netted out. Social
-insurance contributions are included — they are ~40% of what leaves a German paycheck, and any
-"where does my money go" picture that omits pensions and health insurance is misleading.
-Expenditure is broken down by **function** (COFOG: health, education, defence, social
-protection, …), not by ministry — functions are what people actually ask about, and they are
-standardized across countries.
+Top-level expenditure is the complete set of ten COFOG divisions from `gov_10a_exp`:
 
-### Files
+| Stable id | COFOG | Display name |
+|---|---|---|
+| `general_public_services` | GF01 | General public services |
+| `defence` | GF02 | Defence |
+| `public_order_safety` | GF03 | Public order and safety |
+| `economic_affairs` | GF04 | Economic affairs |
+| `environment_protection` | GF05 | Environmental protection |
+| `housing_community` | GF06 | Housing and community amenities |
+| `health` | GF07 | Health |
+| `recreation_culture_religion` | GF08 | Recreation, culture and religion |
+| `education` | GF09 | Education |
+| `social_protection` | GF10 | Social protection |
 
-```
+Use second-level COFOG groups where Germany reports them for the selected year and vintage. Do
+not substitute ESSPROS, ministry budgets, or national cash tables for missing COFOG children.
+Those sources may support clearly separated explanatory context.
+
+### Balance definition
+
+The summary shows:
+
+`net lending / net borrowing = total revenue - total expenditure`
+
+A positive result is net lending/surplus; a negative result is net borrowing/deficit. It is not
+labelled “new debt” or “new borrowing”, because the change in gross government debt also depends
+on financial transactions, valuation changes, and other stock-flow adjustments.
+
+### Additivity and contextual data
+
+Every available value has an origin:
+
+- **reported** — copied from an official observation;
+- **derived** — calculated from compatible reported observations.
+
+Separately, its classification is either **direct**—the official category already matches the
+project concept—or **mapped**—an official category is assigned to the project's stable vocabulary
+without changing its amount. Origin and mapping are separate because a mapped value is still a
+reported observation, not a third kind of number.
+
+Only compatible values may participate in parent-child addition. Cash-basis figures, ministry
+budgets, BMAS social-budget figures, or other overlapping frameworks can appear in prose or a
+labelled contextual panel, never inside the additive ESA tree.
+
+---
+
+## 3. Information design
+
+### Initial desktop concept
+
+The first internal prototype uses the simplest view likely to explain the two sides clearly:
+
+- a summary strip with total revenue, total expenditure, net lending/borrowing, reference year,
+  accounting scope, and publication status;
+- two side-by-side panels: **Where it comes from** and **Where it goes**;
+- ranked horizontal bars for the top-level categories on each side; and
+- a persistent note that the columns are not earmarked flows.
+
+The visual weight of the two sides can make their scale difference visible, but it must not
+manufacture a balancing node or pretend the deficit is revenue.
+
+Sankey, alluvial, treemap, packed-circle, and other concepts remain experiments. A chart earns a
+place only if representative users understand the totals, categories, gap, and non-earmarking
+message more quickly and accurately with it than with ranked bars and lists.
+
+### Drill-down
+
+Selecting a category replaces or expands that side with its children, again as a ranked bar/list
+view. A breadcrumb returns to the parent. Depth is data-driven, with a planned maximum of four
+levels to prevent an unusable taxonomy.
+
+Each available row exposes:
+
+- English name and official German name, when useful;
+- amount in euros;
+- share of its additive parent and, where meaningful, share of its side total;
+- per-resident amount when a compatible population denominator exists;
+- a concise plain-English description;
+- final/provisional/estimate/forecast status;
+- whether the value is reported or derived, and whether its classification was mapped; and
+- a source action that opens the full provenance panel.
+
+Do not show a percentage when the denominator is not additive or compatible. Do not imply more
+precision than the source provides. Known unavailable or not-applicable categories appear in a
+coverage note/list, not as zero-value bars and not in any total or percentage denominator.
+
+### Source and methodology access
+
+Every parent, child, contextual statistic, and derived value has the same source affordance. The
+detail panel shows:
+
+- institution, publication, dataset/table code, and direct source link;
+- exact query or table coordinates;
+- reference period, release date, retrieval time, and status flags;
+- raw observation and unit;
+- mapping or calculation, including inputs for derived values;
+- caveats and reviewer status; and
+- source-specific licence/attribution.
+
+An on-page methodology section explains ESA S.13, consolidation, COFOG, accrual versus cash data,
+the absence of tax earmarking, revisions, and the balance measure. It ships with the first public
+release, not as later polish.
+
+### Language
+
+All navigation, labels, descriptions, caveats, methodology, and source explanations are English.
+Official German category or publication names are preserved as secondary factual identifiers.
+There is no language selector and no unused i18n abstraction in v1.
+
+### URL and application states
+
+Shareable hash routes follow a stable form such as:
+
+- `#de/2024`
+- `#de/2024/revenue/income_wealth_taxes`
+- `#de/2024/expenditure/social_protection/pensions_old_age`
+
+The app defines visible states for initial loading, dataset-not-found, failed data load, invalid
+route, unavailable detail, and empty contextual content. A failed load names the affected dataset
+and offers a retry; it does not render a partial hierarchy as complete. Invalid hashes resolve to
+the nearest valid parent and explain what changed instead of rendering a blank page.
+
+When only Germany and one year exist, show them as labels rather than meaningless selectors.
+Render native country/year selects only when they offer a real choice. When multiple datasets
+exist, selecting a country filters the year choices; preserve the current year when available,
+otherwise select that country's newest usable year, and update controls and URL atomically.
+
+### Mobile and accessibility
+
+The first working loop is desktop-first so the information model can settle quickly. Before the
+site is called public v1, it also needs a deliberate mobile pass:
+
+- stack revenue and expenditure vertically;
+- keep labels and values readable at 375 CSS pixels;
+- replace hover-only behavior with explicit buttons and expandable cards;
+- preserve source access and breadcrumbs without horizontal scrolling; and
+- test long English and German official names.
+
+Use native controls and semantic HTML. All interactive rows are keyboard reachable, focus order
+matches the reading order, Enter/Space activates them, Escape closes overlays, focus is restored,
+and color is never the only status signal. Respect `prefers-reduced-motion`.
+
+A visible HTML data table is populated at build time and then enhanced by JavaScript. This is the
+no-JavaScript, screen-reader, indexing, and print fallback. A table generated only after runtime
+JavaScript executes must not be described as a no-JavaScript fallback.
+
+---
+
+## 4. Data and provenance model
+
+### Repository data layout
+
+```text
 data/
-├── index.json              # hand-edited list of available {country, year} datasets; CI-verified
+├── index.json
 └── de/
     └── 2024/
-        ├── meta.json       # country, year, currency, population, expected totals, quality notes
-        ├── revenue.csv     # where money comes from
-        └── expenditure.csv # where money goes
+        ├── meta.json
+        ├── revenue.csv
+        ├── expenditure.csv
+        ├── sources.json
+        └── provenance.json
+
+research/
+└── evidence/
+    └── de/
+        └── 2024/
+            ├── manifest.json
+            └── ... licensed raw responses or table exports
 ```
 
-Two CSVs per country-year with **identical columns** (the filename encodes the side). The two
-sides come from different statistical tables and are researched separately; keeping them apart
-keeps diffs clean and lets one side update without touching the other.
+`data/index.json` is the committed discovery manifest and is CI-verified against the available
+country-year directories. Evidence is kept outside the deployable data tree. Store raw source
+files when licence and size permit; otherwise store the exact retrieval recipe, response checksum,
+and reason the raw file is not redistributed.
 
-`meta.json` example:
+### `meta.json`
 
-```json
-{
-  "country": "DE",
-  "country_name": "Germany",
-  "year": 2024,
-  "scope": "general_government",
-  "currency": "EUR",
-  "amount_unit": "millions",
-  "population": 83500000,
-  "population_source_url": "https://www.destatis.de/...",
-  "gdp_millions": 4310000,
-  "expected_total_revenue": 1978000,
-  "expected_total_expenditure": 2083000,
-  "data_quality_notes": "Final ESA figures; COFOG breakdown final as of the 2026 release.",
-  "last_updated": "2026-08-05"
-}
-```
+Each country-year records at least:
 
-`expected_total_*` are the headline totals straight from the primary source; the validator
-cross-checks them against the sum of top-level rows — the cheapest defense against a
-fat-fingered zero. `population` powers the per-capita toggle; `gdp_millions` a future
-%-of-GDP toggle.
+- country code and English display name;
+- reference year;
+- accounting basis (`ESA 2010`), sector (`S.13`), consolidation scope, currency, and amount unit;
+- dataset-bundle identifier and collection date;
+- publication status (`final`, `provisional`, `estimate`, `forecast`, or `mixed`);
+- headline revenue and expenditure provenance IDs;
+- derived net-lending/net-borrowing provenance ID;
+- population value, reference date, definition, and provenance ID when per-resident display is
+  enabled;
+- optional GDP observation and provenance ID;
+- quality notes, known omissions, and expected revision window; and
+- last reviewed date.
+
+The application does not trust manually duplicated expected totals. Headline totals are ordinary
+provenanced observations; reconciliation checks reference those observation IDs.
 
 ### CSV schema
 
-Hierarchy is a flat adjacency list: `id` + `parent_id`, maximum depth 3.
-Level 1 = sankey nodes, levels 2–3 = treemap drill-down.
+Revenue and expenditure use identical columns:
 
 | Column | Type | Required | Meaning |
 |---|---|---|---|
-| `id` | slug | yes | Unique within file. **Stable across years** (enables future year-over-year comparison). |
-| `parent_id` | slug | no | Empty = top-level (sankey) row. Must reference an existing `id`. |
-| `name` | string | yes | Plain-English display name. |
-| `name_official` | string | no | Official/native name (e.g. `Solidaritätszuschlag`), shown as "officially: …". |
-| `amount` | number | yes | In **millions** of the dataset currency (declared in `meta.json`). |
-| `description` | string | yes | 1–3 plain-language sentences: what this is, who pays / who benefits. **The soul of the project — the validator rejects empty descriptions.** |
-| `quality` | enum | yes | `actual` \| `provisional` \| `estimate` \| `forecast`. The UI badges anything non-actual. |
-| `source_name` | string | yes | Human-readable source, e.g. "Destatis, government finance statistics". |
-| `source_url` | URL | yes | Deep link (https) to the page/table the number came from. One per row, no exceptions. |
-| `source_date` | string | yes | Reference date/publication of the figure (`2024` or `2025-01`). |
-| `retrieved_date` | ISO date | yes | When the researcher fetched it. |
-| `notes` | string | no | Caveats: "cash basis", "includes X", consolidation decisions. |
+| `id` | stable slug | yes | Unique within a side; retained across years only while the underlying concept remains comparable. |
+| `parent_id` | stable slug | no | Empty for top-level; otherwise references an existing row in the same file. |
+| `name` | string | yes | English display name. |
+| `name_official` | string | no | Official German label. |
+| `amount` | number or empty | conditional | Value in the dataset amount unit. Empty only when availability is not `available`; zero is valid and is not a missing-value sentinel. |
+| `availability` | enum | yes | `available` \| `not_available` \| `not_applicable`. |
+| `description` | string | yes | Plain-English explanation of the concept and its practical meaning. |
+| `quality` | enum or empty | conditional | `final` \| `provisional` \| `estimate` \| `forecast`; required for available values and empty otherwise. |
+| `value_kind` | enum or empty | conditional | `reported` \| `derived`; required for available values and empty otherwise. |
+| `mapping` | enum | yes | `direct` \| `mapped`; independent of whether an available value is reported or derived. |
+| `provenance_id` | id | yes | Entry in `provenance.json`; derived entries can reference multiple input provenance IDs. |
+| `notes` | string | no | Row-specific caveat not already captured in provenance. |
 
-**Amount semantics:** every row carries its own amount as reported by its source — parent
-amounts are authoritative, never computed from children. Children must sum to ≤ parent (0.5%
-tolerance, validator-enforced); any shortfall renders as a derived "Other / unallocated" tile.
-This is honest about official breakdowns being incomplete, and it lets a solid parent total
-ship before all children are researched.
+Stable IDs do not by themselves prove year-over-year comparability. When a definition, scope, or
+classification changes, the research run must either map the break explicitly or issue a new ID
+and record the relationship.
 
-### Fixed top-level vocabulary (the comparability anchor)
+### Sources and provenance
 
-Level-1 `id`s and names are **fixed for all countries** and enforced by the validator.
-National color only appears at level 2 and below.
+`sources.json` de-duplicates source identity and reuse terms. A source record includes institution,
+publication/dataset title, canonical landing page, licence name and URL, and required attribution.
+Do not apply a blanket licence to all data: Eurostat and Destatis materials can have different
+reuse terms, and any additional source must be checked independently.
 
-- **Revenue** (ESA 2010-aligned, lay-friendly names): `income_wealth_taxes` (taxes on income &
-  wealth), `production_import_taxes` (VAT & taxes on goods/production), `social_contributions`,
-  `capital_taxes`, `other_revenue` (fees, sales, property income).
-- **Expenditure**: the 10 COFOG divisions — `social_protection`, `health`, `education`,
-  `economic_affairs`, `general_public_services`, `defence`, `public_order_safety`,
-  `environment_protection`, `housing_community`, `recreation_culture_religion`.
+Each `provenance.json` entry records:
 
-Rule of thumb, enforced in the playbook: 5–10 top-level nodes per side; anything small nests
-under an "other" category *in the data*, never lumped at render time.
+- source ID and dataset/table/publication identifier;
+- exact dimensions, filters, table coordinates, or API query;
+- reference period, sector, accounting basis, unit, and consolidation status;
+- release/publication date, retrieval timestamp, and official observation-status flags;
+- raw value and displayed value;
+- value kind, mapping decision, formula, rounding increment, and sign convention;
+- input provenance IDs for a derived value;
+- value-source and description-source references;
+- evidence file path and SHA-256 checksum when an artifact is stored;
+- caveats; and
+- collection and independent-review status.
 
-### Example rows (illustrative magnitudes — real figures come from the collection phase)
+### Hierarchy rules
 
-`data/de/2024/revenue.csv`:
+1. An additive parent and its children use compatible accounting basis, sector, reference period,
+   unit, consolidation, and observation vintage.
+2. A reported official parent remains authoritative; it is never silently replaced by the sum of
+   convenient children.
+3. An exhaustive child set reconciles to its parent within a source-rounding bound calculated
+   from the observations' recorded increments. Fixed percentage tolerances are not allowed.
+4. A partial official breakdown declares its coverage. A derived **Not itemized in the source**
+   row may fill the difference only when the children and parent are demonstrably compatible.
+5. A residual must never hide a cash/accrual, scope, year, unit, or vintage mismatch. Those are
+   validation failures.
+6. Negative official observations are retained when meaningful. Their provenance must explain the
+   sign, and the renderer must use a signed-safe list/bar treatment rather than a positive-area
+   chart.
+7. Missing is never converted to zero.
 
-```csv
-id,parent_id,name,name_official,amount,description,quality,source_name,source_url,source_date,retrieved_date,notes
-income_wealth_taxes,,Taxes on income & wealth,Steuern auf Einkommen und Vermögen,510000,"Taxes on what people and companies earn and own — wage tax, assessed income tax, corporate tax, and smaller wealth-related taxes.",actual,Destatis government finance statistics,https://www.destatis.de/...,2024,2026-08-05,
-lohnsteuer,income_wealth_taxes,Wage tax,Lohnsteuer,250000,"Income tax withheld directly from employees' paychecks by their employer. For most workers this is the main income tax they pay.",actual,BMF tax revenue statistics,https://www.bundesfinanzministerium.de/...,2025-01,2026-08-05,"Cash receipts; shared between federal, state and municipal levels by fixed quotas."
-soli,income_wealth_taxes,Solidarity surcharge,Solidaritätszuschlag,13000,"A 5.5% surcharge on income and corporate tax, introduced in 1991 to fund German reunification. Since 2021 only high earners and companies pay it.",actual,BMF tax revenue statistics,https://www.bundesfinanzministerium.de/...,2025-01,2026-08-05,
-social_contributions,,Social insurance contributions,Sozialbeiträge,790000,"Mandatory payroll contributions to pension, health, long-term care and unemployment insurance — split between employees and employers.",actual,Destatis government finance statistics,https://www.destatis.de/...,2024,2026-08-05,"Net social contributions, ESA 2010 D.61."
+---
+
+## 5. Annual research system
+
+The long AI research run is a controlled collection-and-review process, not an invitation to
+produce plausible numbers. It runs when a new coherent year becomes available or a material
+official revision is published.
+
+### Durable research memory
+
+```text
+docs/research/
+├── RESEARCH_LEARNINGS.md
+├── SOURCE_CATALOG.md
+├── COLLECTION_PLAYBOOK.md
+├── RESEARCH_PROMPT.md
+└── logs/
+    └── YYYY-de-REFERENCE_YEAR.md
 ```
 
-`data/de/2024/expenditure.csv`:
+- `RESEARCH_LEARNINGS.md` is the handoff to future agents. It records stable accounting lessons,
+  failed approaches, framework traps, naming decisions, reconciliation rules, and why those
+  decisions were made, with links to the authoritative sources that established them.
+- `SOURCE_CATALOG.md` records the current official datasets, table/API coordinates, release
+  cadence, status conventions, licence, and known access quirks.
+- `COLLECTION_PLAYBOOK.md` gives the exact collection, transformation, validation, and review
+  sequence.
+- `RESEARCH_PROMPT.md` is a paste-ready prompt that binds the next AI run to the accounting and
+  provenance contracts in this plan.
+- A dated log records run-specific choices, failed queries, discrepancies, status judgments,
+  unresolved questions, and files produced.
 
-```csv
-id,parent_id,name,name_official,amount,description,quality,source_name,source_url,source_date,retrieved_date,notes
-social_protection,,Social protection,Soziale Sicherung,1080000,"The biggest block: pensions, unemployment benefits, family benefits, long-term care and social assistance.",actual,Eurostat COFOG (gov_10a_exp),https://ec.europa.eu/eurostat/...,2024,2026-08-05,"COFOG division 10."
-pensions_old_age,social_protection,Pensions (old age),Alterssicherung,430000,"Payments to retirees, mostly from the statutory pension insurance (gesetzliche Rentenversicherung) plus civil-servant pensions.",actual,Eurostat COFOG (gov_10a_exp),https://ec.europa.eu/eurostat/...,2024,2026-08-05,
-health,,Health,Gesundheit,380000,"Hospitals, doctors, medicines and public health — largely financed through statutory health insurance.",actual,Eurostat COFOG (gov_10a_exp),https://ec.europa.eu/eurostat/...,2024,2026-08-05,"COFOG division 07."
-defence,,Defence,Verteidigung,75000,"The armed forces (Bundeswehr), including procurement funded via the special defence fund.",actual,Eurostat COFOG (gov_10a_exp),https://ec.europa.eu/eurostat/...,2024,2026-08-05,"Includes Sondervermögen Bundeswehr outlays."
-```
+Stable knowledge belongs in `RESEARCH_LEARNINGS.md`; observations likely to become stale belong in
+the source catalog or dated log. Every research run updates these documents before it is complete.
 
-### Internationalization
+### Research sequence
 
-English-only to start. Later: sidecar overlay files (`revenue.de.csv` with columns
-`id,name,description`) applied at load time — translations can lag data updates without
-blocking them, and translation PRs never touch the primary data files. No per-language columns
-in the main CSVs, ever.
+1. **Preflight**
+   - Check the newest official observations for both sides.
+   - Confirm reference year, sector, accounting basis, units, consolidation, revision status, and
+     source licences.
+   - Choose the newest coherent year; do not choose a year from a press headline alone.
+2. **Extract**
+   - Capture exact official queries and raw results.
+   - Build top-level revenue from `gov_10a_main` and expenditure from `gov_10a_exp`.
+   - Collect the deepest compatible tax and COFOG detail available.
+3. **Map and reconcile**
+   - Map official codes to stable IDs without changing values.
+   - Create only explicit, reproducible derived observations.
+   - Reconcile every exhaustive hierarchy using source-rounding bounds.
+4. **Explain**
+   - Write concise English descriptions.
+   - Preserve the German official name.
+   - Source factual explanatory claims that go beyond the category definition.
+5. **Verify independently**
+   - A second AI pass or reviewer starts from the raw evidence, queries, mappings, and formulas,
+     rather than merely proofreading the collector's narrative.
+   - It checks source identity, coordinates, framework compatibility, arithmetic, descriptions,
+     status flags, licences, and omissions.
+6. **Publish artifacts**
+   - Write the dataset, provenance, evidence manifest, dated log, and any stable learnings.
+   - Run deterministic validation and inspect the rendered result before merge.
 
-## 4. Data collection playbook (annual)
+### Fail-closed rules
 
-Data collection is an AI deep-research session run once a year, following
-`docs/COLLECTION_PLAYBOOK.md` and using the paste-ready prompt in `docs/RESEARCH_PROMPT.md`.
-Every number must come back with a source URL, retrieval date, and quality flag.
+Do not publish a dataset when any of the following remains unresolved:
 
-### Which year to publish
+- an additive hierarchy mixes accounting frameworks, sectors, years, units, or incompatible
+  vintages;
+- a displayed value lacks exact provenance;
+- headline revenue, expenditure, or their balance does not reconcile;
+- an observation's final/provisional/estimate/forecast status is unknown;
+- a material category is silently missing or converted to zero;
+- a source's reuse terms or required attribution are unknown; or
+- a reviewer cannot reproduce a derived value from its listed inputs.
 
-**The newest year with complete, final data on both sides.** Revenue data is fast; the
-standardized expenditure-by-function data lags ~14–15 months. We never mix reference years
-inside one dataset — as of mid-2026, the newest complete year for Germany is **2024**; 2025
-joins around early 2027 when its COFOG breakdown publishes. The year dropdown makes this
-natural rather than stale.
+### Primary official source families
 
-### Collection calendar (two windows per year)
+- Eurostat `gov_10a_main`: general-government revenue, expenditure, and balance aggregates.
+- Eurostat `gov_10a_taxag` and National Tax Lists: ESA tax and social-contribution detail.
+- Eurostat `gov_10a_exp`: general-government expenditure by COFOG function.
+- Destatis national-accounts and government-finance publications: Germany-specific verification,
+  definitions, population denominators, and explanatory context.
+- BMF cash-tax publications and BMAS social-budget material: contextual only unless a future
+  section explicitly adopts their different accounting frame.
 
-- **Spring, revenue window (year N−1 becomes available):**
-  - Destatis final tax revenue by tax type: ~April, in the *Statistischer Bericht —
-    Steuerhaushalt* (successor of the discontinued Fachserie 14 Reihe 4).
-  - Destatis general-government ESA press release (~April): consolidated revenue, expenditure,
-    deficit, and the social-insurance sub-sector totals.
-  - BMF *Monatsbericht* cash tax figures (monthly, ~1 month lag) for early estimates if needed.
-- **Spring, expenditure window (year N−2 becomes final):**
-  - Eurostat COFOG dataset **`gov_10a_exp`** — legal transmission deadline is T+12 months, but
-    the comparable EU-wide release has historically landed ~14–15 months after year-end. The
-    10 divisions are mandatory for all countries; second-level groups are voluntary — verify
-    granularity per country before promising level-2 detail.
+The source catalog, not this plan, owns exact current URLs and query coordinates so changes can be
+maintained without rewriting product decisions. Useful starting points include the official
+[Eurostat dissemination API](https://ec.europa.eu/eurostat/web/user-guides/data-browser/api-data-access/api-introduction),
+[`gov_10a_main` metadata](https://ec.europa.eu/eurostat/cache/metadata/en/gov_10a_main_esms.htm),
+[`gov_10a_taxag` metadata](https://ec.europa.eu/eurostat/cache/metadata/en/gov_10a_taxag_esms.htm),
+and [`gov_10a_exp` metadata](https://webgate.ec.europa.eu/eurostat/cache/metadata/en/gov_10a_exp_esms.htm).
 
-### Key sources
+---
 
-| Source | Use | Timing |
-|---|---|---|
-| Destatis Steuereinnahmen / Statistischer Bericht Steuerhaushalt | Tax revenue by tax type (level 2 detail) | final ~April N+1 |
-| Destatis general-government finance press release | ESA consolidated totals, social insurance sub-sector | ~April N+1 |
-| BMF Monatsbericht | Cash tax revenue, early estimates | monthly, ~1 month lag |
-| Eurostat `gov_10a_taxag` ([dataset](https://ec.europa.eu/eurostat/databrowser/product/page/gov_10a_taxag)) | Standardized revenue aggregates, all EU countries | T+9–10 months |
-| Eurostat `gov_10a_exp` ([dataset](https://ec.europa.eu/eurostat/databrowser/view/gov_10a_exp/default/table?lang=en)) | COFOG expenditure, all EU countries — **level-1 source of truth** | ~14–15 months |
-| BMAS Sozialbudget | Same-year social-spending narrative detail | fast, but see pitfall 2 |
-| OECD Revenue Statistics + OECD COFOG Data Explorer | Non-EU expansion path later | ~similar lags |
+## 6. Technical architecture
 
-Eurostat has a clean REST API usable during research sessions (or at build time later):
-`https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/{code}?format=JSON&lang=EN`
+### Repository layout
 
-### Pitfall rules (hard rules for every research session)
-
-1. **Never sum government levels yourself.** Bund + Länder + Gemeinden + Sozialversicherung
-   gross totals substantially exceed the consolidated figure (for 2025: €2,472bn summed vs
-   €2,081bn consolidated) because of intra-government transfers (federal pension subsidies,
-   VAT-share transfers, …). Use consolidated ESA figures only; record consolidation decisions
-   in the `notes` column.
-2. **Don't mix accounting frameworks.** Cash tax revenue (2025: €989.8bn), ESA
-   general-government revenue (€2,081bn), and the BMAS Sozialbudget (€1,431bn) measure
-   overlapping but different things. The site's frame is ESA consolidated; cash tax statistics
-   provide tax-type detail at level 2; Sozialbudget is narrative color only (its ESSPROS
-   categories are not COFOG, and its scope is broader than general government).
-3. **Use Eurostat for the expenditure side, not the national functional table.** Destatis's
-   national expenditure-by-function table lags ~4–5 years — far worse than Eurostat COFOG.
-4. **Sozialversicherung figures come from Destatis's aggregation**, not from individual
-   carriers (BMAS/BMG/BA data flows into it) — sourcing carriers individually invites
-   double-counting.
-
-Sanity anchors (Germany 2025, Destatis, for magnitude checks): general-government revenue
-€2,081bn / expenditure €2,208bn / deficit €127.3bn; cash tax revenue €989.8bn (VAT €310.2bn,
-Lohnsteuer €262.7bn); social insurance revenue €936.1bn (of which contributions €771.5bn).
-
-## 5. Site architecture
-
-### Repo layout
-
-```
+```text
 where-is-the-tax/
-├── README.md                  # pitch, screenshot, live link, "add a country" pointer
-├── PLAN.md                    # this document
-├── LICENSE                    # MIT for code; data is CC-BY (noted in README)
-├── index.html                 # single page, Vite entry
-├── package.json / vite.config.ts / tsconfig.json
-├── data/                      # ← the heart of the repo (see §3)
+├── README.md
+├── PLAN.md
+├── LICENSE
+├── DATA_LICENSES.md
+├── index.html
+├── package.json
+├── tsconfig.json
+├── vite.config.ts
+├── data/
+├── research/evidence/
 ├── docs/
-│   ├── DATA_SCHEMA.md         # column reference + fixed level-1 vocabulary
-│   ├── COLLECTION_PLAYBOOK.md # annual collection steps, sources, QA checklist
-│   └── RESEARCH_PROMPT.md     # paste-ready AI deep-research prompt template
+│   ├── DATA_SCHEMA.md
+│   ├── METHODOLOGY.md
+│   └── research/
 ├── scripts/
-│   └── validate-data.ts       # schema + integrity checks (CI gate + prebuild)
+│   ├── import-eurostat.ts
+│   ├── validate-data.ts
+│   └── generate-static.ts
 ├── src/
-│   ├── main.ts                # bootstrap: state → load → render
-│   ├── state.ts               # app state + URL hash sync
-│   ├── format.ts              # Intl formatting (€ bn, per-capita, %)
+│   ├── main.ts
+│   ├── state.ts
+│   ├── format.ts
 │   ├── styles.css
-│   ├── data/model.ts          # types, tree building, derived nodes (deficit, "other")
-│   ├── data/load.ts           # fetch + parse meta.json and CSVs (d3-dsv)
-│   ├── viz/sankey.ts          # hero view, horizontal + vertical (mobile) modes
-│   ├── viz/treemap.ts         # drill-down view
-│   ├── viz/tooltip.ts         # single shared tooltip
-│   └── ui/controls.ts         # country/year selects, breadcrumb, toggles
-└── .github/workflows/ci.yml   # validate (PR gate) + build + Pages deploy
+│   ├── data/load.ts
+│   ├── data/model.ts
+│   ├── viz/ranked-bars.ts
+│   ├── ui/summary.ts
+│   ├── ui/explorer.ts
+│   ├── ui/detail.ts
+│   └── ui/controls.ts
+├── tests/
+│   ├── validate-data.test.ts
+│   ├── model.test.ts
+│   ├── state.test.ts
+│   ├── fixtures/
+│   └── e2e/explorer.spec.ts
+└── .github/workflows/ci.yml
 ```
 
-~12 source files. Dependencies: `d3-sankey`, `d3-hierarchy`, `d3-selection`, `d3-scale`,
-`d3-dsv` (submodules, not the d3 monolith), `vite`, `typescript`, `tsx`,
-`vite-plugin-static-copy` (serves root-level `data/` in dev and copies it into `dist/`).
-No framework, no router, no CSS framework, no state library.
+The expected implementation is a static Vite + TypeScript application. Use focused D3 modules
+for parsing, scales, and axes where they improve the implementation; do not adopt a framework,
+router, state library, or large visualization dependency without a demonstrated need.
 
-### The sankey: a correctness rule, not just a chart
+### Data flow
 
-Left: top-level revenue categories. Center: **one "Total" node**. Right: the COFOG spending
-divisions. **Never direct revenue→spending links.** General-government money is fungible —
-with narrow exceptions there is no real earmarking of VAT to defence or wage tax to pensions.
-A many-to-many sankey would fabricate flows that don't exist and turn the site into a
-misinformation generator. The two-stage layout states the truth: everything goes into one pot,
-everything comes out of it. This reasoning appears verbatim in the site's methodology section.
+```mermaid
+flowchart LR
+    A["Official tables and APIs"] --> B["Evidence snapshots and exact queries"]
+    B --> C["Mapped datasets and provenance"]
+    C --> D["Deterministic validation"]
+    D --> E["Build-time HTML fallback"]
+    D --> F["Interactive static application"]
+    E --> G["GitHub Pages artifact"]
+    F --> G
+```
 
-**Deficit/surplus:** revenue and expenditure won't balance. A derived pseudo-node — "Deficit
-(new borrowing)" on the revenue side, or "Surplus" on the spending side — rendered visually
-distinct (gray/hatched) with a tooltip explaining that the gap is covered by new government
-debt. Computed in `model.ts`, never stored in CSV. For Germany this is a headline feature, not
-an accounting nuisance.
+Runtime code loads only committed, validated files. It does not fetch statistical APIs or invoke
+AI. `generate-static.ts` creates the initial summary and table from the default dataset at build
+time; the client application enhances that markup and handles navigation.
 
-Node order is fixed (by amount, descending — no relayout jitter). One cool color ramp for
-revenue, one warm ramp for spending, neutral gray for Total and Deficit.
+### Deployment
 
-### Interactions
+GitHub Actions runs validation, type-checking, unit tests, static generation, production build,
+and browser smoke/accessibility tests. A successful build deploys to GitHub Pages from `main`.
+Vite base paths and all data URLs must work from both a project subpath and a future custom domain.
 
-- **Hover** (node or link): display name (+ "officially: …" when the official name differs),
-  amount (`€13.0 bn`), % of that side (`0.6% of revenue`), per-capita (`€156 per person`), the
-  plain-language description, and a quality badge when not `actual`. Source shown as
-  attribution text — clickable source links live in the detail view (clickable tooltips are a
-  UX tarpit). Hover highlights the node + its link; everything else dims.
-- **Click** a top-level node → treemap of its children replaces the sankey (crossfade), with
-  breadcrumb `Germany 2024 › Spending › Social protection`. Escape, breadcrumb, or browser
-  back returns. Tiles with children drill once more; a leaf shows a **detail card**: full
-  description, exact amount, source dates, clickable source URL, notes. A childless top-level
-  node goes straight to its detail card. Under-summing children produce a derived
-  "Other / unallocated" tile.
-- **State lives in the URL hash** (`#de/2024`, `#de/2024/expenditure/social_protection`):
-  every view is shareable, and the back button exits drill-downs for free.
-- **Country/year dropdowns** are native `<select>` elements populated from `data/index.json` —
-  free accessibility and mobile UX.
+A scheduled workflow may open a yearly research reminder issue, but it must not update public data
+without the research and review gates.
 
-### Mobile (<~700px)
+---
 
-Horizontal sankeys die on phones. Below ~700px the sankey **transposes to vertical** — revenue
-at top flowing down through Total to spending at bottom (d3-sankey computes the layout; we swap
-x/y and use a transposed link generator, ~30 lines). Vertical flows scroll naturally, labels
-sit inside full-width nodes, and the "one pot" metaphor survives. Touch: first tap pins the
-tooltip as an info card; second tap (or its "See breakdown" button) drills. The treemap is
-naturally mobile-friendly.
+## 7. Validation and verification
 
-### Accessibility
+### Deterministic data validation
 
-Nodes and tiles are focusable (`tabindex="0"`, `role="button"`) with aria-labels containing the
-full tooltip text; Enter drills, Escape returns; visible focus outlines; color is never the
-sole encoding. A `<details>` element below the chart renders the same data as a plain HTML
-table — screen-reader fallback, no-JS fallback, and SEO in one move. `prefers-reduced-motion`
-disables transitions.
+The validator rejects a dataset unless all of these pass:
 
-### Data validation: a PR gate, not a runtime concern
+1. Required files and columns exist; unknown columns and invalid enums fail.
+2. IDs are unique; parent references exist; the hierarchy has no cycles or orphans; depth is at
+   most four.
+3. Availability and amount agree; all available amounts are finite; zero and signed observations
+   follow the schema rules.
+4. Every row points to a valid provenance entry, and every provenance entry points to a known
+   source with licence and attribution data.
+5. Top-level revenue IDs and COFOG IDs match the accounting contract exactly.
+6. Every derived value lists inputs and a formula; recalculation reproduces the stored value
+   within the source-rounding bound.
+7. Exhaustive children reconcile to parents; partial breakdowns declare coverage; residuals meet
+   the compatibility rules.
+8. Headline revenue and expenditure reconcile to their corresponding trees; the balance formula
+   uses those same observations.
+9. Status flags roll up correctly to `meta.json`; a mixed or provisional bundle cannot present as
+   final.
+10. `data/index.json` and the directory tree agree.
 
-Data only changes via commits, so merge time is when to catch bad data.
-`scripts/validate-data.ts` (run via `tsx`; hand-rolled checks — explicit code gives better
-error messages than a schema library for a 12-column CSV) validates every dataset:
+Validation catches structural and arithmetic defects, not truth by itself. The independent source
+review remains required.
 
-1. Required columns present; no unknown columns.
-2. `id` unique; `parent_id` references exist; no cycles; depth ≤ 3.
-3. Amounts positive and finite; `quality` in enum; `source_url` is https; dates parse;
-   `description` non-empty.
-4. Level-1 ids match the fixed vocabulary; 5–10 top-level nodes per side.
-5. Children sum ≤ parent within 0.5%.
-6. Top-level sums match `meta.expected_total_*` within 1%.
-7. `data/index.json` matches the directory tree exactly.
+### Automated tests
 
-Errors print `file:line column message` and exit non-zero. Wired as `npm run validate`, run by
-CI on every PR and as a `prebuild` step — broken data can neither merge nor deploy.
+- Validator fixtures cover missing provenance, framework/vintage mismatch, rounding boundaries,
+  zero, missing, signed observations, cycles, invalid residuals, and status roll-up.
+- Model tests cover tree construction, shares, balance sign and label, partial breakdowns,
+  non-additive contextual data, and unavailable observations.
+- State tests cover valid deep links, invalid country/year/category paths, parent fallback, and
+  back/forward navigation.
+- UI/browser tests cover selection and drill-down, source access for parent/leaf/derived values,
+  loading and failure states, keyboard operation, focus restoration, reduced motion, 375-pixel
+  layout, and the build-time table with JavaScript disabled.
+- Accessibility checks combine automated scanning with a manual keyboard and screen-reader pass.
 
-## 6. Build & deploy
+### Comprehension checks
 
-One workflow, `.github/workflows/ci.yml`, two jobs:
+Before locking the main visual form, ask several English-speaking non-experts to answer:
 
-- **validate** (every PR + push): `npm run validate` → `tsc --noEmit` → `npm run build` smoke
-  test. Set as a required check via branch protection on `main`.
-- **deploy** (pushes to `main` only, needs validate): build → `actions/configure-pages` →
-  `actions/upload-pages-artifact` → `actions/deploy-pages`.
+1. What do the two headline totals represent?
+2. What are the largest revenue and spending categories?
+3. Is the graphic claiming that a named tax directly funds a named service?
+4. What does a negative balance mean, and is it identical to the change in debt?
+5. Which figures are provisional?
+6. Can you reach and understand the official source for a chosen value?
 
-Setup notes: repo Settings → Pages → Source: "GitHub Actions". Vite needs
-`base: '/where-is-the-tax/'` (project pages serve from a subpath; switch to `'/'` if a custom
-domain arrives), and all data fetches are prefixed with `import.meta.env.BASE_URL`. A scheduled
-workflow opens a "refresh the data" reminder issue each spring.
+If chart novelty competes with correct answers, keep the simpler presentation.
 
-## 7. Roadmap
+---
 
-Each phase is independently shippable; the site is live and genuinely useful from Phase 2.
+## 8. Delivery plan
 
-| Phase | Ships | Size |
+Each phase has an evidence-based exit condition. The order is deliberate; visual polish must not
+outrun the accounting and provenance foundation.
+
+### Phase 0 — Resolve the data and explanation shape
+
+- Confirm the first Germany reference year and current status through a focused source preflight.
+- Create a small real top-level dataset and one detailed branch from each side.
+- Prototype the summary plus side-by-side ranked bars on desktop.
+- Test the accounting explanation and non-earmarking message with representative readers.
+- Use a small internal second-country or synthetic fixture only to expose Germany-specific schema
+  assumptions; do not make cross-country comparison part of the public scope.
+
+**Exit:** the chosen hierarchy reconciles, exact provenance is demonstrable, and the basic view is
+understood without a guided explanation.
+
+### Phase 1 — Build the research and data foundation
+
+- Write `docs/DATA_SCHEMA.md`, `docs/METHODOLOGY.md`, and all durable research-memory documents.
+- Implement source/provenance schemas, the Eurostat import helper, evidence manifest, and validator.
+- Run the long research process for Germany and collect the deepest compatible detail available.
+- Complete the independent verification pass and source-specific licensing record.
+
+**Exit:** the Germany dataset passes deterministic validation and independent reproduction; all
+quality/status flags and known omissions are explicit.
+
+### Phase 2 — Deliver the desktop explanatory prototype
+
+- Implement data loading, modelling, headline summary, side-by-side top-level view, formatting,
+  methodology, and source/detail panels.
+- Render the build-time English summary and data table.
+- Include loading, error, and invalid-route behavior from the start.
+
+**Exit:** a desktop user can answer the six comprehension questions and inspect provenance for any
+top-level, leaf, or derived value.
+
+### Phase 3 — Add detail navigation and shareability
+
+- Implement recursive ranked-list/bar drill-down, breadcrumbs, and full source cards.
+- Add stable hash URLs and back/forward behavior.
+- Keep national cash or social-budget context visually and semantically outside the ESA hierarchy.
+
+**Exit:** every available data level is reachable and shareable without losing accounting context.
+
+### Phase 4 — Complete mobile, accessibility, and public v1
+
+- Adapt the layout and interactions for narrow screens and touch.
+- Complete keyboard, focus, screen-reader, contrast, reduced-motion, and no-JavaScript checks.
+- Run desktop and mobile comprehension checks, fix confusing language, and document remaining
+  limitations.
+- Deploy the verified static build to GitHub Pages.
+
+**Exit:** the site is usable at 375 pixels, by keyboard, and with the HTML table fallback; no
+known issue blocks correct interpretation or source access.
+
+### Phase 5 — Extend only after learning from v1
+
+Possible follow-up work, separately planned:
+
+- a second reconciled German year and honest definition-change mapping;
+- a second country after the collection playbook proves portable;
+- year-over-year or cross-country comparison;
+- alternative chart experiments that beat the ranked view in comprehension tests;
+- percentage-of-GDP display when denominator compatibility is assured;
+- embed and journalist-focused presentation; and
+- German translation and i18n only if the product later chooses to serve German-language users.
+
+---
+
+## 9. Definition of done for public v1
+
+### Data truth and provenance
+
+- Germany has one complete, coherent ESA S.13 country-year dataset.
+- Revenue, expenditure, and balance reconcile under documented source-rounding rules.
+- Every displayed or contextual number has exact reproducible provenance.
+- Provisional, estimate, forecast, mapped, and derived states are visible and correctly rolled up.
+- The deepest compatible official detail is included; unavailable deeper detail is explicit.
+- An independent reviewer has reproduced the headline totals, selected leaves, and all formulas.
+
+### User understanding
+
+- The product is English-only and understandable without German public-finance knowledge.
+- Users can find totals, largest categories, balance, caveats, and an official source.
+- Users do not infer tax-to-spending earmarking from the primary presentation.
+- The distinction between deficit/net borrowing and debt change is clear.
+
+### Product and engineering
+
+- Desktop and mobile layouts pass the defined browser and accessibility checks.
+- Loading, error, invalid-route, missing-detail, and no-JavaScript states are intentional.
+- Validation, unit tests, static generation, build, and browser smoke checks pass in CI.
+- Methodology, data schema, source licences, research playbook, prompt, source catalog, dated log,
+  and `RESEARCH_LEARNINGS.md` are present and current.
+- The deployed application performs no tracking and requires no backend.
+
+---
+
+## 10. Risks and mitigations
+
+| Risk | Consequence | Mitigation |
 |---|---|---|
-| **0 — Scaffold** | Repo structure, Vite+TS+D3 hello-world, `ci.yml` deploying a placeholder to Pages, docs skeleton. Deploy pipeline proven before any real work. | ~1 day |
-| **1 — Data foundation** | `DATA_SCHEMA.md` finalized (incl. fixed vocabulary), `validate-data.ts` complete, playbook + research prompt written, **Germany dataset (latest complete year, currently 2024) researched, sourced, committed, passing validation**. | ~3–5 days (research dominates) |
-| **2 — Hero sankey: Germany live** | Data loading, two-stage sankey with deficit node, tooltips with descriptions/per-capita/%, formatting, desktop layout, data-table fallback. | ~3 days |
-| **3 — Drill-down + shareable URLs** | Treemap, breadcrumb, detail cards with source links, hash routing (back button, deep links). | ~2 days |
-| **4 — Mobile + accessibility** | Vertical sankey, touch interaction, keyboard navigation, focus/aria pass, 375px testing. | ~2 days |
-| **5 — Second country** | Netherlands or Austria — mid-size, strong statistics office, proves the Eurostat-standardized path and stresses the playbook with non-German sources. Country dropdown becomes real. | ~2–3 days (mostly research) |
-| **6 — Polish** | Per-capita & %-of-GDP toggles, i18n sidecar pilot (German), OG/social share image, methodology page, embed mode (`?embed=1`) for journalists. | ~3 days, individually shippable |
+| Mixed accounting frameworks | Convincing but false category sums | ESA contract, row-level provenance, compatibility validation, fail closed |
+| Gross addition across government levels | Double counting | Consolidated S.13 totals only; never sum levels manually |
+| Provisional revisions | Published values change later | Visible status, vintage IDs, dated evidence, annual/revision refresh process |
+| False tax-to-spending causality | Misinformation | No direct flow links, explicit methodology, comprehension testing |
+| Detail gaps | False sense of completeness | Publish deepest compatible detail, declare coverage, tightly govern residuals |
+| Percentage tolerances hide large errors | Billions can pass validation | Use absolute bounds derived from recorded source rounding |
+| Stable IDs mask definition changes | Misleading time comparison later | Comparability review and explicit mapping or new IDs |
+| Generic source links become irreproducible | Users cannot audit values | Exact queries/table coordinates, evidence manifest, checksum, retrieval metadata |
+| Editorial descriptions overclaim | Simple language becomes inaccurate | Separate description sources, independent review, concise wording |
+| Source licences differ | Incorrect attribution or redistribution | Source-specific licence records; redistribute evidence only when permitted |
+| Desktop concept fails on mobile | Public release excludes users | Desktop learning loop first, mandatory mobile/accessibility gate before v1 |
+| Annual AI run drifts from prior decisions | Inconsistent future datasets | Research prompt plus durable learnings, source catalog, logs, deterministic checks, independent pass |
 
-**Explicit v1 non-goals** (so nobody designs for them prematurely): year-over-year comparison
-(the schema already supports it via stable ids — pure frontend work later), a personalized
-"enter your salary" tax receipt (strong later feature; prior art shows demand), and i18n.
+---
 
-## 8. Risks & mitigations
+## 11. Decisions intentionally left to evidence
 
-1. **The sankey visually lies about earmarking.** The single worst failure mode — a chart that
-   fabricates causality. → Two-stage Total-node layout as a hard architectural rule (no code
-   path draws cross-links) + on-page methodology note.
-2. **Cross-country incomparability.** National categories differ; naive data would make the
-   country dropdown a comparison trap. → Fixed level-1 vocabulary (ESA 2010 + 10 COFOG
-   divisions) enforced by the validator; Eurostat as level-1 source of truth; national sources
-   only enrich level 2+.
-3. **Double counting across government levels.** Inter-level transfers and gross-vs-consolidated
-   mixups. → "Consolidated general government only" as a schema rule; `expected_total_*`
-   cross-checks; consolidation decisions recorded per row in `notes`.
-4. **Data lag disappoints** ("why is 2025 not up in 2026?"). → The year strategy ("newest year
-   with complete, final data on both sides") is stated on-page; the ~15-month COFOG lag is a
-   property of official statistics, not of this project.
-5. **Trust erosion.** A transparency site with unsourced or stale numbers is worse than none.
-   → `source_url` + `retrieved_date` + `quality` required on every row (validator-enforced);
-   "last updated" display + provisional badges in the UI; annual refresh reminder workflow;
-   every number one click from its official source.
+The following are not blockers for the plan, but implementation must resolve them with real data
+or user testing rather than assumption:
+
+- the first published reference year and whether its bundle status is provisional or mixed;
+- the deepest compatible German revenue and COFOG detail for that year;
+- whether per-resident values aid understanding enough to show by default;
+- the exact responsive breakpoint after testing real labels and content;
+- whether any experimental visualization outperforms ranked bars for comprehension; and
+- the exact scheduled month for the annual research reminder, based on observed release cadence.
+
+The product decisions above remain fixed unless new evidence shows they cannot meet the stated
+outcome. Research findings should refine the dataset and implementation—not silently weaken the
+accounting, provenance, language, or comprehension contracts.
