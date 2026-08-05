@@ -61,7 +61,7 @@ export function renderNodeDetail(route: Route, node: RouteNode): string {
       <h3>What we can say</h3>
       ${node.amountNote ? `<p>${escapeHtml(node.amountNote)}</p>` : ""}
       ${factsBlock([
-        ["Entity", ENTITY_LABELS[node.entity]],
+        ["Entity", route.entityLabels[node.entity]],
         ["Evidence", STATUS_LABELS[node.status]],
         ["Stage", route.stages[node.stage] ?? ""],
       ])}

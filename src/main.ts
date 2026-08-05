@@ -1,8 +1,10 @@
 import "./styles.css";
 
-import { defaultRouteId, getRoute, routes, type Route } from "./routes/data.ts";
+import { buildRoutes, defaultRouteId, type Route } from "./routes/data.ts";
+import { BERLIN, getPlace, type Place } from "./routes/places.ts";
 import { getTaxEntry } from "./routes/taxonomy.ts";
 import { renderFiscalGraph } from "./viz/fiscal-graph.ts";
+import { mapAttribution, renderLandMap } from "./viz/land-map.ts";
 import { hideTooltip } from "./viz/tooltip.ts";
 import { renderEdgeDetail, renderNodeDetail, renderTaxDetail } from "./ui/route-detail.ts";
 import { escapeHtml } from "./ui/static-page.ts";
@@ -15,12 +17,27 @@ const routeLede = document.querySelector<HTMLElement>("#route-lede");
 const unitNote = document.querySelector<HTMLElement>("#route-unit-note");
 const boundaryPanel = document.querySelector<HTMLElement>("#boundary-panel");
 const annotationsList = document.querySelector<HTMLElement>("#route-annotations");
+const placeNote = document.querySelector<HTMLElement>("#place-note");
+const landSelect = document.querySelector<HTMLSelectElement>("#land-select");
+const landMapMount = document.querySelector<HTMLElement>("#land-map");
+const attributionEl = document.querySelector<HTMLElement>("#map-attribution");
+const legendPlaceName = document.querySelector<HTMLElement>('[data-entity="berlin"] .legend-entity-name');
 const chips = [...document.querySelectorAll<HTMLButtonElement>("[data-route-chip]")];
 const dialog = document.querySelector<HTMLDialogElement>("#detail-dialog");
 const dialogContent = dialog?.querySelector<HTMLElement>("[data-dialog-content]");
 
+let currentPlace: Place = BERLIN;
+let currentRoutes: Route[] = buildRoutes(currentPlace);
 let currentRoute: Route | undefined;
 let lastTrigger: Element | null = null;
+
+if (attributionEl) {
+  attributionEl.textContent = mapAttribution;
+}
+
+function findRoute(id: string): Route | undefined {
+  return currentRoutes.find((route) => route.id === id);
+}
 
 function openDetail(kind: "node" | "edge", id: string): void {
   if (!dialog || !dialogContent || !currentRoute) {
@@ -54,8 +71,8 @@ for (const taxButton of document.querySelectorAll<HTMLButtonElement>("[data-tax-
       return;
     }
     lastTrigger = taxButton;
-    const routeTitle = found.entry.routeId ? getRoute(found.entry.routeId)?.chipTitle : undefined;
-    dialogContent.innerHTML = renderTaxDetail(found.group, found.entry, routeTitle);
+    const routeTitleText = found.entry.routeId ? findRoute(found.entry.routeId)?.chipTitle : undefined;
+    dialogContent.innerHTML = renderTaxDetail(found.group, found.entry, routeTitleText);
     dialog.showModal();
   });
 }
@@ -90,8 +107,27 @@ function renderAnnotations(route: Route): void {
     .join("");
 }
 
-function selectRoute(routeId: string, options: { updateHash: boolean }): void {
-  const route = getRoute(routeId) ?? getRoute(defaultRouteId);
+function updatePlaceNote(route: Route): void {
+  if (!placeNote) {
+    return;
+  }
+  if (!route.placeAware && currentPlace.code !== BERLIN.code) {
+    placeNote.textContent = `This route still shows the Berlin example — ${currentPlace.name} figures arrive with the verified dataset. The wage and VAT routes already re-split for ${currentPlace.name}.`;
+    placeNote.hidden = false;
+  } else {
+    placeNote.hidden = true;
+  }
+}
+
+function syncHash(): void {
+  const hash = `#route/${currentRoute?.id ?? defaultRouteId}/${currentPlace.code}`;
+  if (window.location.hash !== hash) {
+    history.replaceState(null, "", hash);
+  }
+}
+
+function renderCurrentRoute(routeId: string): void {
+  const route = findRoute(routeId) ?? findRoute(defaultRouteId);
   if (!route || !mount) {
     return;
   }
@@ -114,6 +150,7 @@ function selectRoute(routeId: string, options: { updateHash: boolean }): void {
   }
   renderBoundary(route);
   renderAnnotations(route);
+  updatePlaceNote(route);
 
   mount.classList.add("is-switching");
   const draw = () => {
@@ -125,18 +162,38 @@ function selectRoute(routeId: string, options: { updateHash: boolean }): void {
   } else {
     window.setTimeout(draw, 120);
   }
+}
 
+function selectPlace(place: Place, options: { updateHash: boolean }): void {
+  currentPlace = place;
+  currentRoutes = buildRoutes(place);
+  if (landSelect && landSelect.value !== place.code) {
+    landSelect.value = place.code;
+  }
+  if (legendPlaceName) {
+    legendPlaceName.textContent = place.name;
+  }
+  if (landMapMount) {
+    renderLandMap(landMapMount, place, (next) => selectPlace(next, { updateHash: true }));
+  }
+  renderCurrentRoute(currentRoute?.id ?? defaultRouteId);
   if (options.updateHash) {
-    const hash = `#route/${route.id}`;
-    if (window.location.hash !== hash) {
-      history.replaceState(null, "", hash);
-    }
+    syncHash();
   }
 }
 
-function routeIdFromHash(): string {
-  const match = /^#route\/([\w-]+)$/.exec(window.location.hash);
-  return match?.[1] ?? defaultRouteId;
+function selectRoute(routeId: string, options: { updateHash: boolean }): void {
+  renderCurrentRoute(routeId);
+  if (options.updateHash) {
+    syncHash();
+  }
+}
+
+function parseHash(): { routeId: string; place: Place } {
+  const match = /^#route\/([\w-]+)(?:\/([A-Za-z]{2}))?$/.exec(window.location.hash);
+  const routeId = match?.[1] ?? defaultRouteId;
+  const place = (match?.[2] && getPlace(match[2])) || BERLIN;
+  return { routeId, place };
 }
 
 for (const chip of chips) {
@@ -148,16 +205,38 @@ for (const chip of chips) {
   });
 }
 
+landSelect?.addEventListener("change", () => {
+  const place = getPlace(landSelect.value);
+  if (place) {
+    selectPlace(place, { updateHash: true });
+  }
+});
+
 window.addEventListener("hashchange", () => {
-  if (routeIdFromHash() !== currentRoute?.id) {
-    selectRoute(routeIdFromHash(), { updateHash: false });
+  const { routeId, place } = parseHash();
+  if (place.code !== currentPlace.code) {
+    currentPlace = place;
+    currentRoutes = buildRoutes(place);
+    selectPlace(place, { updateHash: false });
+  }
+  if (routeId !== currentRoute?.id) {
+    selectRoute(routeId, { updateHash: false });
   }
 });
 
 if (mount) {
-  if (routes.length === 0) {
-    mount.innerHTML = `<p class="fg-error">No routes are available. This prototype ships with a fixed set of routes — please file an issue.</p>`;
-  } else {
-    selectRoute(routeIdFromHash(), { updateHash: false });
+  const { routeId, place } = parseHash();
+  currentRoute = undefined;
+  currentPlace = place;
+  currentRoutes = buildRoutes(place);
+  if (landMapMount) {
+    renderLandMap(landMapMount, place, (next) => selectPlace(next, { updateHash: true }));
   }
+  if (landSelect) {
+    landSelect.value = place.code;
+  }
+  if (legendPlaceName) {
+    legendPlaceName.textContent = place.name;
+  }
+  selectRoute(routeId, { updateHash: false });
 }

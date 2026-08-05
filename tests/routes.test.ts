@@ -1,13 +1,18 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
-import { defaultRouteId, getRoute, routes } from "../src/routes/data.ts";
+import { buildRoutes, defaultRouteId, getRoute, routes } from "../src/routes/data.ts";
+import { getPlace, places } from "../src/routes/places.ts";
 
-test("the default route exists and every route is well-formed", () => {
+const checkedPlaces = [getPlace("BE")!, getPlace("BY")!, getPlace("HH")!, getPlace("NW")!];
+const allRouteSets = checkedPlaces.flatMap((place) => buildRoutes(place));
+
+test("the default route exists and every route is well-formed for every checked place", () => {
   assert(getRoute(defaultRouteId));
   assert(routes.length >= 3);
+  assert.equal(places.length, 16);
 
-  for (const route of routes) {
+  for (const route of allRouteSets) {
     const ids = route.nodes.map((node) => node.id);
     assert.equal(new Set(ids).size, ids.length, `${route.id}: node ids must be unique`);
 
@@ -27,7 +32,7 @@ test("the default route exists and every route is well-formed", () => {
 });
 
 test("flow is conserved through every pass-through node", () => {
-  for (const route of routes) {
+  for (const route of allRouteSets) {
     for (const node of route.nodes) {
       const inbound = route.edges.filter((edge) => edge.to === node.id).reduce((sum, edge) => sum + edge.weight, 0);
       const outbound = route.edges.filter((edge) => edge.from === node.id).reduce((sum, edge) => sum + edge.weight, 0);
@@ -40,7 +45,7 @@ test("flow is conserved through every pass-through node", () => {
 });
 
 test("every node and flow carries a plain-English description and an https source", () => {
-  for (const route of routes) {
+  for (const route of allRouteSets) {
     for (const item of [...route.nodes, ...route.edges]) {
       assert(item.description.trim().length > 0, `${route.id}/${item.id}: description required`);
       assert(item.sources.length > 0, `${route.id}/${item.id}: at least one source required`);
@@ -52,7 +57,7 @@ test("every node and flow carries a plain-English description and an https sourc
 });
 
 test("recipient nodes terminate routes — nothing flows past the budget boundary", () => {
-  for (const route of routes) {
+  for (const route of allRouteSets) {
     for (const node of route.nodes.filter((candidate) => candidate.role === "recipient")) {
       const outbound = route.edges.filter((edge) => edge.from === node.id);
       assert.equal(outbound.length, 0, `${route.id}/${node.id}: recipients must not have outgoing flows`);

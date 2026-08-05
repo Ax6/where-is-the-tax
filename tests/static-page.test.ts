@@ -7,8 +7,11 @@ import { escapeHtml, renderStaticPage } from "../src/ui/static-page.ts";
 test("renders the banner, chips, boundary panel, legend, and table at build time", () => {
   const html = renderStaticPage(routes, defaultRouteId);
 
-  assert.match(html, /pending independent verification/);
+  assert.match(html, /independently reproduced from official sources/);
   assert.equal(html.match(/data-route-chip/g)?.length, routes.length);
+  assert.match(html, /id="land-select"/);
+  assert.match(html, /id="land-map"/);
+  assert.match(html, /Nordrhein-Westfalen/);
   assert.match(html, /Budget boundary — tax identity ends here/);
   assert.match(html, /Ribbons end in the budget that legally receives the money/);
   assert.match(html, /<table>/);

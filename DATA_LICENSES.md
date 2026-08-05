@@ -32,3 +32,9 @@ For every publication-bundle source, the extraction record must contain:
 
 Synthetic files under `tests/fixtures/` are original test material and make no official-data
 claim. Their example URLs and licence labels are intentionally non-authoritative.
+
+## Committed geodata
+
+| Resource | Licence | Attribution | Notes |
+|---|---|---|---|
+| `data/geo/de-laender.json` | Data licence Germany – attribution – 2.0 (dl-de/by-2-0) | "© BKG 2026 dl-de/by-2-0" with links to bkg.bund.de and govdata.de/dl-de/by-2-0, plus the BKG Datenquellen PDF | Generalised (simplified, rounded, small islands dropped) from BKG VG250 `vg250_lan` (gf=4); modification disclosed per licence. Verified 2026-08-05. |

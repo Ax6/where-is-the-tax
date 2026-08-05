@@ -6,6 +6,7 @@ import {
   type SourceRef,
 } from "../routes/data.ts";
 import { taxonomy } from "../routes/taxonomy.ts";
+import { places } from "../routes/places.ts";
 
 export function escapeHtml(value: string): string {
   return value
@@ -143,9 +144,9 @@ export function renderStaticPage(routes: Route[], defaultRouteId: string): strin
     .filter(([id]) => id !== "neutral")
     .map(
       ([id, label]) =>
-        `<li class="legend-entity"><span class="legend-swatch legend-${escapeHtml(id)}" aria-hidden="true"></span>${escapeHtml(
+        `<li class="legend-entity" data-entity="${escapeHtml(id)}"><span class="legend-swatch legend-${escapeHtml(id)}" aria-hidden="true"></span><span class="legend-entity-name">${escapeHtml(
           label,
-        )}</li>`,
+        )}</span></li>`,
     )
     .join("");
   const kindLegend = Object.values(EDGE_KIND_LABELS)
@@ -156,7 +157,7 @@ export function renderStaticPage(routes: Route[], defaultRouteId: string): strin
     <a class="skip-link" href="#graph">Skip to the graph</a>
     <div class="prototype-banner" role="note">
       <strong>Internal prototype</strong>
-      <span>Statutory shares are exact law. Euro figures come from the 2026-08-05 research report and are pending independent verification — nothing here is published data.</span>
+      <span>Statutory shares are exact law. Euro figures were independently reproduced from official sources on 2026-08-05; the fully provenanced dataset is still in progress — treat as preview, not published data.</span>
     </div>
 
     <header class="site-header">
@@ -171,14 +172,35 @@ export function renderStaticPage(routes: Route[], defaultRouteId: string): strin
     </header>
 
     <section class="hero" id="top" aria-labelledby="page-title">
-      <p class="eyebrow">Germany · 2024 routes · example resident: Berlin</p>
+      <p class="eyebrow">Germany · 2024 routes · all 16 Länder</p>
       <h1 id="page-title">Every euro you pay<br><em>takes a legal route.</em></h1>
-      <p class="hero-lede">Pick something you actually pay. Follow it through the constitution's splits, the clearing between Länder, and into real budgets — until the law itself says the trail ends. The routes below use Berlin as the example resident; a clickable Germany map that re-splits every flow for your own Land is the planned selector.</p>
+      <p class="hero-lede">Pick something you actually pay and where you live — the map re-splits the wage and VAT routes for your Land. Follow your money through the constitution's splits, the clearing between Länder, and into real budgets, until the law itself says the trail ends.</p>
     </section>
 
     <section class="graph-section" id="graph" aria-labelledby="route-title">
-      <div class="route-chips" role="group" aria-label="Choose a route to follow">
-        ${renderChips(routes, defaultRoute.id)}
+      <div class="route-controls">
+        <div class="route-controls-main">
+          <p class="control-label">What do you pay?</p>
+          <div class="route-chips" role="group" aria-label="Choose a route to follow">
+            ${renderChips(routes, defaultRoute.id)}
+          </div>
+          <p class="control-label">Where do you live?</p>
+          <label class="land-select-label">Land
+            <select id="land-select">
+              ${places
+                .map(
+                  (place) =>
+                    `<option value="${escapeHtml(place.code)}"${place.code === "BE" ? " selected" : ""}>${escapeHtml(place.name)}</option>`,
+                )
+                .join("")}
+            </select>
+          </label>
+          <p class="place-note" id="place-note" hidden></p>
+        </div>
+        <div class="land-map-wrap">
+          <div id="land-map" class="land-map"></div>
+          <p class="map-attribution" id="map-attribution"></p>
+        </div>
       </div>
 
       <div class="route-head">
@@ -249,7 +271,7 @@ export function renderStaticPage(routes: Route[], defaultRouteId: string): strin
       <div class="section-heading">
         <p class="eyebrow">Verification status</p>
         <h2 id="sources-title">Exact law, official calculations, open questions</h2>
-        <p>Deep-source research completed on 2026-08-05. An independent verification pass — reproducing every coordinate, calculation and licence from raw evidence — is the next gate before any of this becomes published data. One discrepancy is already flagged openly: Berlin's observed 2024 trade-tax levy exceeds the statutory federal rate, composition unreconciled.</p>
+        <p>Deep-source research completed and independently verified on 2026-08-05: every euro figure shown here was reproduced from the official tables, PDFs and statutes by a second pass. The one open discrepancy was resolved on the way — Berlin's 2024 trade-tax levy line is the full statutory levy (35% multiplier, §6 GemFinRefG); the Land component returns to Berlin through the equalisation system. What remains before publication: the fully provenanced dataset bundle with evidence snapshots.</p>
       </div>
       <ul class="source-list">
         ${collectSources(routes)

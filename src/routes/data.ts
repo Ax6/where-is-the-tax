@@ -6,6 +6,9 @@
  * VERIFICATION — the page banner says so. Nothing here is published data.
  */
 
+import { getLandFigures, VAT_LAENDER_POOL_MEUR, VAT_TOTAL_MEUR } from "./equalisation.ts";
+import { BERLIN, type Place } from "./places.ts";
+
 export type EdgeKind =
   | "exclusive_assignment"
   | "fixed_share"
@@ -78,6 +81,10 @@ export interface Route {
   /** How edge weights are expressed: fractions of the route, or observed € millions. */
   unit: "share" | "million_eur";
   unitNote: string;
+  /** True when the route re-parameterises for the selected place; false = Berlin example only. */
+  placeAware: boolean;
+  /** Entity display names for this route (the "berlin" slot carries the selected place's name). */
+  entityLabels: Record<EntityId, string>;
   nodes: RouteNode[];
   edges: RouteEdge[];
   annotations: RouteAnnotation[];
@@ -126,6 +133,10 @@ const gemFinRef: SourceRef = {
   label: "Gemeindefinanzreformgesetz",
   url: "https://www.gesetze-im-internet.de/gemfinrefg/BJNR015870969.html",
 };
+const gemFinRef6: SourceRef = {
+  label: "§6 Gemeindefinanzreformgesetz (levy multipliers)",
+  url: "https://www.gesetze-im-internet.de/gemfinrefg/__6.html",
+};
 const gemFinRef7: SourceRef = {
   label: "§7 Gemeindefinanzreformgesetz",
   url: "https://www.gesetze-im-internet.de/gemfinrefg/__7.html",
@@ -173,7 +184,8 @@ const betrKV2: SourceRef = {
 
 export { artikel106, artikel107, berlinTaxAccount2024, bmfDec2024, gemFinRef7, ustg12 };
 
-const pendingVerification = "Research-report figure — pending independent verification.";
+const pendingVerification =
+  "Independently reproduced from official sources on 2026-08-05; the fully provenanced production dataset is still in progress.";
 
 const berlinBoundaryBody = [
   "From here on, the general coverage principle applies: except for lawful earmarking, all revenue finances all expenditure. The euros you followed are now indistinguishable from every other euro in the budget.",
@@ -191,8 +203,7 @@ const berlinBoundaryExamples = [
   "Borough services",
 ];
 
-export const routes: Route[] = [
-  {
+const wageBerlin: Route = {
     id: "wage",
     chipTitle: "You earn a wage",
     chipNote: "Wage tax · Lohnsteuer",
@@ -200,6 +211,8 @@ export const routes: Route[] = [
     stages: ["The event", "The named tax", "Who gets it, by law", "Recipient budgets"],
     unit: "share",
     unitNote: "Ribbon widths show the statutory split of one wage-tax euro (Article 106: 42.5 / 42.5 / 15).",
+    placeAware: true,
+    entityLabels: { ...ENTITY_LABELS },
     nodes: [
       {
         id: "event",
@@ -375,8 +388,9 @@ export const routes: Route[] = [
       body: berlinBoundaryBody,
       examples: berlinBoundaryExamples,
     },
-  },
-  {
+};
+
+const vatBerlin: Route = {
     id: "vat",
     chipTitle: "You buy something",
     chipNote: "VAT · Umsatzsteuer",
@@ -384,6 +398,8 @@ export const routes: Route[] = [
     stages: ["The event", "One national pot", "Annual vertical split", "Recipient budgets"],
     unit: "share",
     unitNote: "Ribbon widths show the official 2024 allocation of the national VAT aggregate (€302.1bn).",
+    placeAware: true,
+    entityLabels: { ...ENTITY_LABELS },
     nodes: [
       {
         id: "event",
@@ -625,7 +641,9 @@ export const routes: Route[] = [
       ],
       examples: berlinBoundaryExamples,
     },
-  },
+};
+
+const berlinOnlyRoutes: Route[] = [
   {
     id: "trade",
     chipTitle: "A business pays trade tax",
@@ -634,6 +652,8 @@ export const routes: Route[] = [
     stages: ["The event", "The named tax", "Recipient budgets"],
     unit: "million_eur",
     unitNote: "Ribbon widths show observed 2024 Berlin amounts (trade tax gross €3.01bn).",
+    placeAware: false,
+    entityLabels: { ...ENTITY_LABELS },
     nodes: [
       {
         id: "event",
@@ -669,9 +689,9 @@ export const routes: Route[] = [
         entity: "berlin",
         role: "recipient",
         description:
-          "Because Berlin is both Land and municipality, the Land component of the trade-tax levy never leaves town — Berlin remits only the federal component and keeps roughly 96.5% of gross trade tax.",
+          "Because Berlin is both Land and municipality, the Land component of the trade-tax levy circles back to Berlin through the equalisation system — only the federal component (≈3.5% of gross) truly leaves town.",
         status: "calculated_official",
-        sources: [gemFinRef7, berlinTaxAccount2024, lhoBerlin8],
+        sources: [gemFinRef6, gemFinRef7, berlinTaxAccount2024, lhoBerlin8],
         caveats: [pendingVerification],
       },
       {
@@ -706,25 +726,38 @@ export const routes: Route[] = [
         weight: 2749.141,
         kind: "exclusive_assignment",
         status: "calculated_official",
-        shareLabel: "≈96.5% retained",
+        shareLabel: "net of the levy",
         description:
-          "Berlin keeps gross trade tax minus the levy. The statutory federal component is 14.5 / 410 = 3.5366% of gross — Berlin, being Land and municipality at once, remits only that federal part.",
-        sources: [gemFinRef7, berlinTaxAccount2024],
+          "Berlin's cash account keeps gross trade tax minus the full statutory levy — a 35% multiplier on the base amount (14.5 federal + 20.5 Land, §6 Gemeindefinanzreformgesetz).",
+        sources: [berlinTaxAccount2024, gemFinRef6],
+        caveats: [pendingVerification],
+      },
+      {
+        id: "trade-berlin-fka",
+        from: "gewerbesteuer",
+        to: "berlin_budget",
+        weight: 153.501,
+        kind: "equalisation_adjustment",
+        status: "calculated_official",
+        shareLabel: "Land levy component — returns to Berlin",
+        description:
+          "The Land component of the levy (20.5 of the 35 multiplier, ≈€153.5m in 2024) is credited back to Berlin inside the official equalisation calculation — because Berlin is the Land.",
+        sources: [bmfEqualisation2024, gemFinRef6],
         caveats: [pendingVerification],
       },
       {
         id: "trade-federation",
         from: "gewerbesteuer",
         to: "federal_budget",
-        weight: 262.074,
+        weight: 108.573,
         kind: "fixed_share",
-        status: "provisional_official",
-        shareLabel: "levy −€262m (2024)",
+        status: "calculated_official",
+        shareLabel: "federal levy component ≈3.54%",
         description:
-          "Berlin's 2024 account records a trade-tax levy of €262.1m. The pure statutory federal component would be ≈€106m (3.5366% of gross); the difference is unreconciled and flagged for the independent verification pass.",
-        sources: [berlinTaxAccount2024, gemFinRef7],
+          "The federal component of the trade-tax levy: 14.5 / 410 = 3.5366% of gross, ≈€108.6m in 2024, remitted by Berlin under §7 Gemeindefinanzreformgesetz.",
+        sources: [gemFinRef6, gemFinRef7, bmfEqualisation2024],
         caveats: [
-          "Observed levy (8.7% of gross) exceeds the statutory federal rate (3.5366%) — composition not yet reconciled.",
+          "The cash-year levy (€262.1m) differs ~2% from 35% of same-year gross because of quarterly payments and prior-year settlement (§6 (6)–(7) GemFinRefG).",
           pendingVerification,
         ],
       },
@@ -749,6 +782,8 @@ export const routes: Route[] = [
     stages: ["The event", "The named taxes", "Recipient budget"],
     unit: "million_eur",
     unitNote: "Ribbon widths show observed 2024 Berlin amounts (property tax €0.87bn; real-estate transfer tax €0.91bn).",
+    placeAware: false,
+    entityLabels: { ...ENTITY_LABELS },
     nodes: [
       {
         id: "event",
@@ -867,6 +902,366 @@ export const routes: Route[] = [
     },
   },
 ];
+
+function buildWageRoute(place: Place): Route {
+  if (place.code === BERLIN.code) {
+    return wageBerlin;
+  }
+
+  const name = place.name;
+  const municipalTargetId = place.cityState ? "land_budget" : "municipal_budget";
+  const nodes: RouteNode[] = [
+    {
+      id: "event",
+      stage: 0,
+      label: `Payday in ${name}`,
+      entity: "neutral",
+      role: "event",
+      description:
+        "Your employer withholds wage tax before your salary arrives. For most employees this is the main income tax they ever pay.",
+      amountNote: "Germany collected €947.7bn in taxes before distribution in 2024.",
+      status: "calculated_official",
+      sources: [destatis71211],
+      caveats: [pendingVerification],
+    },
+    {
+      id: "lohnsteuer",
+      stage: 1,
+      label: "Wage tax",
+      official: "Lohnsteuer",
+      entity: "neutral",
+      role: "tax",
+      description:
+        "A joint tax: no single level of government owns it. The constitution fixes exactly how it is divided before a euro of it is spent.",
+      status: "exact_statute",
+      sources: [artikel106],
+    },
+    {
+      id: "share_federation",
+      stage: 2,
+      label: "Federation 42.5%",
+      entity: "federation",
+      role: "share",
+      description: "The federal share of income tax, fixed by Article 106 of the Basic Law.",
+      status: "exact_statute",
+      sources: [artikel106],
+    },
+    {
+      id: "share_land",
+      stage: 2,
+      label: "Länder 42.5%",
+      entity: "berlin",
+      role: "share",
+      description: `The Länder share is cleared to the Land where the employee lives — not where the employer's payroll office sits. You live in ${name}, so this share is cleared to ${name}.`,
+      status: "exact_statute",
+      sources: [artikel106, zerlegung],
+    },
+    {
+      id: "share_municipal",
+      stage: 2,
+      label: "Municipalities 15%",
+      entity: place.cityState ? "berlin" : "municipalities",
+      role: "share",
+      description: place.cityState
+        ? `The municipal share is distributed by a statutory key based on residents' income-tax contributions, with a cap. ${name} counts as a municipality here too.`
+        : "The municipal share is distributed among municipalities by a statutory key based on residents' income-tax contributions, with a cap.",
+      status: "exact_statute",
+      sources: [artikel106, gemFinRef],
+    },
+    {
+      id: "federal_budget",
+      stage: 3,
+      label: "Federal budget",
+      entity: "federation",
+      role: "recipient",
+      description:
+        "The Federation's general budget. Once the money enters, its wage-tax identity ends — it funds the whole federal budget together with every other revenue.",
+      status: "exact_statute",
+      sources: [artikel106, bho8],
+    },
+    {
+      id: "land_budget",
+      stage: 3,
+      label: `${name} budget`,
+      official: place.cityState ? "Land + municipality" : undefined,
+      entity: "berlin",
+      role: "recipient",
+      description: place.cityState
+        ? `${name} is a Land and a municipality at once, so it receives both the Land share and the municipal share of your wage tax.`
+        : `${name}'s Land budget. Once the money enters, its wage-tax identity ends — it funds the whole Land budget together with every other revenue.`,
+      status: "exact_statute",
+      sources: [artikel106, bho8],
+    },
+  ];
+  if (!place.cityState) {
+    nodes.push({
+      id: "municipal_budget",
+      stage: 3,
+      label: "Your municipality",
+      entity: "municipalities",
+      role: "recipient",
+      description:
+        "The town or city where you live receives the municipal share via the statutory key. Which municipality gets exactly how much is aggregate data — your personal euro is not individually traceable.",
+      status: "formula_dependent",
+      sources: [gemFinRef],
+    });
+  }
+
+  const edges: RouteEdge[] = [
+    {
+      id: "event-tax",
+      from: "event",
+      to: "lohnsteuer",
+      weight: 1,
+      kind: "exclusive_assignment",
+      status: "exact_statute",
+      shareLabel: "withheld at source",
+      description: "Wage tax is withheld by the employer and paid to the tax office on your behalf.",
+      sources: [artikel106],
+    },
+    {
+      id: "tax-federation",
+      from: "lohnsteuer",
+      to: "share_federation",
+      weight: 0.425,
+      kind: "fixed_share",
+      status: "exact_statute",
+      shareLabel: "42.5%",
+      description: "Fixed federal share of wage and assessed income tax under Article 106(3) of the Basic Law.",
+      sources: [artikel106],
+    },
+    {
+      id: "tax-land",
+      from: "lohnsteuer",
+      to: "share_land",
+      weight: 0.425,
+      kind: "fixed_share",
+      status: "exact_statute",
+      shareLabel: "42.5%",
+      description: "Fixed Länder share of wage and assessed income tax under Article 106(3) of the Basic Law.",
+      sources: [artikel106],
+    },
+    {
+      id: "tax-municipal",
+      from: "lohnsteuer",
+      to: "share_municipal",
+      weight: 0.15,
+      kind: "fixed_share",
+      status: "exact_statute",
+      shareLabel: "15%",
+      description: "Fixed municipal share of income tax under Article 106(5) of the Basic Law.",
+      sources: [artikel106, gemFinRef],
+    },
+    {
+      id: "federation-budget",
+      from: "share_federation",
+      to: "federal_budget",
+      weight: 0.425,
+      kind: "exclusive_assignment",
+      status: "exact_statute",
+      shareLabel: "to the federal budget",
+      description: "The federal share flows into the Federation's general budget.",
+      sources: [artikel106],
+    },
+    {
+      id: "land-place",
+      from: "share_land",
+      to: "land_budget",
+      weight: 0.425,
+      kind: "decomposition_adjustment",
+      status: "exact_statute",
+      shareLabel: "cleared to your Land of residence",
+      description: `Wage tax is decomposed principally to the employee's Land of residence under §7 Zerlegungsgesetz. For a resident of ${name}, the Land share is cleared to ${name}.`,
+      sources: [zerlegung],
+      caveats: [`Shown for a resident of ${name}; the clearing operates on official aggregates, not on your individual euro.`],
+    },
+    {
+      id: "municipal-place",
+      from: "share_municipal",
+      to: municipalTargetId,
+      weight: 0.15,
+      kind: "annual_formula",
+      status: "not_individually_traceable",
+      shareLabel: "by statutory key, capped",
+      description:
+        "The municipal 15% is distributed using residence and a capped income-tax contribution key. Your exact personal allocation cannot be reproduced from public aggregate data — the aggregate shares can.",
+      sources: [gemFinRef],
+    },
+  ];
+
+  return {
+    id: "wage",
+    chipTitle: "You earn a wage",
+    chipNote: "Wage tax · Lohnsteuer",
+    lede: `Wage tax is withheld from every paycheck. Its split is written into the constitution — and for a resident of ${name}, the Land share comes home through residence-based clearing.`,
+    stages: ["The event", "The named tax", "Who gets it, by law", "Recipient budgets"],
+    unit: "share",
+    unitNote: "Ribbon widths show the statutory split of one wage-tax euro (Article 106: 42.5 / 42.5 / 15).",
+    placeAware: true,
+    entityLabels: { ...ENTITY_LABELS, berlin: name },
+    nodes,
+    edges,
+    annotations: [
+      {
+        nodeId: "land_budget",
+        text: `The statutory split is identical for every Land; ${name}-specific euro amounts arrive with the verified dataset.`,
+      },
+    ],
+    boundary: {
+      heading: place.cityState ? `Beyond this line: the ${name} budget` : "Beyond this line: three budgets, one rule",
+      body: [
+        "From here on, the general coverage principle applies: except for lawful earmarking, all revenue finances all expenditure. The euros you followed are now indistinguishable from every other euro in the budget.",
+        `So the honest question changes from "what did my tax pay for?" to "what does each budget pay for as a whole?" Verified recipient accounts are being added Land by Land — Berlin first.`,
+      ],
+      examples: berlinBoundaryExamples,
+    },
+  };
+}
+
+function buildVatRoute(place: Place): Route {
+  if (place.code === BERLIN.code) {
+    return vatBerlin;
+  }
+
+  const name = place.name;
+  const figures = getLandFigures(place.code);
+  if (!figures) {
+    return vatBerlin;
+  }
+  const sliceMeur = figures.vatBaseMeur + figures.equalisationMeur;
+  const sliceWeight = sliceMeur / VAT_TOTAL_MEUR;
+  const poolWeight = VAT_LAENDER_POOL_MEUR / VAT_TOTAL_MEUR;
+  const eqLabel =
+    figures.equalisationMeur >= 0
+      ? `€${(figures.vatBaseMeur / 1000).toFixed(2)}bn base + €${(figures.equalisationMeur / 1000).toFixed(2)}bn equalisation`
+      : `€${(figures.vatBaseMeur / 1000).toFixed(2)}bn base − €${(Math.abs(figures.equalisationMeur) / 1000).toFixed(2)}bn equalisation deduction`;
+  const grantsNote =
+    figures.supplementaryGrantsMeur > 0
+      ? `${name} also received €${(figures.supplementaryGrantsMeur / 1000).toFixed(2)}bn in general federal supplementary grants (2024) — general federal funds, not VAT.`
+      : `${name} received no general federal supplementary grants in 2024 — its fiscal capacity sits above the grant threshold.`;
+
+  const vatPoolNodes = vatBerlin.nodes
+    .filter((node) =>
+      ["event", "vat_pool", "share_federation", "laender_pool", "share_municipal", "federal_budget"].includes(node.id),
+    )
+    .map((node) => (node.id === "event" ? { ...node, label: `A purchase in ${name}` } : node));
+
+  const nodes: RouteNode[] = [
+    ...vatPoolNodes,
+    {
+      id: "land_budget",
+      stage: 3,
+      label: `${name} budget`,
+      official: place.cityState ? "Land + municipality" : undefined,
+      entity: "berlin",
+      role: "recipient",
+      description:
+        figures.equalisationMeur >= 0
+          ? `${name}'s slice of the Länder pool is population-based and lifted by a pooled equalisation addition — €${(sliceMeur / 1000).toFixed(2)}bn of 2024 VAT in total. None of it is 'your' VAT specifically.`
+          : `${name}'s slice of the Länder pool is population-based, reduced by a pooled equalisation deduction — €${(sliceMeur / 1000).toFixed(2)}bn of 2024 VAT in total. None of it is 'your' VAT specifically.`,
+      status: "provisional_official",
+      sources: [bmfEqualisation2024],
+      caveats: [pendingVerification],
+    },
+    {
+      id: "other_laender",
+      stage: 3,
+      label: "Other 15 Länder",
+      entity: "laender",
+      role: "recipient",
+      description:
+        "The rest of the Länder pool, distributed by population with pooled equalisation additions and deductions — never bilateral transfers between Länder.",
+      status: "provisional_official",
+      sources: [bmfEqualisation2024],
+      caveats: [pendingVerification],
+    },
+    {
+      id: "municipalities_budget",
+      stage: 3,
+      label: "Municipalities",
+      entity: "municipalities",
+      role: "recipient",
+      description:
+        "The municipal VAT share, distributed nationwide by a fixed statutory key. Your own municipality's slice is aggregate data; per-Land key detail arrives with a later dataset.",
+      status: "calculated_official",
+      sources: [vatKeyReg],
+      caveats: [pendingVerification],
+    },
+  ];
+
+  const keepEdges = vatBerlin.edges.filter((edge) =>
+    ["event-pool", "pool-federation", "pool-laender", "pool-municipal", "federation-budget"].includes(edge.id),
+  );
+
+  const edges: RouteEdge[] = [
+    ...keepEdges,
+    {
+      id: "laender-place",
+      from: "laender_pool",
+      to: "land_budget",
+      weight: sliceWeight,
+      kind: "equalisation_adjustment",
+      status: "provisional_official",
+      shareLabel: eqLabel,
+      description: `${name}'s population-based share of the Länder pool, adjusted by the pooled fiscal-capacity equalisation. Pooled — not a transfer from any named Land.`,
+      sources: [bmfEqualisation2024, artikel107],
+      caveats: ["BMF bases the 2024 calculation on the provisional annual account.", pendingVerification],
+    },
+    {
+      id: "laender-others",
+      from: "laender_pool",
+      to: "other_laender",
+      weight: poolWeight - sliceWeight,
+      kind: "equalisation_adjustment",
+      status: "provisional_official",
+      shareLabel: "population share ± equalisation",
+      description: `The remaining Länder pool after ${name}'s slice.`,
+      sources: [bmfEqualisation2024],
+      caveats: [pendingVerification],
+    },
+    {
+      id: "municipal-all",
+      from: "share_municipal",
+      to: "municipalities_budget",
+      weight: 0.027903,
+      kind: "annual_formula",
+      status: "calculated_official",
+      shareLabel: "by statutory key",
+      description: "The municipal VAT share flows to municipalities nationwide under the fixed 2024–2026 key.",
+      sources: [vatKeyReg],
+      caveats: [pendingVerification],
+    },
+  ];
+
+  return {
+    ...vatBerlin,
+    lede: `VAT paid at a till in ${name} does not stay in ${name}. It joins one national aggregate, is split by an annual formula, and comes back through a population-weighted, equalised pool.`,
+    entityLabels: { ...ENTITY_LABELS, berlin: name },
+    nodes,
+    edges,
+    annotations: [
+      {
+        nodeId: "federal_budget",
+        text: "EU own resources (€32.0bn in 2024) leave from the federal level — not a traceable slice of your purchase.",
+      },
+      { nodeId: "land_budget", text: grantsNote },
+    ],
+    boundary: {
+      heading: "Beyond this line: four budgets, one rule",
+      body: [
+        `Each recipient budget obeys the general coverage principle: all revenue finances all expenditure. The VAT you paid is now part of federal, ${name}, Länder and municipal budgets in shares no receipt can trace.`,
+        "What each budget spends, as a whole, becomes explorable as verified recipient accounts are added.",
+      ],
+      examples: berlinBoundaryExamples,
+    },
+  };
+}
+
+export function buildRoutes(place: Place): Route[] {
+  return [buildWageRoute(place), buildVatRoute(place), ...berlinOnlyRoutes];
+}
+
+export const routes: Route[] = buildRoutes(BERLIN);
 
 export function getRoute(id: string): Route | undefined {
   return routes.find((route) => route.id === id);
