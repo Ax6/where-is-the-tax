@@ -80,6 +80,8 @@ export interface Route {
   stages: string[];
   /** How edge weights are expressed: fractions of the route, or observed € millions. */
   unit: "share" | "million_eur";
+  /** For share-unit routes: the route's total in € millions, when officially known. */
+  routeTotalMeur?: number;
   unitNote: string;
   /** True when the route re-parameterises for the selected place; false = Berlin example only. */
   placeAware: boolean;
@@ -398,6 +400,7 @@ const vatBerlin: Route = {
     stages: ["The event", "One national pot", "Annual vertical split", "Recipient budgets"],
     unit: "share",
     unitNote: "Ribbon widths show the official 2024 allocation of the national VAT aggregate (€302.1bn).",
+    routeTotalMeur: VAT_TOTAL_MEUR,
     placeAware: true,
     entityLabels: { ...ENTITY_LABELS },
     nodes: [

@@ -19,9 +19,24 @@ export interface SpendingAccount {
   groups: SpendingGroup[];
 }
 
+export interface RouteInflow {
+  /** € the followed route delivered into this budget (2024). */
+  eur: number;
+  routeLabel: string;
+}
+
 /** Ranked composition of a recipient budget — the real data beyond the boundary. */
-export function renderSpendingAccount(account: SpendingAccount): string {
+export function renderSpendingAccount(account: SpendingAccount, inflow?: RouteInflow): string {
   const max = account.groups[0]?.amount_eur ?? 1;
+  const share = inflow ? (inflow.eur / account.total_eur) * 100 : 0;
+  const digits = share >= 1 ? 1 : 2;
+  const bridge = inflow
+    ? `<p class="spend-bridge">The route you followed (${escapeHtml(inflow.routeLabel)}) delivered ${escapeHtml(
+        formatMoney(inflow.eur / 1e6, "million EUR"),
+      )} into this budget — ${escapeHtml(share.toFixed(digits))}% of it. The other ${escapeHtml(
+        (100 - share).toFixed(digits),
+      )}% arrived from other taxes, transfers, fees and borrowing.</p>`
+    : "";
   const rows = account.groups
     .map((group) => {
       const width = ((group.amount_eur / max) * 100).toFixed(1);
@@ -39,6 +54,7 @@ export function renderSpendingAccount(account: SpendingAccount): string {
     <div class="spending-account">
       <h4>${escapeHtml(account.title)}</h4>
       <p class="spend-total">Whole budget: ${escapeHtml(formatMoney(account.total_eur / 1e6, "million EUR"))} — every euro of revenue paid for this together.</p>
+      ${bridge}
       <ol class="spend-list">${rows}</ol>
       <p class="spend-footnote">${escapeHtml(account.basis)} ${
         account.unassigned_eur > 0

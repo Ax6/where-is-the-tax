@@ -8,7 +8,7 @@ import { renderFiscalGraph } from "./viz/fiscal-graph.ts";
 import { mapAttribution, renderLandMap } from "./viz/land-map.ts";
 import { hideTooltip } from "./viz/tooltip.ts";
 import { renderEdgeDetail, renderNodeDetail, renderTaxDetail } from "./ui/route-detail.ts";
-import { renderSpendingAccount, type SpendingAccount } from "./ui/spending.ts";
+import { renderSpendingAccount, type RouteInflow, type SpendingAccount } from "./ui/spending.ts";
 import { escapeHtml } from "./ui/static-page.ts";
 import federalSpending from "../data/de/2024/accounts/federal-functions.json" with { type: "json" };
 import berlinSpending from "../data/de/2024/accounts/berlin-functions.json" with { type: "json" };
@@ -95,14 +95,23 @@ function renderBoundary(route: Route): void {
     return;
   }
   const paragraphs = route.boundary.body.map((paragraph) => `<p>${escapeHtml(paragraph)}</p>`).join("");
+  const routeInflow = (nodeId: string): RouteInflow | undefined => {
+    const sum = route.edges.filter((edge) => edge.to === nodeId).reduce((total, edge) => total + edge.weight, 0);
+    if (sum <= 0) {
+      return undefined;
+    }
+    const eur =
+      route.unit === "million_eur" ? sum * 1e6 : route.routeTotalMeur ? sum * route.routeTotalMeur * 1e6 : undefined;
+    return eur === undefined ? undefined : { eur, routeLabel: route.chipNote };
+  };
   const hasFederal = route.nodes.some((node) => node.id === "federal_budget");
   const hasBerlin = route.nodes.some((node) => node.id === "berlin_budget");
   const blocks: string[] = [];
   if (hasBerlin) {
-    blocks.push(renderSpendingAccount(berlinSpending as SpendingAccount));
+    blocks.push(renderSpendingAccount(berlinSpending as SpendingAccount, routeInflow("berlin_budget")));
   }
   if (hasFederal) {
-    blocks.push(renderSpendingAccount(federalSpending as SpendingAccount));
+    blocks.push(renderSpendingAccount(federalSpending as SpendingAccount, routeInflow("federal_budget")));
   }
   const tail =
     blocks.length > 0

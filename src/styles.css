@@ -505,6 +505,15 @@ h1 em {
   font-size: 0.72rem !important;
 }
 
+.spend-bridge {
+  margin: 0 0 0.9rem;
+  padding: 0.55rem 0.7rem;
+  border-left: 3px solid var(--e-berlin);
+  background: var(--paper-raise);
+  font-size: 0.72rem !important;
+  line-height: 1.55;
+}
+
 .spend-list {
   margin: 0 0 0.9rem;
   padding: 0;
