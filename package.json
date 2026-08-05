@@ -17,10 +17,12 @@
     "validate:fixture": "node --experimental-strip-types scripts/validate-data.ts --root tests/fixtures/valid --evidence-root tests/fixtures/valid/evidence --allow-synthetic"
   },
   "dependencies": {
-    "d3-dsv": "^3.0.1"
+    "d3-dsv": "^3.0.1",
+    "d3-selection": "^3.0.0"
   },
   "devDependencies": {
     "@types/d3-dsv": "^3.0.7",
+    "@types/d3-selection": "^3.0.11",
     "@types/node": "^24.0.0",
     "typescript": "^5.9.0",
     "vite": "^7.0.0"

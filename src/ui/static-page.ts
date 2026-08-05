@@ -1,6 +1,10 @@
-import { formatMoney, formatShare, formatStatus } from "../format.ts";
-import type { ExplorerModel, ExplorerSide } from "../data/model.ts";
-import type { DatasetRow, DatasetSide, ProvenanceRecord } from "../data/schema.ts";
+import {
+  EDGE_KIND_LABELS,
+  ENTITY_LABELS,
+  STATUS_LABELS,
+  type Route,
+  type SourceRef,
+} from "../routes/data.ts";
 
 export function escapeHtml(value: string): string {
   return value
@@ -11,301 +15,231 @@ export function escapeHtml(value: string): string {
     .replaceAll("'", "&#039;");
 }
 
-function detailHref(side: DatasetSide, id: string): string {
-  return `#record-${side}-${id}`;
-}
-
-function renderRankedRows(
-  sideName: DatasetSide,
-  side: ExplorerSide,
-  amountUnit: string,
-): string {
-  return side.nodes
-    .map((node, index) => {
-      const width = side.maxAmount === 0 ? 0 : Math.max(0, (Math.abs(node.amount) / side.maxAmount) * 100);
-      return `
-        <li class="rank-row">
-          <a class="rank-link" href="${detailHref(sideName, node.id)}" data-detail-side="${sideName}" data-detail-id="${escapeHtml(node.id)}">
-            <span class="rank-number" aria-hidden="true">${String(index + 1).padStart(2, "0")}</span>
-            <span class="rank-copy">
-              <span class="rank-name">${escapeHtml(node.name)}</span>
-              <span class="rank-bar" aria-hidden="true"><span style="--bar-width: ${width.toFixed(2)}%"></span></span>
-            </span>
-            <span class="rank-value">
-              <strong>${escapeHtml(formatMoney(node.amount, amountUnit))}</strong>
-              <small>${escapeHtml(formatShare(node.amount, side.total))}</small>
-            </span>
-          </a>
-        </li>`;
-    })
-    .join("");
-}
-
-function renderPoolList(sideName: DatasetSide, side: ExplorerSide, amountUnit: string): string {
-  return side.nodes
+function renderChips(routes: Route[], activeId: string): string {
+  return routes
     .map(
-      (node) => `
-        <li>
-          <a href="${detailHref(sideName, node.id)}" data-detail-side="${sideName}" data-detail-id="${escapeHtml(node.id)}">
-            <span>${escapeHtml(node.name)}</span>
-            <strong>${escapeHtml(formatMoney(node.amount, amountUnit))}</strong>
-          </a>
-        </li>`,
+      (route) => `
+        <button type="button" class="route-chip" data-route-chip data-route-id="${escapeHtml(route.id)}" aria-pressed="${
+          route.id === activeId ? "true" : "false"
+        }">
+          <span class="route-chip-title">${escapeHtml(route.chipTitle)}</span>
+          <span class="route-chip-note">${escapeHtml(route.chipNote)}</span>
+        </button>`,
     )
     .join("");
 }
 
-function renderCoverage(sideName: DatasetSide, rows: DatasetRow[]): string {
-  if (rows.length === 0) {
-    return "";
-  }
-  const items = rows
-    .map(
-      (row) => `<li><a href="${detailHref(sideName, row.id)}" data-detail-side="${sideName}" data-detail-id="${escapeHtml(row.id)}">${escapeHtml(row.name)}</a> — ${escapeHtml(formatStatus(row.availability))}</li>`,
-    )
+function renderFallbackRoute(route: Route): string {
+  const nodesById = new Map(route.nodes.map((node) => [node.id, node]));
+  const steps = route.edges
+    .map((edge) => {
+      const from = nodesById.get(edge.from);
+      const to = nodesById.get(edge.to);
+      return `<li><strong>${escapeHtml(from?.label ?? edge.from)} → ${escapeHtml(to?.label ?? edge.to)}</strong> (${escapeHtml(
+        edge.shareLabel,
+      )}; ${escapeHtml(EDGE_KIND_LABELS[edge.kind])}). ${escapeHtml(edge.description)}</li>`;
+    })
     .join("");
-  return `<aside class="coverage-note" aria-label="Unavailable ${sideName} categories"><strong>Coverage note</strong><ul>${items}</ul><p>These categories are known to the dataset but excluded from bars, totals, and percentages.</p></aside>`;
+  return `
+    <details class="fg-fallback-route">
+      <summary>${escapeHtml(route.chipTitle)} — ${escapeHtml(route.chipNote)}</summary>
+      <p>${escapeHtml(route.lede)}</p>
+      <ol>${steps}</ol>
+    </details>`;
 }
 
-function sourceLabelForProvenance(model: ExplorerModel, provenance: ProvenanceRecord | undefined): string {
-  if (!provenance) {
-    return "Missing provenance";
-  }
-  if (provenance.kind === "derived") {
-    return "Derived from listed inputs";
-  }
-  if (provenance.extraction_id === null) {
-    return "Unavailable observation";
-  }
-  const extraction = model.bundle.extractions.find(({ id }) => id === provenance.extraction_id);
-  const source = extraction ? model.bundle.sources.find(({ id }) => id === extraction.source_id) : undefined;
-  return source ? `${source.institution} — ${source.title}` : "Source record unavailable";
+function renderBoundaryPanel(route: Route): string {
+  const paragraphs = route.boundary.body.map((paragraph) => `<p>${escapeHtml(paragraph)}</p>`).join("");
+  const examples = route.boundary.examples.map((example) => `<li>${escapeHtml(example)}</li>`).join("");
+  return `
+    <p class="boundary-marker" aria-hidden="true">Budget boundary — tax identity ends here</p>
+    <h3>${escapeHtml(route.boundary.heading)}</h3>
+    ${paragraphs}
+    <ul class="boundary-examples" aria-label="What this budget funds as a whole">${examples}</ul>
+    <p class="boundary-footnote">Unquantified on purpose: no verified function-level actuals are published here yet.</p>`;
 }
 
-function renderTableRows(
-  model: ExplorerModel,
-  sideName: DatasetSide,
-  rows: DatasetRow[],
-): string {
-  return rows
-    .map((row) => {
-      const amount = row.amount === null ? formatStatus(row.availability) : formatMoney(row.amount, model.bundle.meta.amount_unit);
-      const quality = row.quality === null ? "—" : formatStatus(row.quality);
-      const provenance = model.bundle.provenance.find(({ id }) => id === row.provenance_id);
-      return `
-        <tr id="record-${sideName}-${escapeHtml(row.id)}">
-          <th scope="row">${escapeHtml(row.name)}</th>
-          <td>${escapeHtml(sideName === "revenue" ? "Revenue" : "Expenditure")}</td>
-          <td class="numeric">${escapeHtml(amount)}</td>
-          <td>${escapeHtml(quality)}</td>
-          <td>${escapeHtml(provenance ? formatStatus(provenance.kind) : "Unknown")}</td>
-          <td>${escapeHtml(sourceLabelForProvenance(model, provenance))}</td>
-        </tr>`;
+function renderAnnotations(route: Route): string {
+  return route.annotations
+    .map((annotation) => `<li><span aria-hidden="true">✳</span> ${escapeHtml(annotation.text)}</li>`)
+    .join("");
+}
+
+function collectSources(routes: Route[]): SourceRef[] {
+  const seen = new Map<string, SourceRef>();
+  for (const route of routes) {
+    for (const item of [...route.nodes, ...route.edges]) {
+      for (const source of item.sources) {
+        seen.set(source.url, source);
+      }
+    }
+  }
+  return [...seen.values()];
+}
+
+function renderTableRows(routes: Route[]): string {
+  return routes
+    .flatMap((route) => {
+      const nodesById = new Map(route.nodes.map((node) => [node.id, node]));
+      return route.edges.map((edge) => {
+        const from = nodesById.get(edge.from);
+        const to = nodesById.get(edge.to);
+        const sources = edge.sources
+          .map(
+            (source) =>
+              `<a href="${escapeHtml(source.url)}" rel="noreferrer noopener" target="_blank">${escapeHtml(source.label)}</a>`,
+          )
+          .join("; ");
+        return `
+          <tr id="record-${escapeHtml(route.id)}-${escapeHtml(edge.id)}">
+            <th scope="row">${escapeHtml(route.chipTitle)}</th>
+            <td>${escapeHtml(from?.label ?? edge.from)} → ${escapeHtml(to?.label ?? edge.to)}</td>
+            <td class="numeric">${escapeHtml(edge.shareLabel)}</td>
+            <td>${escapeHtml(EDGE_KIND_LABELS[edge.kind])}</td>
+            <td>${escapeHtml(STATUS_LABELS[edge.status])}</td>
+            <td>${sources}</td>
+          </tr>`;
+      });
     })
     .join("");
 }
 
-function renderHeadlineRow(
-  model: ExplorerModel,
-  id: string,
-  label: string,
-  side: string,
-): string {
-  const provenance = model.bundle.provenance.find((record) => record.id === id);
-  if (!provenance || provenance.kind === "unavailable") {
-    throw new Error(`Headline ${id} must have an available provenance record.`);
+export function renderStaticPage(routes: Route[], defaultRouteId: string): string {
+  const defaultRoute = routes.find((route) => route.id === defaultRouteId) ?? routes[0];
+  if (!defaultRoute) {
+    throw new Error("At least one route is required to render the page.");
   }
-  return `
-    <tr id="record-headline-${escapeHtml(side.toLowerCase().replaceAll(" ", "-"))}" class="headline-table-row">
-      <th scope="row">${escapeHtml(label)}</th>
-      <td>${escapeHtml(side)}</td>
-      <td class="numeric">${escapeHtml(formatMoney(provenance.displayed_value, model.bundle.meta.amount_unit))}</td>
-      <td>${escapeHtml(formatStatus(provenance.quality))}</td>
-      <td>${escapeHtml(formatStatus(provenance.kind))}</td>
-      <td>${escapeHtml(sourceLabelForProvenance(model, provenance))}</td>
-    </tr>`;
-}
-
-function balanceExplanation(model: ExplorerModel): string {
-  if (model.balance < 0) {
-    return `Spending exceeds revenue by ${formatMoney(Math.abs(model.balance), model.bundle.meta.amount_unit)} in this fixture.`;
-  }
-  if (model.balance > 0) {
-    return `Revenue exceeds spending by ${formatMoney(model.balance, model.bundle.meta.amount_unit)} in this fixture.`;
-  }
-  return "Revenue and spending are equal in this fixture.";
-}
-
-function summaryCard(
-  label: string,
-  amount: string,
-  note: string,
-  provenanceId: string,
-  tone: "revenue" | "expenditure" | "balance",
-  fallbackHref: string,
-): string {
-  return `
-    <article class="summary-item summary-${tone}">
-      <p>${escapeHtml(label)}</p>
-      <a href="${escapeHtml(fallbackHref)}" data-provenance-id="${escapeHtml(provenanceId)}" aria-label="Inspect provenance for ${escapeHtml(label)}">
-        <strong>${escapeHtml(amount)}</strong>
-        <span>Inspect source</span>
-      </a>
-      <small>${escapeHtml(note)}</small>
-    </article>`;
-}
-
-export function renderStaticPage(model: ExplorerModel): string {
-  const { bundle } = model;
-  const { meta } = bundle;
-  const balanceAmount = formatMoney(model.balance, meta.amount_unit);
-  const revenueRows = renderRankedRows("revenue", model.revenue, meta.amount_unit);
-  const expenditureRows = renderRankedRows("expenditure", model.expenditure, meta.amount_unit);
-  const tableRows = [
-    renderHeadlineRow(model, meta.headline.revenue_provenance_id, "Total revenue", "Revenue total"),
-    renderHeadlineRow(model, meta.headline.expenditure_provenance_id, "Total expenditure", "Expenditure total"),
-    renderHeadlineRow(model, meta.headline.balance_provenance_id, model.balanceLabel, "Balance"),
-    renderTableRows(model, "revenue", bundle.revenue),
-    renderTableRows(model, "expenditure", bundle.expenditure),
-  ].join("");
+  const entityLegend = (Object.entries(ENTITY_LABELS) as [string, string][])
+    .filter(([id]) => id !== "neutral")
+    .map(
+      ([id, label]) =>
+        `<li class="legend-entity"><span class="legend-swatch legend-${escapeHtml(id)}" aria-hidden="true"></span>${escapeHtml(
+          label,
+        )}</li>`,
+    )
+    .join("");
+  const kindLegend = Object.values(EDGE_KIND_LABELS)
+    .map((label) => `<li>${escapeHtml(label)}</li>`)
+    .join("");
 
   return `
-    <a class="skip-link" href="#explorer">Skip to the data</a>
+    <a class="skip-link" href="#graph">Skip to the graph</a>
     <div class="prototype-banner" role="note">
-      <strong>Internal explanation prototype</strong>
-      <span>Every figure on this page is invented test data—not a claim about Germany.</span>
+      <strong>Internal prototype</strong>
+      <span>Statutory shares are exact law. Euro figures come from the 2026-08-05 research report and are pending independent verification — nothing here is published data.</span>
     </div>
 
     <header class="site-header">
       <a class="wordmark" href="#top" aria-label="Where is the tax? Home">Where is the tax?</a>
       <nav aria-label="Page sections">
-        <a href="#explorer">Explore</a>
-        <a href="#methodology">How to read this</a>
+        <a href="#graph">The graph</a>
+        <a href="#boundary">The boundary</a>
+        <a href="#sources">Sources</a>
         <a href="#data-table">Data table</a>
       </nav>
     </header>
 
     <section class="hero" id="top" aria-labelledby="page-title">
-      <p class="eyebrow">Germany · ${meta.reference_year} · synthetic fixture</p>
-      <h1 id="page-title">Public money,<br><em>without the maze.</em></h1>
-      <p class="hero-lede">See where general-government revenue comes from and what public money is spent on—inside one consistent accounting frame.</p>
-      <p class="hero-rule"><strong>Read the two sides together, but never as direct flows.</strong> A named tax is not being matched to a named service.</p>
+      <p class="eyebrow">Germany · a person in Berlin · 2024 routes</p>
+      <h1 id="page-title">Every euro you pay<br><em>takes a legal route.</em></h1>
+      <p class="hero-lede">Pick something you actually pay. Follow it through the constitution's splits, the clearing between Länder, and into real budgets — until the law itself says the trail ends.</p>
     </section>
 
-    <section class="summary" aria-labelledby="summary-title">
+    <section class="graph-section" id="graph" aria-labelledby="route-title">
+      <div class="route-chips" role="group" aria-label="Choose a route to follow">
+        ${renderChips(routes, defaultRoute.id)}
+      </div>
+
+      <div class="route-head">
+        <h2 id="route-title">${escapeHtml(defaultRoute.chipTitle)}</h2>
+        <p id="route-lede">${escapeHtml(defaultRoute.lede)}</p>
+      </div>
+
+      <div class="graph-frame">
+        <figure class="graph-figure" aria-label="Interactive fiscal route graph">
+          <div id="fiscal-graph-mount" class="fiscal-graph-mount">
+            <div class="fg-fallback">
+              <p><strong>The interactive graph needs JavaScript.</strong> The same routes, in words:</p>
+              ${routes.map((route) => renderFallbackRoute(route)).join("")}
+            </div>
+          </div>
+          <figcaption id="route-unit-note" class="graph-caption">${escapeHtml(defaultRoute.unitNote)} Hover any node or ribbon for a plain-English explanation; click for sources.</figcaption>
+        </figure>
+        <aside class="boundary-panel" id="boundary-panel" aria-label="Beyond the budget boundary">
+          ${renderBoundaryPanel(defaultRoute)}
+        </aside>
+      </div>
+
+      <ul class="route-annotations" id="route-annotations" aria-label="Route footnotes">
+        ${renderAnnotations(defaultRoute)}
+      </ul>
+
+      <div class="graph-legend" aria-label="How to read the graph">
+        <div>
+          <p class="legend-title">Ribbons end in the budget that legally receives the money</p>
+          <ul class="legend-entities">${entityLegend}</ul>
+        </div>
+        <div>
+          <p class="legend-title">Every flow is one of these legal mechanisms</p>
+          <ul class="legend-kinds">${kindLegend}</ul>
+        </div>
+        <div>
+          <p class="legend-title">Texture &amp; status</p>
+          <ul class="legend-kinds">
+            <li>Hatched ribbon: aggregate route only — your personal euro is not individually traceable there.</li>
+            <li>Every value carries an evidence badge, from “exact — written in law” to “official, marked provisional”.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="boundary-section" id="boundary" aria-labelledby="boundary-title">
       <div class="section-heading">
-        <p class="eyebrow">The whole system</p>
-        <h2 id="summary-title">Three numbers set the frame</h2>
-      </div>
-      <div class="summary-grid">
-        ${summaryCard("Total revenue", formatMoney(model.revenue.total, meta.amount_unit), "Money received across consolidated general government", meta.headline.revenue_provenance_id, "revenue", "#record-headline-revenue-total")}
-        ${summaryCard("Total expenditure", formatMoney(model.expenditure.total, meta.amount_unit), "Spending across consolidated general government", meta.headline.expenditure_provenance_id, "expenditure", "#record-headline-expenditure-total")}
-        ${summaryCard(model.balanceLabel, balanceAmount, `${balanceExplanation(model)} Not the change in debt.`, meta.headline.balance_provenance_id, "balance", "#record-headline-balance")}
-      </div>
-      <dl class="scope-line">
-        <div><dt>Scope</dt><dd>ESA 2010 · S.13</dd></div>
-        <div><dt>Coverage</dt><dd>Consolidated general government</dd></div>
-        <div><dt>Source status</dt><dd>${escapeHtml(formatStatus(meta.publication_status))} (simulated)</dd></div>
-      </dl>
-    </section>
-
-    <section class="explorer" id="explorer" aria-labelledby="explorer-title">
-      <div class="explorer-head">
-        <div class="section-heading">
-          <p class="eyebrow">One system, two classifications</p>
-          <h2 id="explorer-title">Where it comes from. Where it goes.</h2>
-        </div>
-        <div class="view-switch" aria-label="Choose an explanation view" hidden>
-          <button type="button" data-view="ranked" aria-pressed="true">Ranked</button>
-          <button type="button" data-view="pool" aria-pressed="false">System pool</button>
-        </div>
-      </div>
-
-      <div class="non-earmarking-note" role="note">
-        <span aria-hidden="true">↔</span>
-        <p><strong>No category-to-category links.</strong> Revenue is largely pooled; the right side classifies spending by purpose.</p>
-      </div>
-
-      <div class="view" data-view-panel="ranked">
-        <div class="ledger-grid">
-          <article class="ledger ledger-revenue" aria-labelledby="revenue-title">
-            <header>
-              <div><p class="side-label">Where it comes from</p><h3 id="revenue-title">Revenue</h3></div>
-              <strong>${escapeHtml(formatMoney(model.revenue.total, meta.amount_unit))}</strong>
-            </header>
-            <ol class="rank-list">${revenueRows}</ol>
-            ${renderCoverage("revenue", model.revenue.coverage)}
-          </article>
-          <article class="ledger ledger-expenditure" aria-labelledby="expenditure-title">
-            <header>
-              <div><p class="side-label">Where it goes</p><h3 id="expenditure-title">Expenditure</h3></div>
-              <strong>${escapeHtml(formatMoney(model.expenditure.total, meta.amount_unit))}</strong>
-            </header>
-            <ol class="rank-list">${expenditureRows}</ol>
-            ${renderCoverage("expenditure", model.expenditure.coverage)}
-          </article>
-        </div>
-        <p class="view-caption">Bars are ranked within each side. Percentages use that side's total; bar lengths use the largest category on that side.</p>
-      </div>
-
-      <div class="view pool-view" data-view-panel="pool" hidden>
-        <div class="pool-grid">
-          <article class="pool-side pool-revenue">
-            <p class="side-label">Sources of revenue</p>
-            <ul>${renderPoolList("revenue", model.revenue, meta.amount_unit)}</ul>
-            ${renderCoverage("revenue", model.revenue.coverage)}
-          </article>
-          <article class="system-pool" aria-labelledby="pool-title">
-            <p class="eyebrow">Accounting-safe alternative</p>
-            <h3 id="pool-title">The public-finance pool</h3>
-            <p>Revenue enters a shared system. Expenditure leaves it classified by function. The gap is recorded as ${model.balanceLabel.toLowerCase()}.</p>
-            <dl>
-              <div><dt>In</dt><dd>${escapeHtml(formatMoney(model.revenue.total, meta.amount_unit))}</dd></div>
-              <div><dt>Out</dt><dd>${escapeHtml(formatMoney(model.expenditure.total, meta.amount_unit))}</dd></div>
-              <div><dt>Gap</dt><dd>${escapeHtml(balanceAmount)}</dd></div>
-            </dl>
-            <strong class="pool-warning">No implied earmarking</strong>
-          </article>
-          <article class="pool-side pool-expenditure">
-            <p class="side-label">Purposes of spending</p>
-            <ul>${renderPoolList("expenditure", model.expenditure, meta.amount_unit)}</ul>
-            ${renderCoverage("expenditure", model.expenditure.coverage)}
-          </article>
-        </div>
-        <p class="view-caption">This composition is more expressive, but deliberately draws no lines between individual categories.</p>
-      </div>
-    </section>
-
-    <section class="methodology" id="methodology" aria-labelledby="methodology-title">
-      <div class="section-heading">
-        <p class="eyebrow">How to read this</p>
-        <h2 id="methodology-title">Three guardrails against a tidy but false story</h2>
+        <p class="eyebrow">Why the trail ends</p>
+        <h2 id="boundary-title">Three questions people collapse into one</h2>
       </div>
       <div class="guardrail-grid">
-        <article><span>01</span><h3>One accounting frame</h3><p>Both totals cover consolidated general government under ESA 2010, sector S.13. Internal transfers are not added twice.</p></article>
-        <article><span>02</span><h3>No tax receipt fiction</h3><p>The categories answer different questions. They do not trace a euro from a specific tax into a specific service.</p></article>
-        <article><span>03</span><h3>Balance is not debt change</h3><p>Revenue minus expenditure gives net lending or borrowing. Debt can also move through financial transactions and valuation effects.</p></article>
+        <article><span>01</span><h3>Who legally receives this tax?</h3><p>Usually answerable exactly — from the constitution, statutes, and official cash statistics. This is what the ribbons draw.</p></article>
+        <article><span>02</span><h3>How is it redistributed?</h3><p>Answerable at aggregate level: residence-based clearing, VAT keys, and a pooled equalisation calculation — never bilateral wires between Länder.</p></article>
+        <article><span>03</span><h3>What does the recipient spend it on?</h3><p>Only answerable for the whole budget. Past the boundary, claiming your tax bought a named service would be fiction — so this site refuses to draw it.</p></article>
       </div>
+    </section>
+
+    <section class="sources-section" id="sources" aria-labelledby="sources-title">
+      <div class="section-heading">
+        <p class="eyebrow">Verification status</p>
+        <h2 id="sources-title">Exact law, official calculations, open questions</h2>
+        <p>Deep-source research completed on 2026-08-05. An independent verification pass — reproducing every coordinate, calculation and licence from raw evidence — is the next gate before any of this becomes published data. One discrepancy is already flagged openly: Berlin's observed 2024 trade-tax levy exceeds the statutory federal rate, composition unreconciled.</p>
+      </div>
+      <ul class="source-list">
+        ${collectSources(routes)
+          .map(
+            (source) =>
+              `<li><a href="${escapeHtml(source.url)}" rel="noreferrer noopener" target="_blank">${escapeHtml(source.label)}</a></li>`,
+          )
+          .join("")}
+      </ul>
+      <p class="source-more">Method &amp; contracts: <a href="https://github.com/Ax6/where-is-the-tax/blob/main/docs/research/GERMANY_FISCAL_GRAPH_2026-08-05.md" rel="noreferrer noopener" target="_blank">deep research report</a> · <a href="https://github.com/Ax6/where-is-the-tax/blob/main/PLAN.md" rel="noreferrer noopener" target="_blank">project plan</a></p>
     </section>
 
     <section class="data-table-section" id="data-table" aria-labelledby="data-table-title">
       <div class="section-heading">
-        <p class="eyebrow">Inspect the fixture</p>
+        <p class="eyebrow">Inspect every flow</p>
         <h2 id="data-table-title">Data table</h2>
-        <p>This table is written into the HTML at build time. It remains available without JavaScript and makes the source status explicit.</p>
+        <p>Written into the HTML at build time — available without JavaScript, with a source link on every flow.</p>
       </div>
-      <div class="table-scroll" tabindex="0" aria-label="Scrollable synthetic data table">
+      <div class="table-scroll" tabindex="0" aria-label="Scrollable route data table">
         <table>
-          <caption>Synthetic category observations for the interface prototype</caption>
-          <thead><tr><th scope="col">Category</th><th scope="col">Side</th><th scope="col">Amount</th><th scope="col">Status</th><th scope="col">Origin</th><th scope="col">Source</th></tr></thead>
-          <tbody>${tableRows}</tbody>
+          <caption>Every flow drawn by the graph, with legal mechanism, evidence status, and sources</caption>
+          <thead><tr><th scope="col">Route</th><th scope="col">Flow</th><th scope="col">Share</th><th scope="col">Mechanism</th><th scope="col">Evidence</th><th scope="col">Sources</th></tr></thead>
+          <tbody>${renderTableRows(routes)}</tbody>
         </table>
       </div>
     </section>
 
     <footer>
-      <p><strong>Prototype boundary:</strong> the interface is being tested before official Germany research begins. ${escapeHtml(meta.quality_notes.join(" "))}</p>
-      <p>Every displayed category carries status and provenance metadata.</p>
+      <p><strong>Prototype boundary:</strong> this interface demonstrates the fiscal-graph contract on statutory shares and research-report figures. No figure here is published data until the independent verification pass completes.</p>
+      <p>Every node, ribbon and table row links to its legal basis or official source.</p>
     </footer>
 
     <dialog id="detail-dialog" aria-labelledby="detail-title">
