@@ -164,3 +164,12 @@ licence for each source family and use `licence_unverified` when reuse rights ar
 - **Verified by and date:**
 
 Do not promote an unresolved discrepancy or volatile availability claim into this file.
+
+## Bundesergänzungszuweisungen are not federal expenditure Titel (2026-08-06)
+
+The core-budget XML (rechnung_2024.xml) contains no BEZ expenditure Titel: supplementary
+grants reach the Länder through the tax-distribution sphere, not the expenditure side. So a
+combined federal+Berlin spending view does NOT double-count BEZ. What does overlap are
+programme transfers to the Länder (Gruppierung 632/882: €40.96bn Ist 2024 across all Länder;
+transfers to municipalities 633/883: €0.50bn); the per-Land slice is not derivable from the
+XML — a real transfer ledger needs recipient-side identification.

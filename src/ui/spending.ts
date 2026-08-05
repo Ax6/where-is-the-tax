@@ -118,7 +118,7 @@ export function renderSpendingPanel(entries: SpendingEntry[], mode: SpendingMode
 
   const caveat =
     shown.length > 1
-      ? `<p class="spend-caveat">Adding the two budgets counts at least €1.86bn of federal grants to Berlin twice — netting comes with the transfer ledger.</p>`
+      ? `<p class="spend-caveat">Overlap note: €41.0bn of the federal total are programme transfers to the 16 Länder (transport, science and similar); Berlin's slice appears in both budgets and can't be separated yet. Berlin's supplementary grants are not double-counted — they never appear as federal spending.</p>`
       : "";
 
   const list = sorted

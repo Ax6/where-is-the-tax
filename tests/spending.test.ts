@@ -62,7 +62,7 @@ test("combined mode stacks both budgets with segment colors and the double-count
   assert.match(html, /What the loaded budgets spent in 2024/);
   assert.match(html, /spend-seg-berlin/);
   assert.match(html, /spend-seg-federation/);
-  assert.match(html, /counts at least €1\.86bn of federal grants to Berlin twice/);
+  assert.match(html, /€41\.0bn of the federal total are programme transfers/);
   assert.match(html, /Gewerbesteuer/);
   assert.match(html, /data-spend-mode="combined"/);
   assert.doesNotMatch(html, /undefined/);
@@ -74,6 +74,6 @@ test("isolating one budget filters segments and switches the heading", async () 
   assert.match(html, /Berlin budget — actual spending 2024/);
   assert.match(html, /spend-seg-berlin/);
   assert.doesNotMatch(html, /spend-seg-federation/);
-  assert.doesNotMatch(html, /counts at least/);
+  assert.doesNotMatch(html, /Overlap note/);
   assert.match(html, /parlament-berlin\.de/);
 });
