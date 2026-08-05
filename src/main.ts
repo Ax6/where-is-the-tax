@@ -9,11 +9,12 @@ import { mapAttribution, renderLandMap } from "./viz/land-map.ts";
 import { hideTooltip } from "./viz/tooltip.ts";
 import { renderEdgeDetail, renderNodeDetail, renderTaxDetail } from "./ui/route-detail.ts";
 import {
+  renderSpendingChips,
   renderSpendingPanel,
   type RouteInflow,
   type SpendingAccount,
   type SpendingEntry,
-  type SpendingMode,
+  type SpendingKey,
 } from "./ui/spending.ts";
 import { escapeHtml } from "./ui/static-page.ts";
 import federalSpending from "../data/de/2024/accounts/federal-functions.json" with { type: "json" };
@@ -42,18 +43,17 @@ let currentPlace: Place = GERMANY;
 let currentRoutes: Route[] = buildRoutes(currentPlace);
 let currentRoute: Route | undefined;
 let lastTrigger: Element | null = null;
-let spendingMode: SpendingMode = "combined";
+let spendingMode: SpendingKey | "auto" = "auto";
 
 boundaryPanel?.addEventListener("click", (event) => {
   if (!(event.target instanceof Element)) {
     return;
   }
-  const trigger = event.target.closest<HTMLElement>("[data-spend-mode]");
-  const mode = trigger?.dataset.spendMode as SpendingMode | undefined;
-  if (!mode || !currentRoute) {
+  const mode = event.target.closest<HTMLElement>("[data-spend-mode]")?.dataset.spendMode;
+  if ((mode !== "berlin" && mode !== "federation") || !currentRoute) {
     return;
   }
-  spendingMode = mode === spendingMode && trigger?.classList.contains("spend-seg") ? "combined" : mode;
+  spendingMode = mode;
   renderBoundary(currentRoute);
 });
 
@@ -141,14 +141,34 @@ function renderBoundary(route: Route): void {
       inflow: routeInflow("federal_budget"),
     });
   }
+
+  // The selected place decides which budget is shown; chips let you switch,
+  // because part of the followed money genuinely lands in the other budget.
+  const defaultKey: SpendingKey | null = currentPlace.national
+    ? entries.some((entry) => entry.key === "federation")
+      ? "federation"
+      : null
+    : entries.some((entry) => entry.key === "berlin")
+      ? "berlin"
+      : null;
+  const requested = spendingMode === "auto" ? defaultKey : spendingMode;
+  const active = entries.find((entry) => entry.key === requested) ?? entries.find((entry) => entry.key === defaultKey);
+
+  const fallback = `<ul class="boundary-examples" aria-label="What this budget funds as a whole">${route.boundary.examples
+    .map((example) => `<li>${escapeHtml(example)}</li>`)
+    .join("")}</ul>
+    <p class="boundary-footnote">${escapeHtml(
+      currentPlace.national || currentPlace.code === "BE"
+        ? "This budget's audited function-level actuals are not loaded yet."
+        : `${currentPlace.name}'s audited actuals are not loaded yet — Berlin came first; other Länder follow.`,
+    )}</p>`;
+
   const tail =
     entries.length > 0
-      ? `${renderSpendingPanel(entries, spendingMode)}
+      ? `${renderSpendingChips(entries, active?.key ?? null)}
+       ${active ? renderSpendingPanel(active) : fallback}
        <p class="boundary-footnote">Other Länder and municipal accounts follow as their audited actuals are loaded.</p>`
-      : `<ul class="boundary-examples" aria-label="What this budget funds as a whole">${route.boundary.examples
-          .map((example) => `<li>${escapeHtml(example)}</li>`)
-          .join("")}</ul>
-       <p class="boundary-footnote">Unquantified on purpose: this budget's audited function-level actuals are not loaded yet.</p>`;
+      : fallback;
   boundaryPanel.innerHTML = `
     <p class="boundary-marker" aria-hidden="true">Budget boundary — tax identity ends here</p>
     <h3>${escapeHtml(route.boundary.heading)}</h3>
@@ -222,7 +242,7 @@ function renderCurrentRoute(routeId: string): void {
     dialog.close();
   }
   if (currentRoute?.id !== route.id) {
-    spendingMode = "combined";
+    spendingMode = "auto";
   }
   currentRoute = route;
 
@@ -257,6 +277,7 @@ function renderCurrentRoute(routeId: string): void {
 function selectPlace(place: Place, options: { updateHash: boolean }): void {
   currentPlace = place;
   currentRoutes = buildRoutes(place);
+  spendingMode = "auto";
   if (landSelect && landSelect.value !== place.code) {
     landSelect.value = place.code;
   }

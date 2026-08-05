@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
 
-import { renderSpendingPanel, type SpendingAccount, type SpendingEntry } from "../src/ui/spending.ts";
+import { renderSpendingChips, renderSpendingPanel, type SpendingAccount, type SpendingEntry } from "../src/ui/spending.ts";
 
 async function loadAccount(path: string): Promise<SpendingAccount & { unassigned_eur: number; source_sha256?: string }> {
   const raw = await readFile(path, "utf8");
@@ -56,24 +56,25 @@ test("the Berlin spending account reconciles to the cent, including subgroups", 
   assert(largest && largest.code === "2", "social security should be Berlin's largest block");
 });
 
-test("combined mode stacks both budgets with segment colors and the double-count caveat", async () => {
-  const html = renderSpendingPanel(await loadEntries(), "combined");
+test("the panel shows one budget with its bridge, total, and source", async () => {
+  const [berlin] = await loadEntries();
+  const html = renderSpendingPanel(berlin!);
 
-  assert.match(html, /What the loaded budgets spent in 2024/);
+  assert.match(html, /Berlin budget — actual spending 2024/);
+  assert.match(html, /Whole budget: €40\.5bn/);
+  assert.match(html, /Gewerbesteuer.*delivered €2\.90bn.*7\.2% of it/);
   assert.match(html, /spend-seg-berlin/);
-  assert.match(html, /spend-seg-federation/);
-  assert.match(html, /€41\.0bn of the federal total are programme transfers/);
-  assert.match(html, /Gewerbesteuer/);
-  assert.match(html, /data-spend-mode="combined"/);
+  assert.doesNotMatch(html, /spend-seg-federation/);
+  assert.match(html, /parlament-berlin\.de/);
   assert.doesNotMatch(html, /undefined/);
 });
 
-test("isolating one budget filters segments and switches the heading", async () => {
-  const html = renderSpendingPanel(await loadEntries(), "berlin");
+test("chips offer both budgets and mark the active one", async () => {
+  const entries = await loadEntries();
+  const html = renderSpendingChips(entries, "berlin");
 
-  assert.match(html, /Berlin budget — actual spending 2024/);
-  assert.match(html, /spend-seg-berlin/);
-  assert.doesNotMatch(html, /spend-seg-federation/);
-  assert.doesNotMatch(html, /Overlap note/);
-  assert.match(html, /parlament-berlin\.de/);
+  assert.match(html, /data-spend-mode="berlin" aria-pressed="true"/);
+  assert.match(html, /data-spend-mode="federation" aria-pressed="false"/);
+  assert.match(html, /Berlin budget · €40\.5bn/);
+  assert.match(html, /Federal budget · €475bn/);
 });
