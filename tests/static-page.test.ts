@@ -21,7 +21,8 @@ test("renders the banner, chips, boundary panel, legend, and table at build time
 
 test("renders the whole-map taxonomy with housing and everything-else families", () => {
   const html = renderStaticPage(routes, defaultRouteId);
-  assert.match(html, /Every named tax has a home/);
+  assert.match(html, /All taxes at a glance/);
+  assert.match(html, /Germany \(all\)/);
   assert.match(html, /data-tax-id="property_tax"/);
   assert.match(html, /Inheritance &amp; gift tax/);
   assert.match(html, /Solidarity surcharge/);

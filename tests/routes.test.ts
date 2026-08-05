@@ -4,7 +4,7 @@ import test from "node:test";
 import { buildRoutes, defaultRouteId, getRoute, routes } from "../src/routes/data.ts";
 import { getPlace, places } from "../src/routes/places.ts";
 
-const checkedPlaces = [getPlace("BE")!, getPlace("BY")!, getPlace("HH")!, getPlace("NW")!];
+const checkedPlaces = [getPlace("DE")!, getPlace("BE")!, getPlace("BY")!, getPlace("HH")!, getPlace("NW")!];
 const allRouteSets = checkedPlaces.flatMap((place) => buildRoutes(place));
 
 test("the default route exists and every route is well-formed for every checked place", () => {

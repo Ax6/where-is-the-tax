@@ -291,18 +291,50 @@ h1 em {
 
 .land-shape {
   cursor: pointer;
-  fill: var(--paper-raise);
   stroke: var(--ink);
   stroke-width: 0.6;
-  transition: fill 120ms ease;
+  transition: stroke-width 120ms ease, opacity 120ms ease;
 }
 
 .land-shape:hover {
-  fill: var(--line);
+  opacity: 0.8;
 }
 
 .land-shape.is-selected {
-  fill: var(--e-berlin);
+  stroke-width: 2.2;
+}
+
+.map-legend {
+  margin: 0.6rem 0 0;
+  color: var(--muted);
+  font-size: 0.68rem;
+  line-height: 1.5;
+}
+
+.map-legend-swatch {
+  display: inline-block;
+  width: 0.7rem;
+  height: 0.7rem;
+  margin-right: 0.2rem;
+  border-radius: 2px;
+  vertical-align: -0.08rem;
+}
+
+.map-legend-receives {
+  background: var(--e-berlin);
+}
+
+.map-legend-pays {
+  background: var(--e-municipalities);
+}
+
+.place-stats {
+  max-width: 40rem;
+  margin: 1rem 0 0;
+  color: var(--muted);
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  line-height: 1.6;
 }
 
 .map-attribution {

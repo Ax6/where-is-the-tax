@@ -185,20 +185,20 @@ export function renderStaticPage(routes: Route[], defaultRouteId: string): strin
             ${renderChips(routes, defaultRoute.id)}
           </div>
           <p class="control-label">Where do you live?</p>
-          <label class="land-select-label">Land
+          <label class="land-select-label">Place
             <select id="land-select">
+              <option value="DE" selected>Germany (all)</option>
               ${places
-                .map(
-                  (place) =>
-                    `<option value="${escapeHtml(place.code)}"${place.code === "BE" ? " selected" : ""}>${escapeHtml(place.name)}</option>`,
-                )
+                .map((place) => `<option value="${escapeHtml(place.code)}">${escapeHtml(place.name)}</option>`)
                 .join("")}
             </select>
           </label>
+          <p class="place-stats" id="place-stats"></p>
           <p class="place-note" id="place-note" hidden></p>
         </div>
         <div class="land-map-wrap">
           <div id="land-map" class="land-map"></div>
+          <p class="map-legend"><span class="map-legend-swatch map-legend-receives" aria-hidden="true"></span> receives from equalisation · <span class="map-legend-swatch map-legend-pays" aria-hidden="true"></span> pays in (2024, per resident)</p>
           <p class="map-attribution" id="map-attribution"></p>
         </div>
       </div>
@@ -249,8 +249,8 @@ export function renderStaticPage(routes: Route[], defaultRouteId: string): strin
     <section class="tax-map-section" id="all-taxes" aria-labelledby="all-taxes-title">
       <div class="section-heading">
         <p class="eyebrow">The whole map</p>
-        <h2 id="all-taxes-title">Every named tax has a home</h2>
-        <p>The routes above are the ones drawn end-to-end so far. This is the complete constitutional assignment — every major named tax and who receives it by law. Each family becomes a full route as the verified dataset grows; click any tax for its plain-English explanation and legal basis.</p>
+        <h2 id="all-taxes-title">All taxes at a glance</h2>
+        <p>Every major named tax and who receives it by law. The four routes above are drawn end-to-end; the rest follow as the dataset grows. Click any tax for a short explanation and its legal basis.</p>
       </div>
       <div class="tax-map">${renderTaxonomy(routes)}</div>
     </section>
@@ -258,7 +258,7 @@ export function renderStaticPage(routes: Route[], defaultRouteId: string): strin
     <section class="boundary-section" id="boundary" aria-labelledby="boundary-title">
       <div class="section-heading">
         <p class="eyebrow">Why the trail ends</p>
-        <h2 id="boundary-title">Three questions people collapse into one</h2>
+        <h2 id="boundary-title">What can be answered — and what can't</h2>
       </div>
       <div class="guardrail-grid">
         <article><span>01</span><h3>Who legally receives this tax?</h3><p>Usually answerable exactly — from the constitution, statutes, and official cash statistics. This is what the ribbons draw.</p></article>
@@ -270,7 +270,7 @@ export function renderStaticPage(routes: Route[], defaultRouteId: string): strin
     <section class="sources-section" id="sources" aria-labelledby="sources-title">
       <div class="section-heading">
         <p class="eyebrow">Verification status</p>
-        <h2 id="sources-title">Exact law, official calculations, open questions</h2>
+        <h2 id="sources-title">Sources and verification</h2>
         <p>Deep-source research completed and independently verified on 2026-08-05: every euro figure shown here was reproduced from the official tables, PDFs and statutes by a second pass. The one open discrepancy was resolved on the way — Berlin's 2024 trade-tax levy line is the full statutory levy (35% multiplier, §6 GemFinRefG); the Land component returns to Berlin through the equalisation system. What remains before publication: the fully provenanced dataset bundle with evidence snapshots.</p>
       </div>
       <ul class="source-list">

@@ -4,7 +4,11 @@ export interface Place {
   code: string;
   name: string;
   cityState: boolean;
+  /** True for the whole-Germany aggregate view. */
+  national?: boolean;
 }
+
+export const GERMANY: Place = { code: "DE", name: "Germany", cityState: false, national: true };
 
 export const places: Place[] = [
   { code: "BW", name: "Baden-Württemberg", cityState: false },
@@ -26,6 +30,9 @@ export const places: Place[] = [
 ];
 
 export function getPlace(code: string): Place | undefined {
+  if (code.toUpperCase() === GERMANY.code) {
+    return GERMANY;
+  }
   return places.find((place) => place.code === code.toUpperCase());
 }
 

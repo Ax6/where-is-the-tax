@@ -1,7 +1,8 @@
 import "./styles.css";
 
 import { buildRoutes, defaultRouteId, type Route } from "./routes/data.ts";
-import { BERLIN, getPlace, type Place } from "./routes/places.ts";
+import { equalisationPerResident, getLandFigures, landFigures } from "./routes/equalisation.ts";
+import { BERLIN, GERMANY, getPlace, type Place } from "./routes/places.ts";
 import { getTaxEntry } from "./routes/taxonomy.ts";
 import { renderFiscalGraph } from "./viz/fiscal-graph.ts";
 import { mapAttribution, renderLandMap } from "./viz/land-map.ts";
@@ -26,7 +27,9 @@ const chips = [...document.querySelectorAll<HTMLButtonElement>("[data-route-chip
 const dialog = document.querySelector<HTMLDialogElement>("#detail-dialog");
 const dialogContent = dialog?.querySelector<HTMLElement>("[data-dialog-content]");
 
-let currentPlace: Place = BERLIN;
+const placeStats = document.querySelector<HTMLElement>("#place-stats");
+
+let currentPlace: Place = GERMANY;
 let currentRoutes: Route[] = buildRoutes(currentPlace);
 let currentRoute: Route | undefined;
 let lastTrigger: Element | null = null;
@@ -112,11 +115,40 @@ function updatePlaceNote(route: Route): void {
     return;
   }
   if (!route.placeAware && currentPlace.code !== BERLIN.code) {
-    placeNote.textContent = `This route still shows the Berlin example — ${currentPlace.name} figures arrive with the verified dataset. The wage and VAT routes already re-split for ${currentPlace.name}.`;
+    placeNote.textContent = currentPlace.national
+      ? "This route uses Berlin as a concrete example; other places follow as the dataset grows."
+      : `This route still shows the Berlin example — ${currentPlace.name} figures follow as the dataset grows. The wage and VAT routes already adjust to ${currentPlace.name}.`;
     placeNote.hidden = false;
   } else {
     placeNote.hidden = true;
   }
+}
+
+function updatePlaceStats(): void {
+  if (!placeStats) {
+    return;
+  }
+  if (currentPlace.national) {
+    const shifted = landFigures
+      .filter((entry) => entry.equalisationMeur > 0)
+      .reduce((sum, entry) => sum + entry.equalisationMeur, 0);
+    placeStats.textContent = `2024 equalisation: €${(shifted / 1000).toFixed(1)}bn shifted between Länder — 4 paid in, 12 received.`;
+    return;
+  }
+  const figures = getLandFigures(currentPlace.code);
+  if (!figures) {
+    placeStats.textContent = "";
+    return;
+  }
+  const perResident = Math.round(equalisationPerResident(figures));
+  const direction = figures.equalisationMeur >= 0 ? "received" : "paid in";
+  const grants =
+    figures.supplementaryGrantsMeur > 0
+      ? ` Plus €${(figures.supplementaryGrantsMeur / 1000).toFixed(2)}bn federal grants.`
+      : "";
+  placeStats.textContent = `${currentPlace.name} 2024: VAT slice €${((figures.vatBaseMeur + figures.equalisationMeur) / 1000).toFixed(2)}bn · ${direction} €${(
+    Math.abs(figures.equalisationMeur) / 1000
+  ).toFixed(2)}bn via equalisation (≈€${Math.abs(perResident)} per resident).${grants}`;
 }
 
 function syncHash(): void {
@@ -171,11 +203,12 @@ function selectPlace(place: Place, options: { updateHash: boolean }): void {
     landSelect.value = place.code;
   }
   if (legendPlaceName) {
-    legendPlaceName.textContent = place.name;
+    legendPlaceName.textContent = place.national ? "Selected Land" : place.name;
   }
   if (landMapMount) {
     renderLandMap(landMapMount, place, (next) => selectPlace(next, { updateHash: true }));
   }
+  updatePlaceStats();
   renderCurrentRoute(currentRoute?.id ?? defaultRouteId);
   if (options.updateHash) {
     syncHash();
@@ -192,7 +225,7 @@ function selectRoute(routeId: string, options: { updateHash: boolean }): void {
 function parseHash(): { routeId: string; place: Place } {
   const match = /^#route\/([\w-]+)(?:\/([A-Za-z]{2}))?$/.exec(window.location.hash);
   const routeId = match?.[1] ?? defaultRouteId;
-  const place = (match?.[2] && getPlace(match[2])) || BERLIN;
+  const place = (match?.[2] && getPlace(match[2])) || GERMANY;
   return { routeId, place };
 }
 
@@ -236,7 +269,8 @@ if (mount) {
     landSelect.value = place.code;
   }
   if (legendPlaceName) {
-    legendPlaceName.textContent = place.name;
+    legendPlaceName.textContent = place.national ? "Selected Land" : place.name;
   }
+  updatePlaceStats();
   selectRoute(routeId, { updateHash: false });
 }

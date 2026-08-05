@@ -6,7 +6,9 @@ import { getPlace } from "../src/routes/places.ts";
 import { renderEdgeDetail, renderNodeDetail } from "../src/ui/route-detail.ts";
 
 test("node detail shows the official name, evidence status, and source links", () => {
-  const route = getRoute("wage");
+  const berlin = getPlace("BE");
+  assert(berlin);
+  const route = buildRoutes(berlin).find(({ id }) => id === "wage");
   assert(route);
   const node = route.nodes.find(({ id }) => id === "berlin_budget");
   assert(node);

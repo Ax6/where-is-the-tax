@@ -6,8 +6,8 @@
  * VERIFICATION — the page banner says so. Nothing here is published data.
  */
 
-import { getLandFigures, VAT_LAENDER_POOL_MEUR, VAT_TOTAL_MEUR } from "./equalisation.ts";
-import { BERLIN, type Place } from "./places.ts";
+import { getLandFigures, landFigures, VAT_LAENDER_POOL_MEUR, VAT_TOTAL_MEUR } from "./equalisation.ts";
+import { BERLIN, GERMANY, type Place } from "./places.ts";
 
 export type EdgeKind =
   | "exclusive_assignment"
@@ -207,7 +207,7 @@ const wageBerlin: Route = {
     id: "wage",
     chipTitle: "You earn a wage",
     chipNote: "Wage tax · Lohnsteuer",
-    lede: "Wage tax is withheld from every paycheck. Its split is written into the constitution — and for a Berlin resident, the Land share comes home through residence-based clearing.",
+    lede: "Wage tax is taken from every paycheck and split by the constitution: 42.5% Federation, 42.5% Land, 15% municipalities. For a Berlin resident, the Land share goes to Berlin.",
     stages: ["The event", "The named tax", "Who gets it, by law", "Recipient budgets"],
     unit: "share",
     unitNote: "Ribbon widths show the statutory split of one wage-tax euro (Article 106: 42.5 / 42.5 / 15).",
@@ -904,6 +904,9 @@ const berlinOnlyRoutes: Route[] = [
 ];
 
 function buildWageRoute(place: Place): Route {
+  if (place.national) {
+    return buildNationalWageRoute();
+  }
   if (place.code === BERLIN.code) {
     return wageBerlin;
   }
@@ -1093,7 +1096,7 @@ function buildWageRoute(place: Place): Route {
     id: "wage",
     chipTitle: "You earn a wage",
     chipNote: "Wage tax · Lohnsteuer",
-    lede: `Wage tax is withheld from every paycheck. Its split is written into the constitution — and for a resident of ${name}, the Land share comes home through residence-based clearing.`,
+    lede: `Wage tax is taken from every paycheck and split by the constitution: 42.5% Federation, 42.5% Land, 15% municipalities. For a resident of ${name}, the Land share goes to ${name}.`,
     stages: ["The event", "The named tax", "Who gets it, by law", "Recipient budgets"],
     unit: "share",
     unitNote: "Ribbon widths show the statutory split of one wage-tax euro (Article 106: 42.5 / 42.5 / 15).",
@@ -1118,7 +1121,295 @@ function buildWageRoute(place: Place): Route {
   };
 }
 
+function buildNationalWageRoute(): Route {
+  return {
+    id: "wage",
+    chipTitle: "You earn a wage",
+    chipNote: "Wage tax · Lohnsteuer",
+    lede: "Wage tax is taken from every paycheck. The constitution splits it: 42.5% to the Federation, 42.5% to the Länder, 15% to municipalities. This split is the same everywhere in Germany.",
+    stages: ["The event", "The named tax", "Who gets it, by law", "Recipient budgets"],
+    unit: "share",
+    unitNote: "Ribbon widths show the statutory split of one wage-tax euro (Article 106: 42.5 / 42.5 / 15).",
+    placeAware: true,
+    entityLabels: { ...ENTITY_LABELS },
+    nodes: [
+      {
+        id: "event",
+        stage: 0,
+        label: "Payday in Germany",
+        entity: "neutral",
+        role: "event",
+        description:
+          "Employers withhold wage tax before salaries are paid out. For most employees this is the main income tax they pay.",
+        amountNote: "Germany collected €947.7bn in taxes before distribution in 2024.",
+        status: "calculated_official",
+        sources: [destatis71211],
+        caveats: [pendingVerification],
+      },
+      {
+        id: "lohnsteuer",
+        stage: 1,
+        label: "Wage tax",
+        official: "Lohnsteuer",
+        entity: "neutral",
+        role: "tax",
+        description:
+          "A joint tax: no single level of government owns it. The constitution fixes how it is divided before any of it is spent.",
+        status: "exact_statute",
+        sources: [artikel106],
+      },
+      {
+        id: "share_federation",
+        stage: 2,
+        label: "Federation 42.5%",
+        entity: "federation",
+        role: "share",
+        description: "The federal share of income tax, fixed by Article 106 of the Basic Law.",
+        status: "exact_statute",
+        sources: [artikel106],
+      },
+      {
+        id: "share_laender",
+        stage: 2,
+        label: "Länder 42.5%",
+        entity: "laender",
+        role: "share",
+        description: "The Länder share. Each Land receives the wage tax of its own residents (residence-based clearing).",
+        status: "exact_statute",
+        sources: [artikel106, zerlegung],
+      },
+      {
+        id: "share_municipal",
+        stage: 2,
+        label: "Municipalities 15%",
+        entity: "municipalities",
+        role: "share",
+        description: "The municipal share, distributed among municipalities by a statutory key based on residents' income tax, with a cap.",
+        status: "exact_statute",
+        sources: [artikel106, gemFinRef],
+      },
+      {
+        id: "federal_budget",
+        stage: 3,
+        label: "Federal budget",
+        entity: "federation",
+        role: "recipient",
+        description: "The Federation's general budget. From here on, wage tax is not tracked separately — it pays for everything the budget pays for.",
+        status: "exact_statute",
+        sources: [artikel106, bho8],
+      },
+      {
+        id: "laender_budgets",
+        stage: 3,
+        label: "The 16 Länder",
+        entity: "laender",
+        role: "recipient",
+        description: "Each Land's budget receives the wage tax of the people who live there. Pick a Land on the map to see its route.",
+        status: "exact_statute",
+        sources: [artikel106, zerlegung],
+      },
+      {
+        id: "municipal_budgets",
+        stage: 3,
+        label: "Municipalities",
+        entity: "municipalities",
+        role: "recipient",
+        description: "Cities and towns receive the municipal share via the statutory key.",
+        status: "exact_statute",
+        sources: [gemFinRef],
+      },
+    ],
+    edges: [
+      {
+        id: "event-tax",
+        from: "event",
+        to: "lohnsteuer",
+        weight: 1,
+        kind: "exclusive_assignment",
+        status: "exact_statute",
+        shareLabel: "withheld at source",
+        description: "Wage tax is withheld by the employer and paid to the tax office.",
+        sources: [artikel106],
+      },
+      {
+        id: "tax-federation",
+        from: "lohnsteuer",
+        to: "share_federation",
+        weight: 0.425,
+        kind: "fixed_share",
+        status: "exact_statute",
+        shareLabel: "42.5%",
+        description: "Fixed federal share of wage and assessed income tax under Article 106(3) of the Basic Law.",
+        sources: [artikel106],
+      },
+      {
+        id: "tax-laender",
+        from: "lohnsteuer",
+        to: "share_laender",
+        weight: 0.425,
+        kind: "fixed_share",
+        status: "exact_statute",
+        shareLabel: "42.5%",
+        description: "Fixed Länder share of wage and assessed income tax under Article 106(3) of the Basic Law.",
+        sources: [artikel106],
+      },
+      {
+        id: "tax-municipal",
+        from: "lohnsteuer",
+        to: "share_municipal",
+        weight: 0.15,
+        kind: "fixed_share",
+        status: "exact_statute",
+        shareLabel: "15%",
+        description: "Fixed municipal share of income tax under Article 106(5) of the Basic Law.",
+        sources: [artikel106, gemFinRef],
+      },
+      {
+        id: "federation-budget",
+        from: "share_federation",
+        to: "federal_budget",
+        weight: 0.425,
+        kind: "exclusive_assignment",
+        status: "exact_statute",
+        shareLabel: "to the federal budget",
+        description: "The federal share flows into the Federation's general budget.",
+        sources: [artikel106],
+      },
+      {
+        id: "laender-budgets",
+        from: "share_laender",
+        to: "laender_budgets",
+        weight: 0.425,
+        kind: "decomposition_adjustment",
+        status: "exact_statute",
+        shareLabel: "by Land of residence",
+        description: "Wage tax is cleared to the Land where each employee lives (§7 Zerlegungsgesetz).",
+        sources: [zerlegung],
+      },
+      {
+        id: "municipal-budgets",
+        from: "share_municipal",
+        to: "municipal_budgets",
+        weight: 0.15,
+        kind: "annual_formula",
+        status: "not_individually_traceable",
+        shareLabel: "by statutory key, capped",
+        description:
+          "Distributed using residence and a capped income-tax contribution key. Aggregate shares are official; a single person's euro is not individually traceable.",
+        sources: [gemFinRef],
+      },
+    ],
+    annotations: [
+      {
+        nodeId: "laender_budgets",
+        text: "This split is written into the constitution — it is identical in every Land. Pick a Land to see its own route.",
+      },
+    ],
+    boundary: {
+      heading: "After this line: general budgets",
+      body: [
+        "By law, all revenue pays for all spending (except for explicit legal earmarks). So from here on, wage tax cannot be tracked separately.",
+        "What each budget spends as a whole will be shown once the audited accounts are loaded (federal and Berlin first).",
+      ],
+      examples: berlinBoundaryExamples,
+    },
+  };
+}
+
+function buildNationalVatRoute(): Route {
+  const poolWeight = VAT_LAENDER_POOL_MEUR / VAT_TOTAL_MEUR;
+  const paying = landFigures.filter((entry) => entry.equalisationMeur < 0);
+  const totalShifted = landFigures
+    .filter((entry) => entry.equalisationMeur > 0)
+    .reduce((sum, entry) => sum + entry.equalisationMeur, 0);
+  return {
+    ...vatBerlin,
+    lede: "VAT from every purchase goes into one national pot. An annual formula splits it between the Federation, the Länder and municipalities; the Länder part is shared by population, with an equalisation adjustment.",
+    entityLabels: { ...ENTITY_LABELS },
+    nodes: [
+      ...vatBerlin.nodes
+        .filter((node) =>
+          ["event", "vat_pool", "share_federation", "laender_pool", "share_municipal", "federal_budget"].includes(node.id),
+        )
+        .map((node) => (node.id === "event" ? { ...node, label: "A purchase in Germany" } : node)),
+      {
+        id: "laender_budgets",
+        stage: 3,
+        label: "The 16 Länder",
+        entity: "laender",
+        role: "recipient",
+        description: `The Länder pool is shared by population, then adjusted for fiscal capacity: in 2024, €${(totalShifted / 1000).toFixed(2)}bn moved from above-average to below-average Länder inside this pool.`,
+        status: "provisional_official",
+        sources: [bmfEqualisation2024, artikel107],
+        caveats: [pendingVerification],
+      },
+      {
+        id: "municipalities_budget",
+        stage: 3,
+        label: "Municipalities",
+        entity: "municipalities",
+        role: "recipient",
+        description: "The municipal VAT share, distributed nationwide by a fixed statutory key.",
+        status: "calculated_official",
+        sources: [vatKeyReg],
+        caveats: [pendingVerification],
+      },
+    ],
+    edges: [
+      ...vatBerlin.edges.filter((edge) =>
+        ["event-pool", "pool-federation", "pool-laender", "pool-municipal", "federation-budget"].includes(edge.id),
+      ),
+      {
+        id: "laender-budgets",
+        from: "laender_pool",
+        to: "laender_budgets",
+        weight: poolWeight,
+        kind: "equalisation_adjustment",
+        status: "provisional_official",
+        shareLabel: "population share ± equalisation",
+        description:
+          "Each Land's slice is its population share plus or minus the pooled fiscal-capacity adjustment. No Land pays another Land directly.",
+        sources: [bmfEqualisation2024, artikel107],
+        caveats: [pendingVerification],
+      },
+      {
+        id: "municipal-all",
+        from: "share_municipal",
+        to: "municipalities_budget",
+        weight: 0.027903,
+        kind: "annual_formula",
+        status: "calculated_official",
+        shareLabel: "by statutory key",
+        description: "The municipal VAT share flows to municipalities nationwide under the fixed 2024–2026 key.",
+        sources: [vatKeyReg],
+        caveats: [pendingVerification],
+      },
+    ],
+    annotations: [
+      {
+        nodeId: "federal_budget",
+        text: "EU own resources (€32.0bn in 2024) leave from the federal level — they are computed from a harmonised base, not taken from your purchase.",
+      },
+      {
+        nodeId: "laender_budgets",
+        text: `In 2024, ${paying.length} Länder paid into equalisation (Bayern, Baden-Württemberg, Hessen, Hamburg); the other twelve received. The map shows who pays and who receives, per resident.`,
+      },
+    ],
+    boundary: {
+      heading: "After this line: general budgets",
+      body: [
+        "By law, all revenue pays for all spending. Your VAT is now part of federal, Länder and municipal budgets in shares no receipt can trace.",
+        "What each budget spends as a whole will be shown once the audited accounts are loaded.",
+      ],
+      examples: berlinBoundaryExamples,
+    },
+  };
+}
+
 function buildVatRoute(place: Place): Route {
+  if (place.national) {
+    return buildNationalVatRoute();
+  }
   if (place.code === BERLIN.code) {
     return vatBerlin;
   }
@@ -1261,7 +1552,7 @@ export function buildRoutes(place: Place): Route[] {
   return [buildWageRoute(place), buildVatRoute(place), ...berlinOnlyRoutes];
 }
 
-export const routes: Route[] = buildRoutes(BERLIN);
+export const routes: Route[] = buildRoutes(GERMANY);
 
 export function getRoute(id: string): Route | undefined {
   return routes.find((route) => route.id === id);
