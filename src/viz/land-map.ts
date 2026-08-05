@@ -18,7 +18,9 @@ const collection = laenderGeo as unknown as {
 };
 
 const WIDTH = 300;
-const HEIGHT = 400;
+const MAP_HEIGHT = 400;
+const KEY_HEIGHT = 52;
+const HEIGHT = MAP_HEIGHT + KEY_HEIGHT;
 
 const PAPER: [number, number, number] = [0xf3, 0xf0, 0xe8];
 const RECEIVES: [number, number, number] = [0x12, 0x80, 0x5e];
@@ -57,7 +59,7 @@ export function renderLandMap(container: HTMLElement, selected: Place, onSelect:
   const projection = geoMercator().fitExtent(
     [
       [6, 6],
-      [WIDTH - 6, HEIGHT - 6],
+      [WIDTH - 6, MAP_HEIGHT - 6],
     ],
     collection as never,
   );
@@ -101,6 +103,70 @@ export function renderLandMap(container: HTMLElement, selected: Place, onSelect:
     })
     .append("title")
     .text((feature) => landTitle(feature));
+
+  renderKey(svg);
+}
+
+/** Diverging scale key: what the Land colours mean, with € anchors. */
+function renderKey(svg: ReturnType<typeof select<SVGSVGElement, unknown>>): void {
+  const barX = 18;
+  const barWidth = WIDTH - 2 * barX;
+  const barY = MAP_HEIGHT + 24;
+  const barHeight = 9;
+
+  const gradient = svg
+    .append("defs")
+    .append("linearGradient")
+    .attr("id", "map-key-gradient")
+    .attr("x1", "0%")
+    .attr("x2", "100%");
+  for (let i = 0; i <= 20; i += 1) {
+    const value = -MAX_PER_RESIDENT + (i / 20) * 2 * MAX_PER_RESIDENT;
+    const t = 0.12 + 0.88 * Math.sqrt(Math.min(1, Math.abs(value) / MAX_PER_RESIDENT));
+    gradient
+      .append("stop")
+      .attr("offset", `${i * 5}%`)
+      .attr("stop-color", value >= 0 ? mix(PAPER, RECEIVES, t) : mix(PAPER, PAYS, t));
+  }
+
+  const key = svg.append("g").attr("class", "map-key").attr("aria-hidden", "true");
+  key
+    .append("text")
+    .attr("class", "map-key-title")
+    .attr("x", barX)
+    .attr("y", barY - 8)
+    .text("Fiscal equalisation 2024, € per resident");
+  key
+    .append("rect")
+    .attr("x", barX)
+    .attr("y", barY)
+    .attr("width", barWidth)
+    .attr("height", barHeight)
+    .attr("fill", "url(#map-key-gradient)")
+    .attr("stroke", "currentColor")
+    .attr("stroke-width", 0.4);
+  key
+    .append("line")
+    .attr("x1", barX + barWidth / 2)
+    .attr("x2", barX + barWidth / 2)
+    .attr("y1", barY - 2)
+    .attr("y2", barY + barHeight + 2)
+    .attr("class", "map-key-zero");
+
+  const labels: [number, string, string][] = [
+    [barX, "start", `pays −€${MAX_PER_RESIDENT.toLocaleString("en")}`],
+    [barX + barWidth / 2, "middle", "0"],
+    [barX + barWidth, "end", `receives +€${MAX_PER_RESIDENT.toLocaleString("en")}`],
+  ];
+  for (const [x, anchor, text] of labels) {
+    key
+      .append("text")
+      .attr("class", "map-key-label")
+      .attr("x", x)
+      .attr("y", barY + barHeight + 12)
+      .attr("text-anchor", anchor)
+      .text(text);
+  }
 }
 
 export const mapAttribution = collection.attribution;

@@ -198,7 +198,6 @@ export function renderStaticPage(routes: Route[], defaultRouteId: string): strin
         </div>
         <div class="land-map-wrap">
           <div id="land-map" class="land-map"></div>
-          <p class="map-legend"><span class="map-legend-swatch map-legend-receives" aria-hidden="true"></span> receives from equalisation · <span class="map-legend-swatch map-legend-pays" aria-hidden="true"></span> pays in (2024, per resident)</p>
           <p class="map-attribution" id="map-attribution"></p>
         </div>
       </div>
