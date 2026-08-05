@@ -8,7 +8,9 @@ import { renderFiscalGraph } from "./viz/fiscal-graph.ts";
 import { mapAttribution, renderLandMap } from "./viz/land-map.ts";
 import { hideTooltip } from "./viz/tooltip.ts";
 import { renderEdgeDetail, renderNodeDetail, renderTaxDetail } from "./ui/route-detail.ts";
+import { renderSpendingAccount, type SpendingAccount } from "./ui/spending.ts";
 import { escapeHtml } from "./ui/static-page.ts";
+import federalSpending from "../data/de/2024/accounts/federal-functions.json" with { type: "json" };
 
 document.documentElement.classList.add("enhanced");
 
@@ -92,13 +94,19 @@ function renderBoundary(route: Route): void {
     return;
   }
   const paragraphs = route.boundary.body.map((paragraph) => `<p>${escapeHtml(paragraph)}</p>`).join("");
-  const examples = route.boundary.examples.map((example) => `<li>${escapeHtml(example)}</li>`).join("");
+  const hasFederal = route.nodes.some((node) => node.id === "federal_budget");
+  const tail = hasFederal
+    ? `${renderSpendingAccount(federalSpending as SpendingAccount)}
+       <p class="boundary-footnote">Land and municipal accounts follow — Berlin's audited 2024 account is next.</p>`
+    : `<ul class="boundary-examples" aria-label="What this budget funds as a whole">${route.boundary.examples
+        .map((example) => `<li>${escapeHtml(example)}</li>`)
+        .join("")}</ul>
+       <p class="boundary-footnote">Unquantified on purpose: this budget's audited function-level actuals are not loaded yet.</p>`;
   boundaryPanel.innerHTML = `
     <p class="boundary-marker" aria-hidden="true">Budget boundary — tax identity ends here</p>
     <h3>${escapeHtml(route.boundary.heading)}</h3>
     ${paragraphs}
-    <ul class="boundary-examples" aria-label="What this budget funds as a whole">${examples}</ul>
-    <p class="boundary-footnote">Unquantified on purpose: no verified function-level actuals are published here yet.</p>`;
+    ${tail}`;
 }
 
 function renderAnnotations(route: Route): void {

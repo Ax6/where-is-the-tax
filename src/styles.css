@@ -492,6 +492,66 @@ h1 em {
   text-transform: uppercase;
 }
 
+.spending-account h4 {
+  margin: 1.4rem 0 0.3rem;
+  font-family: var(--serif);
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.spend-total {
+  margin: 0 0 0.8rem;
+  color: var(--muted);
+  font-size: 0.72rem !important;
+}
+
+.spend-list {
+  margin: 0 0 0.9rem;
+  padding: 0;
+  list-style: none;
+}
+
+.spend-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.15rem 0.6rem;
+  padding: 0.4rem 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.spend-name {
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.spend-value {
+  color: var(--muted);
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  white-space: nowrap;
+}
+
+.spend-bar {
+  grid-column: 1 / -1;
+  height: 0.28rem;
+  overflow: hidden;
+  background: rgb(25 32 28 / 0.08);
+}
+
+.spend-bar span {
+  display: block;
+  height: 100%;
+  background: var(--e-federation);
+  opacity: 0.75;
+}
+
+.spend-footnote {
+  color: var(--muted);
+  font-size: 0.68rem !important;
+  line-height: 1.5;
+}
+
 .route-annotations {
   display: grid;
   gap: 0.5rem;

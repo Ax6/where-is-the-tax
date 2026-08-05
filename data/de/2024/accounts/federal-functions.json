@@ -1,0 +1,83 @@
+{
+  "schema_version": 1,
+  "account": "de_federal_core_budget",
+  "title": "Federal budget — actual spending 2024",
+  "reference_year": 2024,
+  "basis": "Cash actuals (Ist) of the core federal budget. Federal special funds (e.g. the defence fund) are separate accounts and not included.",
+  "unit": "EUR",
+  "source": {
+    "label": "Bundeshaushalt 2024 actual account (XML)",
+    "url": "https://www.bundeshaushalt.de/static/daten/2024/ist/rechnung_2024.xml"
+  },
+  "source_sha256": "40338733017d0a01c9f6856e678d4747f79ce9030e3d3db0c454626306b2f33e",
+  "retrieved": "2026-08-05",
+  "method": "Sum of all unique expenditure Titel (ein-aus-art 'ausgaben'/'flex-ausgaben', deduplicated by Einzelplan/Kapitel/Titelnummer), grouped by the first digit of the functional code (Funktionenplan Hauptfunktion). English group names are editorial translations; independently verified structure and totals, 2026-08-05.",
+  "total_eur": 474753727610,
+  "unassigned_eur": 626726009,
+  "titel_count": 5570,
+  "groups": [
+    {
+      "code": "2",
+      "name_de": "Soziale Sicherung",
+      "name": "Social security",
+      "description": "The biggest block: the federal subsidy to the statutory pension insurance, citizens' benefit (Bürgergeld) and other labour-market spending, family benefits, war-related obligations.",
+      "amount_eur": 222749456034
+    },
+    {
+      "code": "0",
+      "name_de": "Allgemeine Dienste",
+      "name": "General services & defence",
+      "description": "Running the state: government and administration, the armed forces (defence pay and procurement in the core budget), police, courts, foreign affairs.",
+      "amount_eur": 113647037531
+    },
+    {
+      "code": "8",
+      "name_de": "Finanzwirtschaft",
+      "name": "Interest, debt & financial assets",
+      "description": "Interest on federal debt, repayments, guarantees, and the management of federal assets.",
+      "amount_eur": 52036115111
+    },
+    {
+      "code": "7",
+      "name_de": "Verkehrs- und Nachrichtenwesen",
+      "name": "Transport & communications",
+      "description": "Roads, railways (including federal payments to the rail system), waterways, digital infrastructure.",
+      "amount_eur": 35753197536
+    },
+    {
+      "code": "1",
+      "name_de": "Bildungswesen, Wissenschaft, Forschung, kulturelle Angelegenheiten",
+      "name": "Education, science & research",
+      "description": "Research funding, universities and student support (BAföG), vocational training, culture.",
+      "amount_eur": 29842152018
+    },
+    {
+      "code": "6",
+      "name_de": "Energie- und Wasserwirtschaft, Gewerbe, Dienstleistungen",
+      "name": "Energy, business & services",
+      "description": "Energy and business support programmes paid from the core budget.",
+      "amount_eur": 8446989876
+    },
+    {
+      "code": "3",
+      "name_de": "Gesundheit, Umwelt, Sport und Erholung",
+      "name": "Health, environment & sport",
+      "description": "Federal health programmes, environmental protection, sport funding.",
+      "amount_eur": 6120700296
+    },
+    {
+      "code": "4",
+      "name_de": "Wohnungswesen, Städtebau, Raumordnung, kommunale Gemeinschaftsdienste",
+      "name": "Housing & urban development",
+      "description": "Housing benefit, urban development, spatial planning.",
+      "amount_eur": 4084051798
+    },
+    {
+      "code": "5",
+      "name_de": "Ernährung, Landwirtschaft und Forsten",
+      "name": "Food, agriculture & forests",
+      "description": "Agricultural policy and rural programmes in the federal budget.",
+      "amount_eur": 1447301400
+    }
+  ]
+}
