@@ -1,5 +1,11 @@
 # Data schema
 
+> **Superseded direction (2026-08-05):** Version 1 remains the contract for the synthetic
+> prototype, but it cannot represent the researched German fiscal graph. Do not use it for a
+> production Germany bundle before adding typed allocation/equalisation/transfer/budget-boundary
+> edges and recipient-account contexts. See
+> [`research/GERMANY_FISCAL_GRAPH_2026-08-05.md`](research/GERMANY_FISCAL_GRAPH_2026-08-05.md).
+
 This document is the machine-readable data contract for `where-is-the-tax`. The normative TypeScript
 constants and interfaces live in `src/data/schema.ts`; the validator enforces the rules below.
 

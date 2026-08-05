@@ -1,6 +1,10 @@
 # Methodology
 
-> Status: foundation only. No Germany dataset has been researched or approved yet.
+> **Superseded direction (2026-08-05):** Germany has now been researched. Consolidated ESA S.13
+> remains useful for comparison, but is not the primary “where it goes” topology. The replacement
+> methodology must begin with cash tax receipts, legal allocation, clearing/equalisation,
+> recipient accounts, and the budget boundary described in
+> [`research/GERMANY_FISCAL_GRAPH_2026-08-05.md`](research/GERMANY_FISCAL_GRAPH_2026-08-05.md).
 
 `where-is-the-tax` explains consolidated general-government finances in plain English. Its
 accounting frame is ESA 2010 sector S.13: central, state, and local government plus social-security

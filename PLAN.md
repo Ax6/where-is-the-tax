@@ -1,5 +1,11 @@
 # where-is-the-tax — Project Plan
 
+> **Direction note (2026-08-05):** Deep official-source research has superseded this plan's
+> consolidated-ESA-first product topology. Do not implement the plan below as the primary
+> experience until it is rewritten around named taxes, legal recipients, equalisation, recipient
+> accounts, and explicit budget boundaries. See
+> [`docs/research/GERMANY_FISCAL_GRAPH_2026-08-05.md`](docs/research/GERMANY_FISCAL_GRAPH_2026-08-05.md).
+
 One page that answers two questions for Germany in a selected year:
 
 1. Where does public revenue come from?

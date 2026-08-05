@@ -1,15 +1,18 @@
 # where-is-the-tax
 
-One page that answers, for Germany and a selected year: **where does public revenue come from,
-and what does general government spend money on?** Both sides use one consistent accounting
-frame, every number links to exact provenance, and each entry is explained in plain English.
-The eventual product is fully static, open-source, and based on official data.
+An interactive fiscal graph that answers: **where does money paid in Germany go?** It follows
+named taxes through their legal recipients, geographical clearing and equalisation, then marks the
+budget boundary before showing each recipient's spending context. Every number links to exact
+provenance and every accounting limit is explicit.
 
-> Current status: the repository contains a data/provenance foundation and an internal interface
-> prototype built from unmistakably synthetic figures. No Germany figures have been researched
-> or approved for publication yet.
+> Current status: deep Germany research is complete but awaiting independent verification. The
+> interface remains an internal synthetic prototype and does not yet implement the researched
+> fiscal graph. No official observations are approved for publication.
 
 Run `npm install`, then `npm run dev` to inspect the prototype. `npm test`,
 `npm run validate:fixture`, and `npm run build` verify the current synthetic implementation.
 
-**→ [Project plan](PLAN.md)** — vision, data model, collection playbook, architecture, roadmap.
+**→ [Deep research report](docs/research/GERMANY_FISCAL_GRAPH_2026-08-05.md)** — official-source
+fiscal topology, exact data paths, limits, and implementation recommendation.
+
+**→ [Project plan](PLAN.md)** — existing plan, flagged for rewrite against the research.
