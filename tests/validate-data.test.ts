@@ -41,6 +41,10 @@ async function publicationFixture(): Promise<string> {
     };
   });
   await writeJson(extractionsPath, extractions);
+  const manifestPath = join(root, "evidence/de/2024/manifest.json");
+  const manifest = JSON.parse(await readFile(manifestPath, "utf8")) as Record<string, unknown>;
+  manifest.entries = extractions.map((extraction) => ({ extraction_id: extraction.id, evidence: extraction.evidence }));
+  await writeJson(manifestPath, manifest);
   return root;
 }
 
@@ -121,8 +125,8 @@ test("rejects publication extraction without auditable evidence", async () => {
 test("rejects stored evidence whose bytes do not match its checksum", async () => {
   const root = await publicationFixture();
   const evidenceRoot = join(root, "evidence");
-  await mkdir(evidenceRoot);
-  await writeFile(join(evidenceRoot, "stored.json"), "synthetic evidence\n");
+  await mkdir(join(evidenceRoot, "de/2024"), { recursive: true });
+  await writeFile(join(evidenceRoot, "de/2024/stored.json"), "synthetic evidence\n");
 
   const path = join(root, "de/2024/extractions.json");
   const extractions = JSON.parse(await readFile(path, "utf8")) as Array<Record<string, unknown>>;
@@ -134,8 +138,41 @@ test("rejects stored evidence whose bytes do not match its checksum", async () =
   };
   await writeJson(path, extractions);
 
+  const manifestPath = join(evidenceRoot, "de/2024/manifest.json");
+  const manifest = JSON.parse(await readFile(manifestPath, "utf8")) as Record<string, unknown>;
+  const entries = manifest.entries as Array<Record<string, unknown>>;
+  entries.find(({ extraction_id }) => extraction_id === extractions[0]!.id)!.evidence = extractions[0]!.evidence;
+  await writeJson(manifestPath, manifest);
+
   const result = await validateDataRoot(root, { evidenceRoot });
   assert(result.errors.some((error) => error.code === "evidence_checksum_mismatch"));
+});
+
+test("rejects a missing formal evidence-manifest entry", async () => {
+  const root = await mutableFixture();
+  const path = join(root, "evidence/de/2024/manifest.json");
+  const manifest = JSON.parse(await readFile(path, "utf8")) as { entries: unknown[] };
+  manifest.entries.pop();
+  await writeJson(path, manifest);
+
+  const result = await validateDataRoot(root, { allowSynthetic: true });
+  assert(result.errors.some((error) => error.code === "missing_evidence_manifest_entry"));
+});
+
+test("rejects an evidence manifest that diverges from its extraction", async () => {
+  const root = await mutableFixture();
+  const path = join(root, "evidence/de/2024/manifest.json");
+  const manifest = JSON.parse(await readFile(path, "utf8")) as { entries: Array<{ evidence: unknown }> };
+  manifest.entries[0]!.evidence = {
+    path: null,
+    sha256: "b".repeat(64),
+    redistributed: false,
+    non_redistribution_reason: "Synthetic mismatch for validator test.",
+  };
+  await writeJson(path, manifest);
+
+  const result = await validateDataRoot(root, { allowSynthetic: true });
+  assert(result.errors.some((error) => error.code === "evidence_manifest_mismatch"));
 });
 
 test("rejects observations whose shared context disagrees with bundle metadata", async () => {

@@ -21,6 +21,8 @@ import {
   type ChildrenCoverage,
   type DatasetMeta,
   type DatasetRow,
+  type EvidenceDescriptor,
+  type EvidenceManifest,
   type ExtractionRecord,
   type MappingKind,
   type ObservationQuality,
@@ -312,6 +314,32 @@ function validContext(value: unknown): value is StatisticalContext {
   );
 }
 
+function validEvidenceDescriptor(value: unknown): value is EvidenceDescriptor {
+  if (
+    !isRecord(value) ||
+    typeof value.sha256 !== "string" ||
+    !SHA256.test(value.sha256) ||
+    typeof value.redistributed !== "boolean"
+  ) {
+    return false;
+  }
+  return value.redistributed
+    ? typeof value.path === "string" && value.path !== "" && value.non_redistribution_reason === null
+    : value.path === null && typeof value.non_redistribution_reason === "string" && value.non_redistribution_reason !== "";
+}
+
+function sameEvidence(left: EvidenceDescriptor | null, right: EvidenceDescriptor | null): boolean {
+  return (
+    left === right ||
+    (left !== null &&
+      right !== null &&
+      left.path === right.path &&
+      left.sha256.toLowerCase() === right.sha256.toLowerCase() &&
+      left.redistributed === right.redistributed &&
+      left.non_redistribution_reason === right.non_redistribution_reason)
+  );
+}
+
 function parseExtractions(
   value: unknown,
   path: string,
@@ -326,21 +354,7 @@ function parseExtractions(
   for (const [index, candidate] of value.entries()) {
     const itemPath = `${path}#[${index}]`;
     const evidence = isRecord(candidate) ? candidate.evidence : undefined;
-    const validEvidence = evidence === null || (() => {
-      if (
-        !isRecord(evidence) ||
-        typeof evidence.sha256 !== "string" ||
-        !SHA256.test(evidence.sha256) ||
-        typeof evidence.redistributed !== "boolean"
-      ) {
-        return false;
-      }
-      return evidence.redistributed
-        ? typeof evidence.path === "string" && evidence.path !== "" && evidence.non_redistribution_reason === null
-        : evidence.path === null &&
-            typeof evidence.non_redistribution_reason === "string" &&
-            evidence.non_redistribution_reason !== "";
-    })();
+    const validEvidence = evidence === null || validEvidenceDescriptor(evidence);
     if (
       !isRecord(candidate) ||
       typeof candidate.id !== "string" ||
@@ -376,6 +390,58 @@ function parseExtractions(
     add(errors, "duplicate_extraction", path, "Extraction IDs must be unique");
   }
   return extractions;
+}
+
+function parseEvidenceManifest(
+  value: unknown,
+  path: string,
+  indexEntry: IndexEntry,
+  meta: DatasetMeta,
+  extractions: ExtractionRecord[],
+  errors: ValidationError[],
+): EvidenceManifest | null {
+  if (
+    !isRecord(value) ||
+    value.schema_version !== SCHEMA_VERSION ||
+    value.dataset_bundle_id !== meta.dataset_bundle_id ||
+    value.country_code !== indexEntry.country_code ||
+    value.reference_year !== indexEntry.reference_year ||
+    !Array.isArray(value.entries)
+  ) {
+    add(errors, "invalid_evidence_manifest", path, "Manifest must identify this bundle and contain entries");
+    return null;
+  }
+  const extractionById = new Map(extractions.map((extraction) => [extraction.id, extraction]));
+  const seen = new Set<string>();
+  for (const [index, candidate] of value.entries.entries()) {
+    const entryPath = `${path}#entries[${index}]`;
+    if (
+      !isRecord(candidate) ||
+      typeof candidate.extraction_id !== "string" ||
+      !extractionById.has(candidate.extraction_id) ||
+      !(candidate.evidence === null || validEvidenceDescriptor(candidate.evidence))
+    ) {
+      add(errors, "invalid_evidence_manifest_entry", entryPath, "Manifest entry must reference an extraction and valid evidence descriptor");
+      continue;
+    }
+    if (seen.has(candidate.extraction_id)) {
+      add(errors, "duplicate_evidence_manifest_entry", entryPath, "Manifest must contain one entry per extraction");
+      continue;
+    }
+    seen.add(candidate.extraction_id);
+    if (!sameEvidence(candidate.evidence as EvidenceDescriptor | null, extractionById.get(candidate.extraction_id)?.evidence ?? null)) {
+      add(errors, "evidence_manifest_mismatch", entryPath, "Manifest evidence must match its extraction record");
+    }
+  }
+  for (const extraction of extractions) {
+    if (!seen.has(extraction.id)) {
+      add(errors, "missing_evidence_manifest_entry", path, `Manifest has no entry for extraction ${extraction.id}`);
+    }
+  }
+  if (seen.size !== extractions.length) {
+    add(errors, "evidence_manifest_coverage", path, "Manifest entries must exactly cover bundle extractions");
+  }
+  return value as unknown as EvidenceManifest;
 }
 
 function validReview(value: unknown): boolean {
@@ -844,26 +910,19 @@ function validateBundle(
 async function verifyStoredEvidence(
   extractions: ExtractionRecord[],
   bundlePath: string,
-  options: ValidationOptions,
+  evidenceDirectory: string,
   errors: ValidationError[],
 ): Promise<void> {
   const stored = extractions.filter(
     (extraction) => extraction.evidence?.redistributed === true,
   );
   if (stored.length === 0) return;
-  if (!options.evidenceRoot) {
-    for (const extraction of stored) {
-      add(errors, "evidence_root_required", `${bundlePath}/extractions.json#${extraction.id}`, "Stored evidence cannot be verified without an evidence root");
-    }
-    return;
-  }
-  const evidenceRoot = resolve(options.evidenceRoot);
   await Promise.all(
     stored.map(async (extraction) => {
       const evidence = extraction.evidence;
       if (!evidence?.path) return;
-      const artifactPath = resolve(evidenceRoot, evidence.path);
-      if (artifactPath === evidenceRoot || !artifactPath.startsWith(`${evidenceRoot}${sep}`)) {
+      const artifactPath = resolve(evidenceDirectory, evidence.path);
+      if (artifactPath === evidenceDirectory || !artifactPath.startsWith(`${evidenceDirectory}${sep}`)) {
         add(errors, "invalid_evidence_path", `${bundlePath}/extractions.json#${extraction.id}`, "Evidence path escapes the configured evidence root");
         return;
       }
@@ -892,6 +951,7 @@ async function discoverBundlePaths(root: string): Promise<Set<string>> {
 
 export async function validateDataRoot(rootInput: string, options: ValidationOptions = {}): Promise<ValidationResult> {
   const root = resolve(rootInput);
+  const evidenceRoot = resolve(options.evidenceRoot ?? join(root, "evidence"));
   const errors: ValidationError[] = [];
   const indexPath = join(root, "index.json");
   const entries = parseIndex(await readJson(indexPath, errors), indexPath, errors);
@@ -913,6 +973,7 @@ export async function validateDataRoot(rootInput: string, options: ValidationOpt
     const sourcesPath = join(bundlePath, "sources.json");
     const extractionsPath = join(bundlePath, "extractions.json");
     const provenancePath = join(bundlePath, "provenance.json");
+    const manifestPath = join(evidenceRoot, entry.path, "manifest.json");
     const [metaValue, revenue, expenditure, sourcesValue, extractionsValue, provenanceValue] = await Promise.all([
       readJson(metaPath, errors),
       parseCsv(revenuePath, errors),
@@ -932,7 +993,9 @@ export async function validateDataRoot(rootInput: string, options: ValidationOpt
       errors,
     );
     if (meta) {
-      await verifyStoredEvidence(extractions, bundlePath, options, errors);
+      const manifestValue = await readJson(manifestPath, errors);
+      parseEvidenceManifest(manifestValue, manifestPath, entry, meta, extractions, errors);
+      await verifyStoredEvidence(extractions, bundlePath, join(evidenceRoot, entry.path), errors);
       validateBundle(bundlePath, entry, meta, revenue, expenditure, sources, extractions, provenance, options, errors);
     }
   }

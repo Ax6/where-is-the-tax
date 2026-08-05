@@ -9,7 +9,7 @@ function argumentValue(name: string): string | null {
 }
 
 if (process.argv.includes("--help")) {
-  console.log("Usage: node --experimental-strip-types scripts/validate-data.ts [--root data] [--evidence-root research/evidence] [--allow-synthetic]");
+  console.log("Usage: node --experimental-strip-types scripts/validate-data.ts [--root data] [--evidence-root research/evidence] [--allow-synthetic] (evidence root contains <country>/<year>/manifest.json)");
   process.exit(0);
 }
 

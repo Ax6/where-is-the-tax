@@ -7,12 +7,14 @@
     "node": ">=22.12"
   },
   "scripts": {
+    "predev": "npm run generate:static",
     "dev": "vite",
-    "build": "vite build",
+    "generate:static": "node --experimental-strip-types scripts/generate-static.ts",
+    "build": "npm run generate:static && vite build",
     "typecheck": "tsc --noEmit",
     "test": "node --experimental-strip-types --test tests/*.test.ts",
     "validate:data": "node --experimental-strip-types scripts/validate-data.ts --root data",
-    "validate:fixture": "node --experimental-strip-types scripts/validate-data.ts --root tests/fixtures/valid --allow-synthetic"
+    "validate:fixture": "node --experimental-strip-types scripts/validate-data.ts --root tests/fixtures/valid --evidence-root tests/fixtures/valid/evidence --allow-synthetic"
   },
   "dependencies": {
     "d3-dsv": "^3.0.1"

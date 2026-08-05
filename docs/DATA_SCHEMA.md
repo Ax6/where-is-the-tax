@@ -45,6 +45,11 @@ instead. Only a loudly marked synthetic fixture may omit evidence entirely. One 
 support many observations. Validation resolves stored paths beneath `research/evidence/`, rejects
 path escape, reads the artifact, and verifies its SHA-256.
 
+`research/evidence/<country>/<year>/manifest.json` is the formal evidence inventory for the
+bundle. It identifies the bundle and contains exactly one entry per extraction. Each entry repeats
+that extraction's evidence descriptor exactly (or `null` for synthetic-only omitted evidence), so
+the retrieval audit and stored-artifact inventory cannot silently diverge.
+
 A reported `provenance.json` entry selects exactly one observation from an extraction with
 dimension coordinates. It preserves the raw and displayed values, official status flags, mapping,
 normalized quality, rounding increment, sign convention, description sources, caveats, and

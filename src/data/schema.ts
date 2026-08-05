@@ -44,6 +44,7 @@ export type ReviewStatus = (typeof REVIEW_STATUSES)[number];
 export type DatasetPurpose = (typeof DATASET_PURPOSES)[number];
 export type CollectionStatus = (typeof COLLECTION_STATUSES)[number];
 export type RoundingMode = (typeof ROUNDING_MODES)[number];
+export type DatasetSide = "revenue" | "expenditure";
 
 export const DATASET_COLUMNS = [
   "id",
@@ -101,6 +102,13 @@ export interface StatisticalContext {
   vintage: string;
 }
 
+export interface EvidenceDescriptor {
+  path: string | null;
+  sha256: string;
+  redistributed: boolean;
+  non_redistribution_reason: string | null;
+}
+
 export interface ExtractionRecord {
   id: string;
   source_id: string;
@@ -109,14 +117,22 @@ export interface ExtractionRecord {
   context: StatisticalContext;
   release_date: string;
   retrieved_at: string;
-  evidence: null | {
-    path: string | null;
-    sha256: string;
-    redistributed: boolean;
-    non_redistribution_reason: string | null;
-  };
+  evidence: EvidenceDescriptor | null;
   caveats: string[];
   collection_status: CollectionStatus;
+}
+
+export interface EvidenceManifestEntry {
+  extraction_id: string;
+  evidence: EvidenceDescriptor | null;
+}
+
+export interface EvidenceManifest {
+  schema_version: typeof SCHEMA_VERSION;
+  dataset_bundle_id: string;
+  country_code: string;
+  reference_year: number;
+  entries: EvidenceManifestEntry[];
 }
 
 export interface ReviewRecord {
