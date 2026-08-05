@@ -1,0 +1,6 @@
+id,parent_id,name,name_official,amount,availability,description,quality,value_kind,mapping,children_coverage,is_residual,provenance_id,notes
+production_import_taxes,,Taxes on products and production,,250,available,Synthetic D.2-shaped value for contract tests.,final,reported,direct,none,false,p_rev_d2,Synthetic fixture only.
+income_wealth_taxes,,Taxes on income and wealth,,300,available,Synthetic D.5-shaped value for contract tests.,final,reported,direct,none,false,p_rev_d5,Synthetic fixture only.
+social_contributions,,Net social contributions,,350,available,Synthetic D.61-shaped value for contract tests.,final,reported,direct,none,false,p_rev_d61,Synthetic fixture only.
+capital_taxes,,Capital taxes,,10,available,Synthetic D.91-shaped value for contract tests.,final,reported,direct,none,false,p_rev_d91,Synthetic fixture only.
+other_revenue,,Other general-government revenue,,90,available,Synthetic residual from the fixture total.,final,derived,direct,none,true,p_rev_other,Synthetic fixture only.

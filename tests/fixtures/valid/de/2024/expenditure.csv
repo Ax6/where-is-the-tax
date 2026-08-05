@@ -1,0 +1,11 @@
+id,parent_id,name,name_official,amount,availability,description,quality,value_kind,mapping,children_coverage,is_residual,provenance_id,notes
+general_public_services,,General public services,,150,available,Synthetic GF01-shaped value for contract tests.,final,reported,direct,none,false,p_exp_gf01,Synthetic fixture only.
+defence,,Defence,,60,available,Synthetic GF02-shaped value for contract tests.,final,reported,direct,none,false,p_exp_gf02,Synthetic fixture only.
+public_order_safety,,Public order and safety,,50,available,Synthetic GF03-shaped value for contract tests.,final,reported,direct,none,false,p_exp_gf03,Synthetic fixture only.
+economic_affairs,,Economic affairs,,120,available,Synthetic GF04-shaped value for contract tests.,final,reported,direct,none,false,p_exp_gf04,Synthetic fixture only.
+environment_protection,,Environmental protection,,40,available,Synthetic GF05-shaped value for contract tests.,final,reported,direct,none,false,p_exp_gf05,Synthetic fixture only.
+housing_community,,Housing and community amenities,,30,available,Synthetic GF06-shaped value for contract tests.,final,reported,direct,none,false,p_exp_gf06,Synthetic fixture only.
+health,,Health,,180,available,Synthetic GF07-shaped value for contract tests.,final,reported,direct,none,false,p_exp_gf07,Synthetic fixture only.
+recreation_culture_religion,,Recreation culture and religion,,30,available,Synthetic GF08-shaped value for contract tests.,final,reported,direct,none,false,p_exp_gf08,Synthetic fixture only.
+education,,Education,,120,available,Synthetic GF09-shaped value for contract tests.,final,reported,direct,none,false,p_exp_gf09,Synthetic fixture only.
+social_protection,,Social protection,,250,available,Synthetic GF10-shaped value for contract tests.,final,reported,direct,none,false,p_exp_gf10,Synthetic fixture only.

@@ -1,0 +1,127 @@
+[
+  {
+    "id": "p_total_revenue",
+    "kind": "reported",
+    "extraction_id": "x_fixture_revenue",
+    "coordinates": { "na_item": "TR" },
+    "raw_value": 1000,
+    "displayed_value": 1000,
+    "quality": "final",
+    "official_status_flags": [],
+    "mapping": "direct",
+    "rounding_increment": 1,
+    "sign_convention": "Positive is revenue received.",
+    "description_source_ids": ["s_fixture_revenue"],
+    "caveats": ["Synthetic fixture."],
+    "review": { "status": "verified", "reviewer": "fixture-author", "reviewed_at": "2026-01-01", "notes": [] }
+  },
+  {
+    "id": "p_rev_d2", "kind": "reported", "extraction_id": "x_fixture_revenue",
+    "coordinates": { "na_item": "D2" }, "raw_value": 250, "displayed_value": 250, "quality": "final",
+    "official_status_flags": [], "mapping": "direct", "rounding_increment": 1,
+    "sign_convention": "Positive is revenue received.", "description_source_ids": ["s_fixture_revenue"],
+    "caveats": ["Synthetic fixture."],
+    "review": { "status": "verified", "reviewer": "fixture-author", "reviewed_at": "2026-01-01", "notes": [] }
+  },
+  {
+    "id": "p_rev_d5", "kind": "reported", "extraction_id": "x_fixture_revenue",
+    "coordinates": { "na_item": "D5" }, "raw_value": 300, "displayed_value": 300, "quality": "final",
+    "official_status_flags": [], "mapping": "direct", "rounding_increment": 1,
+    "sign_convention": "Positive is revenue received.", "description_source_ids": ["s_fixture_revenue"],
+    "caveats": ["Synthetic fixture."],
+    "review": { "status": "verified", "reviewer": "fixture-author", "reviewed_at": "2026-01-01", "notes": [] }
+  },
+  {
+    "id": "p_rev_d61", "kind": "reported", "extraction_id": "x_fixture_revenue",
+    "coordinates": { "na_item": "D61" }, "raw_value": 350, "displayed_value": 350, "quality": "final",
+    "official_status_flags": [], "mapping": "direct", "rounding_increment": 1,
+    "sign_convention": "Positive is revenue received.", "description_source_ids": ["s_fixture_revenue"],
+    "caveats": ["Synthetic fixture."],
+    "review": { "status": "verified", "reviewer": "fixture-author", "reviewed_at": "2026-01-01", "notes": [] }
+  },
+  {
+    "id": "p_rev_d91", "kind": "reported", "extraction_id": "x_fixture_revenue",
+    "coordinates": { "na_item": "D91" }, "raw_value": 10, "displayed_value": 10, "quality": "final",
+    "official_status_flags": [], "mapping": "direct", "rounding_increment": 1,
+    "sign_convention": "Positive is revenue received.", "description_source_ids": ["s_fixture_revenue"],
+    "caveats": ["Synthetic fixture."],
+    "review": { "status": "verified", "reviewer": "fixture-author", "reviewed_at": "2026-01-01", "notes": [] }
+  },
+  {
+    "id": "p_rev_other",
+    "kind": "derived",
+    "formula": {
+      "operator": "linear_combination",
+      "terms": [
+        { "provenance_id": "p_total_revenue", "coefficient": 1 },
+        { "provenance_id": "p_rev_d2", "coefficient": -1 },
+        { "provenance_id": "p_rev_d5", "coefficient": -1 },
+        { "provenance_id": "p_rev_d61", "coefficient": -1 },
+        { "provenance_id": "p_rev_d91", "coefficient": -1 }
+      ],
+      "constant": 0
+    },
+    "displayed_value": 90,
+    "quality": "final",
+    "rounding_rule": { "mode": "none", "increment": 1 },
+    "sign_convention": "Total revenue less the four named ESA revenue categories.",
+    "caveats": ["Synthetic fixture."],
+    "review": { "status": "verified", "reviewer": "fixture-author", "reviewed_at": "2026-01-01", "notes": [] }
+  },
+  {
+    "id": "p_total_expenditure", "kind": "reported", "extraction_id": "x_fixture_expenditure",
+    "coordinates": { "cofog": "TOTAL" }, "raw_value": 1030, "displayed_value": 1030, "quality": "final",
+    "official_status_flags": [], "mapping": "direct", "rounding_increment": 1,
+    "sign_convention": "Positive is expenditure.", "description_source_ids": ["s_fixture_expenditure"],
+    "caveats": ["Synthetic fixture."],
+    "review": { "status": "verified", "reviewer": "fixture-author", "reviewed_at": "2026-01-01", "notes": [] }
+  },
+  {
+    "id": "p_exp_gf01", "kind": "reported", "extraction_id": "x_fixture_expenditure", "coordinates": { "cofog": "GF01" }, "raw_value": 150, "displayed_value": 150, "quality": "final", "official_status_flags": [], "mapping": "direct", "rounding_increment": 1, "sign_convention": "Positive is expenditure.", "description_source_ids": ["s_fixture_expenditure"], "caveats": ["Synthetic fixture."], "review": { "status": "verified", "reviewer": "fixture-author", "reviewed_at": "2026-01-01", "notes": [] }
+  },
+  {
+    "id": "p_exp_gf02", "kind": "reported", "extraction_id": "x_fixture_expenditure", "coordinates": { "cofog": "GF02" }, "raw_value": 60, "displayed_value": 60, "quality": "final", "official_status_flags": [], "mapping": "direct", "rounding_increment": 1, "sign_convention": "Positive is expenditure.", "description_source_ids": ["s_fixture_expenditure"], "caveats": ["Synthetic fixture."], "review": { "status": "verified", "reviewer": "fixture-author", "reviewed_at": "2026-01-01", "notes": [] }
+  },
+  {
+    "id": "p_exp_gf03", "kind": "reported", "extraction_id": "x_fixture_expenditure", "coordinates": { "cofog": "GF03" }, "raw_value": 50, "displayed_value": 50, "quality": "final", "official_status_flags": [], "mapping": "direct", "rounding_increment": 1, "sign_convention": "Positive is expenditure.", "description_source_ids": ["s_fixture_expenditure"], "caveats": ["Synthetic fixture."], "review": { "status": "verified", "reviewer": "fixture-author", "reviewed_at": "2026-01-01", "notes": [] }
+  },
+  {
+    "id": "p_exp_gf04", "kind": "reported", "extraction_id": "x_fixture_expenditure", "coordinates": { "cofog": "GF04" }, "raw_value": 120, "displayed_value": 120, "quality": "final", "official_status_flags": [], "mapping": "direct", "rounding_increment": 1, "sign_convention": "Positive is expenditure.", "description_source_ids": ["s_fixture_expenditure"], "caveats": ["Synthetic fixture."], "review": { "status": "verified", "reviewer": "fixture-author", "reviewed_at": "2026-01-01", "notes": [] }
+  },
+  {
+    "id": "p_exp_gf05", "kind": "reported", "extraction_id": "x_fixture_expenditure", "coordinates": { "cofog": "GF05" }, "raw_value": 40, "displayed_value": 40, "quality": "final", "official_status_flags": [], "mapping": "direct", "rounding_increment": 1, "sign_convention": "Positive is expenditure.", "description_source_ids": ["s_fixture_expenditure"], "caveats": ["Synthetic fixture."], "review": { "status": "verified", "reviewer": "fixture-author", "reviewed_at": "2026-01-01", "notes": [] }
+  },
+  {
+    "id": "p_exp_gf06", "kind": "reported", "extraction_id": "x_fixture_expenditure", "coordinates": { "cofog": "GF06" }, "raw_value": 30, "displayed_value": 30, "quality": "final", "official_status_flags": [], "mapping": "direct", "rounding_increment": 1, "sign_convention": "Positive is expenditure.", "description_source_ids": ["s_fixture_expenditure"], "caveats": ["Synthetic fixture."], "review": { "status": "verified", "reviewer": "fixture-author", "reviewed_at": "2026-01-01", "notes": [] }
+  },
+  {
+    "id": "p_exp_gf07", "kind": "reported", "extraction_id": "x_fixture_expenditure", "coordinates": { "cofog": "GF07" }, "raw_value": 180, "displayed_value": 180, "quality": "final", "official_status_flags": [], "mapping": "direct", "rounding_increment": 1, "sign_convention": "Positive is expenditure.", "description_source_ids": ["s_fixture_expenditure"], "caveats": ["Synthetic fixture."], "review": { "status": "verified", "reviewer": "fixture-author", "reviewed_at": "2026-01-01", "notes": [] }
+  },
+  {
+    "id": "p_exp_gf08", "kind": "reported", "extraction_id": "x_fixture_expenditure", "coordinates": { "cofog": "GF08" }, "raw_value": 30, "displayed_value": 30, "quality": "final", "official_status_flags": [], "mapping": "direct", "rounding_increment": 1, "sign_convention": "Positive is expenditure.", "description_source_ids": ["s_fixture_expenditure"], "caveats": ["Synthetic fixture."], "review": { "status": "verified", "reviewer": "fixture-author", "reviewed_at": "2026-01-01", "notes": [] }
+  },
+  {
+    "id": "p_exp_gf09", "kind": "reported", "extraction_id": "x_fixture_expenditure", "coordinates": { "cofog": "GF09" }, "raw_value": 120, "displayed_value": 120, "quality": "final", "official_status_flags": [], "mapping": "direct", "rounding_increment": 1, "sign_convention": "Positive is expenditure.", "description_source_ids": ["s_fixture_expenditure"], "caveats": ["Synthetic fixture."], "review": { "status": "verified", "reviewer": "fixture-author", "reviewed_at": "2026-01-01", "notes": [] }
+  },
+  {
+    "id": "p_exp_gf10", "kind": "reported", "extraction_id": "x_fixture_expenditure", "coordinates": { "cofog": "GF10" }, "raw_value": 250, "displayed_value": 250, "quality": "final", "official_status_flags": [], "mapping": "direct", "rounding_increment": 1, "sign_convention": "Positive is expenditure.", "description_source_ids": ["s_fixture_expenditure"], "caveats": ["Synthetic fixture."], "review": { "status": "verified", "reviewer": "fixture-author", "reviewed_at": "2026-01-01", "notes": [] }
+  },
+  {
+    "id": "p_balance",
+    "kind": "derived",
+    "formula": {
+      "operator": "linear_combination",
+      "terms": [
+        { "provenance_id": "p_total_revenue", "coefficient": 1 },
+        { "provenance_id": "p_total_expenditure", "coefficient": -1 }
+      ],
+      "constant": 0
+    },
+    "displayed_value": -30,
+    "quality": "final",
+    "rounding_rule": { "mode": "none", "increment": 1 },
+    "sign_convention": "Revenue minus expenditure; negative is net borrowing.",
+    "caveats": ["Synthetic fixture; the balance is not a debt-change measure."],
+    "review": { "status": "verified", "reviewer": "fixture-author", "reviewed_at": "2026-01-01", "notes": [] }
+  }
+]

@@ -1,0 +1,26 @@
+[
+  {
+    "id": "s_fixture_revenue",
+    "institution": "Example Statistical Office",
+    "title": "Synthetic revenue table",
+    "landing_page": "https://example.org/synthetic-revenue",
+    "licence": {
+      "name": "Fixture-only example licence",
+      "url": "https://example.org/licence",
+      "attribution": "Synthetic test data; no official source."
+    },
+    "notes": ["Invented source identity for tests; never publish as evidence."]
+  },
+  {
+    "id": "s_fixture_expenditure",
+    "institution": "Example Statistical Office",
+    "title": "Synthetic expenditure table",
+    "landing_page": "https://example.org/synthetic-expenditure",
+    "licence": {
+      "name": "Fixture-only example licence",
+      "url": "https://example.org/licence",
+      "attribution": "Synthetic test data; no official source."
+    },
+    "notes": ["Invented source identity for tests; never publish as evidence."]
+  }
+]

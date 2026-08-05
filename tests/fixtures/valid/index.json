@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "fixture_notice": "Synthetic values for validator tests only. This is not a claim about Germany.",
+  "datasets": [
+    {
+      "country_code": "de",
+      "reference_year": 2024,
+      "path": "de/2024",
+      "dataset_purpose": "synthetic_test_fixture"
+    }
+  ]
+}
