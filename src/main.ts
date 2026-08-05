@@ -1,9 +1,10 @@
 import "./styles.css";
 
 import { defaultRouteId, getRoute, routes, type Route } from "./routes/data.ts";
+import { getTaxEntry } from "./routes/taxonomy.ts";
 import { renderFiscalGraph } from "./viz/fiscal-graph.ts";
 import { hideTooltip } from "./viz/tooltip.ts";
-import { renderEdgeDetail, renderNodeDetail } from "./ui/route-detail.ts";
+import { renderEdgeDetail, renderNodeDetail, renderTaxDetail } from "./ui/route-detail.ts";
 import { escapeHtml } from "./ui/static-page.ts";
 
 document.documentElement.classList.add("enhanced");
@@ -43,6 +44,20 @@ function openDetail(kind: "node" | "edge", id: string): void {
   }
   hideTooltip();
   dialog.showModal();
+}
+
+for (const taxButton of document.querySelectorAll<HTMLButtonElement>("[data-tax-id]")) {
+  taxButton.addEventListener("click", () => {
+    const taxId = taxButton.dataset.taxId;
+    const found = taxId ? getTaxEntry(taxId) : undefined;
+    if (!found || !dialog || !dialogContent) {
+      return;
+    }
+    lastTrigger = taxButton;
+    const routeTitle = found.entry.routeId ? getRoute(found.entry.routeId)?.chipTitle : undefined;
+    dialogContent.innerHTML = renderTaxDetail(found.group, found.entry, routeTitle);
+    dialog.showModal();
+  });
 }
 
 dialog?.addEventListener("close", () => {

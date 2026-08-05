@@ -5,6 +5,7 @@ import {
   type Route,
   type SourceRef,
 } from "../routes/data.ts";
+import { taxonomy } from "../routes/taxonomy.ts";
 
 export function escapeHtml(value: string): string {
   return value
@@ -104,6 +105,35 @@ function renderTableRows(routes: Route[]): string {
     .join("");
 }
 
+function renderTaxonomy(routes: Route[]): string {
+  const routeTitles = new Map(routes.map((route) => [route.id, route.chipTitle]));
+  return taxonomy
+    .map((group) => {
+      const entries = group.entries
+        .map(
+          (entry) => `
+            <li>
+              <button type="button" class="tax-entry" data-tax-id="${escapeHtml(entry.id)}">
+                <span class="tax-entry-name">${escapeHtml(entry.name)}${
+                  entry.official ? ` <em>${escapeHtml(entry.official)}</em>` : ""
+                }</span>
+                <span class="tax-entry-split">${escapeHtml(entry.split)}${
+                  entry.routeId && routeTitles.has(entry.routeId) ? ` <span class="tax-entry-route">route ↗</span>` : ""
+                }</span>
+              </button>
+            </li>`,
+        )
+        .join("");
+      return `
+        <article class="tax-group">
+          <h3>${escapeHtml(group.title)}</h3>
+          <p>${escapeHtml(group.blurb)}</p>
+          <ul>${entries}</ul>
+        </article>`;
+    })
+    .join("");
+}
+
 export function renderStaticPage(routes: Route[], defaultRouteId: string): string {
   const defaultRoute = routes.find((route) => route.id === defaultRouteId) ?? routes[0];
   if (!defaultRoute) {
@@ -133,6 +163,7 @@ export function renderStaticPage(routes: Route[], defaultRouteId: string): strin
       <a class="wordmark" href="#top" aria-label="Where is the tax? Home">Where is the tax?</a>
       <nav aria-label="Page sections">
         <a href="#graph">The graph</a>
+        <a href="#all-taxes">All taxes</a>
         <a href="#boundary">The boundary</a>
         <a href="#sources">Sources</a>
         <a href="#data-table">Data table</a>
@@ -140,9 +171,9 @@ export function renderStaticPage(routes: Route[], defaultRouteId: string): strin
     </header>
 
     <section class="hero" id="top" aria-labelledby="page-title">
-      <p class="eyebrow">Germany · a person in Berlin · 2024 routes</p>
+      <p class="eyebrow">Germany · 2024 routes · example resident: Berlin</p>
       <h1 id="page-title">Every euro you pay<br><em>takes a legal route.</em></h1>
-      <p class="hero-lede">Pick something you actually pay. Follow it through the constitution's splits, the clearing between Länder, and into real budgets — until the law itself says the trail ends.</p>
+      <p class="hero-lede">Pick something you actually pay. Follow it through the constitution's splits, the clearing between Länder, and into real budgets — until the law itself says the trail ends. The routes below use Berlin as the example resident; a clickable Germany map that re-splits every flow for your own Land is the planned selector.</p>
     </section>
 
     <section class="graph-section" id="graph" aria-labelledby="route-title">
@@ -191,6 +222,15 @@ export function renderStaticPage(routes: Route[], defaultRouteId: string): strin
           </ul>
         </div>
       </div>
+    </section>
+
+    <section class="tax-map-section" id="all-taxes" aria-labelledby="all-taxes-title">
+      <div class="section-heading">
+        <p class="eyebrow">The whole map</p>
+        <h2 id="all-taxes-title">Every named tax has a home</h2>
+        <p>The routes above are the ones drawn end-to-end so far. This is the complete constitutional assignment — every major named tax and who receives it by law. Each family becomes a full route as the verified dataset grows; click any tax for its plain-English explanation and legal basis.</p>
+      </div>
+      <div class="tax-map">${renderTaxonomy(routes)}</div>
     </section>
 
     <section class="boundary-section" id="boundary" aria-labelledby="boundary-title">

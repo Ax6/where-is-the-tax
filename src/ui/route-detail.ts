@@ -8,6 +8,7 @@ import {
   type RouteNode,
   type SourceRef,
 } from "../routes/data.ts";
+import type { TaxEntry, TaxGroup } from "../routes/taxonomy.ts";
 import { escapeHtml } from "./static-page.ts";
 
 function weightLine(route: Route, weight: number): string {
@@ -70,6 +71,32 @@ export function renderNodeDetail(route: Route, node: RouteNode): string {
       ${sourceList(node.sources)}
     </section>
     ${caveatList(node.caveats)}`;
+}
+
+export function renderTaxDetail(group: TaxGroup, entry: TaxEntry, routeTitle?: string): string {
+  return `
+    <header class="dialog-header">
+      <p class="eyebrow">${escapeHtml(group.title)}</p>
+      <h2 id="detail-title">${escapeHtml(entry.name)}</h2>
+      ${entry.official ? `<p class="dialog-official">officially <em>${escapeHtml(entry.official)}</em></p>` : ""}
+      <p>${escapeHtml(entry.description)}</p>
+    </header>
+    <section class="detail-block">
+      <h3>Where it goes, by law</h3>
+      ${factsBlock([
+        ["Split", entry.split],
+        ["Amount", entry.amountNote ?? "National figure arrives with the verified dataset."],
+      ])}
+      ${
+        entry.routeId && routeTitle
+          ? `<p class="detail-route-link"><a href="#route/${escapeHtml(entry.routeId)}">Follow its full route: ${escapeHtml(routeTitle)} →</a></p>`
+          : `<p class="detail-route-note">A full drawn route for this tax comes with a later dataset phase.</p>`
+      }
+    </section>
+    <section class="detail-block">
+      <h3>Sources</h3>
+      ${sourceList(entry.sources)}
+    </section>`;
 }
 
 export function renderEdgeDetail(route: Route, edge: RouteEdge, from: RouteNode, to: RouteNode): string {

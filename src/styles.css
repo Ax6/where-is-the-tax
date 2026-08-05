@@ -663,6 +663,96 @@ h1 em {
 .legend-laender { background: var(--e-laender); }
 .legend-municipalities { background: var(--e-municipalities); }
 
+/* ---------- Tax map (the whole taxonomy) ---------- */
+
+.tax-map-section {
+  padding-block: clamp(2.75rem, 5vw, 4.5rem);
+  border-top: 1px solid var(--ink);
+  width: min(100% - 3rem, 91rem);
+  margin-inline: auto;
+}
+
+.tax-map {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(19rem, 1fr));
+  gap: clamp(1.5rem, 3vw, 2.5rem);
+}
+
+.tax-group h3 {
+  margin: 0 0 0.4rem;
+  font-size: 1.3rem;
+  line-height: 1.1;
+}
+
+.tax-group > p {
+  margin: 0 0 1rem;
+  color: var(--muted);
+  font-size: 0.76rem;
+  line-height: 1.5;
+}
+
+.tax-group ul {
+  margin: 0;
+  padding: 0;
+  border-top: 2px solid var(--ink);
+  list-style: none;
+}
+
+.tax-group li {
+  border-bottom: 1px solid var(--line);
+}
+
+.tax-entry {
+  display: grid;
+  gap: 0.25rem;
+  width: 100%;
+  padding: 0.7rem 0.4rem;
+  border: 0;
+  background: transparent;
+  color: var(--ink);
+  cursor: pointer;
+  text-align: left;
+}
+
+.tax-entry:hover {
+  background: var(--paper-raise);
+}
+
+.tax-entry-name {
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.tax-entry-name em {
+  color: var(--muted);
+  font-style: italic;
+  font-weight: 400;
+}
+
+.tax-entry-split {
+  color: var(--muted);
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.02em;
+}
+
+.tax-entry-route {
+  display: inline-block;
+  margin-left: 0.4rem;
+  padding: 0.08rem 0.4rem;
+  border: 1px solid var(--e-berlin);
+  color: var(--e-berlin);
+  text-transform: uppercase;
+}
+
+.detail-route-link a {
+  font-weight: 600;
+}
+
+.detail-route-note {
+  color: var(--muted);
+}
+
 /* ---------- Boundary section (three questions) ---------- */
 
 .guardrail-grid {

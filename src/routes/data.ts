@@ -166,6 +166,12 @@ const destatis71211: SourceRef = {
   label: "Destatis GENESIS statistic 71211",
   url: "https://genesis.destatis.de/datenbank/online/statistic/71211/details",
 };
+const betrKV2: SourceRef = {
+  label: "§2 Betriebskostenverordnung",
+  url: "https://www.gesetze-im-internet.de/betrkv/__2.html",
+};
+
+export { artikel106, artikel107, berlinTaxAccount2024, bmfDec2024, gemFinRef7, ustg12 };
 
 const pendingVerification = "Research-report figure — pending independent verification.";
 
@@ -623,11 +629,11 @@ export const routes: Route[] = [
   {
     id: "trade",
     chipTitle: "A business pays trade tax",
-    chipNote: "Gewerbesteuer · Grundsteuer",
+    chipNote: "Gewerbesteuer",
     lede: "Trade tax is the classic municipal tax — and Berlin is special. Because it is a Land and a municipality at once, it keeps nearly all of it, remitting only the federal component of the statutory levy.",
-    stages: ["The event", "The named taxes", "Recipient budgets"],
+    stages: ["The event", "The named tax", "Recipient budgets"],
     unit: "million_eur",
-    unitNote: "Ribbon widths show observed 2024 Berlin amounts (trade tax gross €3.01bn; property tax €0.87bn).",
+    unitNote: "Ribbon widths show observed 2024 Berlin amounts (trade tax gross €3.01bn).",
     nodes: [
       {
         id: "event",
@@ -636,7 +642,7 @@ export const routes: Route[] = [
         entity: "neutral",
         role: "event",
         description:
-          "A company with premises in Berlin pays trade tax on its profits — Berlin's assessment rate is 410% — and property tax on the land it uses.",
+          "A company with premises in Berlin pays trade tax on its profits — Berlin's assessment rate is 410%.",
         status: "calculated_official",
         sources: [berlinTaxAccount2024],
         caveats: [pendingVerification],
@@ -653,20 +659,6 @@ export const routes: Route[] = [
         amountNote: "Berlin 2024 gross: €3.01bn.",
         status: "calculated_official",
         sources: [berlinTaxAccount2024, gemFinRef7],
-        caveats: [pendingVerification],
-      },
-      {
-        id: "grundsteuer",
-        stage: 1,
-        label: "Property tax",
-        official: "Grundsteuer",
-        entity: "neutral",
-        role: "tax",
-        description:
-          "A municipal tax on real property. It belongs to Berlin itself — not to the borough where the property stands. Boroughs receive allocations inside Berlin's budget instead.",
-        amountNote: "Berlin 2024: €870m.",
-        status: "calculated_official",
-        sources: [berlinTaxAccount2024],
         caveats: [pendingVerification],
       },
       {
@@ -708,18 +700,6 @@ export const routes: Route[] = [
         caveats: [pendingVerification],
       },
       {
-        id: "event-property",
-        from: "event",
-        to: "grundsteuer",
-        weight: 870.447,
-        kind: "exclusive_assignment",
-        status: "calculated_official",
-        shareLabel: "€870m (2024)",
-        description: "Property tax collected by Berlin in 2024.",
-        sources: [berlinTaxAccount2024],
-        caveats: [pendingVerification],
-      },
-      {
         id: "trade-berlin",
         from: "gewerbesteuer",
         to: "berlin_budget",
@@ -748,23 +728,136 @@ export const routes: Route[] = [
           pendingVerification,
         ],
       },
+    ],
+    annotations: [
       {
-        id: "property-berlin",
+        nodeId: "berlin_budget",
+        text: "Boroughs like Mitte or Neukölln are not tax recipients — they receive global allocations inside Berlin's budget.",
+      },
+    ],
+    boundary: {
+      heading: "Beyond this line: the Berlin budget",
+      body: berlinBoundaryBody,
+      examples: berlinBoundaryExamples,
+    },
+  },
+  {
+    id: "housing",
+    chipTitle: "You own or rent a home",
+    chipNote: "Grundsteuer · Grunderwerbsteuer",
+    lede: "Housing carries two named taxes: property tax every year, and real-estate transfer tax when a home is bought. In Berlin, both stay entirely in the Berlin budget.",
+    stages: ["The event", "The named taxes", "Recipient budget"],
+    unit: "million_eur",
+    unitNote: "Ribbon widths show observed 2024 Berlin amounts (property tax €0.87bn; real-estate transfer tax €0.91bn).",
+    nodes: [
+      {
+        id: "event",
+        stage: 0,
+        label: "A home in Berlin",
+        entity: "neutral",
+        role: "event",
+        description:
+          "Owning property in Berlin means annual property tax; buying one triggers real-estate transfer tax at Berlin's 6% rate. Renters usually pay property tax too — landlords may pass it on through service charges.",
+        status: "calculated_official",
+        sources: [berlinTaxAccount2024, betrKV2],
+        caveats: [pendingVerification],
+      },
+      {
+        id: "grundsteuer",
+        stage: 1,
+        label: "Property tax",
+        official: "Grundsteuer",
+        entity: "neutral",
+        role: "tax",
+        description:
+          "A municipal tax on real property, paid yearly. It belongs to Berlin itself — not to the borough where the property stands. It commonly reaches renters via the service-charge bill.",
+        amountNote: "Berlin 2024: €870m.",
+        status: "calculated_official",
+        sources: [berlinTaxAccount2024, betrKV2],
+        caveats: [pendingVerification],
+      },
+      {
+        id: "grunderwerbsteuer",
+        stage: 1,
+        label: "Real-estate transfer tax",
+        official: "Grunderwerbsteuer",
+        entity: "neutral",
+        role: "tax",
+        description:
+          "A Land tax due when property changes hands. Berlin's rate is 6% of the purchase price — one of the larger one-off costs of buying a home.",
+        amountNote: "Berlin 2024: €911m.",
+        status: "calculated_official",
+        sources: [berlinTaxAccount2024],
+        caveats: [pendingVerification],
+      },
+      {
+        id: "berlin_budget",
+        stage: 2,
+        label: "Berlin budget",
+        official: "Land + municipality",
+        entity: "berlin",
+        role: "recipient",
+        description:
+          "Property tax is municipal and real-estate transfer tax belongs to the Land — and Berlin is both at once, so neither tax leaves town. Boroughs are not tax recipients; they get allocations inside this budget.",
+        status: "calculated_official",
+        sources: [berlinTaxAccount2024, lhoBerlin8],
+        caveats: [pendingVerification],
+      },
+    ],
+    edges: [
+      {
+        id: "event-grundsteuer",
+        from: "event",
+        to: "grundsteuer",
+        weight: 870.447,
+        kind: "exclusive_assignment",
+        status: "calculated_official",
+        shareLabel: "€870m (2024)",
+        description: "Property tax collected by Berlin in 2024.",
+        sources: [berlinTaxAccount2024],
+        caveats: [pendingVerification],
+      },
+      {
+        id: "event-grunderwerbsteuer",
+        from: "event",
+        to: "grunderwerbsteuer",
+        weight: 910.834,
+        kind: "exclusive_assignment",
+        status: "calculated_official",
+        shareLabel: "€911m (2024)",
+        description: "Real-estate transfer tax collected on Berlin property purchases in 2024, at the 6% Berlin rate.",
+        sources: [berlinTaxAccount2024],
+        caveats: [pendingVerification],
+      },
+      {
+        id: "grundsteuer-berlin",
         from: "grundsteuer",
         to: "berlin_budget",
         weight: 870.447,
         kind: "exclusive_assignment",
         status: "calculated_official",
         shareLabel: "100% to Berlin",
-        description: "Property tax belongs to Berlin in full. No revenue edge to any borough exists.",
+        description: "Property tax belongs to the municipality in full — Berlin. No revenue edge to any borough exists.",
+        sources: [berlinTaxAccount2024],
+        caveats: [pendingVerification],
+      },
+      {
+        id: "grunderwerbsteuer-berlin",
+        from: "grunderwerbsteuer",
+        to: "berlin_budget",
+        weight: 910.834,
+        kind: "exclusive_assignment",
+        status: "calculated_official",
+        shareLabel: "100% to Berlin (Land tax)",
+        description: "Real-estate transfer tax is a Land tax; Berlin is the Land where the property sits.",
         sources: [berlinTaxAccount2024],
         caveats: [pendingVerification],
       },
     ],
     annotations: [
       {
-        nodeId: "berlin_budget",
-        text: "Boroughs like Mitte or Neukölln are not tax recipients — they receive global allocations inside Berlin's budget.",
+        nodeId: "event",
+        text: "Renters: landlords may pass property tax through the annual service-charge bill (§2 Betriebskostenverordnung).",
       },
     ],
     boundary: {

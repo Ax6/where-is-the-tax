@@ -161,10 +161,23 @@ At the **budget boundary** the visual language changes: tax-coloured routing rib
 marked rule; the selected recipient's spending context appears beyond it in a different visual
 treatment (ranked composition, muted palette), labelled *whole-budget spending context*.
 
-Planned coordinated views, phased: overview graph (all tax families → recipients),
-tax-route flow (hero), equalisation view (pooled additions/deductions, later a Länder map),
-recipient account rebase, spending drill-down, Berlin service view (borough context only after
-the Berlin budget node).
+**Place is a parameter, not a hard-coded scenario.** Berlin is only the example resident the
+research extracted first. The target interaction is a clickable Germany map (BKG VG250
+boundaries, Länder first, municipalities later): selecting a place re-parameterises every
+place-dependent stage — Zerlegung destination, the Land's equalisation addition or deduction
+(all 16 Länder are in the official BMF calculation), municipal keys and local tax amounts —
+while the statutory splits stay fixed. Until the verification pass extracts the all-Länder
+rows, the page must say plainly that Berlin is an example.
+
+**Beyond the boundary is a graph too, not a dead end.** The spending panel is unquantified only
+until verified recipient accounts exist (federal 2024 XML title actuals; Berlin function
+actuals). Then the panel becomes the entry to a spending drill-down per recipient budget —
+whole-budget composition, clearly separated from the routing flows.
+
+Planned coordinated views, phased: whole-map taxonomy (all tax families → recipients — shipped
+as an interactive list in P0), tax-route flow (hero), Germany map selector re-splitting routes
+per place, equalisation view (pooled additions/deductions on the map), recipient account
+rebase, spending drill-down, borough service context inside the Berlin account.
 
 ### Interaction affordances
 
@@ -300,10 +313,14 @@ account and equalisation rows, with evidence manifest and full provenance. Exit:
 independent reproduction green; banner drops to "provisional where marked".
 
 **P2 — Recipient accounts.** Ingest federal 2024 XML and Berlin 2024 function actuals as
-reconciled accounts; real spending context replaces illustrative; detail drill-down.
+reconciled accounts; the beyond-the-boundary panel becomes a real spending drill-down graph
+per recipient budget.
 
-**P3 — System completeness.** Transfer ledger + reconciliation validators wired end-to-end;
-social-insurance branch; 2021 comparable mode; equalisation view with Länder map.
+**P3 — The Germany map selector.** Extract all-16-Länder equalisation rows and per-Land
+route parameters from the already-catalogued sources; add the clickable Länder map (BKG VG250)
+that re-splits every route for the selected place. Municipality-level selection follows where
+Regionalstatistik data supports it. Also: transfer ledger + reconciliation validators wired
+end-to-end; social-insurance branch; 2021 comparable mode.
 
 **P4 — Mobile, accessibility, public v1.** Narrow-screen adaptation, keyboard/screen-reader
 pass, no-JS fallback verified, comprehension check with a handful of non-experts, deploy.

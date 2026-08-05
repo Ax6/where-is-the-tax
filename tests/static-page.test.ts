@@ -16,6 +16,16 @@ test("renders the banner, chips, boundary panel, legend, and table at build time
   assert.match(html, /id="record-trade-trade-federation"/);
 });
 
+test("renders the whole-map taxonomy with housing and everything-else families", () => {
+  const html = renderStaticPage(routes, defaultRouteId);
+  assert.match(html, /Every named tax has a home/);
+  assert.match(html, /data-tax-id="property_tax"/);
+  assert.match(html, /Inheritance &amp; gift tax/);
+  assert.match(html, /Solidarity surcharge/);
+  assert.match(html, /Customs duties/);
+  assert.match(html, /Pension insurance/);
+});
+
 test("renders a textual no-JavaScript fallback for every route", () => {
   const html = renderStaticPage(routes, defaultRouteId);
   assert.equal(html.match(/fg-fallback-route/g)?.length, routes.length);
