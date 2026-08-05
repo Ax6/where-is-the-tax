@@ -8,7 +8,13 @@ import { renderFiscalGraph } from "./viz/fiscal-graph.ts";
 import { mapAttribution, renderLandMap } from "./viz/land-map.ts";
 import { hideTooltip } from "./viz/tooltip.ts";
 import { renderEdgeDetail, renderNodeDetail, renderTaxDetail } from "./ui/route-detail.ts";
-import { renderSpendingAccount, type RouteInflow, type SpendingAccount } from "./ui/spending.ts";
+import {
+  renderSpendingPanel,
+  type RouteInflow,
+  type SpendingAccount,
+  type SpendingEntry,
+  type SpendingMode,
+} from "./ui/spending.ts";
 import { escapeHtml } from "./ui/static-page.ts";
 import federalSpending from "../data/de/2024/accounts/federal-functions.json" with { type: "json" };
 import berlinSpending from "../data/de/2024/accounts/berlin-functions.json" with { type: "json" };
@@ -36,6 +42,20 @@ let currentPlace: Place = GERMANY;
 let currentRoutes: Route[] = buildRoutes(currentPlace);
 let currentRoute: Route | undefined;
 let lastTrigger: Element | null = null;
+let spendingMode: SpendingMode = "combined";
+
+boundaryPanel?.addEventListener("click", (event) => {
+  if (!(event.target instanceof Element)) {
+    return;
+  }
+  const trigger = event.target.closest<HTMLElement>("[data-spend-mode]");
+  const mode = trigger?.dataset.spendMode as SpendingMode | undefined;
+  if (!mode || !currentRoute) {
+    return;
+  }
+  spendingMode = mode === spendingMode && trigger?.classList.contains("spend-seg") ? "combined" : mode;
+  renderBoundary(currentRoute);
+});
 
 if (attributionEl) {
   attributionEl.textContent = mapAttribution;
@@ -104,18 +124,26 @@ function renderBoundary(route: Route): void {
       route.unit === "million_eur" ? sum * 1e6 : route.routeTotalMeur ? sum * route.routeTotalMeur * 1e6 : undefined;
     return eur === undefined ? undefined : { eur, routeLabel: route.chipNote };
   };
-  const hasFederal = route.nodes.some((node) => node.id === "federal_budget");
-  const hasBerlin = route.nodes.some((node) => node.id === "berlin_budget");
-  const blocks: string[] = [];
-  if (hasBerlin) {
-    blocks.push(renderSpendingAccount(berlinSpending as SpendingAccount, routeInflow("berlin_budget")));
+  const entries: SpendingEntry[] = [];
+  if (route.nodes.some((node) => node.id === "berlin_budget")) {
+    entries.push({
+      key: "berlin",
+      shortName: "Berlin",
+      account: berlinSpending as SpendingAccount,
+      inflow: routeInflow("berlin_budget"),
+    });
   }
-  if (hasFederal) {
-    blocks.push(renderSpendingAccount(federalSpending as SpendingAccount, routeInflow("federal_budget")));
+  if (route.nodes.some((node) => node.id === "federal_budget")) {
+    entries.push({
+      key: "federation",
+      shortName: "Federal",
+      account: federalSpending as SpendingAccount,
+      inflow: routeInflow("federal_budget"),
+    });
   }
   const tail =
-    blocks.length > 0
-      ? `${blocks.join("\n")}
+    entries.length > 0
+      ? `${renderSpendingPanel(entries, spendingMode)}
        <p class="boundary-footnote">Other Länder and municipal accounts follow as their audited actuals are loaded.</p>`
       : `<ul class="boundary-examples" aria-label="What this budget funds as a whole">${route.boundary.examples
           .map((example) => `<li>${escapeHtml(example)}</li>`)
@@ -192,6 +220,9 @@ function renderCurrentRoute(routeId: string): void {
   }
   if (dialog?.open) {
     dialog.close();
+  }
+  if (currentRoute?.id !== route.id) {
+    spendingMode = "combined";
   }
   currentRoute = route;
 

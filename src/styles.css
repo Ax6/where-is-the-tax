@@ -542,17 +542,83 @@ h1 em {
 }
 
 .spend-bar {
+  display: flex;
   grid-column: 1 / -1;
-  height: 0.28rem;
+  gap: 1px;
+  height: 0.45rem;
   overflow: hidden;
   background: rgb(25 32 28 / 0.08);
 }
 
-.spend-bar span {
-  display: block;
+.spend-seg {
   height: 100%;
+  padding: 0;
+  border: 0;
+  cursor: pointer;
+  opacity: 0.8;
+}
+
+.spend-seg:hover {
+  opacity: 1;
+}
+
+.spend-seg-federation {
   background: var(--e-federation);
-  opacity: 0.75;
+}
+
+.spend-seg-berlin {
+  background: var(--e-berlin);
+}
+
+.spend-modes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin: 0 0 0.8rem;
+}
+
+.spend-modes button {
+  padding: 0.35rem 0.55rem;
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--ink);
+  cursor: pointer;
+  font-family: var(--mono);
+  font-size: 0.62rem;
+}
+
+.spend-modes button[aria-pressed="true"] {
+  border-color: var(--ink);
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.spend-dot {
+  display: inline-block;
+  width: 0.55rem;
+  height: 0.55rem;
+  margin-right: 0.3rem;
+  border-radius: 50%;
+  vertical-align: -0.03rem;
+}
+
+.spend-dot-federation {
+  background: var(--e-federation);
+}
+
+.spend-dot-berlin {
+  background: var(--e-berlin);
+}
+
+.spend-modes button[aria-pressed="true"] .spend-dot {
+  outline: 1px solid var(--paper);
+}
+
+.spend-caveat {
+  margin: 0 0 0.8rem;
+  color: var(--muted);
+  font-size: 0.68rem !important;
+  line-height: 1.5;
 }
 
 .spend-footnote {
