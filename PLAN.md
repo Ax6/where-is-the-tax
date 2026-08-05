@@ -183,7 +183,10 @@ manufacture a balancing node or pretend the deficit is revenue.
 
 Sankey, alluvial, treemap, packed-circle, and other concepts remain experiments. A chart earns a
 place only if representative users understand the totals, categories, gap, and non-earmarking
-message more quickly and accurately with it than with ranked bars and lists.
+message more quickly and accurately with it than with ranked bars and lists. Phase 0 must test at
+least one more expressive composition alongside the ranked view—potentially a central-pool or
+carefully constrained Sankey concept—so clarity does not become an excuse for visual blandness.
+The expressive option receives no exemption from the non-causality rule.
 
 ### Drill-down
 
@@ -281,6 +284,7 @@ data/
         ├── revenue.csv
         ├── expenditure.csv
         ├── sources.json
+        ├── extractions.json
         └── provenance.json
 
 research/
@@ -302,7 +306,7 @@ Each country-year records at least:
 
 - country code and English display name;
 - reference year;
-- accounting basis (`ESA 2010`), sector (`S.13`), consolidation scope, currency, and amount unit;
+- accounting basis (`ESA 2010 accrual`), sector (`S.13`), consolidation scope, currency, and amount unit;
 - dataset-bundle identifier and collection date;
 - publication status (`final`, `provisional`, `estimate`, `forecast`, or `mixed`);
 - headline revenue and expenditure provenance IDs;
@@ -332,6 +336,8 @@ Revenue and expenditure use identical columns:
 | `quality` | enum or empty | conditional | `final` \| `provisional` \| `estimate` \| `forecast`; required for available values and empty otherwise. |
 | `value_kind` | enum or empty | conditional | `reported` \| `derived`; required for available values and empty otherwise. |
 | `mapping` | enum | yes | `direct` \| `mapped`; independent of whether an available value is reported or derived. |
+| `children_coverage` | enum | yes | `none` \| `partial` \| `exhaustive`; declares whether this row has no additive breakdown, an incomplete one, or a reconciling one. |
+| `is_residual` | boolean | yes | Marks an explicit derived residual; `true` is never permitted to hide an incompatible hierarchy. |
 | `provenance_id` | id | yes | Entry in `provenance.json`; derived entries can reference multiple input provenance IDs. |
 | `notes` | string | no | Row-specific caveat not already captured in provenance. |
 
@@ -339,26 +345,30 @@ Stable IDs do not by themselves prove year-over-year comparability. When a defin
 classification changes, the research run must either map the break explicitly or issue a new ID
 and record the relationship.
 
-### Sources and provenance
+### Sources, extractions, and provenance
 
 `sources.json` de-duplicates source identity and reuse terms. A source record includes institution,
 publication/dataset title, canonical landing page, licence name and URL, and required attribution.
 Do not apply a blanket licence to all data: Eurostat and Destatis materials can have different
 reuse terms, and any additional source must be checked independently.
 
-Each `provenance.json` entry records:
+`extractions.json` de-duplicates retrieval work. One extraction can support many observations—for
+example, a single Eurostat response containing all ten COFOG divisions. An extraction records:
 
 - source ID and dataset/table/publication identifier;
-- exact dimensions, filters, table coordinates, or API query;
+- exact filters or API query;
 - reference period, sector, accounting basis, unit, and consolidation status;
-- release/publication date, retrieval timestamp, and official observation-status flags;
-- raw value and displayed value;
-- value kind, mapping decision, formula, rounding increment, and sign convention;
-- input provenance IDs for a derived value;
-- value-source and description-source references;
+- release/publication date and retrieval timestamp;
 - evidence file path and SHA-256 checksum when an artifact is stored;
-- caveats; and
-- collection and independent-review status.
+- applicable caveats; and
+- collection status.
+
+Each reported `provenance.json` entry references an extraction and records the exact observation
+coordinates within it, raw and displayed values, official status flags, mapping decision,
+rounding increment, sign convention, description-source references, and review status. Multiple
+rows may therefore share the costly query/evidence record while remaining independently
+traceable. A derived provenance entry instead records its formula, input provenance IDs, rounding
+rule, displayed value, caveats, and review status.
 
 ### Hierarchy rules
 
@@ -391,6 +401,7 @@ official revision is published.
 docs/research/
 ├── RESEARCH_LEARNINGS.md
 ├── SOURCE_CATALOG.md
+├── PRIOR_ART.md
 ├── COLLECTION_PLAYBOOK.md
 ├── RESEARCH_PROMPT.md
 └── logs/
@@ -402,6 +413,9 @@ docs/research/
   decisions were made, with links to the authoritative sources that established them.
 - `SOURCE_CATALOG.md` records the current official datasets, table/API coordinates, release
   cadence, status conventions, licence, and known access quirks.
+- `PRIOR_ART.md` is a dated review of comparable public-finance products and presentation ideas.
+  It records when each product was last checked so a stale availability claim does not become a
+  permanent project premise.
 - `COLLECTION_PLAYBOOK.md` gives the exact collection, transformation, validation, and review
   sequence.
 - `RESEARCH_PROMPT.md` is a paste-ready prompt that binds the next AI run to the accounting and
@@ -410,7 +424,9 @@ docs/research/
   unresolved questions, and files produced.
 
 Stable knowledge belongs in `RESEARCH_LEARNINGS.md`; observations likely to become stale belong in
-the source catalog or dated log. Every research run updates these documents before it is complete.
+the source catalog, prior-art review, or dated log. Historical plan text and git history may supply
+research leads, but no old assertion enters the catalog as verified without checking the current
+official source. Every research run updates these documents before it is complete.
 
 ### Research sequence
 
@@ -560,8 +576,8 @@ The validator rejects a dataset unless all of these pass:
    most four.
 3. Availability and amount agree; all available amounts are finite; zero and signed observations
    follow the schema rules.
-4. Every row points to a valid provenance entry, and every provenance entry points to a known
-   source with licence and attribution data.
+4. Every row points to a valid provenance entry; each reported provenance entry resolves through
+   a valid extraction to a known source with licence and attribution data.
 5. Top-level revenue IDs and COFOG IDs match the accounting contract exactly.
 6. Every derived value lists inputs and a formula; recalculation reproduces the stored value
    within the source-rounding bound.
@@ -602,18 +618,27 @@ Before locking the main visual form, ask several English-speaking non-experts to
 
 If chart novelty competes with correct answers, keep the simpler presentation.
 
+For this solo open-source project, “several” means a lightweight round with roughly three to five
+people, informal observation, and written notes—not formal recruitment or a statistically powered
+study. Repeat it when the main explanatory or interaction model changes, not for every cosmetic
+iteration.
+
 ---
 
 ## 8. Delivery plan
 
 Each phase has an evidence-based exit condition. The order is deliberate; visual polish must not
-outrun the accounting and provenance foundation.
+outrun the accounting and provenance foundation. Phase 0 uses only a bounded source preflight and
+small sample. Do not start the full Germany research run until the source/extraction/provenance
+schemas and validator skeleton exist; otherwise the research report will outrun the
+machine-readable contract it is supposed to populate.
 
 ### Phase 0 — Resolve the data and explanation shape
 
 - Confirm the first Germany reference year and current status through a focused source preflight.
 - Create a small real top-level dataset and one detailed branch from each side.
 - Prototype the summary plus side-by-side ranked bars on desktop.
+- Compare it with at least one more expressive but accounting-safe composition.
 - Test the accounting explanation and non-earmarking message with representative readers.
 - Use a small internal second-country or synthetic fixture only to expose Germany-specific schema
   assumptions; do not make cross-country comparison part of the public scope.
@@ -624,7 +649,8 @@ understood without a guided explanation.
 ### Phase 1 — Build the research and data foundation
 
 - Write `docs/DATA_SCHEMA.md`, `docs/METHODOLOGY.md`, and all durable research-memory documents.
-- Implement source/provenance schemas, the Eurostat import helper, evidence manifest, and validator.
+- Implement source/extraction/provenance schemas, the Eurostat import helper, evidence manifest,
+  and validator.
 - Run the long research process for Germany and collect the deepest compatible detail available.
 - Complete the independent verification pass and source-specific licensing record.
 
@@ -697,8 +723,8 @@ Possible follow-up work, separately planned:
 - Desktop and mobile layouts pass the defined browser and accessibility checks.
 - Loading, error, invalid-route, missing-detail, and no-JavaScript states are intentional.
 - Validation, unit tests, static generation, build, and browser smoke checks pass in CI.
-- Methodology, data schema, source licences, research playbook, prompt, source catalog, dated log,
-  and `RESEARCH_LEARNINGS.md` are present and current.
+- Methodology, data schema, source licences, research playbook, prompt, source catalog, dated
+  prior-art review, research log, and `RESEARCH_LEARNINGS.md` are present and current.
 - The deployed application performs no tracking and requires no backend.
 
 ---

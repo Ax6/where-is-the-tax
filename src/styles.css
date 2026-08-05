@@ -1,0 +1,28 @@
+:root {
+  color: #172019;
+  background: #f4f1e8;
+  font-family: Georgia, "Times New Roman", serif;
+  font-synthesis: none;
+}
+
+body {
+  margin: 0;
+}
+
+main {
+  box-sizing: border-box;
+  max-width: 52rem;
+  min-height: 100vh;
+  padding: clamp(2rem, 8vw, 7rem) clamp(1.25rem, 6vw, 5rem);
+}
+
+h1 {
+  margin: 0 0 1rem;
+  font-size: clamp(2.5rem, 8vw, 5.5rem);
+  line-height: 0.95;
+}
+
+p {
+  max-width: 38rem;
+  font: 1.125rem/1.55 system-ui, sans-serif;
+}

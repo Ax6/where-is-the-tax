@@ -1,0 +1,52 @@
+[
+  {
+    "id": "x_fixture_revenue",
+    "source_id": "s_fixture_revenue",
+    "dataset_id": "fixture_main",
+    "query": {
+      "geo": "DE",
+      "time": "2024",
+      "sector": "S13",
+      "unit": "MIO_EUR",
+      "na_item": ["TR", "D2", "D5", "D61", "D91"]
+    },
+    "context": {
+      "reference_period": "2024",
+      "sector": "S.13",
+      "accounting_basis": "ESA 2010 accrual",
+      "unit": "million EUR",
+      "consolidation": "consolidated general government",
+      "vintage": "synthetic-v1"
+    },
+    "release_date": "2026-01-01",
+    "retrieved_at": "2026-01-01T00:00:00Z",
+    "evidence": null,
+    "caveats": ["Synthetic response; no external retrieval occurred."],
+    "collection_status": "checked"
+  },
+  {
+    "id": "x_fixture_expenditure",
+    "source_id": "s_fixture_expenditure",
+    "dataset_id": "fixture_cofog",
+    "query": {
+      "geo": "DE",
+      "time": "2024",
+      "sector": "S13",
+      "unit": "MIO_EUR",
+      "cofog": ["TOTAL", "GF01", "GF02", "GF03", "GF04", "GF05", "GF06", "GF07", "GF08", "GF09", "GF10"]
+    },
+    "context": {
+      "reference_period": "2024",
+      "sector": "S.13",
+      "accounting_basis": "ESA 2010 accrual",
+      "unit": "million EUR",
+      "consolidation": "consolidated general government",
+      "vintage": "synthetic-v1"
+    },
+    "release_date": "2026-01-01",
+    "retrieved_at": "2026-01-01T00:00:00Z",
+    "evidence": null,
+    "caveats": ["Synthetic response; no external retrieval occurred."],
+    "collection_status": "checked"
+  }
+]

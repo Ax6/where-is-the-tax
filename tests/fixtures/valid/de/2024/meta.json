@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "dataset_bundle_id": "synthetic-de-2024-v1",
+  "dataset_purpose": "synthetic_test_fixture",
+  "country_code": "de",
+  "country_name": "Germany (synthetic fixture)",
+  "reference_year": 2024,
+  "accounting_basis": "ESA 2010 accrual",
+  "sector": "S.13",
+  "consolidation": "consolidated general government",
+  "currency": "EUR",
+  "amount_unit": "million EUR",
+  "collection_date": "2026-01-01",
+  "publication_status": "final",
+  "headline": {
+    "revenue_provenance_id": "p_total_revenue",
+    "expenditure_provenance_id": "p_total_expenditure",
+    "balance_provenance_id": "p_balance"
+  },
+  "population": null,
+  "gdp": null,
+  "quality_notes": [
+    "All amounts and source records are invented to test the data contract."
+  ],
+  "known_omissions": [
+    "The fixture intentionally has no drill-down children."
+  ],
+  "expected_revision_window": null,
+  "last_reviewed": "2026-01-01"
+}
