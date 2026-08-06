@@ -239,6 +239,7 @@ export const taxonomy: TaxGroup[] = [
         description:
           "The biggest paycheck deduction after wage tax. Goes to the pension system, not into any government budget — the systems also receive federal grants.",
         sources: [sgb4],
+        routeId: "social",
       },
       {
         id: "health_care_unemployment",
@@ -248,6 +249,7 @@ export const taxonomy: TaxGroup[] = [
         description:
           "Contributions assigned to the statutory health funds, long-term care insurance, and the Federal Employment Agency.",
         sources: [sgb4],
+        routeId: "social",
       },
     ],
   },

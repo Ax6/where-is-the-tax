@@ -1,0 +1,290 @@
+{
+  "schema_version": 1,
+  "reference_year": 2021,
+  "unit": "million EUR",
+  "measure": "Bereinigte Ausgaben (adjusted expenditure), Land + municipalities combined, core and extra budgets",
+  "source": {
+    "label": "Destatis Statistischer Bericht, Rechnungsergebnisse des Öffentlichen Gesamthaushalts 2021 (table 71711-12)",
+    "url": "https://www.destatis.de/DE/Themen/Staat/Oeffentliche-Finanzen/Ausgaben-Einnahmen/Publikationen/Downloads-Ausgaben-und-Einnahmen/statistischer-bericht-rechnungsergebnis-oeffentlicher-haushalt-2140310217015.xlsx?__blob=publicationFile"
+  },
+  "method": "Machine-readable sheet csv-71711-12; groups 0–8 plus the Versorgung carve-out tile each total exactly; 2021 is the newest published edition of this comparable-across-Länder series. Collected and cross-checked 2026-08-06.",
+  "caveats": [
+    "Versorgung (V, civil-servant pensions) is a Destatis carve-out spanning functions in groups 0 and 1 and cannot be split back.",
+    "Includes off-budget entities (Extrahaushalte); larger than core budget documents. Group 8 is inflated for equalisation donors/recipients.",
+    "Not directly comparable to the 2024 core-budget accounts (different year and scope)."
+  ],
+  "laender": [
+    {
+      "code": "BW",
+      "total_meur": 85144.4,
+      "groups": {
+        "0": 15204.7,
+        "1": 20186.6,
+        "2": 13948.4,
+        "3": 4735.9,
+        "4": 2162.8,
+        "5": 918.1,
+        "6": 8608.5,
+        "7": 5132.4,
+        "8": 5425.2,
+        "V": 8821.8
+      }
+    },
+    {
+      "code": "BY",
+      "total_meur": 106865.8,
+      "groups": {
+        "0": 15915.5,
+        "1": 24483,
+        "2": 21752.3,
+        "3": 7626.9,
+        "4": 4458.5,
+        "5": 1340.1,
+        "6": 11612.9,
+        "7": 7186.7,
+        "8": 3788,
+        "V": 8702
+      }
+    },
+    {
+      "code": "BE",
+      "total_meur": 40416.7,
+      "groups": {
+        "0": 6118.7,
+        "1": 9382,
+        "2": 9654.9,
+        "3": 1981.7,
+        "4": 669.6,
+        "5": 29.9,
+        "6": 6226.9,
+        "7": 2107.5,
+        "8": 1424.7,
+        "V": 2820.8
+      }
+    },
+    {
+      "code": "BB",
+      "total_meur": 21988.6,
+      "groups": {
+        "0": 4060.5,
+        "1": 3841,
+        "2": 5364.5,
+        "3": 1074,
+        "4": 571.2,
+        "5": 586.4,
+        "6": 1670.6,
+        "7": 2039.9,
+        "8": 2208.9,
+        "V": 571.8
+      }
+    },
+    {
+      "code": "HB",
+      "total_meur": 8335,
+      "groups": {
+        "0": 1173.2,
+        "1": 1736.2,
+        "2": 1887.1,
+        "3": 442,
+        "4": 68.9,
+        "5": 3.8,
+        "6": 872.8,
+        "7": 220.7,
+        "8": 1296.4,
+        "V": 633.9
+      }
+    },
+    {
+      "code": "HH",
+      "total_meur": 25093.1,
+      "groups": {
+        "0": 3177.9,
+        "1": 5288.8,
+        "2": 5274.3,
+        "3": 835.8,
+        "4": 708.3,
+        "5": 26.2,
+        "6": 2804.4,
+        "7": 2397.9,
+        "8": 2679,
+        "V": 1900.3
+      }
+    },
+    {
+      "code": "HE",
+      "total_meur": 55380,
+      "groups": {
+        "0": 9603.3,
+        "1": 11233.8,
+        "2": 11935,
+        "3": 2918.2,
+        "4": 1697.8,
+        "5": 610.7,
+        "6": 4757.3,
+        "7": 3026.5,
+        "8": 5334.8,
+        "V": 4262.5
+      }
+    },
+    {
+      "code": "MV",
+      "total_meur": 12672.2,
+      "groups": {
+        "0": 2364.1,
+        "1": 2414.7,
+        "2": 3028.5,
+        "3": 604.4,
+        "4": 596.8,
+        "5": 392.2,
+        "6": 1502.7,
+        "7": 653.9,
+        "8": 855.8,
+        "V": 259.1
+      }
+    },
+    {
+      "code": "NI",
+      "total_meur": 60503.3,
+      "groups": {
+        "0": 10753.1,
+        "1": 13586.7,
+        "2": 13932.9,
+        "3": 2302.2,
+        "4": 2178.8,
+        "5": 464.5,
+        "6": 2134.9,
+        "7": 2438.4,
+        "8": 7375.9,
+        "V": 5335.9
+      }
+    },
+    {
+      "code": "NW",
+      "total_meur": 148500.2,
+      "groups": {
+        "0": 29406.1,
+        "1": 32755,
+        "2": 39819.2,
+        "3": 4687.7,
+        "4": 3495.3,
+        "5": 748.3,
+        "6": 11896,
+        "7": 6143.7,
+        "8": 7284.9,
+        "V": 12264
+      }
+    },
+    {
+      "code": "RP",
+      "total_meur": 29118.4,
+      "groups": {
+        "0": 5322.4,
+        "1": 6018.6,
+        "2": 6538.6,
+        "3": 1337.8,
+        "4": 936.7,
+        "5": 526.1,
+        "6": 1746.4,
+        "7": 2414.2,
+        "8": 1349.3,
+        "V": 2928.3
+      }
+    },
+    {
+      "code": "SL",
+      "total_meur": 7213.9,
+      "groups": {
+        "0": 1090.4,
+        "1": 1542,
+        "2": 1591,
+        "3": 300,
+        "4": 346.2,
+        "5": 46.9,
+        "6": 507.9,
+        "7": 421.6,
+        "8": 591.3,
+        "V": 776.6
+      }
+    },
+    {
+      "code": "SN",
+      "total_meur": 30157.5,
+      "groups": {
+        "0": 5587,
+        "1": 8602,
+        "2": 7430.1,
+        "3": 1362.1,
+        "4": 1261,
+        "5": 581.3,
+        "6": 2427.2,
+        "7": 1865.9,
+        "8": 377.5,
+        "V": 663.4
+      }
+    },
+    {
+      "code": "ST",
+      "total_meur": 17904.1,
+      "groups": {
+        "0": 4465.3,
+        "1": 3825.4,
+        "2": 4597.9,
+        "3": 735.9,
+        "4": 462,
+        "5": 276.2,
+        "6": 1161,
+        "7": 1054.7,
+        "8": 814.1,
+        "V": 511.6
+      }
+    },
+    {
+      "code": "SH",
+      "total_meur": 22725.1,
+      "groups": {
+        "0": 5413.4,
+        "1": 4308.6,
+        "2": 5591.3,
+        "3": 1128.6,
+        "4": 684.7,
+        "5": 117.5,
+        "6": 1379.5,
+        "7": 1340.5,
+        "8": 882.1,
+        "V": 1878.9
+      }
+    },
+    {
+      "code": "TH",
+      "total_meur": 15821.9,
+      "groups": {
+        "0": 2608.2,
+        "1": 4114.6,
+        "2": 3522.8,
+        "3": 1008.7,
+        "4": 591,
+        "5": 301.3,
+        "6": 1468.6,
+        "7": 1102.7,
+        "8": 615.4,
+        "V": 488.6
+      }
+    },
+    {
+      "code": "DE_LAENDER",
+      "total_meur": 686643,
+      "groups": {
+        "0": 121857.7,
+        "1": 153111.6,
+        "2": 155801.2,
+        "3": 33064.8,
+        "4": 20886.4,
+        "5": 6956.4,
+        "6": 60768.2,
+        "7": 39514.2,
+        "8": 42305.7,
+        "V": 52376.9
+      }
+    }
+  ]
+}

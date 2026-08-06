@@ -8,6 +8,8 @@
 
 import { getLandFigures, landFigures, VAT_LAENDER_POOL_MEUR, VAT_TOTAL_MEUR } from "./equalisation.ts";
 import { BERLIN, GERMANY, type Place } from "./places.ts";
+import taxesByLand from "../../data/de/2024/taxes-by-land.json" with { type: "json" };
+import socialInsurance from "../../data/de/2024/accounts/social-insurance.json" with { type: "json" };
 
 export type EdgeKind =
   | "exclusive_assignment"
@@ -192,6 +194,10 @@ const betrKV2: SourceRef = {
 };
 
 export { artikel106, artikel107, berlinTaxAccount2024, bmfDec2024, gemFinRef7, ustg12 };
+
+function formatBn(meur: number): string {
+  return meur >= 1000 ? `€${(meur / 1000).toFixed(meur >= 100000 ? 0 : meur >= 10000 ? 1 : 2)}bn` : `€${Math.round(meur)}m`;
+}
 
 const pendingVerification =
   "Independently reproduced from official sources on 2026-08-05; the fully provenanced production dataset is still in progress.";
@@ -663,8 +669,7 @@ const vatBerlin: Route = {
     },
 };
 
-const berlinOnlyRoutes: Route[] = [
-  {
+const tradeBerlin: Route = {
     id: "trade",
     chipTitle: "A business pays trade tax",
     chipNote: "Gewerbesteuer",
@@ -798,8 +803,9 @@ const berlinOnlyRoutes: Route[] = [
       body: berlinBoundaryBody,
       examples: berlinBoundaryExamples,
     },
-  },
-  {
+};
+
+const housingBerlin: Route = {
     id: "housing",
     chipTitle: "You own or rent a home",
     chipNote: "Grundsteuer · Grunderwerbsteuer",
@@ -930,8 +936,7 @@ const berlinOnlyRoutes: Route[] = [
       body: berlinBoundaryBody,
       examples: berlinBoundaryExamples,
     },
-  },
-];
+};
 
 function buildWageRoute(place: Place): Route {
   if (place.national) {
@@ -942,7 +947,7 @@ function buildWageRoute(place: Place): Route {
   }
 
   const name = place.name;
-  const municipalTargetId = place.cityState ? "land_budget" : "municipal_budget";
+  const municipalTargetId = place.municipalMerged ? "land_budget" : "municipal_budget";
   const nodes: RouteNode[] = [
     {
       id: "event",
@@ -993,9 +998,9 @@ function buildWageRoute(place: Place): Route {
       id: "share_municipal",
       stage: 2,
       label: "Municipalities 15%",
-      entity: place.cityState ? "berlin" : "municipalities",
+      entity: place.municipalMerged ? "berlin" : "municipalities",
       role: "share",
-      description: place.cityState
+      description: place.municipalMerged
         ? `The municipal share is distributed by a statutory key based on residents' income-tax contributions, with a cap. ${name} counts as a municipality here too.`
         : "The municipal share is distributed among municipalities by a statutory key based on residents' income-tax contributions, with a cap.",
       status: "exact_statute",
@@ -1026,7 +1031,7 @@ function buildWageRoute(place: Place): Route {
       sources: [artikel106, bho8],
     },
   ];
-  if (!place.cityState) {
+  if (!place.municipalMerged) {
     nodes.push({
       id: "municipal_budget",
       stage: 3,
@@ -1598,8 +1603,489 @@ function buildVatRoute(place: Place): Route {
   };
 }
 
+interface LandTaxes {
+  code: string;
+  gross_trade_tax_meur: number;
+  trade_tax_levy_meur: number;
+  property_tax_meur: number;
+  transfer_tax_meur: number;
+}
+
+const landTaxRows = taxesByLand.laender as LandTaxes[];
+
+function getLandTaxes(code: string): LandTaxes | undefined {
+  return landTaxRows.find((row) => row.code === code);
+}
+
+const genesis71211: SourceRef = {
+  label: "Destatis GENESIS statistic 71211 (2024 cash results)",
+  url: "https://genesis.destatis.de/datenbank/online/statistic/71211/details",
+};
+
+const levySplitCaveats = [
+  "Federal and Land components are derived from the statutory multipliers (14.5 and 20.5 of 35, §6 GemFinRefG); the cash-year levy includes quarterly-payment and prior-year settlement timing.",
+  pendingVerification,
+];
+
+const genericSpendBoundary = (heading: string) => ({
+  heading,
+  body: [
+    "By law, all revenue pays for all spending (except for explicit legal earmarks). From here on, this tax cannot be tracked separately.",
+    "The panel shows what the recipient budget spent as a whole, from its audited or standardized accounts.",
+  ],
+  examples: berlinBoundaryExamples,
+});
+
+function buildTradeRoute(place: Place): Route {
+  if (place.code === BERLIN.code) {
+    return tradeBerlin;
+  }
+  const national = place.national === true;
+  const rows = national ? landTaxRows : landTaxRows.filter((row) => row.code === place.code);
+  const gross = rows.reduce((sum, row) => sum + row.gross_trade_tax_meur, 0);
+  const levy = rows.reduce((sum, row) => sum + row.trade_tax_levy_meur, 0);
+  const net = gross - levy;
+  const fedComponent = (levy * 14.5) / 35;
+  const landComponent = (levy * 20.5) / 35;
+  const name = national ? "Germany" : place.name;
+  const munisLabel = national ? "Municipalities" : place.municipalMerged ? `${name} budget` : `Municipalities in ${name}`;
+  const landLabel = national ? "The 16 Länder" : `${name} budget`;
+  const mergedCity = !national && place.municipalMerged;
+
+  const nodes: RouteNode[] = [
+    {
+      id: "event",
+      stage: 0,
+      label: national ? "Businesses across Germany" : `A business operates in ${name}`,
+      entity: "neutral",
+      role: "event",
+      description: national
+        ? "Businesses pay trade tax on their profits to the municipality where they operate; each municipality sets its own assessment rate."
+        : `Businesses in ${name} pay trade tax on their profits to their municipality, at that municipality's assessment rate.`,
+      status: "calculated_official",
+      sources: [genesis71211],
+      caveats: [pendingVerification],
+    },
+    {
+      id: "gewerbesteuer",
+      stage: 1,
+      label: "Trade tax",
+      official: "Gewerbesteuer",
+      entity: "neutral",
+      role: "tax",
+      description:
+        "The main municipal tax, on business profits. A statutory levy passes a fixed component up to the Federation and the Land.",
+      amountNote: `${name} 2024 gross: ${formatBn(gross)}.`,
+      status: "calculated_official",
+      sources: [genesis71211, gemFinRef6],
+      caveats: [pendingVerification],
+    },
+    {
+      id: mergedCity ? "land_budget" : "municipal_budgets",
+      stage: 2,
+      label: munisLabel,
+      official: mergedCity ? "Land + municipality" : undefined,
+      entity: mergedCity ? "berlin" : "municipalities",
+      role: "recipient",
+      description: mergedCity
+        ? `${name} is a Land and a municipality at once, so it keeps the municipal share — and the Land component of the levy stays in town too.`
+        : national
+          ? "Municipalities keep trade tax net of the statutory levy — it is their most important own tax."
+          : `The municipalities of ${name} keep trade tax net of the statutory levy — their most important own tax.`,
+      status: "calculated_official",
+      sources: [genesis71211, gemFinRef6],
+      caveats: [pendingVerification],
+    },
+    {
+      id: "federal_budget",
+      stage: 2,
+      label: "Federal budget",
+      entity: "federation",
+      role: "recipient",
+      description: "The federal component of the trade-tax levy (14.5 of the 35 multiplier).",
+      status: "calculated_official",
+      sources: [gemFinRef6],
+      caveats: levySplitCaveats,
+    },
+  ];
+  if (!mergedCity) {
+    nodes.splice(3, 0, {
+      id: "land_budget",
+      stage: 2,
+      label: landLabel,
+      entity: national ? "laender" : "berlin",
+      role: "recipient",
+      description: national
+        ? "The Land component of the levy (20.5 of the 35 multiplier) flows to each Land."
+        : `The Land component of the levy (20.5 of the 35 multiplier) flows to ${name}'s budget.`,
+      status: "calculated_official",
+      sources: [gemFinRef6],
+      caveats: levySplitCaveats,
+    });
+  }
+
+  const edges: RouteEdge[] = [
+    {
+      id: "event-trade",
+      from: "event",
+      to: "gewerbesteuer",
+      weight: gross,
+      kind: "exclusive_assignment",
+      status: "calculated_official",
+      shareLabel: `${formatBn(gross)} gross (2024)`,
+      description: national
+        ? "Gross trade tax collected by all German municipalities in 2024."
+        : `Gross trade tax collected in ${name} in 2024.`,
+      sources: [genesis71211],
+      caveats: [pendingVerification],
+    },
+    {
+      id: "trade-munis",
+      from: "gewerbesteuer",
+      to: mergedCity ? "land_budget" : "municipal_budgets",
+      weight: net,
+      kind: "exclusive_assignment",
+      status: "calculated_official",
+      shareLabel: "net of the levy",
+      description: "Gross trade tax minus the full statutory levy (35 multiplier: 14.5 federal + 20.5 Land, §6 GemFinRefG).",
+      sources: [genesis71211, gemFinRef6],
+      caveats: [pendingVerification],
+    },
+    {
+      id: "trade-federation",
+      from: "gewerbesteuer",
+      to: "federal_budget",
+      weight: fedComponent,
+      kind: "fixed_share",
+      status: "calculated_official",
+      shareLabel: "federal levy component",
+      description: `The federal share of the levy: 14.5 of 35, ≈ ${formatBn(fedComponent)} in 2024.`,
+      sources: [gemFinRef6],
+      caveats: levySplitCaveats,
+    },
+    {
+      id: "trade-land",
+      from: "gewerbesteuer",
+      to: "land_budget",
+      weight: landComponent,
+      kind: "fixed_share",
+      status: "calculated_official",
+      shareLabel: mergedCity ? "Land levy component — stays in town" : "Land levy component",
+      description: `The Land share of the levy: 20.5 of 35, ≈ ${formatBn(landComponent)} in 2024.`,
+      sources: [gemFinRef6],
+      caveats: levySplitCaveats,
+    },
+  ];
+
+  return {
+    id: "trade",
+    chipTitle: "A business pays trade tax",
+    chipNote: "Gewerbesteuer",
+    lede: national
+      ? "Trade tax is the municipalities' most important own tax. They keep it net of a statutory levy whose components go to the Länder and the Federation."
+      : `Trade tax stays mostly with ${mergedCity ? name : `the municipalities of ${name}`}; a statutory levy passes fixed components to the Land and the Federation.`,
+    stages: ["The event", "The named tax", "Recipient budgets"],
+    unit: "million_eur",
+    unitNote: `Ribbon widths show observed 2024 amounts (gross trade tax ${formatBn(gross)}).`,
+    brief: {
+      about: national
+        ? "The route of Germany's €75.3bn gross trade tax in 2024."
+        : `The route of ${name}'s ${formatBn(gross)} gross trade tax in 2024.`,
+      takeaway: mergedCity
+        ? `${name} keeps the municipal and Land components; only the federal levy component leaves.`
+        : "Municipalities keep the net; the levy splits 20.5 Land / 14.5 federal.",
+      sources: [genesis71211, gemFinRef6],
+    },
+    placeAware: true,
+    entityLabels: { ...ENTITY_LABELS, berlin: national ? ENTITY_LABELS.berlin : name },
+    nodes,
+    edges,
+    annotations: national
+      ? [{ nodeId: "municipal_budgets", text: "Each municipality sets its own assessment rate — the local levels differ far more than the Land totals shown here." }]
+      : [],
+    boundary: genericSpendBoundary(mergedCity ? `Beyond this line: the ${name} budget` : "Beyond this line: general budgets"),
+  };
+}
+
+function buildHousingRoute(place: Place): Route {
+  if (place.code === BERLIN.code) {
+    return housingBerlin;
+  }
+  const national = place.national === true;
+  const rows = national ? landTaxRows : landTaxRows.filter((row) => row.code === place.code);
+  const property = rows.reduce((sum, row) => sum + row.property_tax_meur, 0);
+  const transfer = rows.reduce((sum, row) => sum + row.transfer_tax_meur, 0);
+  const name = national ? "Germany" : place.name;
+  const mergedCity = !national && place.municipalMerged;
+  const propertyTargetId = mergedCity ? "land_budget" : "municipal_budgets";
+
+  const nodes: RouteNode[] = [
+    {
+      id: "event",
+      stage: 0,
+      label: national ? "Homes across Germany" : `A home in ${name}`,
+      entity: "neutral",
+      role: "event",
+      description:
+        "Owning property means yearly property tax; buying one triggers real-estate transfer tax. Landlords may pass property tax to renters through service charges.",
+      status: "calculated_official",
+      sources: [genesis71211, betrKV2],
+      caveats: [pendingVerification],
+    },
+    {
+      id: "grundsteuer",
+      stage: 1,
+      label: "Property tax",
+      official: "Grundsteuer",
+      entity: "neutral",
+      role: "tax",
+      description: "A municipal tax on real property, paid yearly; commonly reaches renters via the service-charge bill.",
+      amountNote: `${name} 2024: ${formatBn(property)}.`,
+      status: "calculated_official",
+      sources: [genesis71211, betrKV2],
+      caveats: [pendingVerification],
+    },
+    {
+      id: "grunderwerbsteuer",
+      stage: 1,
+      label: "Real-estate transfer tax",
+      official: "Grunderwerbsteuer",
+      entity: "neutral",
+      role: "tax",
+      description: "A Land tax due when property changes hands; each Land sets its own rate.",
+      amountNote: `${name} 2024: ${formatBn(transfer)}.`,
+      status: "calculated_official",
+      sources: [genesis71211],
+      caveats: [pendingVerification],
+    },
+    ...(mergedCity
+      ? []
+      : [
+          {
+            id: "municipal_budgets",
+            stage: 2,
+            label: national ? "Municipalities" : `Municipalities in ${name}`,
+            entity: "municipalities",
+            role: "recipient",
+            description: "Property tax belongs to the municipality in full.",
+            status: "calculated_official",
+            sources: [genesis71211],
+            caveats: [pendingVerification],
+          } satisfies RouteNode,
+        ]),
+    {
+      id: "land_budget",
+      stage: 2,
+      label: national ? "The 16 Länder" : `${name} budget`,
+      official: mergedCity ? "Land + municipality" : undefined,
+      entity: national ? "laender" : "berlin",
+      role: "recipient",
+      description: mergedCity
+        ? `${name} is Land and municipality at once — both housing taxes stay in town.`
+        : "Real-estate transfer tax is a Land tax; it goes to the Land where the property sits.",
+      status: "calculated_official",
+      sources: [genesis71211, lhoBerlin8],
+      caveats: [pendingVerification],
+    },
+  ];
+
+  const edges: RouteEdge[] = [
+    {
+      id: "event-grundsteuer",
+      from: "event",
+      to: "grundsteuer",
+      weight: property,
+      kind: "exclusive_assignment",
+      status: "calculated_official",
+      shareLabel: `${formatBn(property)} (2024)`,
+      description: `Property tax collected in ${name} in 2024 (Grundsteuer A + B).`,
+      sources: [genesis71211],
+      caveats: [pendingVerification],
+    },
+    {
+      id: "event-grunderwerbsteuer",
+      from: "event",
+      to: "grunderwerbsteuer",
+      weight: transfer,
+      kind: "exclusive_assignment",
+      status: "calculated_official",
+      shareLabel: `${formatBn(transfer)} (2024)`,
+      description: `Real-estate transfer tax collected in ${name} in 2024.`,
+      sources: [genesis71211],
+      caveats: [pendingVerification],
+    },
+    {
+      id: "grundsteuer-munis",
+      from: "grundsteuer",
+      to: propertyTargetId,
+      weight: property,
+      kind: "exclusive_assignment",
+      status: "calculated_official",
+      shareLabel: mergedCity ? "100% — stays in town" : "100% to the municipality",
+      description: "Property tax belongs to the municipality in full — no borough or district receives it directly.",
+      sources: [genesis71211],
+      caveats: [pendingVerification],
+    },
+    {
+      id: "grunderwerbsteuer-land",
+      from: "grunderwerbsteuer",
+      to: "land_budget",
+      weight: transfer,
+      kind: "exclusive_assignment",
+      status: "calculated_official",
+      shareLabel: "100% to the Land",
+      description: "Real-estate transfer tax is assigned exclusively to the Länder.",
+      sources: [genesis71211, artikel106],
+      caveats: [pendingVerification],
+    },
+  ];
+
+  return {
+    id: "housing",
+    chipTitle: "You own or rent a home",
+    chipNote: "Grundsteuer · Grunderwerbsteuer",
+    lede: national
+      ? "Housing carries two named taxes: property tax every year (to the municipality) and real-estate transfer tax on purchases (to the Land)."
+      : `Housing in ${name} carries two named taxes: property tax every year and real-estate transfer tax when a home is bought.`,
+    stages: ["The event", "The named taxes", "Recipient budgets"],
+    unit: "million_eur",
+    unitNote: `Ribbon widths show observed 2024 amounts (property tax ${formatBn(property)}; transfer tax ${formatBn(transfer)}).`,
+    brief: {
+      about: national
+        ? "The routes of Germany's €16.1bn property tax and €12.7bn real-estate transfer tax in 2024."
+        : `The routes of ${name}'s housing taxes in 2024.`,
+      takeaway: mergedCity
+        ? `Both housing taxes stay entirely in the ${name} budget.`
+        : "Property tax stays municipal; the transfer tax goes to the Land.",
+      sources: [genesis71211, artikel106],
+    },
+    placeAware: true,
+    entityLabels: { ...ENTITY_LABELS, berlin: national ? ENTITY_LABELS.berlin : name },
+    nodes,
+    edges,
+    annotations: [],
+    boundary: genericSpendBoundary(mergedCity ? `Beyond this line: the ${name} budget` : "Beyond this line: general budgets"),
+  };
+}
+
+interface SocialSystemRow {
+  id: string;
+  name: string;
+  name_de: string;
+  contributions_meur: number;
+  federal_grants_meur: number;
+  expenditure_meur: number;
+  rate: { pct: number; split: string; legal_basis: { label: string; url: string } };
+  source: { label: string; url: string };
+}
+
+const socialSystems = socialInsurance.systems as SocialSystemRow[];
+
+function buildSocialRoute(): Route {
+  const totalContributions = socialSystems.reduce((sum, system) => sum + system.contributions_meur, 0);
+  const nodes: RouteNode[] = [
+    {
+      id: "event",
+      stage: 0,
+      label: "Payroll deductions",
+      entity: "neutral",
+      role: "event",
+      description:
+        "Social contributions are withheld alongside wage tax — split between employee and employer. They are not taxes: each euro is assigned by law to one statutory insurance system.",
+      amountNote: `2024 contributions across the four systems: ${formatBn(totalContributions)}.`,
+      status: "calculated_official",
+      sources: socialSystems.map((system) => system.source),
+      caveats: [pendingVerification],
+    },
+    {
+      id: "federal_grants",
+      stage: 0,
+      label: "Federal budget (grants)",
+      entity: "federation",
+      role: "event",
+      description:
+        "The federal budget adds large tax-financed grants — mainly to the pension system — on top of contributions.",
+      status: "calculated_official",
+      sources: [socialSystems[0]!.source],
+      caveats: [pendingVerification],
+    },
+    ...socialSystems.map(
+      (system): RouteNode => ({
+        id: system.id,
+        stage: 1,
+        label: system.name,
+        official: system.name_de,
+        entity: "neutral",
+        role: "recipient",
+        description: `${system.name}: 2024 contribution rate ${system.rate.pct}% (${system.rate.split}).`,
+        amountNote: `2024 expenditure: ${formatBn(system.expenditure_meur)}.`,
+        status: "calculated_official",
+        sources: [system.source, system.rate.legal_basis],
+        caveats: [pendingVerification],
+      }),
+    ),
+  ];
+  const edges: RouteEdge[] = [
+    ...socialSystems.map(
+      (system): RouteEdge => ({
+        id: `contrib-${system.id}`,
+        from: "event",
+        to: system.id,
+        weight: system.contributions_meur,
+        kind: "exclusive_assignment",
+        status: "calculated_official",
+        shareLabel: `${system.rate.pct}% of gross pay`,
+        description: `Contributions assigned by law to the ${system.name.toLowerCase()} (${system.rate.legal_basis.label}).`,
+        sources: [system.source, system.rate.legal_basis],
+        caveats: [pendingVerification],
+      }),
+    ),
+    ...socialSystems
+      .filter((system) => system.federal_grants_meur > 0)
+      .map(
+        (system): RouteEdge => ({
+          id: `grant-${system.id}`,
+          from: "federal_grants",
+          to: system.id,
+          weight: system.federal_grants_meur,
+          kind: "interbudget_transfer",
+          status: "calculated_official",
+          shareLabel: `${formatBn(system.federal_grants_meur)} federal grants`,
+          description: `Tax-financed federal grants to the ${system.name.toLowerCase()} — federal expenditure on one side, system revenue on the other.`,
+          sources: [system.source],
+          caveats: [pendingVerification],
+        }),
+      ),
+  ];
+  return {
+    id: "social",
+    chipTitle: "You pay social contributions",
+    chipNote: "Rente · Kranken · Pflege · Arbeitslosen",
+    lede: "The biggest paycheck deduction after wage tax. Contributions go straight to four statutory insurance systems — plus large tax-financed federal grants on top.",
+    stages: ["Where the money comes from", "The four systems"],
+    unit: "million_eur",
+    unitNote: "Ribbon widths show 2024 amounts: contributions per system, plus federal grants.",
+    brief: {
+      about: "Where €706bn of 2024 social contributions (plus €102bn federal grants) went, system by system.",
+      takeaway: "Not taxes: each euro is assigned by law to one system. The same place everywhere in Germany.",
+      sources: socialSystems.map((system) => system.source),
+    },
+    placeAware: true,
+    entityLabels: { ...ENTITY_LABELS },
+    nodes,
+    edges,
+    annotations: [
+      {
+        nodeId: "pension",
+        text: "The pension system also receives €27.4bn of health contributions paid on behalf of pensioners — systems transfer money between each other, so their totals must not be summed naively.",
+      },
+    ],
+    boundary: genericSpendBoundary("Beyond this line: the system accounts"),
+  };
+}
+
 export function buildRoutes(place: Place): Route[] {
-  return [buildWageRoute(place), buildVatRoute(place), ...berlinOnlyRoutes];
+  return [buildWageRoute(place), buildVatRoute(place), buildTradeRoute(place), buildHousingRoute(place), buildSocialRoute()];
 }
 
 export const routes: Route[] = buildRoutes(GERMANY);

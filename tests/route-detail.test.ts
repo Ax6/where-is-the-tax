@@ -32,8 +32,16 @@ test("edge detail shows share, mechanism, and open caveats", () => {
   const html = renderEdgeDetail(route, edge, from, to);
   assert.match(html, /Trade tax → Federal budget/);
   assert.match(html, /Fixed statutory share/);
-  assert.match(html, /14\.5 \/ 410 = 3\.5366%/);
-  assert.match(html, /quarterly payments and prior-year settlement/);
+  assert.match(html, /14\.5 of 35/);
+  assert.match(html, /prior-year settlement/);
+
+  const berlin = getPlace("BE");
+  assert(berlin);
+  const berlinTrade = buildRoutes(berlin).find(({ id }) => id === "trade");
+  assert(berlinTrade);
+  const berlinEdge = berlinTrade.edges.find(({ id }) => id === "trade-federation");
+  assert(berlinEdge);
+  assert.match(berlinEdge.description, /14\.5 \/ 410 = 3\.5366%/);
 });
 
 test("the wage route re-parameterises for a non-city-state Land", () => {

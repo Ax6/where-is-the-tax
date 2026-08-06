@@ -1,0 +1,141 @@
+{
+  "schema_version": 1,
+  "reference_year": 2024,
+  "unit": "million EUR",
+  "status": "final cash results",
+  "source": {
+    "label": "Destatis GENESIS 71211 (tables 71211-0101/-0102)",
+    "url": "https://genesis.destatis.de/datenbank/online/statistic/71211/details"
+  },
+  "method": "Public GENESIS JSON endpoint; position codes pinned by exact reproduction of Berlin reference figures; levy identity gross − levy = net verified for all 16 Länder. Property tax = Grundsteuer A + B. Collected and cross-checked 2026-08-06.",
+  "laender": [
+    {
+      "code": "BW",
+      "gross_trade_tax_meur": 10914.694,
+      "trade_tax_levy_meur": 1044.113,
+      "property_tax_meur": 2006.668,
+      "transfer_tax_meur": 1815.638,
+      "land_total_tax_meur": 50110.823
+    },
+    {
+      "code": "BY",
+      "gross_trade_tax_meur": 13274.744,
+      "trade_tax_levy_meur": 1349.305,
+      "property_tax_meur": 2021.538,
+      "transfer_tax_meur": 1745.49,
+      "land_total_tax_meur": 60615.472
+    },
+    {
+      "code": "BE",
+      "gross_trade_tax_meur": 3011.215,
+      "trade_tax_levy_meur": 262.074,
+      "property_tax_meur": 870.447,
+      "transfer_tax_meur": 910.834,
+      "land_total_tax_meur": 23383.392
+    },
+    {
+      "code": "BB",
+      "gross_trade_tax_meur": 1533.806,
+      "trade_tax_levy_meur": 174.288,
+      "property_tax_meur": 303.188,
+      "transfer_tax_meur": 353.777,
+      "land_total_tax_meur": 12365.961
+    },
+    {
+      "code": "HB",
+      "gross_trade_tax_meur": 933.688,
+      "trade_tax_levy_meur": 70.835,
+      "property_tax_meur": 212.279,
+      "transfer_tax_meur": 90.74,
+      "land_total_tax_meur": 4838.023
+    },
+    {
+      "code": "HH",
+      "gross_trade_tax_meur": 3163.894,
+      "trade_tax_levy_meur": 252.929,
+      "property_tax_meur": 500.882,
+      "transfer_tax_meur": 423.074,
+      "land_total_tax_meur": 10434.95
+    },
+    {
+      "code": "HE",
+      "gross_trade_tax_meur": 7579.782,
+      "trade_tax_levy_meur": 630.65,
+      "property_tax_meur": 1458.235,
+      "transfer_tax_meur": 1156.639,
+      "land_total_tax_meur": 28391.874
+    },
+    {
+      "code": "MV",
+      "gross_trade_tax_meur": 870.857,
+      "trade_tax_levy_meur": 80.858,
+      "property_tax_meur": 217.134,
+      "transfer_tax_meur": 198.199,
+      "land_total_tax_meur": 8073.606
+    },
+    {
+      "code": "NI",
+      "gross_trade_tax_meur": 6189.566,
+      "trade_tax_levy_meur": 528.89,
+      "property_tax_meur": 1691.223,
+      "transfer_tax_meur": 1037.946,
+      "land_total_tax_meur": 36351.205
+    },
+    {
+      "code": "NW",
+      "gross_trade_tax_meur": 16980.758,
+      "trade_tax_levy_meur": 1282.349,
+      "property_tax_meur": 4260.133,
+      "transfer_tax_meur": 3010.685,
+      "land_total_tax_meur": 81094.833
+    },
+    {
+      "code": "RP",
+      "gross_trade_tax_meur": 3072.513,
+      "trade_tax_levy_meur": 272.622,
+      "property_tax_meur": 764.397,
+      "transfer_tax_meur": 563.966,
+      "land_total_tax_meur": 19020.734
+    },
+    {
+      "code": "SL",
+      "gross_trade_tax_meur": 621.01,
+      "trade_tax_levy_meur": 49.8,
+      "property_tax_meur": 168.788,
+      "transfer_tax_meur": 136.758,
+      "land_total_tax_meur": 5335.104
+    },
+    {
+      "code": "SN",
+      "gross_trade_tax_meur": 2622.838,
+      "trade_tax_levy_meur": 225.807,
+      "property_tax_meur": 539.323,
+      "transfer_tax_meur": 389.519,
+      "land_total_tax_meur": 19973.046
+    },
+    {
+      "code": "ST",
+      "gross_trade_tax_meur": 1208.902,
+      "trade_tax_levy_meur": 124.688,
+      "property_tax_meur": 280.556,
+      "transfer_tax_meur": 184.482,
+      "land_total_tax_meur": 10633.855
+    },
+    {
+      "code": "SH",
+      "gross_trade_tax_meur": 2240.938,
+      "trade_tax_levy_meur": 199.751,
+      "property_tax_meur": 516.414,
+      "transfer_tax_meur": 586.336,
+      "land_total_tax_meur": 13495.497
+    },
+    {
+      "code": "TH",
+      "gross_trade_tax_meur": 1074.32,
+      "trade_tax_levy_meur": 93.137,
+      "property_tax_meur": 255.272,
+      "transfer_tax_meur": 145.619,
+      "land_total_tax_meur": 10717.702
+    }
+  ]
+}

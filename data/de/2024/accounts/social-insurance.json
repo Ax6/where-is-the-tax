@@ -1,0 +1,210 @@
+{
+  "schema_version": 1,
+  "reference_year": 2024,
+  "unit": "million EUR",
+  "status": "final",
+  "method": "Official annual results of the four statutory systems, collected and cross-checked against the ESA net-social-contributions anchor on 2026-08-06. Inter-system transfers (e.g. pension insurance pays €27.4bn health contributions for pensioners) mean the four systems must not be naively summed.",
+  "systems": [
+    {
+      "id": "pension",
+      "name": "Pension insurance",
+      "name_de": "Deutsche Rentenversicherung (allgemeine RV)",
+      "revenue_meur": 396602,
+      "contributions_meur": 305336,
+      "federal_grants_meur": 87773,
+      "expenditure_meur": 397377,
+      "main_expenditure": [
+        {
+          "label": "Pension payments",
+          "label_de": "Rentenausgaben",
+          "meur": 344351
+        },
+        {
+          "label": "Health-insurance contributions for pensioners",
+          "label_de": "Beiträge/Zuschüsse zur KVdR",
+          "meur": 27366
+        },
+        {
+          "label": "Rehabilitation",
+          "label_de": "Leistungen zur Teilhabe",
+          "meur": 8005
+        },
+        {
+          "label": "Administration",
+          "label_de": "Verwaltungs- und Verfahrenskosten",
+          "meur": 5204
+        }
+      ],
+      "rate": {
+        "pct": 18.6,
+        "split": "9.3% employee / 9.3% employer",
+        "legal_basis": {
+          "label": "§158 SGB VI",
+          "url": "https://www.gesetze-im-internet.de/sgb_6/__158.html"
+        }
+      },
+      "status": "final",
+      "source": {
+        "label": "DRV, Aktuelle Daten 2026 (Stand 22.12.2025)",
+        "url": "https://www.deutsche-rentenversicherung.de/SharedDocs/Downloads/DE/Statistiken-und-Berichte/statistikpublikationen/aktuelle_daten.pdf?__blob=publicationFile"
+      }
+    },
+    {
+      "id": "health",
+      "name": "Health insurance",
+      "name_de": "Gesetzliche Krankenversicherung (GKV)",
+      "revenue_meur": 320839,
+      "contributions_meur": 296999,
+      "federal_grants_meur": 14495,
+      "expenditure_meur": 327409,
+      "main_expenditure": [
+        {
+          "label": "Hospitals",
+          "label_de": "Krankenhausbehandlung",
+          "meur": 102207
+        },
+        {
+          "label": "Medicines",
+          "label_de": "Arzneimittel",
+          "meur": 55162
+        },
+        {
+          "label": "Physicians",
+          "label_de": "Ärztliche Behandlung",
+          "meur": 50261
+        },
+        {
+          "label": "Sickness benefit",
+          "label_de": "Krankengeld",
+          "meur": 20547
+        },
+        {
+          "label": "Dental care",
+          "label_de": "Zahnärztliche Behandlung inkl. Zahnersatz",
+          "meur": 18216
+        },
+        {
+          "label": "Administration",
+          "label_de": "Netto-Verwaltungskosten",
+          "meur": 12630
+        }
+      ],
+      "rate": {
+        "pct": 14.6,
+        "zusatzbeitrag_avg_pct": 1.7,
+        "split": "General rate and the average 1.7% Zusatzbeitrag are each split half/half",
+        "legal_basis": {
+          "label": "§241, §242a SGB V",
+          "url": "https://www.gesetze-im-internet.de/sgb_5/__241.html"
+        }
+      },
+      "status": "final",
+      "caveats": [
+        "Two-tier structure: fund-level contributions (€297.0bn) and the €14.5bn federal grant flow through the Gesundheitsfonds; insurer-level revenue (€320.8bn) is mostly fund allocations — the columns are not additive."
+      ],
+      "source": {
+        "label": "BMG, GKV endgültige Rechnungsergebnisse 2024 (KJ1)",
+        "url": "https://www.bundesgesundheitsministerium.de/fileadmin/Dateien/3_Downloads/Statistiken/GKV/Finanzergebnisse/KJ1_2024_Internetauftritt.pdf"
+      }
+    },
+    {
+      "id": "ltc",
+      "name": "Long-term care insurance",
+      "name_de": "Soziale Pflegeversicherung",
+      "revenue_meur": 66660,
+      "contributions_meur": 65370,
+      "federal_grants_meur": 0,
+      "expenditure_meur": 68200,
+      "main_expenditure": [
+        {
+          "label": "Care allowance (paid to families)",
+          "label_de": "Pflegegeld",
+          "meur": 18640
+        },
+        {
+          "label": "Residential care",
+          "label_de": "Vollstationäre Pflege",
+          "meur": 12840
+        },
+        {
+          "label": "Home-care services",
+          "label_de": "Pflegesachleistung",
+          "meur": 6540
+        },
+        {
+          "label": "Co-payment caps",
+          "label_de": "Eigenanteilsbegrenzung",
+          "meur": 6430
+        },
+        {
+          "label": "Social security for family carers",
+          "label_de": "Soziale Sicherung der Pflegepersonen",
+          "meur": 4100
+        },
+        {
+          "label": "Administration",
+          "label_de": "Verwaltungsausgaben",
+          "meur": 1800
+        }
+      ],
+      "rate": {
+        "pct": 3.4,
+        "childless_surcharge_pct": 0.6,
+        "split": "Employer 1.7% / employee 1.7%; childless surcharge and per-child abatements on the employee share (Saxony differs)",
+        "legal_basis": {
+          "label": "§55 SGB XI",
+          "url": "https://www.gesetze-im-internet.de/sgb_11/__55.html"
+        }
+      },
+      "status": "final",
+      "source": {
+        "label": "BMG, Finanzentwicklung der sozialen Pflegeversicherung (Ist bis 2024)",
+        "url": "https://www.bundesgesundheitsministerium.de/fileadmin/Dateien/3_Downloads/Statistiken/Pflegeversicherung/Finanzentwicklung/03-Finanzentwicklung-der-sozialen-Pflegeversicherung__2024.pdf"
+      }
+    },
+    {
+      "id": "unemployment",
+      "name": "Unemployment insurance",
+      "name_de": "Arbeitslosenversicherung (Bundesagentur für Arbeit)",
+      "revenue_meur": 44609,
+      "contributions_meur": 38090,
+      "federal_grants_meur": 0,
+      "expenditure_meur": 45214,
+      "main_expenditure": [
+        {
+          "label": "Unemployment benefit I",
+          "label_de": "Arbeitslosengeld I",
+          "meur": 22156
+        },
+        {
+          "label": "Active labour-market programmes",
+          "label_de": "Aktive Arbeitsförderung",
+          "meur": 10358
+        },
+        {
+          "label": "Staff & administration",
+          "label_de": "Personal- und Verwaltungsausgaben",
+          "meur": 10898
+        },
+        {
+          "label": "Insolvency benefit",
+          "label_de": "Insolvenzgeld",
+          "meur": 1613
+        }
+      ],
+      "rate": {
+        "pct": 2.6,
+        "split": "1.3% employee / 1.3% employer",
+        "legal_basis": {
+          "label": "§341 SGB III",
+          "url": "https://www.gesetze-im-internet.de/sgb_3/__341.html"
+        }
+      },
+      "status": "final",
+      "source": {
+        "label": "BA, Finanzentwicklung in der Arbeitslosenversicherung — Geschäftsjahr 2024",
+        "url": "https://www.arbeitsagentur.de/datei/2024-bericht-finanzentwicklung-arbeitslosenversicherung_ba052761.pdf"
+      }
+    }
+  ]
+}

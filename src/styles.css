@@ -667,6 +667,18 @@ h1 em {
   background: var(--e-federation);
 }
 
+.spend-seg-land {
+  background: var(--e-laender);
+}
+
+.spend-seg-laender,
+.spend-seg-pension,
+.spend-seg-health,
+.spend-seg-ltc,
+.spend-seg-unemployment {
+  background: var(--e-neutral);
+}
+
 .spend-seg-berlin {
   background: var(--e-berlin);
 }
@@ -728,6 +740,14 @@ h1 em {
 
 .spend-key-federation {
   background: var(--e-federation);
+}
+
+.spend-key-land {
+  background: var(--e-laender);
+}
+
+.spend-key-laender {
+  background: var(--e-neutral);
 }
 
 .spend-key-berlin {

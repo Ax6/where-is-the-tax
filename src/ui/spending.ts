@@ -25,7 +25,15 @@ export interface RouteInflow {
   routeLabel: string;
 }
 
-export type SpendingKey = "federation" | "berlin";
+export type SpendingKey =
+  | "federation"
+  | "berlin"
+  | "land"
+  | "laender"
+  | "pension"
+  | "health"
+  | "ltc"
+  | "unemployment";
 
 export interface SpendingEntry {
   key: SpendingKey;

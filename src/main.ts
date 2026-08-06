@@ -18,6 +18,7 @@ import {
 import { escapeHtml, renderRouteBrief } from "./ui/static-page.ts";
 import federalSpending from "../data/de/2024/accounts/federal-functions.json" with { type: "json" };
 import berlinSpending from "../data/de/2024/accounts/berlin-functions.json" with { type: "json" };
+import { getLandAccount, getLaenderAggregateAccount, getSocialAccount, socialSystemIds } from "./data/accounts.ts";
 
 document.documentElement.classList.add("enhanced");
 
@@ -41,14 +42,23 @@ let currentRoutes: Route[] = buildRoutes(currentPlace);
 let currentRoute: Route | undefined;
 let lastTrigger: Element | null = null;
 let comparisonKey: SpendingKey | null = null;
+let socialKey: SpendingKey = "pension";
 
 boundaryPanel?.addEventListener("change", (event) => {
-  const select = event.target instanceof HTMLSelectElement ? event.target.closest<HTMLSelectElement>("[data-spend-compare]") : null;
-  if (!select || !currentRoute || (select.value !== "berlin" && select.value !== "federation")) {
+  if (!(event.target instanceof HTMLSelectElement) || !currentRoute) {
     return;
   }
-  comparisonKey = select.value;
-  renderBoundary(currentRoute);
+  const compare = event.target.closest<HTMLSelectElement>("[data-spend-compare]");
+  if (compare) {
+    comparisonKey = compare.value as SpendingKey;
+    renderBoundary(currentRoute);
+    return;
+  }
+  const system = event.target.closest<HTMLSelectElement>("[data-spend-system]");
+  if (system) {
+    socialKey = system.value as SpendingKey;
+    renderBoundary(currentRoute);
+  }
 });
 
 if (attributionEl) {
@@ -133,37 +143,69 @@ function renderBoundary(route: Route): void {
       inflow: route.nodes.some((node) => node.id === "federal_budget") ? routeInflow("federal_budget") : undefined,
     },
   ];
+  if (!currentPlace.national && currentPlace.code !== "BE") {
+    const landAccount = getLandAccount(currentPlace.code, currentPlace.name);
+    if (landAccount) {
+      entries.push({ key: "land", shortName: currentPlace.name, account: landAccount });
+      entries.push({ key: "laender", shortName: "All Länder", account: getLaenderAggregateAccount() });
+    }
+  }
+  let systemPicker = "";
+  if (route.id === "social") {
+    for (const system of socialSystemIds) {
+      const account = getSocialAccount(system.id);
+      if (account) {
+        entries.push({ key: system.id as SpendingKey, shortName: system.name, account });
+      }
+    }
+    systemPicker = `<label class="spend-compare-control spend-system-control"><span>System</span><select data-spend-system aria-label="Choose a social-insurance system">${socialSystemIds
+      .map(
+        (system) =>
+          `<option value="${escapeHtml(system.id)}"${system.id === socialKey ? " selected" : ""}>${escapeHtml(system.name)}</option>`,
+      )
+      .join("")}</select></label>`;
+  }
 
-  // The place selected on the left decides which spending account is shown.
-  // Any other loaded recipient budget remains visible as the comparison tick.
-  const defaultKey = currentPlace.national
-    ? entries.some((entry) => entry.key === "federation")
-      ? "federation"
-      : null
-    : entries.some((entry) => entry.key === "berlin")
-      ? "berlin"
-      : entries.some((entry) => entry.key === "federation")
+  // The place selected on the left decides which spending account is shown;
+  // the social route shows its own systems instead of a territorial budget.
+  const defaultKey: SpendingKey | null =
+    route.id === "social"
+      ? socialKey
+      : currentPlace.national
         ? "federation"
-        : null;
+        : currentPlace.code === "BE"
+          ? "berlin"
+          : entries.some((entry) => entry.key === "land")
+            ? "land"
+            : "federation";
   const active = entries.find((entry) => entry.key === defaultKey);
 
   const fallback = `<ul class="boundary-examples" aria-label="What this budget funds as a whole">${route.boundary.examples
     .map((example) => `<li>${escapeHtml(example)}</li>`)
     .join("")}</ul>
-    <p class="boundary-footnote">${escapeHtml(
-      currentPlace.national || currentPlace.code === "BE"
-        ? "This budget's audited function-level actuals are not loaded yet."
-        : `${currentPlace.name}'s audited actuals are not loaded yet — Berlin came first; other Länder follow.`,
-    )}</p>`;
+    <p class="boundary-footnote">This budget's audited function-level actuals are not loaded yet.</p>`;
 
-  const comparisons = active ? entries.filter((entry) => entry.key !== active.key) : [];
+  // Comparisons only against same-vintage accounts — never across years.
+  const comparisons = active
+    ? entries.filter(
+        (entry) =>
+          entry.key !== active.key &&
+          entry.account.reference_year === active.account.reference_year &&
+          !socialSystemIds.some((system) => system.id === entry.key) &&
+          (active.key !== "land" || entry.key === "laender"),
+      )
+    : [];
   const benchmark = comparisons.find((entry) => entry.key === comparisonKey) ?? comparisons[0];
   comparisonKey = benchmark?.key ?? null;
-  const tail =
-    entries.length > 0
-      ? `${active ? renderSpendingPanel(active, benchmark, comparisons) : fallback}
-       <p class="boundary-footnote">Other Länder and municipal accounts follow as their audited actuals are loaded.</p>`
-      : fallback;
+  const tail = active
+    ? `${systemPicker}
+       ${renderSpendingPanel(active, benchmark, comparisons)}
+       <p class="boundary-footnote">${escapeHtml(
+         active.account.reference_year === 2021
+           ? "Shown from the 2021 comparable series — the newest function data published for all Länder. Audited 2024 accounts exist for Berlin and the Federation so far."
+           : "More audited accounts load as they are collected and verified.",
+       )}</p>`
+    : fallback;
   boundaryPanel.innerHTML = `
     <p class="boundary-axis" aria-hidden="true">Tax joins the budget</p>
     ${tail}`;
