@@ -66,20 +66,51 @@ export function renderSpendingChips(entries: SpendingEntry[], activeKey: Spendin
   </div>`;
 }
 
-/** One budget's actual spending by function — the display beyond the boundary. */
-export function renderSpendingPanel(entry: SpendingEntry): string {
-  const max = entry.account.groups[0]?.amount_eur ?? 1;
+/**
+ * One budget's actual spending by function — the display beyond the boundary.
+ * Bars encode the share of this budget; the optional benchmark draws a tick at
+ * the same category's share of the other budget (percent-vs-percent, never €).
+ */
+export function renderSpendingPanel(entry: SpendingEntry, benchmark?: SpendingEntry): string {
+  const shareOf = (group: SpendingGroup, account: SpendingAccount) => (group.amount_eur / account.total_eur) * 100;
+  const benchmarkShares = new Map<string, number>();
+  if (benchmark) {
+    for (const group of benchmark.account.groups) {
+      benchmarkShares.set(group.code, shareOf(group, benchmark.account));
+    }
+  }
+  const scaleMax = Math.max(
+    ...entry.account.groups.map((group) => shareOf(group, entry.account)),
+    ...(benchmark ? [...benchmarkShares.values()] : [0]),
+  );
+  const benchLabel = benchmark?.key === "federation" ? "fed" : (benchmark?.shortName ?? "");
+
   const rows = entry.account.groups
     .map((group) => {
-      const share = (group.amount_eur / entry.account.total_eur) * 100;
+      const share = shareOf(group, entry.account);
+      const bench = benchmarkShares.get(group.code);
+      const tick =
+        bench === undefined
+          ? ""
+          : `<span class="spend-tick spend-tick-${benchmark!.key}" style="left: ${((bench / scaleMax) * 100).toFixed(2)}%" title="${escapeHtml(
+              `${benchmark!.shortName} budget: ${bench.toFixed(bench >= 1 ? 1 : 2)}% of its spending goes here`,
+            )}"></span>`;
+      const benchText =
+        bench === undefined ? "" : ` <em>(${escapeHtml(benchLabel)} ${escapeHtml(bench.toFixed(bench >= 1 ? 1 : 2))}%)</em>`;
       return `
         <li class="spend-row" title="${escapeHtml(`${group.name_de} — ${group.description}`)}">
           <span class="spend-name">${escapeHtml(group.name)}</span>
-          <span class="spend-value">${escapeHtml(euros(group.amount_eur))} · ${escapeHtml(share.toFixed(share >= 1 ? 1 : 2))}%</span>
-          <span class="spend-bar"><span class="spend-seg spend-seg-${entry.key}" style="width: ${((group.amount_eur / max) * 100).toFixed(2)}%"></span></span>
+          <span class="spend-value">${escapeHtml(euros(group.amount_eur))} · ${escapeHtml(share.toFixed(share >= 1 ? 1 : 2))}%${benchText}</span>
+          <span class="spend-bar"><span class="spend-seg spend-seg-${entry.key}" style="width: ${((share / scaleMax) * 100).toFixed(2)}%"></span>${tick}</span>
         </li>`;
     })
     .join("");
+
+  const benchNote = benchmark
+    ? `<p class="spend-benchnote"><span class="spend-tick-sample spend-tick-${benchmark.key}" aria-hidden="true"></span>Marker: the same category's share of the ${escapeHtml(
+        benchmark.shortName,
+      )} budget. The structures differ by design — pensions are federal business, schools are Länder business.</p>`
+    : "";
 
   return `
     <div class="spending-account">
@@ -87,6 +118,7 @@ export function renderSpendingPanel(entry: SpendingEntry): string {
       <p class="spend-total">Whole budget: ${escapeHtml(euros(entry.account.total_eur))} — every euro of revenue paid for this together.</p>
       ${bridgeLine(entry)}
       <ol class="spend-list">${rows}</ol>
+      ${benchNote}
       <p class="spend-footnote">${escapeHtml(entry.account.basis)} ${
         entry.account.unassigned_eur > 0 ? `${escapeHtml(euros(entry.account.unassigned_eur))} carries no function code.` : ""
       } Source: <a href="${escapeHtml(entry.account.source.url)}" rel="noreferrer noopener" target="_blank">${escapeHtml(

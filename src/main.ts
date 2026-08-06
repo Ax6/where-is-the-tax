@@ -163,10 +163,11 @@ function renderBoundary(route: Route): void {
         : `${currentPlace.name}'s audited actuals are not loaded yet — Berlin came first; other Länder follow.`,
     )}</p>`;
 
+  const benchmark = active ? entries.find((entry) => entry.key !== active.key) : undefined;
   const tail =
     entries.length > 0
       ? `${renderSpendingChips(entries, active?.key ?? null)}
-       ${active ? renderSpendingPanel(active) : fallback}
+       ${active ? renderSpendingPanel(active, benchmark) : fallback}
        <p class="boundary-footnote">Other Länder and municipal accounts follow as their audited actuals are loaded.</p>`
       : fallback;
   boundaryPanel.innerHTML = `

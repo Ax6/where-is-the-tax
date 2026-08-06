@@ -56,6 +56,16 @@ test("the Berlin spending account reconciles to the cent, including subgroups", 
   assert(largest && largest.code === "2", "social security should be Berlin's largest block");
 });
 
+test("the benchmark tick compares shares against the other budget, percent only", async () => {
+  const [berlin, federal] = await loadEntries();
+  const html = renderSpendingPanel(berlin!, federal!);
+
+  assert.match(html, /spend-tick spend-tick-federation/);
+  assert.match(html, /\(fed \d+(\.\d+)?%\)/);
+  assert.match(html, /Marker: the same category's share of the Federal budget/);
+  assert.doesNotMatch(html, /fed €/);
+});
+
 test("the panel shows one budget with its bridge, total, and source", async () => {
   const [berlin] = await loadEntries();
   const html = renderSpendingPanel(berlin!);

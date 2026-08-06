@@ -542,11 +542,10 @@ h1 em {
 }
 
 .spend-bar {
-  display: flex;
+  position: relative;
+  display: block;
   grid-column: 1 / -1;
-  gap: 1px;
   height: 0.45rem;
-  overflow: hidden;
   background: rgb(25 32 28 / 0.08);
 }
 
@@ -554,6 +553,41 @@ h1 em {
   display: block;
   height: 100%;
   opacity: 0.8;
+}
+
+.spend-tick {
+  position: absolute;
+  top: -0.14rem;
+  width: 2px;
+  height: 0.73rem;
+}
+
+.spend-tick-federation {
+  background: var(--e-federation);
+}
+
+.spend-tick-berlin {
+  background: var(--e-berlin);
+}
+
+.spend-tick-sample {
+  display: inline-block;
+  width: 2px;
+  height: 0.7rem;
+  margin-right: 0.35rem;
+  vertical-align: -0.12rem;
+}
+
+.spend-value em {
+  color: var(--muted);
+  font-style: normal;
+}
+
+.spend-benchnote {
+  margin: 0 0 0.8rem;
+  color: var(--muted);
+  font-size: 0.66rem !important;
+  line-height: 1.5;
 }
 
 .spend-seg-federation {
