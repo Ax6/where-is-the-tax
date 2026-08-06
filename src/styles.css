@@ -168,22 +168,26 @@ h3 {
 
 .hero {
   display: grid;
-  grid-template-columns: minmax(0, 1.3fr) minmax(16rem, 0.7fr);
+  grid-template-columns: minmax(0, 1fr) minmax(18rem, 34rem);
   column-gap: 4vw;
   align-items: end;
-  padding-block: clamp(2.5rem, 5vw, 4.5rem) clamp(2rem, 4vw, 3.25rem);
+  padding-block: 1.5rem 1.25rem;
 }
 
-.hero .eyebrow,
+.hero .eyebrow {
+  margin-bottom: 0.5rem;
+  grid-column: 1;
+}
+
 .hero h1 {
   grid-column: 1;
 }
 
 h1 {
   margin: 0;
-  font-size: clamp(3rem, 6vw, 5.75rem);
-  letter-spacing: -0.045em;
-  line-height: 0.92;
+  font-size: clamp(1.9rem, 2.6vw, 2.7rem);
+  letter-spacing: -0.03em;
+  line-height: 1;
 }
 
 h1 em {
@@ -195,11 +199,10 @@ h1 em {
   grid-column: 2;
   grid-row: 1 / span 2;
   align-self: end;
-  max-width: 28rem;
   margin: 0;
-  padding-top: 1rem;
-  border-top: 1px solid var(--ink);
-  font: 1.05rem/1.55 var(--serif);
+  color: var(--muted);
+  font-size: 0.82rem;
+  line-height: 1.5;
 }
 
 .section-heading {
@@ -232,25 +235,25 @@ h1 em {
 
 /* ---------- Route + place controls ---------- */
 
-.route-controls {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(13rem, 16rem);
-  gap: clamp(1.5rem, 4vw, 4rem);
+.route-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.25rem clamp(1.5rem, 3vw, 3rem);
   align-items: start;
-  margin-bottom: 2rem;
+  margin-bottom: 1.25rem;
+}
+
+.toolbar-place {
+  min-width: 16rem;
 }
 
 .control-label {
-  margin: 0 0 0.7rem;
+  margin: 0 0 0.5rem;
   color: var(--muted);
   font-family: var(--mono);
   font-size: 0.68rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-}
-
-.route-chips + .control-label {
-  margin-top: 1.5rem;
 }
 
 .land-select-label {
@@ -276,11 +279,6 @@ h1 em {
   background: var(--paper-raise);
   font-size: 0.76rem;
   line-height: 1.5;
-}
-
-.land-map-wrap {
-  justify-self: end;
-  width: 100%;
 }
 
 .land-map-svg {
@@ -326,18 +324,18 @@ h1 em {
 }
 
 .place-stats {
-  max-width: 40rem;
-  margin: 1rem 0 0;
+  max-width: 24rem;
+  margin: 0.6rem 0 0;
   color: var(--muted);
   font-family: var(--mono);
-  font-size: 0.72rem;
-  line-height: 1.6;
+  font-size: 0.66rem;
+  line-height: 1.55;
 }
 
 .map-attribution {
-  margin: 0.5rem 0 0;
+  margin: 0.35rem 0 0;
   color: var(--muted);
-  font-size: 0.62rem;
+  font-size: 0.58rem;
   line-height: 1.4;
 }
 
@@ -349,9 +347,9 @@ h1 em {
 
 .route-chip {
   display: grid;
-  gap: 0.3rem;
-  min-width: 15rem;
-  padding: 0.9rem 1.2rem;
+  gap: 0.2rem;
+  min-width: 11rem;
+  padding: 0.6rem 0.9rem;
   border: 1px solid var(--ink);
   background: transparent;
   color: var(--ink);
@@ -370,7 +368,7 @@ h1 em {
 }
 
 .route-chip-title {
-  font: 600 1.02rem/1.2 Inter, ui-sans-serif, system-ui, sans-serif;
+  font: 600 0.88rem/1.2 Inter, ui-sans-serif, system-ui, sans-serif;
 }
 
 .route-chip-note {
@@ -382,18 +380,18 @@ h1 em {
 }
 
 .route-head h2 {
-  margin: 0 0 0.6rem;
-  font-size: clamp(2.1rem, 4.5vw, 3.75rem);
-  letter-spacing: -0.03em;
-  line-height: 0.95;
+  margin: 0 0 0.35rem;
+  font-size: clamp(1.6rem, 2.2vw, 2.2rem);
+  letter-spacing: -0.02em;
+  line-height: 1;
 }
 
 .route-head p {
-  max-width: 52rem;
-  margin: 0 0 2rem;
+  max-width: 60rem;
+  margin: 0 0 1.1rem;
   color: var(--muted);
-  font-size: 0.95rem;
-  line-height: 1.6;
+  font-size: 0.85rem;
+  line-height: 1.55;
 }
 
 /* ---------- Graph frame & boundary panel ---------- */
@@ -402,13 +400,25 @@ h1 em {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(17rem, 21rem);
   gap: 0;
-  align-items: stretch;
+  align-items: start;
 }
 
 .graph-figure {
   min-width: 0;
+  max-width: 70rem;
   margin: 0;
   padding-right: 1.5rem;
+}
+
+.side-rail {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.map-card {
+  max-width: 14.5rem;
+  justify-self: start;
+  padding-left: 2.25rem;
 }
 
 .fiscal-graph-mount {
@@ -1276,8 +1286,17 @@ dialog form {
     padding-right: 0;
   }
 
-  .boundary-panel {
+  .side-rail {
+    grid-template-columns: minmax(0, 14.5rem) minmax(0, 1fr);
+    gap: 2rem;
     margin-top: 2rem;
+  }
+
+  .map-card {
+    padding-left: 0;
+  }
+
+  .boundary-panel {
     padding: 2.25rem 0 0;
     border-top: 2px dashed var(--ink);
     border-left: 0;
@@ -1304,13 +1323,8 @@ dialog form {
     display: none;
   }
 
-  .route-controls {
+  .side-rail {
     grid-template-columns: 1fr;
-  }
-
-  .land-map-wrap {
-    max-width: 15rem;
-    justify-self: start;
   }
 
   .hero {
@@ -1318,7 +1332,7 @@ dialog form {
   }
 
   .hero-lede {
-    margin-top: 2rem;
+    margin-top: 1rem;
   }
 
   .guardrail-grid,

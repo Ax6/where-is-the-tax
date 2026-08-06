@@ -173,17 +173,19 @@ export function renderStaticPage(routes: Route[], defaultRouteId: string): strin
 
     <section class="hero" id="top" aria-labelledby="page-title">
       <p class="eyebrow">Germany · 2024 routes · all 16 Länder</p>
-      <h1 id="page-title">Every euro you pay<br><em>takes a legal route.</em></h1>
+      <h1 id="page-title">Every euro you pay <em>takes a legal route.</em></h1>
       <p class="hero-lede">Pick something you actually pay and where you live — the map re-splits the wage and VAT routes for your Land. Follow your money through the constitution's splits, the clearing between Länder, and into real budgets, until the law itself says the trail ends.</p>
     </section>
 
     <section class="graph-section" id="graph" aria-labelledby="route-title">
-      <div class="route-controls">
-        <div class="route-controls-main">
+      <div class="route-toolbar">
+        <div class="toolbar-group">
           <p class="control-label">What do you pay?</p>
           <div class="route-chips" role="group" aria-label="Choose a route to follow">
             ${renderChips(routes, defaultRoute.id)}
           </div>
+        </div>
+        <div class="toolbar-group toolbar-place">
           <p class="control-label">Where do you live?</p>
           <label class="land-select-label">Place
             <select id="land-select">
@@ -194,13 +196,9 @@ export function renderStaticPage(routes: Route[], defaultRouteId: string): strin
             </select>
           </label>
           <p class="place-stats" id="place-stats"></p>
-          <p class="place-note" id="place-note" hidden></p>
-        </div>
-        <div class="land-map-wrap">
-          <div id="land-map" class="land-map"></div>
-          <p class="map-attribution" id="map-attribution"></p>
         </div>
       </div>
+      <p class="place-note" id="place-note" hidden></p>
 
       <div class="route-head">
         <h2 id="route-title">${escapeHtml(defaultRoute.chipTitle)}</h2>
@@ -217,8 +215,14 @@ export function renderStaticPage(routes: Route[], defaultRouteId: string): strin
           </div>
           <figcaption id="route-unit-note" class="graph-caption">${escapeHtml(defaultRoute.unitNote)} Hover any node or ribbon for a plain-English explanation; click for sources.</figcaption>
         </figure>
-        <aside class="boundary-panel" id="boundary-panel" aria-label="Beyond the budget boundary">
-          ${renderBoundaryPanel(defaultRoute)}
+        <aside class="side-rail">
+          <div class="map-card">
+            <div id="land-map" class="land-map"></div>
+            <p class="map-attribution" id="map-attribution"></p>
+          </div>
+          <div class="boundary-panel" id="boundary-panel" aria-label="Beyond the budget boundary">
+            ${renderBoundaryPanel(defaultRoute)}
+          </div>
         </aside>
       </div>
 
