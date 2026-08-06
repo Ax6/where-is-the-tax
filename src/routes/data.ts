@@ -72,6 +72,12 @@ export interface BoundaryContext {
   examples: string[];
 }
 
+export interface RouteBrief {
+  about: string;
+  takeaway: string;
+  sources: SourceRef[];
+}
+
 export interface Route {
   id: string;
   chipTitle: string;
@@ -83,6 +89,7 @@ export interface Route {
   /** For share-unit routes: the route's total in € millions, when officially known. */
   routeTotalMeur?: number;
   unitNote: string;
+  brief: RouteBrief;
   /** True when the route re-parameterises for the selected place; false = Berlin example only. */
   placeAware: boolean;
   /** Entity display names for this route (the "berlin" slot carries the selected place's name). */
@@ -213,6 +220,11 @@ const wageBerlin: Route = {
     stages: ["The event", "The named tax", "Who gets it, by law", "Recipient budgets"],
     unit: "share",
     unitNote: "Ribbon widths show the statutory split of one wage-tax euro (Article 106: 42.5 / 42.5 / 15).",
+    brief: {
+      about: "The legal destination of one wage-tax euro withheld from a Berlin resident.",
+      takeaway: "42.5% Federation · 42.5% Berlin · 15% municipalities; Berlin receives both local shares.",
+      sources: [artikel106, zerlegung],
+    },
     placeAware: true,
     entityLabels: { ...ENTITY_LABELS },
     nodes: [
@@ -400,6 +412,11 @@ const vatBerlin: Route = {
     stages: ["The event", "One national pot", "Annual vertical split", "Recipient budgets"],
     unit: "share",
     unitNote: "Ribbon widths show the official 2024 allocation of the national VAT aggregate (€302.1bn).",
+    brief: {
+      about: "Where Germany's €302.1bn 2024 VAT aggregate went, including Berlin's slice.",
+      takeaway: "48.1% Federation · 49.1% Länder · 2.8% municipalities; the Länder pool is then equalised.",
+      sources: [bmfDec2024, bmfEqualisation2024],
+    },
     routeTotalMeur: VAT_TOTAL_MEUR,
     placeAware: true,
     entityLabels: { ...ENTITY_LABELS },
@@ -655,6 +672,11 @@ const berlinOnlyRoutes: Route[] = [
     stages: ["The event", "The named tax", "Recipient budgets"],
     unit: "million_eur",
     unitNote: "Ribbon widths show observed 2024 Berlin amounts (trade tax gross €3.01bn).",
+    brief: {
+      about: "The route taken by Berlin's €3.01bn gross trade-tax receipts in 2024.",
+      takeaway: "Berlin keeps the municipal and Land components; about 3.54% leaves for the Federation.",
+      sources: [berlinTaxAccount2024, gemFinRef6],
+    },
     placeAware: false,
     entityLabels: { ...ENTITY_LABELS },
     nodes: [
@@ -785,6 +807,11 @@ const berlinOnlyRoutes: Route[] = [
     stages: ["The event", "The named taxes", "Recipient budget"],
     unit: "million_eur",
     unitNote: "Ribbon widths show observed 2024 Berlin amounts (property tax €0.87bn; real-estate transfer tax €0.91bn).",
+    brief: {
+      about: "Berlin's 2024 property-tax and real-estate-transfer-tax receipts.",
+      takeaway: "Both stay in Berlin: €870m property tax and €911m transfer tax; renters may bear property tax via service charges.",
+      sources: [berlinTaxAccount2024, betrKV2],
+    },
     placeAware: false,
     entityLabels: { ...ENTITY_LABELS },
     nodes: [
@@ -1103,6 +1130,11 @@ function buildWageRoute(place: Place): Route {
     stages: ["The event", "The named tax", "Who gets it, by law", "Recipient budgets"],
     unit: "share",
     unitNote: "Ribbon widths show the statutory split of one wage-tax euro (Article 106: 42.5 / 42.5 / 15).",
+    brief: {
+      about: `The legal destination of one wage-tax euro withheld from a resident of ${name}.`,
+      takeaway: `42.5% Federation · 42.5% ${name} · 15% municipalities; residence decides the Land share.`,
+      sources: [artikel106, zerlegung],
+    },
     placeAware: true,
     entityLabels: { ...ENTITY_LABELS, berlin: name },
     nodes,
@@ -1133,6 +1165,11 @@ function buildNationalWageRoute(): Route {
     stages: ["The event", "The named tax", "Who gets it, by law", "Recipient budgets"],
     unit: "share",
     unitNote: "Ribbon widths show the statutory split of one wage-tax euro (Article 106: 42.5 / 42.5 / 15).",
+    brief: {
+      about: "The legal destination of one wage-tax euro withheld in Germany.",
+      takeaway: "42.5% Federation · 42.5% Länder · 15% municipalities; the split is identical in every Land.",
+      sources: [artikel106, zerlegung],
+    },
     placeAware: true,
     entityLabels: { ...ENTITY_LABELS },
     nodes: [
@@ -1328,6 +1365,11 @@ function buildNationalVatRoute(): Route {
   return {
     ...vatBerlin,
     lede: "VAT from every purchase goes into one national pot. An annual formula splits it between the Federation, the Länder and municipalities; the Länder part is shared by population, with an equalisation adjustment.",
+    brief: {
+      about: "Where Germany's €302.1bn 2024 VAT aggregate went across all public budgets.",
+      takeaway: "48.1% Federation · 49.1% Länder · 2.8% municipalities; the Länder pool is then equalised.",
+      sources: [bmfDec2024, bmfEqualisation2024],
+    },
     entityLabels: { ...ENTITY_LABELS },
     nodes: [
       ...vatBerlin.nodes
@@ -1530,6 +1572,11 @@ function buildVatRoute(place: Place): Route {
   return {
     ...vatBerlin,
     lede: `VAT paid at a till in ${name} does not stay in ${name}. It joins one national aggregate, is split by an annual formula, and comes back through a population-weighted, equalised pool.`,
+    brief: {
+      about: `Where Germany's €302.1bn 2024 VAT aggregate went, including ${name}'s slice.`,
+      takeaway: "48.1% Federation · 49.1% Länder · 2.8% municipalities; the Länder pool is then equalised.",
+      sources: [bmfDec2024, bmfEqualisation2024],
+    },
     entityLabels: { ...ENTITY_LABELS, berlin: name },
     nodes,
     edges,

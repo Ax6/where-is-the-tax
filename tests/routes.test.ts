@@ -15,6 +15,10 @@ test("the default route exists and every route is well-formed for every checked 
   for (const route of allRouteSets) {
     const ids = route.nodes.map((node) => node.id);
     assert.equal(new Set(ids).size, ids.length, `${route.id}: node ids must be unique`);
+    assert(route.brief.about.trim().length > 0, `${route.id}: route brief needs an about line`);
+    assert(route.brief.takeaway.trim().length > 0, `${route.id}: route brief needs a takeaway`);
+    assert(route.brief.sources.length > 0, `${route.id}: route brief needs a source`);
+    assert(route.brief.sources.every((source) => source.url.startsWith("https://")), `${route.id}: brief sources must be https`);
 
     const maxStage = Math.max(...route.nodes.map((node) => node.stage));
     assert.equal(maxStage, route.stages.length - 1, `${route.id}: stages and node columns must agree`);

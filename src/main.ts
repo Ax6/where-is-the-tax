@@ -9,14 +9,13 @@ import { mapAttribution, renderLandMap } from "./viz/land-map.ts";
 import { hideTooltip } from "./viz/tooltip.ts";
 import { renderEdgeDetail, renderNodeDetail, renderTaxDetail } from "./ui/route-detail.ts";
 import {
-  renderSpendingChips,
   renderSpendingPanel,
   type RouteInflow,
   type SpendingAccount,
   type SpendingEntry,
   type SpendingKey,
 } from "./ui/spending.ts";
-import { escapeHtml } from "./ui/static-page.ts";
+import { escapeHtml, renderRouteBrief } from "./ui/static-page.ts";
 import federalSpending from "../data/de/2024/accounts/federal-functions.json" with { type: "json" };
 import berlinSpending from "../data/de/2024/accounts/berlin-functions.json" with { type: "json" };
 
@@ -24,10 +23,8 @@ document.documentElement.classList.add("enhanced");
 
 const mount = document.querySelector<HTMLElement>("#fiscal-graph-mount");
 const routeTitle = document.querySelector<HTMLElement>("#route-title");
-const routeLede = document.querySelector<HTMLElement>("#route-lede");
-const unitNote = document.querySelector<HTMLElement>("#route-unit-note");
+const routeBrief = document.querySelector<HTMLElement>("#route-brief");
 const boundaryPanel = document.querySelector<HTMLElement>("#boundary-panel");
-const annotationsList = document.querySelector<HTMLElement>("#route-annotations");
 const placeNote = document.querySelector<HTMLElement>("#place-note");
 const landSelect = document.querySelector<HTMLSelectElement>("#land-select");
 const landMapMount = document.querySelector<HTMLElement>("#land-map");
@@ -43,17 +40,14 @@ let currentPlace: Place = GERMANY;
 let currentRoutes: Route[] = buildRoutes(currentPlace);
 let currentRoute: Route | undefined;
 let lastTrigger: Element | null = null;
-let spendingMode: SpendingKey | "auto" = "auto";
+let comparisonKey: SpendingKey | null = null;
 
-boundaryPanel?.addEventListener("click", (event) => {
-  if (!(event.target instanceof Element)) {
+boundaryPanel?.addEventListener("change", (event) => {
+  const select = event.target instanceof HTMLSelectElement ? event.target.closest<HTMLSelectElement>("[data-spend-compare]") : null;
+  if (!select || !currentRoute || (select.value !== "berlin" && select.value !== "federation")) {
     return;
   }
-  const mode = event.target.closest<HTMLElement>("[data-spend-mode]")?.dataset.spendMode;
-  if ((mode !== "berlin" && mode !== "federation") || !currentRoute) {
-    return;
-  }
-  spendingMode = mode;
+  comparisonKey = select.value;
   renderBoundary(currentRoute);
 });
 
@@ -114,7 +108,6 @@ function renderBoundary(route: Route): void {
   if (!boundaryPanel) {
     return;
   }
-  const paragraphs = route.boundary.body.map((paragraph) => `<p>${escapeHtml(paragraph)}</p>`).join("");
   const routeInflow = (nodeId: string): RouteInflow | undefined => {
     const sum = route.edges.filter((edge) => edge.to === nodeId).reduce((total, edge) => total + edge.weight, 0);
     if (sum <= 0) {
@@ -124,35 +117,35 @@ function renderBoundary(route: Route): void {
       route.unit === "million_eur" ? sum * 1e6 : route.routeTotalMeur ? sum * route.routeTotalMeur * 1e6 : undefined;
     return eur === undefined ? undefined : { eur, routeLabel: route.chipNote };
   };
-  const entries: SpendingEntry[] = [];
-  if (route.nodes.some((node) => node.id === "berlin_budget")) {
-    entries.push({
+  // Loaded spending accounts. Adding another audited account here also makes
+  // it available to the comparison control below the bars.
+  const entries: SpendingEntry[] = [
+    {
       key: "berlin",
       shortName: "Berlin",
       account: berlinSpending as SpendingAccount,
-      inflow: routeInflow("berlin_budget"),
-    });
-  }
-  if (route.nodes.some((node) => node.id === "federal_budget")) {
-    entries.push({
+      inflow: route.nodes.some((node) => node.id === "berlin_budget") ? routeInflow("berlin_budget") : undefined,
+    },
+    {
       key: "federation",
       shortName: "Federal",
       account: federalSpending as SpendingAccount,
-      inflow: routeInflow("federal_budget"),
-    });
-  }
+      inflow: route.nodes.some((node) => node.id === "federal_budget") ? routeInflow("federal_budget") : undefined,
+    },
+  ];
 
-  // The selected place decides which budget is shown; chips let you switch,
-  // because part of the followed money genuinely lands in the other budget.
-  const defaultKey: SpendingKey | null = currentPlace.national
+  // The place selected on the left decides which spending account is shown.
+  // Any other loaded recipient budget remains visible as the comparison tick.
+  const defaultKey = currentPlace.national
     ? entries.some((entry) => entry.key === "federation")
       ? "federation"
       : null
     : entries.some((entry) => entry.key === "berlin")
       ? "berlin"
-      : null;
-  const requested = spendingMode === "auto" ? defaultKey : spendingMode;
-  const active = entries.find((entry) => entry.key === requested) ?? entries.find((entry) => entry.key === defaultKey);
+      : entries.some((entry) => entry.key === "federation")
+        ? "federation"
+        : null;
+  const active = entries.find((entry) => entry.key === defaultKey);
 
   const fallback = `<ul class="boundary-examples" aria-label="What this budget funds as a whole">${route.boundary.examples
     .map((example) => `<li>${escapeHtml(example)}</li>`)
@@ -163,27 +156,17 @@ function renderBoundary(route: Route): void {
         : `${currentPlace.name}'s audited actuals are not loaded yet — Berlin came first; other Länder follow.`,
     )}</p>`;
 
-  const benchmark = active ? entries.find((entry) => entry.key !== active.key) : undefined;
+  const comparisons = active ? entries.filter((entry) => entry.key !== active.key) : [];
+  const benchmark = comparisons.find((entry) => entry.key === comparisonKey) ?? comparisons[0];
+  comparisonKey = benchmark?.key ?? null;
   const tail =
     entries.length > 0
-      ? `${renderSpendingChips(entries, active?.key ?? null)}
-       ${active ? renderSpendingPanel(active, benchmark) : fallback}
+      ? `${active ? renderSpendingPanel(active, benchmark, comparisons) : fallback}
        <p class="boundary-footnote">Other Länder and municipal accounts follow as their audited actuals are loaded.</p>`
       : fallback;
   boundaryPanel.innerHTML = `
-    <p class="boundary-marker" aria-hidden="true">Budget boundary — tax identity ends here</p>
-    <h3>${escapeHtml(route.boundary.heading)}</h3>
-    ${paragraphs}
+    <p class="boundary-axis" aria-hidden="true">Tax joins the budget</p>
     ${tail}`;
-}
-
-function renderAnnotations(route: Route): void {
-  if (!annotationsList) {
-    return;
-  }
-  annotationsList.innerHTML = route.annotations
-    .map((annotation) => `<li><span aria-hidden="true">✳</span> ${escapeHtml(annotation.text)}</li>`)
-    .join("");
 }
 
 function updatePlaceNote(route: Route): void {
@@ -208,23 +191,23 @@ function updatePlaceStats(): void {
     const shifted = landFigures
       .filter((entry) => entry.equalisationMeur > 0)
       .reduce((sum, entry) => sum + entry.equalisationMeur, 0);
-    placeStats.textContent = `2024 equalisation: €${(shifted / 1000).toFixed(1)}bn shifted between Länder — 4 paid in, 12 received.`;
+    placeStats.innerHTML = `<strong>€${(shifted / 1000).toFixed(1)}bn rebalanced</strong><span>2024 · 4 Länder paid in · 12 received</span>`;
     return;
   }
   const figures = getLandFigures(currentPlace.code);
   if (!figures) {
-    placeStats.textContent = "";
+    placeStats.replaceChildren();
     return;
   }
   const perResident = Math.round(equalisationPerResident(figures));
   const direction = figures.equalisationMeur >= 0 ? "received" : "paid in";
   const grants =
     figures.supplementaryGrantsMeur > 0
-      ? ` Plus €${(figures.supplementaryGrantsMeur / 1000).toFixed(2)}bn federal grants.`
+      ? ` · €${(figures.supplementaryGrantsMeur / 1000).toFixed(2)}bn federal grants`
       : "";
-  placeStats.textContent = `${currentPlace.name} 2024: VAT slice €${((figures.vatBaseMeur + figures.equalisationMeur) / 1000).toFixed(2)}bn · ${direction} €${(
-    Math.abs(figures.equalisationMeur) / 1000
-  ).toFixed(2)}bn via equalisation (≈€${Math.abs(perResident)} per resident).${grants}`;
+  placeStats.innerHTML = `<strong>${escapeHtml(direction)} €${(Math.abs(figures.equalisationMeur) / 1000).toFixed(2)}bn</strong><span>≈€${Math.abs(
+    perResident,
+  ).toLocaleString("en")} / resident · VAT slice €${((figures.vatBaseMeur + figures.equalisationMeur) / 1000).toFixed(2)}bn${escapeHtml(grants)}</span>`;
 }
 
 function syncHash(): void {
@@ -242,9 +225,6 @@ function renderCurrentRoute(routeId: string): void {
   if (dialog?.open) {
     dialog.close();
   }
-  if (currentRoute?.id !== route.id) {
-    spendingMode = "auto";
-  }
   currentRoute = route;
 
   for (const chip of chips) {
@@ -253,14 +233,10 @@ function renderCurrentRoute(routeId: string): void {
   if (routeTitle) {
     routeTitle.textContent = route.chipTitle;
   }
-  if (routeLede) {
-    routeLede.textContent = route.lede;
-  }
-  if (unitNote) {
-    unitNote.textContent = `${route.unitNote} Hover any node or ribbon for a plain-English explanation; click for sources.`;
+  if (routeBrief) {
+    routeBrief.innerHTML = renderRouteBrief(route);
   }
   renderBoundary(route);
-  renderAnnotations(route);
   updatePlaceNote(route);
 
   mount.classList.add("is-switching");
@@ -278,7 +254,6 @@ function renderCurrentRoute(routeId: string): void {
 function selectPlace(place: Place, options: { updateHash: boolean }): void {
   currentPlace = place;
   currentRoutes = buildRoutes(place);
-  spendingMode = "auto";
   if (landSelect && landSelect.value !== place.code) {
     landSelect.value = place.code;
   }

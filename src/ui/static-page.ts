@@ -17,6 +17,21 @@ export function escapeHtml(value: string): string {
     .replaceAll("'", "&#039;");
 }
 
+export function renderRouteBrief(route: Route): string {
+  const sources = route.brief.sources
+    .map(
+      (source) =>
+        `<a href="${escapeHtml(source.url)}" rel="noreferrer noopener" target="_blank">${escapeHtml(source.label)}</a>`,
+    )
+    .join(" · ");
+  return `
+    <dl class="route-brief-list">
+      <div><dt>About</dt><dd>${escapeHtml(route.brief.about)}</dd></div>
+      <div><dt>Need to know</dt><dd>${escapeHtml(route.brief.takeaway)}</dd></div>
+      <div><dt>Source</dt><dd>${sources}</dd></div>
+    </dl>`;
+}
+
 function renderChips(routes: Route[], activeId: string): string {
   return routes
     .map(
@@ -51,20 +66,12 @@ function renderFallbackRoute(route: Route): string {
 }
 
 function renderBoundaryPanel(route: Route): string {
-  const paragraphs = route.boundary.body.map((paragraph) => `<p>${escapeHtml(paragraph)}</p>`).join("");
   const examples = route.boundary.examples.map((example) => `<li>${escapeHtml(example)}</li>`).join("");
   return `
-    <p class="boundary-marker" aria-hidden="true">Budget boundary — tax identity ends here</p>
-    <h3>${escapeHtml(route.boundary.heading)}</h3>
-    ${paragraphs}
+    <p class="boundary-axis" aria-hidden="true">Tax joins the budget</p>
     <ul class="boundary-examples" aria-label="What this budget funds as a whole">${examples}</ul>
-    <p class="boundary-footnote">Unquantified on purpose: no verified function-level actuals are published here yet.</p>`;
-}
-
-function renderAnnotations(route: Route): string {
-  return route.annotations
-    .map((annotation) => `<li><span aria-hidden="true">✳</span> ${escapeHtml(annotation.text)}</li>`)
-    .join("");
+    <p class="budget-boundary-explainer"><strong>What changes here:</strong> once the tax reaches the budget, it is combined with all other revenue. What follows describes the whole budget—not where this exact tax euro went.</p>
+    <p class="boundary-footnote">Function-level actuals load here when JavaScript is available.</p>`;
 }
 
 function collectSources(routes: Route[]): SourceRef[] {
@@ -149,10 +156,6 @@ export function renderStaticPage(routes: Route[], defaultRouteId: string): strin
         )}</span></li>`,
     )
     .join("");
-  const kindLegend = Object.values(EDGE_KIND_LABELS)
-    .map((label) => `<li>${escapeHtml(label)}</li>`)
-    .join("");
-
   return `
     <a class="skip-link" href="#graph">Skip to the graph</a>
     <div class="prototype-banner" role="note">
@@ -160,8 +163,8 @@ export function renderStaticPage(routes: Route[], defaultRouteId: string): strin
       <span>Statutory shares are exact law. Euro figures were independently reproduced from official sources on 2026-08-05; the fully provenanced dataset is still in progress — treat as preview, not published data.</span>
     </div>
 
-    <header class="site-header">
-      <a class="wordmark" href="#top" aria-label="Where is the tax? Home">Where is the tax?</a>
+    <header class="site-header" id="top">
+      <h1 class="wordmark"><a href="#top" aria-label="Where is the tax? Home">Every euro you pay <em>takes a legal route.</em></a></h1>
       <nav aria-label="Page sections">
         <a href="#graph">The graph</a>
         <a href="#all-taxes">All taxes</a>
@@ -171,81 +174,58 @@ export function renderStaticPage(routes: Route[], defaultRouteId: string): strin
       </nav>
     </header>
 
-    <section class="hero" id="top" aria-labelledby="page-title">
-      <p class="eyebrow">Germany · 2024 routes · all 16 Länder</p>
-      <h1 id="page-title">Every euro you pay <em>takes a legal route.</em></h1>
-      <p class="hero-lede">Pick something you actually pay and where you live — the map re-splits the wage and VAT routes for your Land. Follow your money through the constitution's splits, the clearing between Länder, and into real budgets, until the law itself says the trail ends.</p>
-    </section>
-
     <section class="graph-section" id="graph" aria-labelledby="route-title">
-      <div class="route-toolbar">
-        <div class="toolbar-group">
-          <p class="control-label">What do you pay?</p>
-          <div class="route-chips" role="group" aria-label="Choose a route to follow">
-            ${renderChips(routes, defaultRoute.id)}
-          </div>
-        </div>
-        <div class="toolbar-group toolbar-place">
-          <p class="control-label">Where do you live?</p>
-          <label class="land-select-label">Place
-            <select id="land-select">
+      <div class="flow-workbench">
+        <aside class="origin-panel" aria-label="Place selection and Länder map">
+          <div class="toolbar-group toolbar-place">
+            <p class="control-label">Where the route starts</p>
+            <label class="land-select-label"><span class="sr-only">Where do you live?</span>
+            <select id="land-select" aria-label="Where do you live?">
               <option value="DE" selected>Germany (all)</option>
               ${places
                 .map((place) => `<option value="${escapeHtml(place.code)}">${escapeHtml(place.name)}</option>`)
                 .join("")}
             </select>
-          </label>
-          <p class="place-stats" id="place-stats"></p>
-        </div>
-      </div>
-      <p class="place-note" id="place-note" hidden></p>
+            </label>
+          </div>
+          <div class="map-card">
+            <div id="land-map" class="land-map"></div>
+            <p class="place-stats" id="place-stats"></p>
+            <p class="map-attribution" id="map-attribution"></p>
+          </div>
+        </aside>
 
-      <div class="route-head">
-        <h2 id="route-title">${escapeHtml(defaultRoute.chipTitle)}</h2>
-        <p id="route-lede">${escapeHtml(defaultRoute.lede)}</p>
-      </div>
+        <div class="route-main">
+          <div class="toolbar-group route-control">
+            <p class="control-label">What starts the route</p>
+            <div class="route-chips" role="group" aria-label="Choose a route to follow">
+              ${renderChips(routes, defaultRoute.id)}
+            </div>
+          </div>
+          <p class="place-note" id="place-note" hidden></p>
+          <div class="route-head">
+            <h2 id="route-title">${escapeHtml(defaultRoute.chipTitle)}</h2>
+          </div>
 
-      <div class="graph-frame">
-        <figure class="graph-figure" aria-label="Interactive fiscal route graph">
-          <div id="fiscal-graph-mount" class="fiscal-graph-mount">
-            <div class="fg-fallback">
+          <figure class="graph-figure" aria-label="Interactive fiscal route graph">
+            <div id="fiscal-graph-mount" class="fiscal-graph-mount">
+              <div class="fg-fallback">
               <p><strong>The interactive graph needs JavaScript.</strong> The same routes, in words:</p>
               ${routes.map((route) => renderFallbackRoute(route)).join("")}
             </div>
-          </div>
-          <figcaption id="route-unit-note" class="graph-caption">${escapeHtml(defaultRoute.unitNote)} Hover any node or ribbon for a plain-English explanation; click for sources.</figcaption>
-        </figure>
-        <aside class="side-rail">
-          <div class="map-card">
-            <div id="land-map" class="land-map"></div>
-            <p class="map-attribution" id="map-attribution"></p>
-          </div>
-          <div class="boundary-panel" id="boundary-panel" aria-label="Beyond the budget boundary">
-            ${renderBoundaryPanel(defaultRoute)}
-          </div>
+            </div>
+          </figure>
+          <div class="route-brief" id="route-brief">${renderRouteBrief(defaultRoute)}</div>
+        </div>
+
+        <aside class="boundary-panel" id="boundary-panel" aria-label="Beyond the budget boundary">
+          ${renderBoundaryPanel(defaultRoute)}
         </aside>
       </div>
 
-      <ul class="route-annotations" id="route-annotations" aria-label="Route footnotes">
-        ${renderAnnotations(defaultRoute)}
-      </ul>
-
       <div class="graph-legend" aria-label="How to read the graph">
-        <div>
-          <p class="legend-title">Ribbons end in the budget that legally receives the money</p>
-          <ul class="legend-entities">${entityLegend}</ul>
-        </div>
-        <div>
-          <p class="legend-title">Every flow is one of these legal mechanisms</p>
-          <ul class="legend-kinds">${kindLegend}</ul>
-        </div>
-        <div>
-          <p class="legend-title">Texture &amp; status</p>
-          <ul class="legend-kinds">
-            <li>Hatched ribbon: aggregate route only — your personal euro is not individually traceable there.</li>
-            <li>Every value carries an evidence badge, from “exact — written in law” to “official, marked provisional”.</li>
-          </ul>
-        </div>
+        <p><strong>Read left to right.</strong> Width = route share · colour = legal recipient · hatching = aggregate, not an individually traceable euro.</p>
+        <ul class="legend-entities">${entityLegend}</ul>
       </div>
     </section>
 
@@ -308,7 +288,7 @@ export function renderStaticPage(routes: Route[], defaultRouteId: string): strin
     </footer>
 
     <dialog id="detail-dialog" aria-labelledby="detail-title">
+      <form method="dialog" class="dialog-close-form"><button type="submit" class="dialog-close" aria-label="Close details"><span aria-hidden="true">×</span></button></form>
       <div data-dialog-content></div>
-      <form method="dialog"><button type="submit" class="dialog-close">Close</button></form>
     </dialog>`;
 }

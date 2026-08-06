@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
 
-import { renderSpendingChips, renderSpendingPanel, type SpendingAccount, type SpendingEntry } from "../src/ui/spending.ts";
+import { renderSpendingPanel, type SpendingAccount, type SpendingEntry } from "../src/ui/spending.ts";
 
 async function loadAccount(path: string): Promise<SpendingAccount & { unassigned_eur: number; source_sha256?: string }> {
   const raw = await readFile(path, "utf8");
@@ -56,35 +56,28 @@ test("the Berlin spending account reconciles to the cent, including subgroups", 
   assert(largest && largest.code === "2", "social security should be Berlin's largest block");
 });
 
-test("the benchmark tick compares shares against the other budget, percent only", async () => {
+test("parallel bars compare shares against the selected budget on one scale", async () => {
   const [berlin, federal] = await loadEntries();
   const html = renderSpendingPanel(berlin!, federal!);
 
-  assert.match(html, /spend-tick spend-tick-federation/);
-  assert.match(html, /\(fed \d+(\.\d+)?%\)/);
-  assert.match(html, /Marker: the same category's share of the Federal budget/);
-  assert.doesNotMatch(html, /fed €/);
+  assert.match(html, /spend-bar spend-bar-comparison/);
+  assert.match(html, /spend-seg spend-seg-federation/);
+  assert.match(html, /Federal \d+(\.\d+)?%/);
+  assert.match(html, /data-spend-compare/);
+  assert.match(html, /value="federation" selected>Federal budget/);
+  assert.match(html, /The bars use the same scale/);
 });
 
 test("the panel shows one budget with its bridge, total, and source", async () => {
   const [berlin] = await loadEntries();
   const html = renderSpendingPanel(berlin!);
 
-  assert.match(html, /Berlin budget — actual spending 2024/);
-  assert.match(html, /Whole budget: €40\.5bn/);
+  assert.match(html, /Berlin spending · 2024/);
+  assert.match(html, /Total budget: €40\.5bn/);
+  assert.match(html, /What changes here/);
   assert.match(html, /Gewerbesteuer.*delivered €2\.90bn.*7\.2% of it/);
   assert.match(html, /spend-seg-berlin/);
   assert.doesNotMatch(html, /spend-seg-federation/);
   assert.match(html, /parlament-berlin\.de/);
   assert.doesNotMatch(html, /undefined/);
-});
-
-test("chips offer both budgets and mark the active one", async () => {
-  const entries = await loadEntries();
-  const html = renderSpendingChips(entries, "berlin");
-
-  assert.match(html, /data-spend-mode="berlin" aria-pressed="true"/);
-  assert.match(html, /data-spend-mode="federation" aria-pressed="false"/);
-  assert.match(html, /Berlin budget · €40\.5bn/);
-  assert.match(html, /Federal budget · €475bn/);
 });

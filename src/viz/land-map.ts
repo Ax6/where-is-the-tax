@@ -20,7 +20,6 @@ const collection = laenderGeo as unknown as {
 const WIDTH = 300;
 const MAP_HEIGHT = 400;
 const KEY_HEIGHT = 52;
-const HEIGHT = MAP_HEIGHT + KEY_HEIGHT;
 
 const PAPER: [number, number, number] = [0xf3, 0xf0, 0xe8];
 const RECEIVES: [number, number, number] = [0x12, 0x80, 0x5e];
@@ -68,7 +67,7 @@ export function renderLandMap(container: HTMLElement, selected: Place, onSelect:
   const svg = select(container)
     .append("svg")
     .attr("class", "land-map-svg")
-    .attr("viewBox", `0 0 ${WIDTH} ${HEIGHT}`)
+    .attr("viewBox", `0 0 ${WIDTH} ${MAP_HEIGHT}`)
     .attr("role", "group")
     .attr(
       "aria-label",
@@ -104,14 +103,19 @@ export function renderLandMap(container: HTMLElement, selected: Place, onSelect:
     .append("title")
     .text((feature) => landTitle(feature));
 
-  renderKey(svg);
+  const keySvg = select(container)
+    .append("svg")
+    .attr("class", "land-map-key-svg")
+    .attr("viewBox", `0 0 ${WIDTH} ${KEY_HEIGHT}`)
+    .attr("aria-hidden", "true");
+  renderKey(keySvg);
 }
 
 /** Diverging scale key: what the Land colours mean, with € anchors. */
 function renderKey(svg: ReturnType<typeof select<SVGSVGElement, unknown>>): void {
-  const barX = 18;
+  const barX = 2;
   const barWidth = WIDTH - 2 * barX;
-  const barY = MAP_HEIGHT + 24;
+  const barY = 24;
   const barHeight = 9;
 
   const gradient = svg

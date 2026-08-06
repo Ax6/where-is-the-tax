@@ -12,8 +12,12 @@ test("renders the banner, chips, boundary panel, legend, and table at build time
   assert.match(html, /id="land-select"/);
   assert.match(html, /id="land-map"/);
   assert.match(html, /Nordrhein-Westfalen/);
-  assert.match(html, /Budget boundary — tax identity ends here/);
-  assert.match(html, /Ribbons end in the budget that legally receives the money/);
+  assert.match(html, /Tax joins the budget/);
+  assert.match(html, /once the tax reaches the budget/);
+  assert.match(html, /Where the route starts/);
+  assert.match(html, /What starts the route/);
+  assert.match(html, /Need to know/);
+  assert.match(html, /Width = route share/);
   assert.match(html, /<table>/);
   assert.match(html, /gesetze-im-internet\.de/);
   assert.match(html, /id="record-trade-trade-federation"/);

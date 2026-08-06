@@ -30,11 +30,21 @@ interface PlacedEdge extends RouteEdge {
 }
 
 const VIEW_WIDTH = 1160;
-const VIEW_HEIGHT = 560;
+const VIEW_HEIGHT = 650;
 const MARGIN = { top: 64, right: 10, bottom: 24, left: 10 };
 const NODE_WIDTH = 12;
 const NODE_GAP = 26;
 const MIN_NODE_HEIGHT = 8;
+const LABEL_GAP = 7;
+const MAX_LABEL_SHIFT = 34;
+
+interface CollisionLabel {
+  element: SVGTextElement;
+  node: PlacedNode;
+  shift: number;
+  minShift: number;
+  maxShift: number;
+}
 
 function routeShareMeta(route: Route, weight: number): string {
   if (route.unit === "million_eur") {
@@ -127,6 +137,90 @@ function layout(route: Route): { nodes: PlacedNode[]; edges: PlacedEdge[] } {
   }
 
   return { nodes, edges };
+}
+
+/**
+ * SVG labels are centred on their nodes, which is ideal until two neighbouring
+ * stages use the same horizontal lane. Measure the rendered text and gently
+ * separate only the pairs that actually collide. Movement is capped so every
+ * label remains visibly attached to its node.
+ */
+function resolveLabelCollisions(
+  svg: SVGSVGElement,
+  elements: SVGTextElement[],
+  nodes: PlacedNode[],
+): void {
+  const svgRect = svg.getBoundingClientRect();
+  if (svgRect.height <= 0 || elements.length !== nodes.length) {
+    return;
+  }
+  const pixelsPerUnit = svgRect.height / VIEW_HEIGHT;
+  const plotTop = svgRect.top + MARGIN.top * pixelsPerUnit;
+  const plotBottom = svgRect.top + (VIEW_HEIGHT - MARGIN.bottom) * pixelsPerUnit;
+  const labels: CollisionLabel[] = elements.map((element, index) => {
+    const rect = element.getBoundingClientRect();
+    return {
+      element,
+      node: nodes[index]!,
+      shift: 0,
+      minShift: Math.max(-MAX_LABEL_SHIFT, (plotTop - rect.top) / pixelsPerUnit),
+      maxShift: Math.min(MAX_LABEL_SHIFT, (plotBottom - rect.bottom) / pixelsPerUnit),
+    };
+  });
+
+  const move = (label: CollisionLabel, delta: number): number => {
+    const previous = label.shift;
+    label.shift = Math.max(label.minShift, Math.min(label.maxShift, previous + delta));
+    if (Math.abs(label.shift) < 0.05) {
+      label.element.removeAttribute("transform");
+    } else {
+      label.element.setAttribute("transform", `translate(0 ${label.shift.toFixed(2)})`);
+    }
+    return Math.abs(label.shift - previous);
+  };
+
+  for (let pass = 0; pass < 8; pass += 1) {
+    let changed = false;
+    for (let i = 0; i < labels.length; i += 1) {
+      for (let j = i + 1; j < labels.length; j += 1) {
+        const first = labels[i]!;
+        const second = labels[j]!;
+        const firstRect = first.element.getBoundingClientRect();
+        const secondRect = second.element.getBoundingClientRect();
+        const horizontalCollision =
+          firstRect.left < secondRect.right + LABEL_GAP && secondRect.left < firstRect.right + LABEL_GAP;
+        const verticalOverlap =
+          Math.min(firstRect.bottom, secondRect.bottom) - Math.max(firstRect.top, secondRect.top);
+        if (!horizontalCollision || verticalOverlap < -LABEL_GAP) {
+          continue;
+        }
+
+        const needed = (verticalOverlap + LABEL_GAP) / pixelsPerUnit;
+        let upper: CollisionLabel;
+        let lower: CollisionLabel;
+        if (first.node.stage === second.node.stage) {
+          const firstCenter = firstRect.top + firstRect.height / 2;
+          const secondCenter = secondRect.top + secondRect.height / 2;
+          [upper, lower] = firstCenter <= secondCenter ? [first, second] : [second, first];
+        } else {
+          // Stagger labels from adjacent columns: the later-stage label rises,
+          // while the earlier-stage label drops into the other half of the flow.
+          [upper, lower] = first.node.stage > second.node.stage ? [first, second] : [second, first];
+        }
+
+        const upperMoved = move(upper, -needed / 2);
+        const lowerMoved = move(lower, needed - upperMoved);
+        const remainder = needed - upperMoved - lowerMoved;
+        if (remainder > 0.05) {
+          move(upper, -remainder);
+        }
+        changed = changed || upperMoved > 0.05 || lowerMoved > 0.05;
+      }
+    }
+    if (!changed) {
+      break;
+    }
+  }
 }
 
 function nodeTooltip(route: Route, node: PlacedNode): TooltipContent {
@@ -275,6 +369,11 @@ export function renderFiscalGraph(container: HTMLElement, route: Route, callback
     .attr("x", (node) => (node.stage === lastStage ? -12 : NODE_WIDTH + 12))
     .attr("dy", "1.35em")
     .text((node) => node.official ?? "");
+
+  const svgElement = svg.node();
+  if (svgElement) {
+    resolveLabelCollisions(svgElement, labels.nodes(), labels.data());
+  }
 
   edgeSelection.each(function (edge) {
     const related = new Set<Element>([this]);
