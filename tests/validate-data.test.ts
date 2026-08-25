@@ -54,6 +54,28 @@ test("accepts the complete synthetic contract fixture when explicitly allowed", 
   assert.equal(result.datasetsChecked, 1);
 });
 
+test("does not treat partial research collections as publication bundles", async () => {
+  const root = await mkdtemp(join(tmpdir(), "where-is-the-tax-collections-"));
+  await writeJson(join(root, "index.json"), { schema_version: 1, datasets: [] });
+  await mkdir(join(root, "de/2024/accounts"), { recursive: true });
+  await writeJson(join(root, "de/2024/accounts/berlin-functions.json"), { status: "research_preview" });
+
+  const result = await validateDataRoot(root);
+  assert.deepEqual(result.errors, []);
+  assert.equal(result.datasetsChecked, 0);
+});
+
+test("rejects a complete bundle directory that is missing from the index", async () => {
+  const root = await mutableFixture();
+  const indexPath = join(root, "index.json");
+  const index = JSON.parse(await readFile(indexPath, "utf8")) as { datasets: unknown[] };
+  index.datasets = [];
+  await writeJson(indexPath, index);
+
+  const result = await validateDataRoot(root, { allowSynthetic: true });
+  assert(result.errors.some((error) => error.code === "unindexed_dataset"));
+});
+
 test("blocks synthetic data from publication validation by default", async () => {
   const result = await validateDataRoot(fixtureRoot);
   assert(result.errors.some((error) => error.code === "synthetic_not_allowed"));

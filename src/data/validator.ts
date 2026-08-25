@@ -943,7 +943,11 @@ async function discoverBundlePaths(root: string): Promise<Set<string>> {
   for (const country of await readdir(root, { withFileTypes: true })) {
     if (!country.isDirectory() || country.name.startsWith(".")) continue;
     for (const year of await readdir(join(root, country.name), { withFileTypes: true })) {
-      if (year.isDirectory() && /^\d{4}$/.test(year.name)) discovered.add(`${country.name}/${year.name}`);
+      if (!year.isDirectory() || !/^\d{4}$/.test(year.name)) continue;
+      const files = await readdir(join(root, country.name, year.name), { withFileTypes: true });
+      if (files.some((file) => file.isFile() && file.name === "meta.json")) {
+        discovered.add(`${country.name}/${year.name}`);
+      }
     }
   }
   return discovered;
