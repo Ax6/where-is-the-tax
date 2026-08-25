@@ -3,7 +3,8 @@ import test from "node:test";
 
 import { buildRoutes, getRoute } from "../src/routes/data.ts";
 import { getPlace } from "../src/routes/places.ts";
-import { renderEdgeDetail, renderNodeDetail } from "../src/ui/route-detail.ts";
+import { getTaxEntry } from "../src/routes/taxonomy.ts";
+import { renderEdgeDetail, renderNodeDetail, renderTaxDetail } from "../src/ui/route-detail.ts";
 
 test("node detail shows the official name, evidence status, and source links", () => {
   const berlin = getPlace("BE");
@@ -39,9 +40,15 @@ test("edge detail shows share, mechanism, and open caveats", () => {
   assert(berlin);
   const berlinTrade = buildRoutes(berlin).find(({ id }) => id === "trade");
   assert(berlinTrade);
+  assert.match(berlinTrade.brief.takeaway, /observed 2024 cash component.*€108\.6m.*3\.61%/);
+  assert.doesNotMatch(berlinTrade.brief.takeaway, /3\.54%/);
   const berlinEdge = berlinTrade.edges.find(({ id }) => id === "trade-federation");
   assert(berlinEdge);
-  assert.match(berlinEdge.description, /14\.5 \/ 410 = 3\.5366%/);
+  assert.equal(berlinEdge.weight, 108.573);
+  assert.match(berlinEdge.shareLabel, /14\.5\/35 of cash-year levy · €108\.6m/);
+  assert.match(berlinEdge.description, /3\.61% of displayed gross/);
+  assert.match(berlinEdge.description, /14\.5 \/ 410 = 3\.5366%.*€106\.5m/);
+  assert.doesNotMatch(berlinEdge.description, /3\.5366%.*€108\.6m/);
 });
 
 test("the wage route re-parameterises for a non-city-state Land", () => {
@@ -64,6 +71,18 @@ test("the VAT route uses verified per-Land equalisation figures", () => {
   assert.match(slice.shareLabel, /equalisation deduction/);
   const expected = (23457.004 - 9773.933) / 302143.338;
   assert(Math.abs(slice.weight - expected) < 1e-9);
+});
+
+test("taxonomy route links preserve the selected Land", () => {
+  const found = getTaxEntry("property_tax");
+  assert(found?.entry.routeId);
+
+  const html = renderTaxDetail(found.group, found.entry, {
+    title: "You own or rent a home",
+    href: "#route/housing/BE",
+  });
+  assert.match(html, /href="#route\/housing\/BE"/);
+  assert.match(html, /data-follow-route/);
 });
 
 test("detail rendering escapes HTML in data fields", () => {

@@ -7,7 +7,8 @@ import { escapeHtml, renderStaticPage } from "../src/ui/static-page.ts";
 test("renders the banner, chips, boundary panel, legend, and table at build time", () => {
   const html = renderStaticPage(routes, defaultRouteId);
 
-  assert.match(html, /independently reproduced from official sources/);
+  assert.match(html, /Core route figures were independently reproduced/);
+  assert.match(html, /later account additions are cross-checked/);
   assert.equal(html.match(/data-route-chip/g)?.length, routes.length);
   assert.match(html, /id="land-select"/);
   assert.match(html, /id="land-map"/);
@@ -21,6 +22,8 @@ test("renders the banner, chips, boundary panel, legend, and table at build time
   assert.match(html, /<table>/);
   assert.match(html, /gesetze-im-internet\.de/);
   assert.match(html, /id="record-trade-trade-federation"/);
+  assert.match(html, new RegExp(`${routes.length} routes above are drawn end-to-end`));
+  assert.doesNotMatch(html, /until the independent verification pass completes/);
 });
 
 test("renders the whole-map taxonomy with housing and everything-else families", () => {

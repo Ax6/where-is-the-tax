@@ -11,6 +11,11 @@ import {
 import type { TaxEntry, TaxGroup } from "../routes/taxonomy.ts";
 import { escapeHtml } from "./static-page.ts";
 
+interface RouteLink {
+  href: string;
+  title: string;
+}
+
 function weightLine(route: Route, weight: number): string {
   if (route.unit === "million_eur") {
     return `${formatMoney(weight, "million EUR")} (observed 2024)`;
@@ -79,7 +84,7 @@ export function renderNodeDetail(route: Route, node: RouteNode): string {
     </div>`;
 }
 
-export function renderTaxDetail(group: TaxGroup, entry: TaxEntry, routeTitle?: string): string {
+export function renderTaxDetail(group: TaxGroup, entry: TaxEntry, routeLink?: RouteLink): string {
   return `
     <header class="dialog-header">
       <p class="eyebrow">${escapeHtml(group.title)}</p>
@@ -99,8 +104,8 @@ export function renderTaxDetail(group: TaxGroup, entry: TaxEntry, routeTitle?: s
           ["Amount", entry.amountNote ?? "National figure arrives with the verified dataset."],
         ])}
         ${
-          entry.routeId && routeTitle
-            ? `<p class="detail-route-link"><a href="#route/${escapeHtml(entry.routeId)}">Follow its full route: ${escapeHtml(routeTitle)} →</a></p>`
+          routeLink
+            ? `<p class="detail-route-link"><a href="${escapeHtml(routeLink.href)}" data-follow-route>Follow its full route: ${escapeHtml(routeLink.title)} →</a></p>`
             : `<p class="detail-route-note">A full drawn route for this tax comes with a later dataset phase.</p>`
         }
       </section>

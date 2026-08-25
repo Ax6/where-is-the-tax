@@ -1,9 +1,10 @@
 /**
- * Fiscal-graph route fixtures for the P0 prototype.
+ * Fiscal-graph route data for the internal preview.
  *
- * Statutory shares are exact law and cite their legal basis. Euro figures come
- * from the 2026-08-05 deep-research report and are PENDING INDEPENDENT
- * VERIFICATION — the page banner says so. Nothing here is published data.
+ * Statutory shares are exact law and cite their legal basis. Core route figures
+ * were independently reproduced on 2026-08-05; later all-Länder and account
+ * additions are cross-checked but still need observation-level review, provenance,
+ * and evidence snapshots before publication.
  */
 
 import { getLandFigures, landFigures, VAT_LAENDER_POOL_MEUR, VAT_TOTAL_MEUR } from "./equalisation.ts";
@@ -193,18 +194,18 @@ const betrKV2: SourceRef = {
   url: "https://www.gesetze-im-internet.de/betrkv/__2.html",
 };
 
-export { artikel106, artikel107, berlinTaxAccount2024, bmfDec2024, gemFinRef7, ustg12 };
+export { artikel106, artikel107, berlinTaxAccount2024, bmfDec2024, gemFinRef6, gemFinRef7, ustg12 };
 
 function formatBn(meur: number): string {
   return meur >= 1000 ? `€${(meur / 1000).toFixed(meur >= 100000 ? 0 : meur >= 10000 ? 1 : 2)}bn` : `€${Math.round(meur)}m`;
 }
 
-const pendingVerification =
+const publicationProvenanceCaveat =
   "Independently reproduced from official sources on 2026-08-05; the fully provenanced production dataset is still in progress.";
 
 const berlinBoundaryBody = [
   "From here on, the general coverage principle applies: except for lawful earmarking, all revenue finances all expenditure. The euros you followed are now indistinguishable from every other euro in the budget.",
-  "So the honest question changes from “what did my tax pay for?” to “what does this budget pay for as a whole?” Function-level actuals from Berlin's audited 2024 annual account arrive with the verified dataset (phase P2).",
+  "So the honest question changes from “what did my tax pay for?” to “what does this budget pay for as a whole?” The spending panel uses function-level actuals from Berlin's audited 2024 annual account.",
 ];
 
 const berlinBoundaryExamples = [
@@ -245,7 +246,7 @@ const wageBerlin: Route = {
         amountNote: "Germany collected €947.7bn in taxes before distribution in 2024.",
         status: "calculated_official",
         sources: [destatis71211],
-        caveats: [pendingVerification],
+        caveats: [publicationProvenanceCaveat],
       },
       {
         id: "lohnsteuer",
@@ -259,7 +260,7 @@ const wageBerlin: Route = {
         amountNote: "Berlin's 2024 Land share of wage tax: €5.18bn.",
         status: "calculated_official",
         sources: [artikel106, berlinTaxAccount2024],
-        caveats: [pendingVerification],
+        caveats: [publicationProvenanceCaveat],
       },
       {
         id: "share_federation",
@@ -316,7 +317,7 @@ const wageBerlin: Route = {
         amountNote: "Berlin's total 2024 tax receipts: €27.30bn.",
         status: "calculated_official",
         sources: [berlinTaxAccount2024, lhoBerlin8],
-        caveats: [pendingVerification],
+        caveats: [publicationProvenanceCaveat],
       },
     ],
     edges: [
@@ -399,7 +400,7 @@ const wageBerlin: Route = {
         description:
           "The municipal 15% is distributed using residence and a capped income-tax contribution key. Your exact personal allocation cannot be reproduced from public aggregate data — Berlin's aggregate share can.",
         sources: [gemFinRef],
-        caveats: ["Berlin's 2024 municipal share of wage and assessed income tax: €2.32bn.", pendingVerification],
+        caveats: ["Berlin's 2024 municipal share of wage and assessed income tax: €2.32bn.", publicationProvenanceCaveat],
       },
     ],
     annotations: [],
@@ -450,7 +451,7 @@ const vatBerlin: Route = {
         amountNote: "2024 total allocated: €302.1bn.",
         status: "calculated_official",
         sources: [bmfDec2024, fag1],
-        caveats: [pendingVerification],
+        caveats: [publicationProvenanceCaveat],
       },
       {
         id: "share_federation",
@@ -462,7 +463,7 @@ const vatBerlin: Route = {
           "Base shares are set in §1 Finanzausgleichsgesetz, but annual fixed-euro adjustments change the effective result materially. 2024 effective: 48.1010% (€145.3bn).",
         status: "calculated_official",
         sources: [fag1, bmfDec2024],
-        caveats: [pendingVerification],
+        caveats: [publicationProvenanceCaveat],
       },
       {
         id: "laender_pool",
@@ -474,7 +475,7 @@ const vatBerlin: Route = {
           "The Länder share (€148.4bn in 2024) is distributed by population — with fiscal-capacity equalisation applied inside the distribution. Additions and deductions happen around a common pool; no Land wires money to another Land.",
         status: "calculated_official",
         sources: [artikel107, bmfEqualisation2024],
-        caveats: [pendingVerification],
+        caveats: [publicationProvenanceCaveat],
       },
       {
         id: "share_municipal",
@@ -486,7 +487,7 @@ const vatBerlin: Route = {
           "Municipalities receive a small slice of VAT (€8.4bn in 2024), distributed by a fixed statutory key set for 2024–2026.",
         status: "calculated_official",
         sources: [vatKeyReg, bmfDec2024],
-        caveats: [pendingVerification],
+        caveats: [publicationProvenanceCaveat],
       },
       {
         id: "federal_budget",
@@ -498,7 +499,7 @@ const vatBerlin: Route = {
           "The federal VAT share funds the whole federal budget. EU own resources (€32.0bn in 2024) also leave from the federal level — computed from a harmonised base, not from your purchase.",
         status: "calculated_official",
         sources: [bmfDec2024, bho8],
-        caveats: [pendingVerification],
+        caveats: [publicationProvenanceCaveat],
       },
       {
         id: "berlin_budget",
@@ -512,7 +513,7 @@ const vatBerlin: Route = {
         amountNote: "≈ €10.8bn of 2024 VAT reached Berlin — none of it 'your' VAT specifically.",
         status: "provisional_official",
         sources: [bmfEqualisation2024, vatKeyReg],
-        caveats: [pendingVerification],
+        caveats: [publicationProvenanceCaveat],
       },
       {
         id: "other_laender",
@@ -524,7 +525,7 @@ const vatBerlin: Route = {
           "The rest of the Länder pool, distributed by population with equalisation additions and deductions. Berlin, Hamburg and Bremen carry a 135% city-state population weighting in parts of the calculation.",
         status: "provisional_official",
         sources: [bmfEqualisation2024],
-        caveats: [pendingVerification],
+        caveats: [publicationProvenanceCaveat],
       },
       {
         id: "other_municipalities",
@@ -535,7 +536,7 @@ const vatBerlin: Route = {
         description: "The municipal VAT share outside Berlin, distributed by the statutory key.",
         status: "calculated_official",
         sources: [vatKeyReg],
-        caveats: [pendingVerification],
+        caveats: [publicationProvenanceCaveat],
       },
     ],
     edges: [
@@ -561,7 +562,7 @@ const vatBerlin: Route = {
         description:
           "The effective 2024 federal share of VAT after the annual fixed-euro adjustments to the statutory base shares.",
         sources: [fag1, bmfDec2024],
-        caveats: [pendingVerification],
+        caveats: [publicationProvenanceCaveat],
       },
       {
         id: "pool-laender",
@@ -573,7 +574,7 @@ const vatBerlin: Route = {
         shareLabel: "49.1088% · €148.4bn",
         description: "The effective 2024 Länder share of VAT, forming the pool that equalisation adjusts.",
         sources: [fag1, bmfEqualisation2024],
-        caveats: [pendingVerification],
+        caveats: [publicationProvenanceCaveat],
       },
       {
         id: "pool-municipal",
@@ -585,7 +586,7 @@ const vatBerlin: Route = {
         shareLabel: "2.7903% · €8.4bn",
         description: "The effective 2024 municipal share of VAT.",
         sources: [fag1, bmfDec2024],
-        caveats: [pendingVerification],
+        caveats: [publicationProvenanceCaveat],
       },
       {
         id: "federation-budget",
@@ -609,7 +610,7 @@ const vatBerlin: Route = {
         description:
           "Berlin's population-based share of the Länder pool plus its fiscal-capacity equalisation addition (initial fiscal strength: 77.4%; the system generally closes 63% of the measured gap). Pooled — not a transfer from any named Land.",
         sources: [bmfEqualisation2024, artikel107],
-        caveats: ["BMF still marked the 2024 calculation provisional on 2026-06-24.", pendingVerification],
+        caveats: ["BMF still marked the 2024 calculation provisional on 2026-06-24.", publicationProvenanceCaveat],
       },
       {
         id: "laender-others",
@@ -621,7 +622,7 @@ const vatBerlin: Route = {
         shareLabel: "population share ± equalisation",
         description: "The remaining Länder pool after Berlin's slice, distributed by population with equalisation adjustments.",
         sources: [bmfEqualisation2024],
-        caveats: [pendingVerification],
+        caveats: [publicationProvenanceCaveat],
       },
       {
         id: "municipal-berlin",
@@ -634,7 +635,7 @@ const vatBerlin: Route = {
         description:
           "Berlin's municipal VAT share under the fixed 2024–2026 key (0.042022533). A separate formula system from the Länder pool.",
         sources: [vatKeyReg, bmfEqualisation2024],
-        caveats: [pendingVerification],
+        caveats: [publicationProvenanceCaveat],
       },
       {
         id: "municipal-others",
@@ -646,7 +647,7 @@ const vatBerlin: Route = {
         shareLabel: "rest of the key",
         description: "The municipal VAT share outside Berlin.",
         sources: [vatKeyReg],
-        caveats: [pendingVerification],
+        caveats: [publicationProvenanceCaveat],
       },
     ],
     annotations: [
@@ -673,13 +674,14 @@ const tradeBerlin: Route = {
     id: "trade",
     chipTitle: "A business pays trade tax",
     chipNote: "Gewerbesteuer",
-    lede: "Trade tax is the classic municipal tax — and Berlin is special. Because it is a Land and a municipality at once, it keeps nearly all of it, remitting only the federal component of the statutory levy.",
+    lede: "Trade tax is the classic municipal tax — and Berlin is special. It pays the full statutory levy, then receives the Land component back inside equalisation because it is also a Land; only the federal component leaves its budget overall.",
     stages: ["The event", "The named tax", "Recipient budgets"],
     unit: "million_eur",
     unitNote: "Ribbon widths show observed 2024 Berlin amounts (trade tax gross €3.01bn).",
     brief: {
       about: "The route taken by Berlin's €3.01bn gross trade-tax receipts in 2024.",
-      takeaway: "Berlin keeps the municipal and Land components; about 3.54% leaves for the Federation.",
+      takeaway:
+        "Berlin keeps the municipal and Land components; the observed 2024 cash component leaving for the Federation is €108.6m, or 3.61% of displayed gross.",
       sources: [berlinTaxAccount2024, gemFinRef6],
     },
     placeAware: false,
@@ -695,7 +697,7 @@ const tradeBerlin: Route = {
           "A company with premises in Berlin pays trade tax on its profits — Berlin's assessment rate is 410%.",
         status: "calculated_official",
         sources: [berlinTaxAccount2024],
-        caveats: [pendingVerification],
+        caveats: [publicationProvenanceCaveat],
       },
       {
         id: "gewerbesteuer",
@@ -709,7 +711,7 @@ const tradeBerlin: Route = {
         amountNote: "Berlin 2024 gross: €3.01bn.",
         status: "calculated_official",
         sources: [berlinTaxAccount2024, gemFinRef7],
-        caveats: [pendingVerification],
+        caveats: [publicationProvenanceCaveat],
       },
       {
         id: "berlin_budget",
@@ -722,7 +724,7 @@ const tradeBerlin: Route = {
           "Because Berlin is both Land and municipality, the Land component of the trade-tax levy circles back to Berlin through the equalisation system — only the federal component (≈3.5% of gross) truly leaves town.",
         status: "calculated_official",
         sources: [gemFinRef6, gemFinRef7, berlinTaxAccount2024, lhoBerlin8],
-        caveats: [pendingVerification],
+        caveats: [publicationProvenanceCaveat],
       },
       {
         id: "federal_budget",
@@ -732,8 +734,8 @@ const tradeBerlin: Route = {
         role: "recipient",
         description: "The federal component of the trade-tax levy, set by a statutory multiplier.",
         status: "provisional_official",
-        sources: [gemFinRef7, berlinTaxAccount2024],
-        caveats: [pendingVerification],
+        sources: [gemFinRef6, berlinTaxAccount2024],
+        caveats: [publicationProvenanceCaveat],
       },
     ],
     edges: [
@@ -747,7 +749,7 @@ const tradeBerlin: Route = {
         shareLabel: "€3.01bn gross (2024)",
         description: "Gross trade tax collected by Berlin in 2024, at an assessment rate of 410%.",
         sources: [berlinTaxAccount2024],
-        caveats: [pendingVerification],
+        caveats: [publicationProvenanceCaveat],
       },
       {
         id: "trade-berlin",
@@ -760,7 +762,7 @@ const tradeBerlin: Route = {
         description:
           "Berlin's cash account keeps gross trade tax minus the full statutory levy — a 35% multiplier on the base amount (14.5 federal + 20.5 Land, §6 Gemeindefinanzreformgesetz).",
         sources: [berlinTaxAccount2024, gemFinRef6],
-        caveats: [pendingVerification],
+        caveats: [publicationProvenanceCaveat],
       },
       {
         id: "trade-berlin-fka",
@@ -773,7 +775,7 @@ const tradeBerlin: Route = {
         description:
           "The Land component of the levy (20.5 of the 35 multiplier, ≈€153.5m in 2024) is credited back to Berlin inside the official equalisation calculation — because Berlin is the Land.",
         sources: [bmfEqualisation2024, gemFinRef6],
-        caveats: [pendingVerification],
+        caveats: [publicationProvenanceCaveat],
       },
       {
         id: "trade-federation",
@@ -782,13 +784,13 @@ const tradeBerlin: Route = {
         weight: 108.573,
         kind: "fixed_share",
         status: "calculated_official",
-        shareLabel: "federal levy component ≈3.54%",
+        shareLabel: "14.5/35 of cash-year levy · €108.6m",
         description:
-          "The federal component of the trade-tax levy: 14.5 / 410 = 3.5366% of gross, ≈€108.6m in 2024, remitted by Berlin under §7 Gemeindefinanzreformgesetz.",
-        sources: [gemFinRef6, gemFinRef7, bmfEqualisation2024],
+          "The observed federal component is 14.5 / 35 of Berlin's €262.1m cash-year levy: €108.6m, or 3.61% of displayed gross. The same-assessment-year statutory benchmark is 14.5 / 410 = 3.5366% of gross, about €106.5m; cash timing explains the difference.",
+        sources: [gemFinRef6, bmfEqualisation2024],
         caveats: [
           "The cash-year levy (€262.1m) differs ~2% from 35% of same-year gross because of quarterly payments and prior-year settlement (§6 (6)–(7) GemFinRefG).",
-          pendingVerification,
+          publicationProvenanceCaveat,
         ],
       },
     ],
@@ -831,7 +833,7 @@ const housingBerlin: Route = {
           "Owning property in Berlin means annual property tax; buying one triggers real-estate transfer tax at Berlin's 6% rate. Renters usually pay property tax too — landlords may pass it on through service charges.",
         status: "calculated_official",
         sources: [berlinTaxAccount2024, betrKV2],
-        caveats: [pendingVerification],
+        caveats: [publicationProvenanceCaveat],
       },
       {
         id: "grundsteuer",
@@ -845,7 +847,7 @@ const housingBerlin: Route = {
         amountNote: "Berlin 2024: €870m.",
         status: "calculated_official",
         sources: [berlinTaxAccount2024, betrKV2],
-        caveats: [pendingVerification],
+        caveats: [publicationProvenanceCaveat],
       },
       {
         id: "grunderwerbsteuer",
@@ -859,7 +861,7 @@ const housingBerlin: Route = {
         amountNote: "Berlin 2024: €911m.",
         status: "calculated_official",
         sources: [berlinTaxAccount2024],
-        caveats: [pendingVerification],
+        caveats: [publicationProvenanceCaveat],
       },
       {
         id: "berlin_budget",
@@ -872,7 +874,7 @@ const housingBerlin: Route = {
           "Property tax is municipal and real-estate transfer tax belongs to the Land — and Berlin is both at once, so neither tax leaves town. Boroughs are not tax recipients; they get allocations inside this budget.",
         status: "calculated_official",
         sources: [berlinTaxAccount2024, lhoBerlin8],
-        caveats: [pendingVerification],
+        caveats: [publicationProvenanceCaveat],
       },
     ],
     edges: [
@@ -886,7 +888,7 @@ const housingBerlin: Route = {
         shareLabel: "€870m (2024)",
         description: "Property tax collected by Berlin in 2024.",
         sources: [berlinTaxAccount2024],
-        caveats: [pendingVerification],
+        caveats: [publicationProvenanceCaveat],
       },
       {
         id: "event-grunderwerbsteuer",
@@ -898,7 +900,7 @@ const housingBerlin: Route = {
         shareLabel: "€911m (2024)",
         description: "Real-estate transfer tax collected on Berlin property purchases in 2024, at the 6% Berlin rate.",
         sources: [berlinTaxAccount2024],
-        caveats: [pendingVerification],
+        caveats: [publicationProvenanceCaveat],
       },
       {
         id: "grundsteuer-berlin",
@@ -910,7 +912,7 @@ const housingBerlin: Route = {
         shareLabel: "100% to Berlin",
         description: "Property tax belongs to the municipality in full — Berlin. No revenue edge to any borough exists.",
         sources: [berlinTaxAccount2024],
-        caveats: [pendingVerification],
+        caveats: [publicationProvenanceCaveat],
       },
       {
         id: "grunderwerbsteuer-berlin",
@@ -922,7 +924,7 @@ const housingBerlin: Route = {
         shareLabel: "100% to Berlin (Land tax)",
         description: "Real-estate transfer tax is a Land tax; Berlin is the Land where the property sits.",
         sources: [berlinTaxAccount2024],
-        caveats: [pendingVerification],
+        caveats: [publicationProvenanceCaveat],
       },
     ],
     annotations: [
@@ -960,7 +962,7 @@ function buildWageRoute(place: Place): Route {
       amountNote: "Germany collected €947.7bn in taxes before distribution in 2024.",
       status: "calculated_official",
       sources: [destatis71211],
-      caveats: [pendingVerification],
+      caveats: [publicationProvenanceCaveat],
     },
     {
       id: "lohnsteuer",
@@ -1189,7 +1191,7 @@ function buildNationalWageRoute(): Route {
         amountNote: "Germany collected €947.7bn in taxes before distribution in 2024.",
         status: "calculated_official",
         sources: [destatis71211],
-        caveats: [pendingVerification],
+        caveats: [publicationProvenanceCaveat],
       },
       {
         id: "lohnsteuer",
@@ -1391,7 +1393,7 @@ function buildNationalVatRoute(): Route {
         description: `The Länder pool is shared by population, then adjusted for fiscal capacity: in 2024, €${(totalShifted / 1000).toFixed(2)}bn moved from above-average to below-average Länder inside this pool.`,
         status: "provisional_official",
         sources: [bmfEqualisation2024, artikel107],
-        caveats: [pendingVerification],
+        caveats: [publicationProvenanceCaveat],
       },
       {
         id: "municipalities_budget",
@@ -1402,7 +1404,7 @@ function buildNationalVatRoute(): Route {
         description: "The municipal VAT share, distributed nationwide by a fixed statutory key.",
         status: "calculated_official",
         sources: [vatKeyReg],
-        caveats: [pendingVerification],
+        caveats: [publicationProvenanceCaveat],
       },
     ],
     edges: [
@@ -1420,7 +1422,7 @@ function buildNationalVatRoute(): Route {
         description:
           "Each Land's slice is its population share plus or minus the pooled fiscal-capacity adjustment. No Land pays another Land directly.",
         sources: [bmfEqualisation2024, artikel107],
-        caveats: [pendingVerification],
+        caveats: [publicationProvenanceCaveat],
       },
       {
         id: "municipal-all",
@@ -1432,7 +1434,7 @@ function buildNationalVatRoute(): Route {
         shareLabel: "by statutory key",
         description: "The municipal VAT share flows to municipalities nationwide under the fixed 2024–2026 key.",
         sources: [vatKeyReg],
-        caveats: [pendingVerification],
+        caveats: [publicationProvenanceCaveat],
       },
     ],
     annotations: [
@@ -1502,7 +1504,7 @@ function buildVatRoute(place: Place): Route {
           : `${name}'s slice of the Länder pool is population-based, reduced by a pooled equalisation deduction — €${(sliceMeur / 1000).toFixed(2)}bn of 2024 VAT in total. None of it is 'your' VAT specifically.`,
       status: "provisional_official",
       sources: [bmfEqualisation2024],
-      caveats: [pendingVerification],
+      caveats: [publicationProvenanceCaveat],
     },
     {
       id: "other_laender",
@@ -1514,7 +1516,7 @@ function buildVatRoute(place: Place): Route {
         "The rest of the Länder pool, distributed by population with pooled equalisation additions and deductions — never bilateral transfers between Länder.",
       status: "provisional_official",
       sources: [bmfEqualisation2024],
-      caveats: [pendingVerification],
+      caveats: [publicationProvenanceCaveat],
     },
     {
       id: "municipalities_budget",
@@ -1526,7 +1528,7 @@ function buildVatRoute(place: Place): Route {
         "The municipal VAT share, distributed nationwide by a fixed statutory key. Your own municipality's slice is aggregate data; per-Land key detail arrives with a later dataset.",
       status: "calculated_official",
       sources: [vatKeyReg],
-      caveats: [pendingVerification],
+      caveats: [publicationProvenanceCaveat],
     },
   ];
 
@@ -1546,7 +1548,7 @@ function buildVatRoute(place: Place): Route {
       shareLabel: eqLabel,
       description: `${name}'s population-based share of the Länder pool, adjusted by the pooled fiscal-capacity equalisation. Pooled — not a transfer from any named Land.`,
       sources: [bmfEqualisation2024, artikel107],
-      caveats: ["BMF bases the 2024 calculation on the provisional annual account.", pendingVerification],
+      caveats: ["BMF bases the 2024 calculation on the provisional annual account.", publicationProvenanceCaveat],
     },
     {
       id: "laender-others",
@@ -1558,7 +1560,7 @@ function buildVatRoute(place: Place): Route {
       shareLabel: "population share ± equalisation",
       description: `The remaining Länder pool after ${name}'s slice.`,
       sources: [bmfEqualisation2024],
-      caveats: [pendingVerification],
+      caveats: [publicationProvenanceCaveat],
     },
     {
       id: "municipal-all",
@@ -1570,7 +1572,7 @@ function buildVatRoute(place: Place): Route {
       shareLabel: "by statutory key",
       description: "The municipal VAT share flows to municipalities nationwide under the fixed 2024–2026 key.",
       sources: [vatKeyReg],
-      caveats: [pendingVerification],
+      caveats: [publicationProvenanceCaveat],
     },
   ];
 
@@ -1624,7 +1626,7 @@ const genesis71211: SourceRef = {
 
 const levySplitCaveats = [
   "Federal and Land components are derived from the statutory multipliers (14.5 and 20.5 of 35, §6 GemFinRefG); the cash-year levy includes quarterly-payment and prior-year settlement timing.",
-  pendingVerification,
+  publicationProvenanceCaveat,
 ];
 
 const genericSpendBoundary = (heading: string) => ({
@@ -1664,7 +1666,7 @@ function buildTradeRoute(place: Place): Route {
         : `Businesses in ${name} pay trade tax on their profits to their municipality, at that municipality's assessment rate.`,
       status: "calculated_official",
       sources: [genesis71211],
-      caveats: [pendingVerification],
+      caveats: [publicationProvenanceCaveat],
     },
     {
       id: "gewerbesteuer",
@@ -1678,7 +1680,7 @@ function buildTradeRoute(place: Place): Route {
       amountNote: `${name} 2024 gross: ${formatBn(gross)}.`,
       status: "calculated_official",
       sources: [genesis71211, gemFinRef6],
-      caveats: [pendingVerification],
+      caveats: [publicationProvenanceCaveat],
     },
     {
       id: mergedCity ? "land_budget" : "municipal_budgets",
@@ -1694,7 +1696,7 @@ function buildTradeRoute(place: Place): Route {
           : `The municipalities of ${name} keep trade tax net of the statutory levy — their most important own tax.`,
       status: "calculated_official",
       sources: [genesis71211, gemFinRef6],
-      caveats: [pendingVerification],
+      caveats: [publicationProvenanceCaveat],
     },
     {
       id: "federal_budget",
@@ -1737,7 +1739,7 @@ function buildTradeRoute(place: Place): Route {
         ? "Gross trade tax collected by all German municipalities in 2024."
         : `Gross trade tax collected in ${name} in 2024.`,
       sources: [genesis71211],
-      caveats: [pendingVerification],
+      caveats: [publicationProvenanceCaveat],
     },
     {
       id: "trade-munis",
@@ -1749,7 +1751,7 @@ function buildTradeRoute(place: Place): Route {
       shareLabel: "net of the levy",
       description: "Gross trade tax minus the full statutory levy (35 multiplier: 14.5 federal + 20.5 Land, §6 GemFinRefG).",
       sources: [genesis71211, gemFinRef6],
-      caveats: [pendingVerification],
+      caveats: [publicationProvenanceCaveat],
     },
     {
       id: "trade-federation",
@@ -1830,7 +1832,7 @@ function buildHousingRoute(place: Place): Route {
         "Owning property means yearly property tax; buying one triggers real-estate transfer tax. Landlords may pass property tax to renters through service charges.",
       status: "calculated_official",
       sources: [genesis71211, betrKV2],
-      caveats: [pendingVerification],
+      caveats: [publicationProvenanceCaveat],
     },
     {
       id: "grundsteuer",
@@ -1843,7 +1845,7 @@ function buildHousingRoute(place: Place): Route {
       amountNote: `${name} 2024: ${formatBn(property)}.`,
       status: "calculated_official",
       sources: [genesis71211, betrKV2],
-      caveats: [pendingVerification],
+      caveats: [publicationProvenanceCaveat],
     },
     {
       id: "grunderwerbsteuer",
@@ -1856,7 +1858,7 @@ function buildHousingRoute(place: Place): Route {
       amountNote: `${name} 2024: ${formatBn(transfer)}.`,
       status: "calculated_official",
       sources: [genesis71211],
-      caveats: [pendingVerification],
+      caveats: [publicationProvenanceCaveat],
     },
     ...(mergedCity
       ? []
@@ -1870,7 +1872,7 @@ function buildHousingRoute(place: Place): Route {
             description: "Property tax belongs to the municipality in full.",
             status: "calculated_official",
             sources: [genesis71211],
-            caveats: [pendingVerification],
+            caveats: [publicationProvenanceCaveat],
           } satisfies RouteNode,
         ]),
     {
@@ -1885,7 +1887,7 @@ function buildHousingRoute(place: Place): Route {
         : "Real-estate transfer tax is a Land tax; it goes to the Land where the property sits.",
       status: "calculated_official",
       sources: [genesis71211, lhoBerlin8],
-      caveats: [pendingVerification],
+      caveats: [publicationProvenanceCaveat],
     },
   ];
 
@@ -1900,7 +1902,7 @@ function buildHousingRoute(place: Place): Route {
       shareLabel: `${formatBn(property)} (2024)`,
       description: `Property tax collected in ${name} in 2024 (Grundsteuer A + B).`,
       sources: [genesis71211],
-      caveats: [pendingVerification],
+      caveats: [publicationProvenanceCaveat],
     },
     {
       id: "event-grunderwerbsteuer",
@@ -1912,7 +1914,7 @@ function buildHousingRoute(place: Place): Route {
       shareLabel: `${formatBn(transfer)} (2024)`,
       description: `Real-estate transfer tax collected in ${name} in 2024.`,
       sources: [genesis71211],
-      caveats: [pendingVerification],
+      caveats: [publicationProvenanceCaveat],
     },
     {
       id: "grundsteuer-munis",
@@ -1924,7 +1926,7 @@ function buildHousingRoute(place: Place): Route {
       shareLabel: mergedCity ? "100% — stays in town" : "100% to the municipality",
       description: "Property tax belongs to the municipality in full — no borough or district receives it directly.",
       sources: [genesis71211],
-      caveats: [pendingVerification],
+      caveats: [publicationProvenanceCaveat],
     },
     {
       id: "grunderwerbsteuer-land",
@@ -1936,7 +1938,7 @@ function buildHousingRoute(place: Place): Route {
       shareLabel: "100% to the Land",
       description: "Real-estate transfer tax is assigned exclusively to the Länder.",
       sources: [genesis71211, artikel106],
-      caveats: [pendingVerification],
+      caveats: [publicationProvenanceCaveat],
     },
   ];
 
@@ -1995,7 +1997,7 @@ function buildSocialRoute(): Route {
       amountNote: `2024 contributions across the four systems: ${formatBn(totalContributions)}.`,
       status: "calculated_official",
       sources: socialSystems.map((system) => system.source),
-      caveats: [pendingVerification],
+      caveats: [publicationProvenanceCaveat],
     },
     {
       id: "federal_grants",
@@ -2007,7 +2009,7 @@ function buildSocialRoute(): Route {
         "The federal budget adds large tax-financed grants — mainly to the pension system — on top of contributions.",
       status: "calculated_official",
       sources: [socialSystems[0]!.source],
-      caveats: [pendingVerification],
+      caveats: [publicationProvenanceCaveat],
     },
     ...socialSystems.map(
       (system): RouteNode => ({
@@ -2021,7 +2023,7 @@ function buildSocialRoute(): Route {
         amountNote: `2024 expenditure: ${formatBn(system.expenditure_meur)}.`,
         status: "calculated_official",
         sources: [system.source, system.rate.legal_basis],
-        caveats: [pendingVerification],
+        caveats: [publicationProvenanceCaveat],
       }),
     ),
   ];
@@ -2037,7 +2039,7 @@ function buildSocialRoute(): Route {
         shareLabel: `${system.rate.pct}% of gross pay`,
         description: `Contributions assigned by law to the ${system.name.toLowerCase()} (${system.rate.legal_basis.label}).`,
         sources: [system.source, system.rate.legal_basis],
-        caveats: [pendingVerification],
+        caveats: [publicationProvenanceCaveat],
       }),
     ),
     ...socialSystems
@@ -2053,7 +2055,7 @@ function buildSocialRoute(): Route {
           shareLabel: `${formatBn(system.federal_grants_meur)} federal grants`,
           description: `Tax-financed federal grants to the ${system.name.toLowerCase()} — federal expenditure on one side, system revenue on the other.`,
           sources: [system.source],
-          caveats: [pendingVerification],
+          caveats: [publicationProvenanceCaveat],
         }),
       ),
   ];

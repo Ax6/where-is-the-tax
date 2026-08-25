@@ -1,11 +1,11 @@
 /**
  * The whole map: every major named German tax family and where it goes by law,
  * from the constitutional assignment (Art. 106 GG) verified in the 2026-08-05
- * research report. Amounts appear only where the report recorded them; the rest
- * arrive with the verified dataset.
+ * research report and independent verification pass. Amounts appear only where
+ * the collected official accounts support them.
  */
 
-import { artikel106, berlinTaxAccount2024, bmfDec2024, gemFinRef7, ustg12, type SourceRef } from "./data.ts";
+import { artikel106, berlinTaxAccount2024, bmfDec2024, gemFinRef6, ustg12, type SourceRef } from "./data.ts";
 
 const sgb4: SourceRef = {
   label: "Sozialgesetzbuch IV (social insurance framework)",
@@ -184,9 +184,9 @@ export const taxonomy: TaxGroup[] = [
         official: "Gewerbesteuer",
         split: "Municipality, minus a statutory levy",
         description:
-          "The main municipal tax, on business profits. A statutory levy passes a component up; Berlin remits only the federal part.",
+          "The main municipal tax, on business profits. Berlin pays the full statutory levy; its Land component is then credited back to Berlin inside the equalisation calculation, while the federal component leaves its budget.",
         amountNote: "Berlin 2024 gross: €3.01bn.",
-        sources: [artikel106, gemFinRef7, berlinTaxAccount2024],
+        sources: [artikel106, gemFinRef6, berlinTaxAccount2024],
         routeId: "trade",
       },
       {

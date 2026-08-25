@@ -88,7 +88,7 @@ taxable event
   → recipient's contextual spending composition
 ```
 
-### Route facts the graph is built on (from the research report; pending independent reproduction)
+### Route facts the graph is built on (independently reproduced on 2026-08-05)
 
 - Income tax: Federation 42.5% / Länder 42.5% / municipalities 15% (exact statute); wage tax
   decomposed to Land of residence (§7 ZerlegungsG); municipal share via statutory keys.
@@ -103,8 +103,11 @@ taxable event
   2024/2025 calculations provisional.
 - Berlin is Land **and** municipality; its boroughs are not tax recipients (global allocations
   inside the Berlin budget only).
-- Berlin trade tax: municipal, with a statutory federal levy — Berlin remits only the federal
-  component: `14.5 / 410 = 3.5366%` of gross (statutory calculation, not an observation).
+- Berlin trade tax: Berlin pays the full levy (multiplier 35: 14.5 federal + 20.5 Land) under
+  §6 GemFinRefG. The Land component is credited back inside equalisation because Berlin is also
+  the Land. The same-assessment-year federal benchmark is `14.5 / 410 = 3.5366%` of gross at
+  Berlin's 2024 rate (about €106.5m); the observed 2024 cash component is €108.573m because levy
+  payments and prior-year settlements cross reporting periods.
 - Federation-exclusive taxes: energy, tobacco, insurance, solidarity surcharge, etc.
   Länder taxes: inheritance, real-estate transfer, beer, betting. EU own resources are a
   federal-level transfer, not a traceable slice of an individual purchase.
@@ -151,8 +154,8 @@ double-counted.
 ### The hero: a stateful D3 fiscal graph
 
 One page, one interactive graph that **changes topology with the selected event**. Event
-presets — *You earn a wage in Berlin* · *You buy petrol* · *A Berlin business pays trade tax* —
-each render that route's true stages as proportional flows: event → named tax → statutory
+presets cover wages, ordinary purchases, petrol, trade tax, and housing. Each renders that
+route's true stages as proportional flows: event → named tax → statutory
 split → clearing/equalisation → recipient budgets. Flow widths follow statutory shares or
 official aggregates; every node and edge carries a plain-English hover explanation, an edge
 kind, and an evidence status.
@@ -166,8 +169,8 @@ research extracted first. The target interaction is a clickable Germany map (BKG
 boundaries, Länder first, municipalities later): selecting a place re-parameterises every
 place-dependent stage — Zerlegung destination, the Land's equalisation addition or deduction
 (all 16 Länder are in the official BMF calculation), municipal keys and local tax amounts —
-while the statutory splits stay fixed. Until the verification pass extracts the all-Länder
-rows, the page must say plainly that Berlin is an example.
+while the statutory splits stay fixed. The current implementation includes the official
+all-16-Länder equalisation calculation; municipality-level selection remains future work.
 
 **Beyond the boundary is a graph too, not a dead end.** The spending panel is unquantified only
 until verified recipient accounts exist (federal 2024 XML title actuals; Berlin function
@@ -232,9 +235,10 @@ coordinates, retrieval date, licence; calculation expression and inputs for deri
 Statutory percentages are recorded as `exact_statute` with their legal citation — they are law,
 not statistics.
 
-The prototype phase may ship a **clearly-bannered internal fixture** of this shape using
-statutory shares plus research-report figures marked "pending independent verification"; no
-such figures are published as official until verification completes.
+The preview may use independently reproduced core figures and clearly labelled, cross-checked
+later additions under a **clear publication caveat**. It must not be presented as a production
+data release until observation-level independent review, provenance, and evidence snapshots
+complete the fail-closed publication bundle.
 
 ### Validation (PR gate + prebuild, fail closed)
 
@@ -261,9 +265,12 @@ results) → map and reconcile (stable ids, explicit derivations, rounding bound
 coordinates, arithmetic, licences from raw evidence) → publish artifacts (dataset, provenance,
 evidence manifest, log, learnings).
 
-**Current status (2026-08-05):** collection complete; independent verification NOT performed;
-no production dataset exists. The six verifier priorities are listed in
-[docs/research/logs/2026-08-05-de-fiscal-graph.md](docs/research/logs/2026-08-05-de-fiscal-graph.md).
+**Current status (updated 2026-08-25):** the core route claims were independently reproduced on
+2026-08-05. The later all-Länder, spending-account, and social-insurance additions are collected
+and cross-checked but still require the same observation-level independent pass. What remains
+before publication is the fail-closed observation bundle with extraction records, evidence
+snapshots, checksums, and completed per-observation review. Core verification results are in
+[docs/research/logs/2026-08-05-independent-verification.md](docs/research/logs/2026-08-05-independent-verification.md).
 Key access facts: Destatis GENESIS 71211 (named taxes before/after distribution; authenticated
 REST since July 2025), Berlin 2024 tax account (official table), BMF 2024 equalisation PDF
 (provisional), federal `rechnung_2024.xml` (title-level actuals), Berlin annual-account PDF
@@ -279,15 +286,15 @@ social-insurance carrier reports. Licences: mostly DL-DE-BY-2.0 / CC-BY; anythin
 ```text
 src/
 ├── main.ts               # bootstrap: state → data → render
-├── state.ts              # route/selection state + URL hash sync
+├── routes/               # route builders, places, taxonomy, hash state
 ├── format.ts             # Intl formatting
 ├── styles.css
 ├── data/                 # schema, load, model (graph + accounts), validator core
 ├── viz/
 │   ├── fiscal-graph.ts   # the hero: staged flow layout, ribbons, boundary treatment
-│   ├── spending.ts       # post-boundary contextual composition
+│   ├── land-map.ts       # clickable Länder selector
 │   └── tooltip.ts        # shared hover/focus explanation layer
-└── ui/                   # presets, detail panel, summary, controls
+└── ui/                   # spending context, details, static shell
 scripts/                  # generate-static.ts, validate-data.ts, import helpers
 tests/                    # validator fixtures, model, state, UI/browser checks
 ```
@@ -301,29 +308,29 @@ runtime API calls. Build-time static generation feeds the fallback.
 
 ## 7. Delivery phases
 
-**P0 — Fiscal-graph prototype (now).** Rebuild the page around the D3 route visualization with
-the three presets, budget-boundary treatment, hover explanations, and provenance details, using
-statutory shares (exact law) plus research figures under a prominent "pending verification"
-banner; spending context clearly illustrative. Exit: the graph makes the routing story and the
-boundary unmistakable on desktop, and the page no longer reads as an essay.
+**P0 — Fiscal-graph prototype — complete.** The one-screen workbench now has five routes,
+budget-boundary treatment, hover/focus explanations, source details, and a prominent preview
+banner that distinguishes independently reproduced core routes from later cross-checked additions.
+The graph makes routing and the boundary explicit on desktop instead of reading as a landing-page
+essay.
 
-**P1 — Verification and first production dataset.** Run the independent verification pass (six
-logged priorities), then produce `data/de/2024/` for the three routes plus the Berlin tax
-account and equalisation rows, with evidence manifest and full provenance. Exit: validator and
-independent reproduction green; banner drops to "provisional where marked".
+**P1 — Verification and first production dataset — core pass complete, full bundle incomplete.**
+The independent pass reproduced the core figures and resolved the trade-tax discrepancy. Reproduce
+the later account/Länder additions independently, then finish `data/de/2024/`
+extraction/provenance records and evidence manifests before the preview banner can be removed.
 
-**P2 — Recipient accounts.** Ingest federal 2024 XML and Berlin 2024 function actuals as
-reconciled accounts; the beyond-the-boundary panel becomes a real spending drill-down graph
-per recipient budget.
+**P2 — Recipient accounts — complete for federal and Berlin 2024.** Federal 2024 XML and Berlin
+2024 function actuals now power reconciled post-boundary spending accounts.
 
-**P3 — The Germany map selector.** Extract all-16-Länder equalisation rows and per-Land
-route parameters from the already-catalogued sources; add the clickable Länder map (BKG VG250)
-that re-splits every route for the selected place. Municipality-level selection follows where
-Regionalstatistik data supports it. Also: transfer ledger + reconciliation validators wired
-end-to-end; social-insurance branch; 2021 comparable mode.
+**P3 — Germany map, Länder accounts, and social insurance — complete for the current scope.** The
+clickable BKG Länder map re-parameterises all five routes; all-16-Länder equalisation, 2021
+comparable accounts, and four social-insurance systems are loaded. Municipality-level selection
+remains a later extension where Regionalstatistik data supports it.
 
-**P4 — Mobile, accessibility, public v1.** Narrow-screen adaptation, keyboard/screen-reader
-pass, no-JS fallback verified, comprehension check with a handful of non-experts, deploy.
+**P4 — Desktop release hardening, then mobile/public v1.** Keep the current desktop one-screen
+interaction stable; finish provenance/evidence gates and a small non-expert comprehension pass.
+After the desktop run settles, do the deliberate narrow-screen, keyboard, screen-reader,
+reduced-motion, and no-JS pass before deployment.
 
 **P5 — Extensions (separately planned).** More taxes and purchase presets, Berlin borough
 service view, a second year with definition-change mapping, embeds, translations.
@@ -347,7 +354,7 @@ service view, a second year with definition-change mapping, embeds, translations
 
 ## 9. Definition of done — public v1
 
-- The three routes render from a fully provenanced, independently verified 2024 dataset;
+- The five current routes render from a fully provenanced, independently verified 2024 dataset;
   provisional values visibly badged.
 - Recipient accounts reconcile under documented rounding bounds; transfers eliminated.
 - A non-expert can follow a route, explain the budget boundary in their own words, and reach an

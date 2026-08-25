@@ -160,7 +160,7 @@ export function renderStaticPage(routes: Route[], defaultRouteId: string): strin
     <a class="skip-link" href="#graph">Skip to the graph</a>
     <div class="prototype-banner" role="note">
       <strong>Internal prototype</strong>
-      <span>Statutory shares are exact law. Euro figures were independently reproduced from official sources on 2026-08-05; the fully provenanced dataset is still in progress — treat as preview, not published data.</span>
+      <span>Statutory shares are exact law. Core route figures were independently reproduced on 2026-08-05; later account additions are cross-checked but still await bundle-wide independent verification — treat as preview, not published data.</span>
     </div>
 
     <header class="site-header" id="top">
@@ -233,7 +233,7 @@ export function renderStaticPage(routes: Route[], defaultRouteId: string): strin
       <div class="section-heading">
         <p class="eyebrow">The whole map</p>
         <h2 id="all-taxes-title">All taxes at a glance</h2>
-        <p>Every major named tax and who receives it by law. The four routes above are drawn end-to-end; the rest follow as the dataset grows. Click any tax for a short explanation and its legal basis.</p>
+        <p>Every major named tax and who receives it by law. The ${routes.length} routes above are drawn end-to-end; the rest follow as the dataset grows. Click any tax for a short explanation and its legal basis.</p>
       </div>
       <div class="tax-map">${renderTaxonomy(routes)}</div>
     </section>
@@ -254,7 +254,7 @@ export function renderStaticPage(routes: Route[], defaultRouteId: string): strin
       <div class="section-heading">
         <p class="eyebrow">Verification status</p>
         <h2 id="sources-title">Sources and verification</h2>
-        <p>Deep-source research completed and independently verified on 2026-08-05: every euro figure shown here was reproduced from the official tables, PDFs and statutes by a second pass. The one open discrepancy was resolved on the way — Berlin's 2024 trade-tax levy line is the full statutory levy (35% multiplier, §6 GemFinRefG); the Land component returns to Berlin through the equalisation system. What remains before publication: the fully provenanced dataset bundle with evidence snapshots.</p>
+        <p>Deep-source research completed on 2026-08-05, with the core route claims reproduced from official tables, PDFs and statutes by an independent second pass. Later all-Länder, spending-account and social-insurance additions are cross-checked but still require the same observation-level independent review. The trade-tax discrepancy was resolved on the way: Berlin's 2024 line is the full statutory levy (35 multiplier, §6 GemFinRefG), with its Land component returned through equalisation.</p>
       </div>
       <ul class="source-list">
         ${collectSources(routes)
@@ -283,7 +283,7 @@ export function renderStaticPage(routes: Route[], defaultRouteId: string): strin
     </section>
 
     <footer>
-      <p><strong>Prototype boundary:</strong> this interface demonstrates the fiscal-graph contract on statutory shares and research-report figures. No figure here is published data until the independent verification pass completes.</p>
+      <p><strong>Preview boundary:</strong> core route figures passed independent reproduction; later additions are cross-checked. Publication still requires observation-level provenance, evidence snapshots and bundle-wide independent review.</p>
       <p>Every node, ribbon and table row links to its legal basis or official source.</p>
     </footer>
 
