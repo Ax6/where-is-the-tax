@@ -6,7 +6,7 @@
 
 **Primary scenario:** a person in Berlin
 
-**Status:** collection complete; independent reproduction still required before publication
+**Status:** core claims independently reproduced; observation-level publication bundle incomplete
 
 ## Executive verdict
 
@@ -128,13 +128,15 @@ head-office-only route would therefore be misleading.
 ### Trade tax in Berlin
 
 Trade tax belongs initially to the municipality containing the establishment. A statutory levy is
-then remitted to Federation and Land. Berlin is special: because it is Land and municipality, it
-remits only the federal component under
-[§7 Gemeindefinanzreformgesetz](https://www.gesetze-im-internet.de/gemfinrefg/__7.html).
+then remitted to Federation and Land. Berlin pays the full levy using the multiplier 35 under
+[§6 Gemeindefinanzreformgesetz](https://www.gesetze-im-internet.de/gemfinrefg/__6.html): 14.5 is
+the federal component and 20.5 is the Land component. Because Berlin is also the Land, the latter
+is credited back to Berlin inside the official equalisation calculation.
 
-With Berlin's 2024 assessment rate of 410% and the federal multiplier of 14.5, the federal share of
-gross Berlin trade tax is `14.5 / 410 = 3.5366%`; Berlin retains approximately 96.4634%. Store this
-as a statutory calculation linked to the official aggregate, not as a source observation.
+With Berlin's 2024 assessment rate of 410%, the federal component is
+`14.5 / 410 = 3.5366%` of gross. The cash-year levy does not equal a simple percentage of the same
+year's gross because quarterly payments and prior-year settlements cross reporting periods. Store
+the statutory calculation and the observed cash rows separately.
 
 ### Property and real-estate transfer taxes
 

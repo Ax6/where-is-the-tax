@@ -1,9 +1,10 @@
 # Source catalog
 
-**Last checked:** 2026-08-05
+**Last checked:** 2026-08-06
 
-**State:** researched; individual observations still require extraction records and independent
-verification before publication.
+**State:** core route claims independently reproduced on 2026-08-05; later all-Länder, account,
+and social-insurance additions cross-checked on 2026-08-06 but still awaiting an independent pass.
+All observations still require publication-format provenance records and evidence snapshots.
 
 One source row may support many observations. Store one extraction per official query/download and
 give every observation exact dimension or document coordinates.

@@ -31,3 +31,11 @@ test("getTaxEntry finds entries with their group", () => {
   assert.equal(found.entry.routeId, "housing");
   assert.equal(getTaxEntry("nope"), undefined);
 });
+
+test("Berlin trade-tax copy reflects the verified full-levy accounting", () => {
+  const found = getTaxEntry("trade_tax");
+  assert(found);
+  assert.match(found.entry.description, /full statutory levy/);
+  assert.match(found.entry.description, /Land component.*credited back/);
+  assert.doesNotMatch(found.entry.description, /remits only the federal part/);
+});

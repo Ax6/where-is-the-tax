@@ -3,6 +3,7 @@ import "./styles.css";
 import { buildRoutes, defaultRouteId, type Route } from "./routes/data.ts";
 import { equalisationPerResident, getLandFigures, landFigures } from "./routes/equalisation.ts";
 import { BERLIN, GERMANY, getPlace, type Place } from "./routes/places.ts";
+import { parseRouteHash, routeHash, routeHashTransition } from "./routes/hash.ts";
 import { getTaxEntry } from "./routes/taxonomy.ts";
 import { renderFiscalGraph } from "./viz/fiscal-graph.ts";
 import { mapAttribution, renderLandMap } from "./viz/land-map.ts";
@@ -43,6 +44,7 @@ let currentRoute: Route | undefined;
 let lastTrigger: Element | null = null;
 let comparisonKey: SpendingKey | null = null;
 let socialKey: SpendingKey = "pension";
+let graphDrawTimer: number | undefined;
 
 boundaryPanel?.addEventListener("change", (event) => {
   if (!(event.target instanceof HTMLSelectElement) || !currentRoute) {
@@ -102,7 +104,11 @@ for (const taxButton of document.querySelectorAll<HTMLButtonElement>("[data-tax-
     }
     lastTrigger = taxButton;
     const routeTitleText = found.entry.routeId ? findRoute(found.entry.routeId)?.chipTitle : undefined;
-    dialogContent.innerHTML = renderTaxDetail(found.group, found.entry, routeTitleText);
+    const routeLink =
+      found.entry.routeId && routeTitleText
+        ? { title: routeTitleText, href: routeHash(found.entry.routeId, currentPlace.code) }
+        : undefined;
+    dialogContent.innerHTML = renderTaxDetail(found.group, found.entry, routeLink);
     dialog.showModal();
   });
 }
@@ -112,6 +118,19 @@ dialog?.addEventListener("close", () => {
     lastTrigger.focus();
   }
   lastTrigger = null;
+});
+
+dialog?.addEventListener("click", (event) => {
+  if (!(event.target instanceof Element) || !event.target.closest("[data-follow-route]")) {
+    return;
+  }
+  lastTrigger = null;
+  dialog.close();
+  window.requestAnimationFrame(() => {
+    document.querySelector("#graph")?.scrollIntoView({
+      block: "start",
+    });
+  });
 });
 
 function renderBoundary(route: Route): void {
@@ -253,7 +272,7 @@ function updatePlaceStats(): void {
 }
 
 function syncHash(): void {
-  const hash = `#route/${currentRoute?.id ?? defaultRouteId}/${currentPlace.code}`;
+  const hash = routeHash(currentRoute?.id ?? defaultRouteId, currentPlace.code);
   if (window.location.hash !== hash) {
     history.replaceState(null, "", hash);
   }
@@ -269,6 +288,11 @@ function renderCurrentRoute(routeId: string): void {
   }
   currentRoute = route;
 
+  if (graphDrawTimer !== undefined) {
+    window.clearTimeout(graphDrawTimer);
+    graphDrawTimer = undefined;
+  }
+
   for (const chip of chips) {
     chip.setAttribute("aria-pressed", String(chip.dataset.routeId === route.id));
   }
@@ -283,17 +307,18 @@ function renderCurrentRoute(routeId: string): void {
 
   mount.classList.add("is-switching");
   const draw = () => {
+    graphDrawTimer = undefined;
     renderFiscalGraph(mount, route, { onSelect: openDetail });
     mount.classList.remove("is-switching");
   };
   if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
     draw();
   } else {
-    window.setTimeout(draw, 120);
+    graphDrawTimer = window.setTimeout(draw, 120);
   }
 }
 
-function selectPlace(place: Place, options: { updateHash: boolean }): void {
+function selectPlace(place: Place, options: { updateHash: boolean; routeId?: string }): void {
   currentPlace = place;
   currentRoutes = buildRoutes(place);
   if (landSelect && landSelect.value !== place.code) {
@@ -306,7 +331,7 @@ function selectPlace(place: Place, options: { updateHash: boolean }): void {
     renderLandMap(landMapMount, place, (next) => selectPlace(next, { updateHash: true }));
   }
   updatePlaceStats();
-  renderCurrentRoute(currentRoute?.id ?? defaultRouteId);
+  renderCurrentRoute(options.routeId ?? currentRoute?.id ?? defaultRouteId);
   if (options.updateHash) {
     syncHash();
   }
@@ -319,11 +344,12 @@ function selectRoute(routeId: string, options: { updateHash: boolean }): void {
   }
 }
 
-function parseHash(): { routeId: string; place: Place } {
-  const match = /^#route\/([\w-]+)(?:\/([A-Za-z]{2}))?$/.exec(window.location.hash);
-  const routeId = match?.[1] ?? defaultRouteId;
-  const place = (match?.[2] && getPlace(match[2])) || GERMANY;
-  return { routeId, place };
+function parseHash(): { routeId: string; place: Place } | null {
+  const state = parseRouteHash(window.location.hash);
+  if (!state) {
+    return null;
+  }
+  return { routeId: state.routeId, place: getPlace(state.placeCode) || GERMANY };
 }
 
 for (const chip of chips) {
@@ -343,19 +369,24 @@ landSelect?.addEventListener("change", () => {
 });
 
 window.addEventListener("hashchange", () => {
-  const { routeId, place } = parseHash();
-  if (place.code !== currentPlace.code) {
-    currentPlace = place;
-    currentRoutes = buildRoutes(place);
-    selectPlace(place, { updateHash: false });
+  const state = parseHash();
+  if (!state) {
+    return;
   }
-  if (routeId !== currentRoute?.id) {
+  const { routeId, place } = state;
+  const transition = routeHashTransition(
+    { routeId, placeCode: place.code },
+    { routeId: currentRoute?.id ?? defaultRouteId, placeCode: currentPlace.code },
+  );
+  if (transition === "place") {
+    selectPlace(place, { updateHash: false, routeId });
+  } else if (transition === "route") {
     selectRoute(routeId, { updateHash: false });
   }
 });
 
 if (mount) {
-  const { routeId, place } = parseHash();
+  const { routeId, place } = parseHash() ?? { routeId: defaultRouteId, place: GERMANY };
   currentRoute = undefined;
   currentPlace = place;
   currentRoutes = buildRoutes(place);
