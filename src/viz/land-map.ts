@@ -40,7 +40,7 @@ export function mapScale(lands: EqualisationLand[]): (value: number) => string {
 export function renderLandMap(
   container: HTMLElement,
   lands: EqualisationLand[],
-  options: { lang: Lang; year: number; selected: string; onSelect: (code: string) => void },
+  options: { lang: Lang; year: number; selected: string; zoom: "you" | "germany"; onSelect: (code: string) => void },
 ): void {
   const { lang } = options;
   container.replaceChildren();
@@ -92,7 +92,7 @@ export function renderLandMap(
             `${lang === "de" ? "Bundesergänzungszuweisungen" : "Supplementary federal grants"}: ${money(land.bez, lang)}`,
           ],
           status,
-          body: feature.properties.code === options.selected ? t("mapDeselect", lang) : t("mapClick", lang),
+          body: feature.properties.code === options.selected ? t("mapDeselect", lang) : t(options.zoom === "you" ? "mapClick" : "mapClickGermany", lang),
         },
         { x, y },
         lang,

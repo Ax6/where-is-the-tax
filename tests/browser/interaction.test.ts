@@ -23,7 +23,8 @@ test("year control: 2025 re-reads every view; a wage the reader set survives the
     assert.equal(await page.title(), "Where taxes go · Germany 2025");
     // default wage follows the year's full-time median until the reader sets one
     assert.equal(await page.textContent("#wage-figure"), "€54,066");
-    assert.equal(await page.textContent("#map-title"), "Fiscal equalisation 2025");
+    // BMF settlement rests on the provisional annual accounts: the status stays visible
+    assert.equal(await page.textContent("#map-title"), "Fiscal equalisation 2025 provisional");
     assert.equal(await page.textContent("#taxes-title"), "All taxes 2025");
     const pots = await page.locator(".pot-labels").textContent();
     assert.match(pots ?? "", /Federal budget (· )?€493\.3bn/);
@@ -99,6 +100,41 @@ test("budget column: clicking a budget switches its composition and every row ca
     await page.click(".composition .panel-more");
     await page.waitForSelector("#drawer:not([hidden]) .dr-sub");
     assert.match((await page.locator("#drawer .dr-sub").first().textContent()) ?? "", /of yours\*/);
+  } finally {
+    await browser.close();
+    server.close();
+  }
+});
+
+test("old links: year=2026 opens the last page year, layer=payday keeps the purchase estimate off", { timeout: 120_000 }, async () => {
+  const { server, url } = await serveDist();
+  const browser = await chromium.launch();
+  try {
+    const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
+    await page.goto(`${url}#year=2026&layer=payday&lang=en`, { waitUntil: "networkidle" });
+    assert.equal(await page.textContent("#title"), "Where taxes go · Germany 2025");
+    assert.equal(await page.getAttribute("#estimate-toggle", "aria-pressed"), "false");
+  } finally {
+    await browser.close();
+    server.close();
+  }
+});
+
+test("Shopping panel: each purchase row opens that purchase's own drawer", { timeout: 120_000 }, async () => {
+  const { server, url } = await serveDist();
+  const browser = await chromium.launch();
+  try {
+    const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
+    await page.goto(`${url}#y=2025&lang=en`, { waitUntil: "networkidle" });
+    await page.click(".chip-panel[data-panel='shopping']");
+    await page.waitForSelector("#drawer:not([hidden]) .purchase-row");
+    await page.click(".purchase-row[data-purchase='petrol_litre']");
+    await page.waitForFunction(() => /open=purchase%3Apetrol_litre|open=purchase:petrol_litre/.test(window.location.hash));
+    assert.equal(await page.getAttribute("#drawer", "data-kind"), "purchase");
+    assert.match((await page.textContent("#drawer-title")) ?? "", /petrol/i);
+    // closing returns focus to the Shopping chip, not to a row that no longer exists
+    await page.click("#drawer-close");
+    assert.equal(await page.evaluate(() => (document.activeElement as HTMLElement | null)?.dataset.panel), "shopping");
   } finally {
     await browser.close();
     server.close();

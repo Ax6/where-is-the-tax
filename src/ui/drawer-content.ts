@@ -703,12 +703,12 @@ function shoppingPanel(ctx: DrawerContext): DrawerContent {
       const segs = byEntity
         .map(([entity, value]) => `<span class="pr-seg" data-entity="${entity}" style="width:${((value / item.price) * 100).toFixed(2)}%;background:var(--e-${entity})"></span>`)
         .join("");
-      return `<li class="purchase-row" tabindex="0" data-purchase="${esc(item.id)}" aria-describedby="pd-${esc(item.id)}">
+      return `<li><button type="button" class="purchase-row" data-purchase="${esc(item.id)}" aria-haspopup="dialog" aria-describedby="pd-${esc(item.id)}">
         <span class="pr-label">${esc(`${label}*`)}${vintage && vintage !== ctx.year ? ` <span class="tag">${vintage}</span>` : ""}</span>
         <span class="pr-track" aria-hidden="true">${segs}</span>
         <span class="pr-share num">${esc(`${pct(item.taxShare, lang, 0)} ${lang === "de" ? "Steuer" : "tax"}`)}</span>
         <span class="sr-only" id="pd-${esc(item.id)}">${esc(`${detail.value}. ${detail.lines.join(". ")}`)}</span>
-      </li>`;
+      </button></li>`;
     })
     .join("");
   return {

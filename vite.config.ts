@@ -23,7 +23,43 @@ function buildTimeContent(): Plugin {
  * Drops branches of data files the page never reads (other measures, sectors, years) from the bundle.
  * The data files themselves are untouched; tests run the same model on the full files.
  */
+/** Federal budget: the page reads the functional tree, the official total, status and the source links. */
+const pruneFederal = (data: Record<string, unknown>): void => {
+  for (const key of Object.keys(data)) {
+    if (!["schema_version", "id", "year", "status", "official_total_eur", "hauptfunktionen", "key_items", "sources"].includes(key)) {
+      delete data[key];
+    }
+  }
+};
+
+/** Equalisation: per Land only the totals the map, ranking and drawers read; no Destatis comparison block. */
+const pruneEqualisation = (data: Record<string, unknown>): void => {
+  delete data.destatis_comparison;
+  type V = { value: number } | undefined;
+  data.laender = (data.laender as Record<string, Record<string, Record<string, V> | unknown>>[]).map((land) => {
+    const fka = land.fka as Record<string, V>;
+    const bez = land.bez as Record<string, V>;
+    const bases = land.tax_bases as Record<string, V>;
+    const vat = land.vat_share as Record<string, V>;
+    return {
+      code: land.code,
+      name: land.name,
+      city_state: land.city_state,
+      population: { value: (land.population as { value: number }).value },
+      per_resident: { fka_plus_bez: (land.per_resident as { fka_plus_bez: number }).fka_plus_bez },
+      vat_share: { total: vat.total },
+      fka: { adjustment: fka.adjustment, fiscal_strength_after_fka_pct: fka.fiscal_strength_after_fka_pct },
+      bez: { total: bez.total, fiscal_strength_after_sobez_pct: bez.fiscal_strength_after_sobez_pct },
+      tax_bases: { fiscal_strength_before_fka_pct: bases.fiscal_strength_before_fka_pct },
+    };
+  });
+};
+
 const PRUNE: Record<string, (data: Record<string, unknown>) => void> = {
+  "data/de/federal/budget-2024.json": pruneFederal,
+  "data/de/federal/budget-2025.json": pruneFederal,
+  "data/de/equalisation/2024.json": pruneEqualisation,
+  "data/de/equalisation/2025.json": pruneEqualisation,
   "data/de/laender/functions-2022.json": (data) => {
     const scopes = data.scopes_data as Record<string, Record<string, { measures: Record<string, unknown> }>>;
     delete scopes.municipal;
@@ -85,7 +121,7 @@ export default defineConfig(({ command, isPreview }) => ({
   // data/ is imported as JSON; JSON.parse of a string literal is faster than an object literal
   json: { stringify: true },
   build: {
-    // the bundle carries the data the page reads (≈ 275 kB gzip); no code splitting needed for one page
-    chunkSizeWarningLimit: 1700,
+    // the bundle carries the data the page reads; no code splitting needed for one page
+    chunkSizeWarningLimit: 1400,
   },
 }));

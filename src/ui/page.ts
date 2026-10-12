@@ -8,6 +8,7 @@ import {
   ENTITY_ORDER,
   equalisation,
   equalisationSource,
+  equalisationStatus,
   GERMANY_CODE,
   PAGE_YEARS,
   perResidentPerDay,
@@ -324,6 +325,10 @@ export function renderSources(lang: Lang, year: number): string {
     <ul class="dataset-list">${datasets.map((d) => `<li><a href="${esc(repoBlob(d.file))}" rel="noreferrer noopener" target="_blank"><code>${esc(d.file)}</code></a></li>`).join("")}</ul>`;
 }
 
+/** "Fiscal equalisation 2025 provisional": the settlement's status stays visible (designer's tag rule). */
+export const mapTitleFor = (year: number, lang: Lang): string =>
+  `${t("mapShort", lang)} ${yearTag(year, equalisationStatus(year).startsWith("provisional") ? "provisional" : "final", 0, lang)}`;
+
 export function renderPage(state: PageState, you: YouModel, germany: GermanyModel, options: { staticBuild?: boolean } = {}): string {
   const { lang } = state;
   return `
@@ -339,9 +344,10 @@ export function renderPage(state: PageState, you: YouModel, germany: GermanyMode
     ${renderLegendRow(state)}
     <div class="hero-grid">
       <aside class="map-panel" aria-labelledby="map-title">
-        <h2 class="map-title" id="map-title">${esc(`${t("mapShort", lang)} ${state.year}`)}</h2>
+        <h2 class="map-title" id="map-title">${esc(mapTitleFor(state.year, lang))}</h2>
         <div class="map" id="map"></div>
         <div class="map-key" id="map-key"></div>
+        <p class="map-note">${esc(t("mapNoteShort", lang))}</p>
         <p class="map-place" id="map-place">${esc(t("mapAll", lang))}</p>
         <button type="button" class="link-btn" data-panel="ranking" aria-haspopup="dialog">${esc(t("ranking", lang))} <span aria-hidden="true">›</span></button>
       </aside>
@@ -354,6 +360,15 @@ export function renderPage(state: PageState, you: YouModel, germany: GermanyMode
     </div>
     <p class="hero-line" id="hero-line">${esc(state.zoom === "you" ? t("assumptions", lang) : t("switchGermany", lang))}</p>
   </section>
+  ${
+    options.staticBuild
+      ? `<section class="section static-only" id="equalisation-static" aria-labelledby="equalisation-static-title">
+    <h2 id="equalisation-static-title">${esc(mapTitleFor(state.year, lang))}</h2>
+    <p class="section-note">${esc(t("mapNote", lang))}</p>
+    ${renderEqualisationTable(lang, state.year).replace('<details class="more">', '<details class="more" open>')}
+  </section>`
+      : ""
+  }
   <section class="section" id="taxes" aria-labelledby="taxes-title">
     <h2 id="taxes-title">${esc(`${t("taxesTitle", lang)} ${state.year}`)}</h2>
     ${renderTaxTable(lang, state.year, 14)}

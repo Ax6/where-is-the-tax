@@ -1256,11 +1256,8 @@ export function buildGermany(year = 2024): GermanyModel {
 // Purchases (per purchase, exact per-unit law, assumed prices *)
 // ---------------------------------------------------------------------------------------------
 
-export type LayerId = "payday" | "shopping" | "fuel" | "home";
-
 export interface Purchase {
   id: string;
-  layer: LayerId;
   /** statutory basis of each tax inside (purchase-taxes.json) */
   laws: string[];
   label: Bi;
@@ -1271,19 +1268,6 @@ export interface Purchase {
   taxShare: number;
   assumption: string;
 }
-
-const PURCHASE_LAYER: Record<string, LayerId> = {
-  petrol_litre: "fuel",
-  diesel_litre: "fuel",
-  electricity_kwh: "fuel",
-  cigarettes_pack: "shopping",
-  beer_half_litre: "shopping",
-  coffee_pack: "shopping",
-  groceries: "shopping",
-  electronics: "shopping",
-  car_insurance: "shopping",
-  flat_purchase_berlin: "home",
-};
 
 const EXCISE_RECIPIENT: Record<string, { entity: EntityId; label: Bi }> = {
   energy_tax: { entity: "fed", label: bi("Energiesteuer → Bund", "Energy tax → Federation") },
@@ -1341,7 +1325,6 @@ export function purchases(year = 2024): Purchase[] {
     return {
       id: example.id,
       laws,
-      layer: PURCHASE_LAYER[example.id] ?? "shopping",
       label: example.label,
       price: example.price_eur,
       star: true,

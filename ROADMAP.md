@@ -1,6 +1,6 @@
 # ROADMAP — honest state of where-is-the-tax
 
-**As of 2026-10-12** (data layer; front end wired on branch `data-layer-and-slide`). Goal (CLAUDE.md): one interactive page, German and English, where anyone
+**As of 2026-10-12.** Goal (CLAUDE.md): one interactive page, German and English, where anyone
 sees at a glance where a German citizen's taxes go; data first, every figure true and sourced,
 contestable items marked.
 
@@ -13,17 +13,21 @@ bilingual labels everywhere, independent re-derivation logged. The **front end n
 against every example row and the 121 BMF Prüftabelle rows, You and Germany zooms, drawer,
 equalisation map, all-taxes table, time strip, DE/EN, mobile, static fallback and a Pages workflow;
 light/dark themes with validated palettes, a texture mode for forced colours, an axe-core + keyboard
-test (0 violations in 17 scenarios), wage-slider reference points and a household indirect-tax
-estimate (≈*) next to the exact payslip. It is live at https://ax6.github.io/where-is-the-tax/ (deployed 2026-10-12, PR #4); it has not been reviewed by a second person or tested with first-time visitors yet.
+test (0 violations), wage-slider reference points and a household indirect-tax estimate (≈*) next
+to the exact payslip. Since PR #6: a global 2024 | 2025 year switch, the equalisation map as place
+picker, and the selected budget's "of every €100" column with your euros per row (v4.1). It is live
+at https://ax6.github.io/where-is-the-tax/. An independent audit of PR #6 is logged in
+`docs/research/logs/2026-10-12-pr6-audit.md`. Nobody outside the agents has reviewed it yet, and it
+has not been tested with first-time visitors.
 
 ## Scoring rubric (data layer) and self-assessment
 
 | Criterion | Weight | Score /10 | Why |
 |---|---|---:|---|
-| Coverage of the citizen question (whole state, per tax, per recipient, Länder/equalisation, federal, Berlin, social insurance, EU, own payslip, purchases, time, debt) | 20 % | 8 | All blocks exist; missing: household indirect-tax total (only per-product), per-municipality view beyond Berlin, 2025 Berlin account, Länder functions newer than 2022. |
+| Coverage of the citizen question (whole state, per tax, per recipient, Länder/equalisation, federal, Berlin, social insurance, EU, own payslip, purchases, time, debt) | 20 % | 8 | All blocks exist, including the household indirect-tax estimate (LWR 2024, ≈*). Missing: per-municipality view beyond Berlin, 2025 Berlin account, Länder functions newer than 2022. |
 | Traceability to raw files (every number → file + coordinates) | 20 % | 9 | 117 raw files in the manifest (plus the payslip registry); every data file carries `source_ref` with coordinates; cached PDFs/HTML have committed extracts with page/row. Berlin functions-2024 re-derived from the PDF on 2026-10-12 (review D, 33/33). |
 | Reconciliation (parts sum to official totals, bases never mixed) | 15 % | 9 | Hard checks in every build + `check.py` (0 failures): federal XML → BMF Ist to ±0.3 Mio; COFOG hierarchy; FKA nets to 0; Länder VAT pool = Destatis to the thousand; tax hierarchies exact. |
-| Independent verification | 15 % | 8 | Four independent review passes logged (D: wages, household estimate, Funktionenplan, Berlin PDF re-derivation); (A: re-derivation of all main layers from raw files, every 2024 number reproduced; B: payslip, independent implementation matches 121 official BMF Prüftabellen rows; C: social insurance, PDFs re-read, 3 data mismatches fixed, 8 framing challenges applied). Not yet: a second pass on the Berlin functions-2024 extraction. |
+| Independent verification | 15 % | 8 | Four independent review passes logged (D: wages, household estimate, Funktionenplan, Berlin PDF re-derivation); (A: re-derivation of all main layers from raw files, every 2024 number reproduced; B: payslip, independent implementation matches 121 official BMF Prüftabellen rows; C: social insurance, PDFs re-read, 3 data mismatches fixed, 8 framing challenges applied). Review D re-derived the Berlin functions-2024 extraction (33/33). |
 | Freshness / vintage honesty | 10 % | 8 | 2024 hero + 2025 freshness, labelled; COFOG 2024 provisional; Länder functions 2022 (newest edition). |
 | Bilingual labels | 10 % | 8 | `label.de/en` on every row; COFOG/Funktionenplan English names are editorial translations (flagged); some 2-/3-digit federal function codes have no label. |
 | Rationalized constructs (simple, verified, contestables marked) | 10 % | 8 | `docs/research/RATIONALIZATION.md`: of-every-€100 for state, revenue, taxes, recipients, federal budget; per resident per day; payslip; shopping basket; EU; Berlin. Contestables marked `*`. |
