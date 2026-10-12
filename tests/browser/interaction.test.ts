@@ -9,6 +9,63 @@ import { chromium } from "playwright";
 
 import { serveDist } from "./axe-audit.ts";
 
+test("header: controls fit at breakpoints and mobile settings preserve state and focus", { timeout: 120_000 }, async () => {
+  const { server, url } = await serveDist();
+  const browser = await chromium.launch();
+  try {
+    const page = await browser.newPage();
+    for (const lang of ["en", "de"]) {
+      for (const zoom of ["you", "germany"]) {
+        await page.goto(`${url}#lang=${lang}&zoom=${zoom}`, { waitUntil: "networkidle" });
+        for (const width of [320, 390, 760, 761, 1024, 1199, 1200, 1280, 1440]) {
+          await page.setViewportSize({ width, height: 900 });
+          if (width <= 760 && await page.getAttribute("#controls-toggle", "aria-expanded") === "false") {
+            await page.click("#controls-toggle");
+          }
+          await page.evaluate(() => new Promise<void>((done) => requestAnimationFrame(() => requestAnimationFrame(() => done()))));
+          const problems = await page.evaluate(() => {
+            const groups = [...document.querySelectorAll<HTMLElement>(".title, .view-controls, .wage-ctl, .ctl-unit, .display-controls")]
+              .map((el) => ({ name: el.className, rect: el.getBoundingClientRect() })).filter(({ rect }) => rect.width > 0);
+            const problems: string[] = [];
+            for (const { name, rect } of groups) {
+              if (rect.left < 0 || rect.right > document.documentElement.clientWidth + 1) problems.push(`${name} overflows`);
+            }
+            for (let i = 0; i < groups.length; i++) {
+              for (const other of groups.slice(i + 1)) {
+                const { name, rect } = groups[i]!;
+                if (Math.min(rect.right, other.rect.right) - Math.max(rect.left, other.rect.left) > 1 &&
+                    Math.min(rect.bottom, other.rect.bottom) - Math.max(rect.top, other.rect.top) > 1) problems.push(`${name} overlaps ${other.name}`);
+              }
+            }
+            return problems;
+          });
+          assert.deepEqual(problems, [], `${lang}, ${zoom}, ${width}px`);
+        }
+      }
+    }
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto(`${url}#lang=en`, { waitUntil: "networkidle" });
+    if (await page.getAttribute("#controls-toggle", "aria-expanded") === "false") await page.click("#controls-toggle");
+    await page.click(".lang-toggle [data-lang='de']");
+    assert.equal(await page.getAttribute("#controls-toggle", "aria-expanded"), "true");
+    assert.equal(await page.locator("#wage-range").isVisible(), true);
+    const node = page.locator(".stage-row").first();
+    await node.focus();
+    await page.keyboard.press("Enter");
+    await page.locator("#drawer").waitFor({ state: "visible" });
+    await page.keyboard.press("Escape");
+    assert.equal(await node.evaluate((el) => el === document.activeElement), true);
+    assert.equal(await page.getAttribute("#controls-toggle", "aria-expanded"), "true");
+    await page.keyboard.press("Escape");
+    assert.equal(await page.getAttribute("#controls-toggle", "aria-expanded"), "false");
+    assert.equal(await page.evaluate(() => document.activeElement?.id), "controls-toggle");
+    assert.equal(await page.locator("#wage-range").isVisible(), false);
+  } finally {
+    await browser.close();
+    server.close();
+  }
+});
+
 test("year control: 2025 re-reads every view; a wage the reader set survives the switch", { timeout: 120_000 }, async () => {
   const { server, url } = await serveDist();
   const browser = await chromium.launch();

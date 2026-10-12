@@ -3,7 +3,7 @@ import "./styles.css";
 import { buildGermany, buildYou, defaultWage, ENTITY_ORDER, equalisation, GERMANY_CODE, getPlace, PAGE_YEARS, timeSeries, type EntityId } from "./data/model.ts";
 import { eur, t, titleFor, tr, type Lang } from "./i18n.ts";
 import { drawerContent, purchaseDetail } from "./ui/drawer-content.ts";
-import { mapTitleFor, renderDataTable, renderHeroTable, renderLegendRow, renderPage, renderSources, renderTaxTable, renderWageTicks, WAGE_MAX, WAGE_MIN, WAGE_STEP, type PageState } from "./ui/page.ts";
+import { mapTitleFor, renderDataTable, renderHeroTable, renderLegendRow, renderPage, renderSources, renderTaxTable, renderTitle, renderWageTicks, WAGE_MAX, WAGE_MIN, WAGE_STEP, type PageState } from "./ui/page.ts";
 import { renderGermany, renderYou, type DrawerTarget, type PanelId } from "./viz/hero.ts";
 import { renderLandBars, renderLandMap } from "./viz/land-map.ts";
 import { renderGermanyStages, renderYouStages } from "./viz/stages.ts";
@@ -206,7 +206,8 @@ function mountAll(): void {
 function refreshYear(): void {
   const { lang, year } = state;
   document.title = titleFor(year, lang);
-  document.querySelector("#title")!.textContent = titleFor(year, lang);
+  document.querySelector("#title")!.innerHTML = renderTitle(year, lang);
+  document.querySelector("#title")!.setAttribute("aria-label", titleFor(year, lang));
   document.querySelector("#map-title")!.textContent = mapTitleFor(year, lang);
   const ticks = document.querySelector("#wage-ticks");
   if (ticks) {
@@ -346,7 +347,8 @@ function syncControls(): void {
   const toggle = document.querySelector<HTMLButtonElement>("#controls-toggle");
   if (toggle) {
     const place = state.land === GERMANY_CODE ? t("allLaender", state.lang) : (getPlace(state.land)?.name[state.lang] ?? state.land);
-    toggle.textContent = `${t("settings", state.lang)} · ${state.year} · ${state.zoom === "you" ? `${eur(state.wage, state.lang)} · ${place}` : t("zoomGermany", state.lang)}`;
+    document.querySelector("#controls-summary")!.textContent = state.zoom === "you" ? `${eur(state.wage, state.lang)} · ${place}` : t("zoomGermany", state.lang);
+    toggle.setAttribute("aria-expanded", String(document.body.classList.contains("controls-open")));
   }
 }
 
@@ -623,12 +625,20 @@ function wireDrawer(): void {
 }
 
 document.addEventListener("keydown", (event) => {
+  const drawer = document.querySelector<HTMLElement>("#drawer");
   if (event.key === "Escape") {
-    closeDrawer();
-    document.body.classList.remove("controls-open");
+    if (drawer && !drawer.hidden) {
+      closeDrawer();
+      return;
+    }
+    if (document.body.classList.contains("controls-open")) {
+      document.body.classList.remove("controls-open");
+      const toggle = document.querySelector<HTMLButtonElement>("#controls-toggle");
+      toggle?.setAttribute("aria-expanded", "false");
+      toggle?.focus({ preventScroll: true });
+    }
   }
   // keep focus inside the open drawer
-  const drawer = document.querySelector<HTMLElement>("#drawer");
   if (event.key === "Tab" && drawer && !drawer.hidden) {
     const focusable = [...drawer.querySelectorAll<HTMLElement>("a, button, summary, [tabindex='0']")].filter((el) => el.offsetParent !== null);
     const first = focusable[0];

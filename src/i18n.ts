@@ -18,7 +18,7 @@ const ui = {
   wage: bi("Bruttolohn / Jahr", "Gross wage / year"),
   land: bi("Bundesland", "Land"),
   allLaender: bi("Alle Länder", "All Länder"),
-  year: bi("Lohnjahr", "Payslip year"),
+  year: bi("Jahr", "Year"),
   zoom: bi("Ansicht", "View"),
   zoomYou: bi("Ich", "You"),
   zoomGermany: bi("Deutschland", "Germany"),
@@ -143,8 +143,8 @@ const ui = {
   estimateToggle: bi("≈ Schätzung*", "≈ estimate*"),
   estimateToggleName: bi("Schätzung der Steuern auf Einkäufe zeigen", "Show the estimate of taxes on purchases"),
   highlightName: bi("Wege hervorheben: {X}", "Highlight flows: {X}"),
-  ticksMinimumShort: bi("Mindestl.*", "min*"),
-  ticksAverageShort: bi("Durchschn.", "avg"),
+  ticksMinimumShort: bi("Min.*", "min*"),
+  ticksAverageShort: bi("Ø", "avg"),
   euLeaves: bi("verlässt den deutschen Staat: EU-Haushalt", "leaves the German state: EU budget"),
 };
 

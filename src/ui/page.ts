@@ -97,7 +97,10 @@ export function renderControls(state: PageState): string {
   const { lang } = state;
   const sliderValue = Math.min(WAGE_MAX, Math.max(WAGE_MIN, state.wage));
   return `<div class="controls" id="controls" role="group" aria-label="${esc(t("settings", lang))}">
-    ${seg("year", PAGE_YEARS.map((year) => ({ value: String(year), label: String(year) })), String(state.year), t("year", lang), "seg-year")}
+    <div class="view-controls">
+      ${seg("zoom", [{ value: "you", label: t("zoomYou", lang) }, { value: "germany", label: t("zoomGermany", lang) }], state.zoom, t("zoom", lang), "seg-view")}
+      ${seg("year", PAGE_YEARS.map((year) => ({ value: String(year), label: String(year) })), String(state.year), t("year", lang), "seg-year")}
+    </div>
     <div class="wage-ctl"${state.zoom === "you" ? "" : " hidden"}>
       <div class="wage-head">
         <span class="ctl-label" id="wage-label">${esc(t("wage", lang))}</span>
@@ -110,30 +113,26 @@ export function renderControls(state: PageState): string {
         ${renderWageTicks(state)}
       </div>
     </div>
-    <div class="top-right">
-      ${seg(
-        "zoom",
-        [
-          { value: "you", label: t("zoomYou", lang) },
-          { value: "germany", label: t("zoomGermany", lang) },
-        ],
-        state.zoom,
-        t("zoom", lang),
-      )}
-      <div class="ctl-unit"${state.zoom === "germany" ? "" : " hidden"}>${seg(
-        "unit",
-        [
-          { value: "bn", label: t("unitBn", lang) },
-          { value: "day", label: t("unitDay", lang) },
-        ],
-        state.unit,
-        t("unit", lang),
-      )}</div>
-      <div class="lang-toggle" role="group" aria-label="${esc(t("language", lang))}"><button type="button" data-lang="de" lang="de" aria-pressed="${lang === "de"}">DE</button><span aria-hidden="true">|</span><button type="button" data-lang="en" lang="en" aria-pressed="${lang === "en"}">EN</button></div>
+    <div class="ctl-unit"${state.zoom === "germany" ? "" : " hidden"}>${seg(
+      "unit",
+      [
+        { value: "bn", label: t("unitBn", lang) },
+        { value: "day", label: t("unitDay", lang) },
+      ],
+      state.unit,
+      t("unit", lang),
+    )}</div>
+    <div class="display-controls">
+      <div class="lang-toggle" role="group" aria-label="${esc(t("language", lang))}"><button type="button" data-lang="de" lang="de" aria-pressed="${lang === "de"}">DE</button><button type="button" data-lang="en" lang="en" aria-pressed="${lang === "en"}">EN</button></div>
       <button type="button" class="icon-btn" id="theme-toggle" aria-label="${esc(t("themeDarkName", lang))}" title="${esc(t("themeDarkName", lang))}" aria-pressed="${state.theme === "dark"}">${ICON_THEME}</button>
       <button type="button" class="icon-btn" id="tex-toggle" aria-label="${esc(t("patternsName", lang))}" title="${esc(t("patternsName", lang))}" aria-pressed="${state.tex}">${ICON_PATTERNS}</button>
     </div>
   </div>`;
+}
+
+export function renderTitle(year: number, lang: Lang): string {
+  const [name, context] = titleFor(year, lang).split(" · ");
+  return `<span class="title-name">${esc(name!)}</span><span class="title-context"><span class="sr-only"> · </span>${esc(context!)}</span>`;
 }
 
 /** One row above the charts: the Shopping panel, the recipients (click to highlight), the marker notes. */
@@ -334,8 +333,8 @@ export function renderPage(state: PageState, you: YouModel, germany: GermanyMode
   return `
   <a class="skip-link" href="#hero">${esc(t("skip", lang))}</a>
   <header class="top">
-    <h1 class="title" id="title">${esc(titleFor(state.year, lang))}</h1>
-    <button type="button" class="controls-toggle" id="controls-toggle" aria-expanded="false" aria-controls="controls">${esc(t("settings", lang))}</button>
+    <h1 class="title" id="title" aria-label="${esc(titleFor(state.year, lang))}">${renderTitle(state.year, lang)}</h1>
+    <button type="button" class="controls-toggle" id="controls-toggle" aria-expanded="false" aria-controls="controls"><span>${esc(t("settings", lang))}</span><span class="controls-summary num" id="controls-summary"></span></button>
     ${renderControls(state)}
   </header>
   <main id="main">
