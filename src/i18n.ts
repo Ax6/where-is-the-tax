@@ -44,11 +44,11 @@ const ui = {
   stageGross: bi("Bruttolohn", "Gross wage"),
   stageDeductions: bi("Steuern und Beiträge", "Taxes and contributions"),
   stageRecipients: bi("Wer es bekommt (per Gesetz)", "Who receives it (by law)"),
-  stagePots: bi("Der Topf, in den es fließt", "The pot it joins"),
-  stageTaxes: bi("Steuern und Beiträge 2024 (Kasse)", "Taxes and contributions 2024 (cash)"),
-  stateRevenue: bi("Einnahmen des Staates 2024", "State revenue 2024"),
-  stateSpending: bi("Ausgaben des Staates 2024p", "State spending 2024p"),
-  boundary: bi("fließt in den Haushalt · hier endet die Zuordnung", "joins the budget · tax identity ends here"),
+  stagePots: bi("Gesamthaushalt, in den es fließt", "Total budget it goes into"),
+  stageTaxes: bi("Steuern und Beiträge (Kasse)", "Taxes and contributions (cash)"),
+  stateRevenue: bi("Einnahmen des Staates", "State revenue"),
+  stateSpending: bi("Ausgaben des Staates", "State spending"),
+  boundary: bi("Ab hier mit allen anderen Einnahmen vermischt", "From here on, mixed with all other income"),
   employerGhost: bi("zahlt Ihr Arbeitgeber zusätzlich", "paid on top by your employer"),
   netPay: bi("Netto: bleibt Ihnen", "Net pay: yours"),
   wageTax: bi("Lohnsteuer", "Wage tax"),
@@ -89,15 +89,15 @@ const ui = {
   sourcesData: bi("Quellen und Daten", "Sources and data"),
   dataFile: bi("Datei", "File"),
   coordinates: bi("Fundstelle", "Coordinates"),
-  mapTitle: bi("Finanzausgleich 2024, € je Einwohner", "Fiscal equalisation 2024, € per resident"),
+  mapTitle: bi("Finanzausgleich, € je Einwohner", "Fiscal equalisation, € per resident"),
   mapPays: bi("zahlt ein", "pays in"),
   mapReceives: bi("erhält", "receives"),
   mapNote: bi(
     "Finanzkraftausgleich in der Umsatzsteuerverteilung plus alle Bundesergänzungszuweisungen. Ein gemeinsamer Topf: keine Zahlung von Land zu Land.",
     "Fiscal capacity equalisation inside the VAT distribution plus all supplementary federal grants. One pooled calculation: no payment from one Land to another.",
   ),
-  mapClick: bi("Klick auf ein Land wählt es oben aus.", "Click a Land to select it above."),
-  taxesTitle: bi("Alle Steuern 2024", "All taxes 2024"),
+  mapClick: bi("Klick zeigt Ihren Fluss in diesem Land.", "Click to see your flow in this Land."),
+  taxesTitle: bi("Alle Steuern", "All taxes"),
   taxesCash: bi("Kassenmäßige Einnahmen vor Verteilung, Destatis 71211", "Cash receipts before distribution, Destatis 71211"),
   colTax: bi("Steuer", "Tax"),
   colAmount: bi("2024", "2024"),
@@ -114,8 +114,8 @@ const ui = {
   spending: bi("Ausgaben", "Spending"),
   esaNote: bi("Volkswirtschaftliche Gesamtrechnung (ESVG), Eurostat", "National accounts (ESA 2010), Eurostat"),
   footerStatus: bi(
-    "Zahlen aus amtlichen Quellen, nachgerechnet und abgeglichen. * = Annahme oder bestreitbar · ≈ = Schätzung · p = vorläufig",
-    "Figures from official sources, recomputed and reconciled. * = assumption or contestable · ≈ = estimate · p = provisional",
+    "Zahlen aus amtlichen Quellen, nachgerechnet und abgeglichen. * = Annahme oder bestreitbar · ≈ = Schätzung",
+    "Figures from official sources, recomputed and reconciled. * = assumption or contestable · ≈ = estimate",
   ),
   repo: bi("Daten und Methode auf GitHub", "Data and method on GitHub"),
   noscript: bi("Die interaktive Ansicht braucht JavaScript. Alle Zahlen stehen in den Tabellen.", "The interactive view needs JavaScript. All figures are in the tables."),
@@ -155,10 +155,46 @@ const ui = {
   themeLight: bi("Hell", "Light"),
   themeDark: bi("Dunkel", "Dark"),
   patterns: bi("Muster", "Patterns"),
+  mapShort: bi("Finanzausgleich", "Fiscal equalisation"),
+  mapAll: bi("Alle Länder · Land anklicken", "All Länder · click a Land"),
+  mapDeselect: bi("nochmals klicken: alle Länder", "click again: all Länder"),
+  ranking: bi("Rangfolge", "Ranking"),
+  themeDarkName: bi("Dunkles Design", "Dark theme"),
+  patternsName: bi("Muster statt nur Farben", "Patterns instead of colour alone"),
+  shoppingChip: bi("Einkauf ≈", "Shopping ≈"),
+  shoppingTitle: bi("Steuern in dem, was Sie kaufen", "Taxes in what you buy"),
+  purchasesHeading: bi("Steuern in einem Einkauf*", "Taxes inside one purchase*"),
+  purchasesCaption: bi("* Preis angenommen · Steuer je Einheit exakt nach Gesetz", "* price assumed · tax per unit exact by law"),
+  proRataHeading: bi("≈ Ihre € im Jahr, anteilig*", "≈ Your € per year, pro rata*"),
+  proRataShares: bi("Anteile", "shares"),
+  proRataIf: bi("wenn verteilt wie diese Haushalte", "if spread like these budgets"),
+  provisionalTag: bi("vorläufig", "provisional"),
+  sameWage2026: bi("Gleicher Lohn 2026: {X} netto", "Same wage in 2026: {X} net"),
+  wageType: bi("Genauen Bruttolohn eingeben", "Type an exact gross wage"),
+  estimateToggle: bi("≈ Schätzung*", "≈ estimate*"),
+  estimateToggleName: bi("Schätzung der Steuern auf Einkäufe zeigen", "Show the estimate of taxes on purchases"),
+  proRataLegend: bi("anteilig*", "pro rata*"),
+  highlightName: bi("Wege hervorheben: {X}", "Highlight flows: {X}"),
+  ticksMinimumShort: bi("Mindestl.*", "min*"),
+  ticksAverageShort: bi("Durchschn.", "avg"),
   euLeaves: bi("verlässt den deutschen Staat: EU-Haushalt", "leaves the German state: EU budget"),
 };
 
 export type UiKey = keyof typeof ui;
+export const titleFor = (year: number, lang: Lang): string => (lang === "de" ? `Wohin Steuern fließen · Deutschland ${year}` : `Where taxes go · Germany ${year}`);
+export const fill = (text: string, value: string): string => text.replace("{X}", value);
+
+/**
+ * Year/status tag, shown only when it differs from the selected year or the figure is provisional:
+ * "2022", "2024", "2025 provisional". Same-year final figures get no tag (the drawer has it).
+ */
+export function yearTag(year: number, status: string, selectedYear: number, lang: Lang): string {
+  const provisional = status === "provisional";
+  if (year === selectedYear && !provisional) {
+    return "";
+  }
+  return provisional ? `${year} ${ui.provisionalTag[lang]}` : String(year);
+}
 export const t = (key: UiKey, lang: Lang): string => ui[key][lang];
 
 const locale = (lang: Lang): string => (lang === "de" ? "de-DE" : "en-GB");

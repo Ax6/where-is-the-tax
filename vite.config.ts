@@ -42,10 +42,22 @@ const PRUNE: Record<string, (data: Record<string, unknown>) => void> = {
     }
   },
   "data/de/social-insurance/accounts.json": (data) => {
+    // the page shows 2024 and 2025 (year control); older years are not read
     for (const system of Object.values(data.systems as Record<string, { years: Record<string, unknown> }>)) {
-      delete system.years["2025"];
+      for (const year of Object.keys(system.years)) {
+        if (Number(year) < 2024) {
+          delete system.years[year];
+        }
+      }
     }
-    data.transfers = (data.transfers as { year: number }[]).filter((tr) => tr.year === 2024);
+    data.transfers = (data.transfers as { year: number }[]).filter((tr) => tr.year >= 2024);
+    // health: the page reads the sickness funds' lines and the consolidated total only
+    for (const year of Object.values((data.systems as Record<string, { years: Record<string, Record<string, unknown>> }>).health!.years)) {
+      delete year.gesundheitsfonds;
+      const consolidated = year.consolidated as { expenditure_total_eur?: number } | undefined;
+      year.consolidated = { expenditure_total_eur: consolidated?.expenditure_total_eur };
+    }
+    delete data.checks;
   },
 };
 
@@ -73,6 +85,7 @@ export default defineConfig(({ command, isPreview }) => ({
   // data/ is imported as JSON; JSON.parse of a string literal is faster than an object literal
   json: { stringify: true },
   build: {
-    chunkSizeWarningLimit: 1200,
+    // the bundle carries the data the page reads (≈ 275 kB gzip); no code splitting needed for one page
+    chunkSizeWarningLimit: 1700,
   },
 }));

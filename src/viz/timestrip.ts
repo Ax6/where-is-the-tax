@@ -101,7 +101,7 @@ function drawPanel(figure: HTMLElement, panel: Panel, lang: Lang): void {
       {
         value: String(year),
         title: t(panel.title, lang),
-        lines: rows.map((row) => `${row.series.label}: ${bn(row.point!.value, lang, 1)}${row.point!.provisional ? " p" : ""}`),
+        lines: rows.map((row) => `${row.series.label}: ${bn(row.point!.value, lang, 1)}${row.point!.provisional ? ` (${t("provisionalTag", lang)})` : ""}`),
       },
       { x: clientX, y: clientY },
       lang,

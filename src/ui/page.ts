@@ -1,39 +1,43 @@
 /**
  * The page as HTML strings. Used at build time (static fallback, works without JavaScript) and in the
- * browser (re-rendered on language change). Every figure comes from the model; every table row links to
- * its data file and source coordinates.
+ * browser (re-rendered on language or year change). Every figure comes from the model; every table row links
+ * to its data file and source coordinates.
  */
 import {
   allocationKinds,
+  ENTITY_ORDER,
   equalisation,
   equalisationSource,
   GERMANY_CODE,
-  payslipYears,
+  PAGE_YEARS,
   perResidentPerDay,
-  places,
-  POPULATION_2024,
+  populationOf,
   purchases,
   taxTable,
   minimumWageAssumption,
   wageTicks,
   type EntityId,
   type GermanyModel,
-  type LayerId,
   type YouModel,
 } from "../data/model.ts";
+import { proRata } from "../data/prorata.ts";
 import { files, REPO_URL, raw, repoBlob } from "../data/sources.ts";
-import { bn, eur, num, pct, t, tr, type Lang } from "../i18n.ts";
+import { bn, eur, fill, num, pct, t, titleFor, tr, yearTag, type Lang } from "../i18n.ts";
 import { esc, sourceList, splitBar, swatch } from "./html.ts";
 
 export interface PageState {
   zoom: "you" | "germany";
   wage: number;
+  /** false while the wage follows the year's median (not set by the reader) */
+  wageSet: boolean;
   land: string;
   year: number;
   lang: Lang;
-  pot: string;
   unit: "bn" | "day";
-  layer: LayerId | "all";
+  /** show the ≈* household estimate in the You flow */
+  estimate: boolean;
+  /** recipient whose flows are highlighted from the legend */
+  highlight: EntityId | null;
   /** "auto" follows prefers-color-scheme */
   theme: "auto" | "light" | "dark";
   /** recipient textures (always on under forced colours) */
@@ -42,6 +46,7 @@ export interface PageState {
 
 export const WAGE_MIN = 6_000;
 export const WAGE_MAX = 160_000;
+export const WAGE_STEP = 1_000;
 
 const ENTITY_LABEL: Record<EntityId, { de: string; en: string }> = {
   fed: { de: "Bund", en: "Federation" },
@@ -53,9 +58,12 @@ const ENTITY_LABEL: Record<EntityId, { de: string; en: string }> = {
   care: { de: "Pflegeversicherung", en: "Care insurance" },
   unemp: { de: "Arbeitslosenversicherung", en: "Unemployment insurance" },
 };
+export const entityName = (entity: EntityId, lang: Lang): string => ENTITY_LABEL[entity][lang];
 
-function seg(name: string, options: { value: string; label: string }[], current: string, label: string): string {
-  return `<fieldset class="seg" data-control="${name}"><legend class="sr-only">${esc(label)}</legend>${options
+export { yearTag };
+
+function seg(name: string, options: { value: string; label: string }[], current: string, label: string, extra = ""): string {
+  return `<fieldset class="seg ${extra}" data-control="${name}"><legend class="sr-only">${esc(label)}</legend>${options
     .map(
       (option) =>
         `<button type="button" data-value="${esc(option.value)}" aria-pressed="${option.value === current}">${esc(option.label)}</button>`,
@@ -63,125 +71,101 @@ function seg(name: string, options: { value: string; label: string }[], current:
     .join("")}</fieldset>`;
 }
 
+const ICON_THEME = `<svg viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M13.5 12.8A6 6 0 0 1 7.2 6.5a6 6 0 0 1 .9-3.2A7 7 0 1 0 16.7 12a6 6 0 0 1-3.2.8z"/></svg>`;
+const ICON_PATTERNS = `<svg viewBox="0 0 20 20" aria-hidden="true" focusable="false"><rect x="3" y="3" width="14" height="14" rx="1.5" fill="none"/><path d="M3 9 9 3M3 15 15 3M7 17 17 7M13 17l4-4"/></svg>`;
+
 export function renderWageTicks(state: PageState): string {
   const { lang } = state;
   const ticks = wageTicks(state.year);
   const pos = (value: number) => ((value - WAGE_MIN) / (WAGE_MAX - WAGE_MIN)) * 100;
-  const short: Record<string, string> = { minimum: t("ticksMinimum", lang), median: t("ticksMedian", lang), average: t("ticksAverage", lang), double: t("ticksDouble", lang) };
-  const long: Record<string, string> = { minimum: t("ticksMinimumLong", lang), median: t("ticksMedianLong", lang), average: t("ticksAverageLong", lang), double: t("ticksDoubleLong", lang) };
+  const short: Record<string, string> = { minimum: t("ticksMinimumShort", lang), median: t("ticksMedian", lang), average: t("ticksAverageShort", lang) };
+  const long: Record<string, string> = { minimum: t("ticksMinimumLong", lang), median: t("ticksMedianLong", lang), average: t("ticksAverageLong", lang) };
   const assumption = minimumWageAssumption(state.year);
   return `<div class="ticks" id="wage-ticks">${ticks
-    .map((tick, index) => {
+    .map((tick) => {
       const year = tick.fromYear ? ` (${tick.fromYear})` : "";
-      // accessible name starts with the visible label (WCAG 2.5.3), then the full description
-      const description = `${short[tick.id]}${year}: ${eur(tick.value, lang)}. ${long[tick.id]}${tick.id === "minimum" && assumption ? `. * ${assumption}` : ""}`;
-      // labels alternate between two rows so neighbours (median, average) never overlap
-      return `<button type="button" class="tick-mark tick-${tick.id} row-${index % 2}" data-index="${index}" data-wage="${Math.round(tick.value)}" style="left:${pos(tick.value).toFixed(2)}%" title="${esc(description)}" aria-label="${esc(description)}"><span aria-hidden="true">${esc(`${short[tick.id]}${year}`)}</span></button>`;
+      // short text on the slider; the full name and definition on hover / in the accessible name
+      const description = `${short[tick.id]}${year}: ${eur(tick.value, lang)}. ${long[tick.id]}${year}${tick.id === "minimum" && assumption ? `. * ${assumption}` : ""}`;
+      return `<button type="button" class="tick-mark tick-${tick.id}" data-wage="${Math.round(tick.value)}" data-name="${esc(short[tick.id]!)}" style="left:${pos(tick.value).toFixed(2)}%" title="${esc(description)}" aria-label="${esc(description)}"><span aria-hidden="true">${esc(`${short[tick.id]}${year}`)}</span></button>`;
     })
     .join("")}</div>`;
 }
 
 export function renderControls(state: PageState): string {
   const { lang } = state;
-  return `<form class="controls" id="controls" aria-label="${esc(t("settings", lang))}">
-    <div class="ctl ctl-wage ctl-you"${state.zoom === "you" ? "" : " hidden"}>
-      <label for="wage-range" class="ctl-label">${esc(t("wage", lang))}</label>
-      <div class="wage-row">
-        <div class="range-wrap">
-          <input type="range" id="wage-range" min="${WAGE_MIN}" max="${WAGE_MAX}" step="100" value="${Math.min(WAGE_MAX, Math.max(WAGE_MIN, state.wage))}" aria-describedby="wage-ticks" />
-          ${renderWageTicks(state)}
-        </div>
-        <input type="number" id="wage-number" class="num" min="0" max="999999" step="1" value="${state.wage}" aria-label="${esc(t("wage", lang))}" />
+  const sliderValue = Math.min(WAGE_MAX, Math.max(WAGE_MIN, state.wage));
+  return `<div class="controls" id="controls" role="group" aria-label="${esc(t("settings", lang))}">
+    ${seg("year", PAGE_YEARS.map((year) => ({ value: String(year), label: String(year) })), String(state.year), t("year", lang), "seg-year")}
+    <div class="wage-ctl"${state.zoom === "you" ? "" : " hidden"}>
+      <div class="wage-head">
+        <span class="ctl-label" id="wage-label">${esc(t("wage", lang))}</span>
+        <button type="button" class="wage-figure num" id="wage-figure" aria-label="${esc(`${t("wageType", lang)}: ${eur(state.wage, lang)}`)}">${esc(eur(state.wage, lang))}</button>
+        <input type="number" class="wage-input num" id="wage-input" min="0" max="999999" step="1" value="${state.wage}" aria-label="${esc(t("wageType", lang))}" hidden />
+      </div>
+      <div class="range-wrap">
+        <input type="range" id="wage-range" min="${WAGE_MIN}" max="${WAGE_MAX}" step="${WAGE_STEP}" value="${Math.round(sliderValue / WAGE_STEP) * WAGE_STEP}" aria-labelledby="wage-label" aria-valuetext="${esc(eur(state.wage, lang))}" />
+        <output class="bubble num" id="wage-bubble" for="wage-range" hidden></output>
+        ${renderWageTicks(state)}
       </div>
     </div>
-    <div class="ctl ctl-you"${state.zoom === "you" ? "" : " hidden"}>
-      <label for="land-select" class="ctl-label">${esc(t("land", lang))}</label>
-      <select id="land-select">
-        <option value="${GERMANY_CODE}"${state.land === GERMANY_CODE ? " selected" : ""}>${esc(t("allLaender", lang))}</option>
-        ${places
-          .map((place) => `<option value="${place.code}"${place.code === state.land ? " selected" : ""}>${esc(tr(place.name, lang))}</option>`)
-          .join("")}
-      </select>
+    <div class="top-right">
+      ${seg(
+        "zoom",
+        [
+          { value: "you", label: t("zoomYou", lang) },
+          { value: "germany", label: t("zoomGermany", lang) },
+        ],
+        state.zoom,
+        t("zoom", lang),
+      )}
+      <div class="ctl-unit"${state.zoom === "germany" ? "" : " hidden"}>${seg(
+        "unit",
+        [
+          { value: "bn", label: t("unitBn", lang) },
+          { value: "day", label: t("unitDay", lang) },
+        ],
+        state.unit,
+        t("unit", lang),
+      )}</div>
+      <div class="lang-toggle" role="group" aria-label="${esc(t("language", lang))}"><button type="button" data-lang="de" lang="de" aria-pressed="${lang === "de"}">DE</button><span aria-hidden="true">|</span><button type="button" data-lang="en" lang="en" aria-pressed="${lang === "en"}">EN</button></div>
+      <button type="button" class="icon-btn" id="theme-toggle" aria-label="${esc(t("themeDarkName", lang))}" title="${esc(t("themeDarkName", lang))}" aria-pressed="${state.theme === "dark"}">${ICON_THEME}</button>
+      <button type="button" class="icon-btn" id="tex-toggle" aria-label="${esc(t("patternsName", lang))}" title="${esc(t("patternsName", lang))}" aria-pressed="${state.tex}">${ICON_PATTERNS}</button>
     </div>
-    <div class="ctl ctl-you"${state.zoom === "you" ? "" : " hidden"}><span class="ctl-label">${esc(t("year", lang))}</span>${seg(
-      "year",
-      payslipYears.map((year) => ({ value: String(year), label: String(year) })),
-      String(state.year),
-      t("year", lang),
-    )}</div>
-    <div class="ctl"><span class="ctl-label">${esc(t("zoom", lang))}</span>${seg(
-      "zoom",
-      [
-        { value: "you", label: t("zoomYou", lang) },
-        { value: "germany", label: t("zoomGermany", lang) },
-      ],
-      state.zoom,
-      t("zoom", lang),
-    )}</div>
-    <div class="ctl ctl-unit"${state.zoom === "germany" ? "" : " hidden"}><span class="ctl-label">${esc(t("unit", lang))}</span>${seg(
-      "unit",
-      [
-        { value: "bn", label: t("unitBn", lang) },
-        { value: "day", label: t("unitDay", lang) },
-      ],
-      state.unit,
-      t("unit", lang),
-    )}</div>
-    <div class="ctl"><span class="ctl-label">${esc(t("language", lang))}</span>${seg(
-      "lang",
-      [
-        { value: "de", label: "DE" },
-        { value: "en", label: "EN" },
-      ],
-      lang,
-      t("language", lang),
-    )}</div>
-    <div class="ctl ctl-display"><span class="ctl-label">${esc(t("display", lang))}</span><div class="display-row">${seg(
-      "theme",
-      [
-        { value: "light", label: t("themeLight", lang) },
-        { value: "dark", label: t("themeDark", lang) },
-      ],
-      state.theme === "dark" ? "dark" : "light",
-      t("display", lang),
-    )}<button type="button" class="toggle" id="tex-toggle" aria-pressed="${state.tex}">${esc(t("patterns", lang))}</button></div></div>
-  </form>`;
+  </div>`;
 }
 
-export function renderLayerChips(state: PageState): string {
+/** One row above the charts: the Shopping panel, the recipients (click to highlight), the marker notes. */
+export function renderLegendRow(state: PageState): string {
   const { lang } = state;
-  const chips: { id: LayerId; label: string }[] = [
-    { id: "payday", label: t("layerPayday", lang) },
-    { id: "shopping", label: t("layerShopping", lang) },
-    { id: "fuel", label: t("layerFuel", lang) },
-    { id: "home", label: t("layerHome", lang) },
-  ];
-  return `<div class="layers" role="group" aria-label="${esc(t("layersLabel", lang))}"${state.zoom === "you" ? "" : " hidden"}>${chips
-    .map(
-      (chip) =>
-        `<button type="button" class="chip" data-layer="${chip.id}" aria-pressed="${state.layer === "all" || state.layer === chip.id}">${esc(chip.label)}</button>`,
-    )
-    .join("")}</div>`;
+  const entities: EntityId[] = state.zoom === "you" ? ENTITY_ORDER.filter((e) => e !== "eu") : ENTITY_ORDER;
+  return `<div class="legend-row">
+    ${
+      state.zoom === "you"
+        ? `<button type="button" class="chip chip-panel" data-panel="shopping" aria-haspopup="dialog">${esc(t("shoppingChip", lang))} <span aria-hidden="true">›</span></button>`
+        : ""
+    }
+    <ul class="legend" aria-label="${esc(lang === "de" ? "Farben: gesetzlicher Empfänger" : "Colours: legal recipient")}">
+      ${entities
+        .map(
+          (entity) =>
+            `<li><button type="button" class="legend-item" data-entity-key="${entity}" aria-pressed="${state.highlight === entity}" aria-label="${esc(fill(t("highlightName", lang), ENTITY_LABEL[entity][lang]))}">${swatch(entity)}${esc(ENTITY_LABEL[entity][lang])}</button></li>`,
+        )
+        .join("")}
+      ${
+        state.zoom === "you"
+          ? `<li><button type="button" class="legend-item legend-note" id="estimate-toggle" aria-pressed="${state.estimate}" aria-label="${esc(`${t("estimateToggle", lang)} ${t("estimateToggleName", lang)}`)}" title="${esc(t("estimateLegend", lang))}">${swatch(undefined, "is-estimate")}${esc(t("estimateToggle", lang))}</button></li>`
+          : ""
+      }
+      <li class="legend-note" title="${esc(lang === "de" ? "Kreditfinanzierter Teil" : "Part financed by borrowing")}">${swatch(undefined, "is-borrowed")}${esc(t("borrowedSeg", lang))}</li>
+    </ul>
+  </div>`;
 }
 
-export function renderLegend(state: PageState): string {
-  const { lang } = state;
-  const entities: EntityId[] = state.zoom === "you" ? ["fed", "land", "muni", "pension", "health", "care", "unemp"] : ["fed", "land", "muni", "eu", "pension", "health", "care", "unemp"];
-  return `<ul class="legend" aria-label="${esc(lang === "de" ? "Farben: gesetzlicher Empfänger" : "Colours: legal recipient")}">
-    ${entities.map((entity) => `<li>${swatch(entity)}${esc(ENTITY_LABEL[entity][lang])}</li>`).join("")}
-    ${state.zoom === "you" ? `<li>${swatch(undefined, "is-yours")}${esc(t("netPay", lang))}</li>` : ""}
-    <li>${swatch(undefined, "is-borrowed")}${esc(t("borrowedSeg", lang))}</li>
-    ${state.zoom === "you" && (state.layer === "all" || state.layer === "shopping") ? `<li>${swatch(undefined, "is-estimate")}${esc(t("estimateLegend", lang))}</li>` : ""}
-    ${state.zoom === "you" ? `<li>${swatch(undefined, "is-hatch")}${esc(t("legendHatch", lang))}</li>` : ""}
-  </ul>`;
-}
-
-/** No-JS summary of the hero (also the screen-reader-friendly table twin of the flow). */
 export function renderHeroTable(state: PageState, you: YouModel, germany: GermanyModel): string {
   const { lang } = state;
   if (state.zoom === "germany") {
-    const fmt = (v: number) => (state.unit === "day" ? eur(perResidentPerDay(v), lang, 2) : bn(v, lang));
-    return `<table class="data-table compact"><caption>${esc(t("zoomGermany", lang))} 2024</caption>
+    const fmt = (v: number) => (state.unit === "day" ? eur(perResidentPerDay(v, germany.year), lang, 2) : bn(v, lang));
+    return `<table class="data-table compact"><caption>${esc(t("zoomGermany", lang))} ${germany.year}</caption>
       <thead><tr><th scope="col">${esc(t("stageTaxes", lang))}</th><th scope="col" class="num">${esc(t("amount", lang))}</th></tr></thead>
       <tbody>${germany.flow.nodes
         .filter((n) => n.stage === 0)
@@ -194,10 +178,11 @@ export function renderHeroTable(state: PageState, you: YouModel, germany: German
         .join("")}</tbody>
       <thead><tr><th scope="col">${esc(t("stateSpending", lang))}</th><th scope="col" class="num">${esc(t("amount", lang))}</th></tr></thead>
       <tbody>${germany.cofog
-        .map((c) => `<tr><th scope="row">${esc(tr(c.label, lang))}</th><td class="num">${esc(`${pct(c.value / germany.spendingTotal, lang, 1)} · ${fmt(c.value)}`)}</td></tr>`)
+        .map((c) => `<tr><th scope="row">${esc(`${tr(c.label, lang)} (${germany.stateYear})`)}</th><td class="num">${esc(`${pct(c.value / germany.spendingTotal, lang, 1)} · ${state.unit === "day" ? eur(perResidentPerDay(c.value, germany.stateYear), lang, 2) : bn(c.value, lang)}`)}</td></tr>`)
         .join("")}</tbody></table>`;
   }
   const p = you.payslip;
+  const share = proRata(you);
   return `<table class="data-table compact"><caption>${esc(`${t("stageGross", lang)} ${eur(p.gross, lang)} · ${you.year}`)}</caption>
     <thead><tr><th scope="col">${esc(t("stageDeductions", lang))}</th><th scope="col" class="num">${esc(t("amount", lang))}</th></tr></thead>
     <tbody>${you.flow.nodes
@@ -227,13 +212,20 @@ export function renderHeroTable(state: PageState, you: YouModel, germany: German
     <tbody>${you.pots
       .map(
         (pot) =>
-          `<tr><th scope="row">${swatch(pot.entity)}${esc(`${tr(pot.label, lang)} · ${pot.year}${pot.status === "provisional" ? "p" : ""}`)}</th><td class="num">${esc(bn(pot.total, lang))}</td></tr>`,
+          `<tr><th scope="row">${swatch(pot.entity)}${esc(`${tr(pot.label, lang)} · ${yearTag(pot.year, pot.status, 0, lang)}`)}</th><td class="num">${esc(bn(pot.total, lang))}</td></tr>`,
+      )
+      .join("")}</tbody>
+    <thead><tr><th scope="col">${esc(`${t("proRataHeading", lang)} (${t("proRataShares", lang)} ${share.years[0]}–${share.years[1]})`)}</th><th scope="col" class="num">${esc(t("amount", lang))}</th></tr></thead>
+    <tbody>${share.rows
+      .map(
+        (row) =>
+          `<tr><th scope="row">${esc(`${tr(row.label, lang)}, ${t("proRataIf", lang)}`)}</th><td class="num">${esc(`≈ ${eur(row.exact, lang)}${row.estimate > 0.5 ? ` + ≈ ${eur(row.estimate, lang)}*` : ""}`)}</td></tr>`,
       )
       .join("")}</tbody></table>`;
 }
 
-export function renderTaxTable(lang: Lang, limit?: number): string {
-  const rows = taxTable();
+export function renderTaxTable(lang: Lang, year: number, limit?: number): string {
+  const rows = taxTable(year);
   const max = rows[0]?.amount ?? 1;
   const body = (list: typeof rows) =>
     list
@@ -249,7 +241,7 @@ export function renderTaxTable(lang: Lang, limit?: number): string {
       </tr>`,
       )
       .join("");
-  const head = `<thead><tr><th scope="col">${esc(t("colTax", lang))}</th><th scope="col" class="num">${esc(t("colAmount", lang))}</th><th scope="col"><span class="sr-only">bar</span></th><th scope="col">${esc(
+  const head = `<thead><tr><th scope="col">${esc(t("colTax", lang))}</th><th scope="col" class="num">${year}</th><th scope="col"><span class="sr-only">bar</span></th><th scope="col">${esc(
     t("colSplit", lang),
   )}</th><th scope="col">${esc(t("colKind", lang))}</th></tr></thead>`;
   const caption = `<caption>${esc(t("taxesCash", lang))}</caption>`;
@@ -260,9 +252,9 @@ export function renderTaxTable(lang: Lang, limit?: number): string {
   return `<div class="table-scroll" tabindex="0" role="region" aria-label="${esc(`${t("taxesTitle", lang)} · ${t("tableView", lang)}`)}"><table class="data-table taxes">${caption}${head}<tbody>${body(rows)}</tbody></table></div>`;
 }
 
-export function renderEqualisationTable(lang: Lang): string {
-  const lands = [...equalisation()].sort((a, b) => b.perResident - a.perResident);
-  return `<details class="more"><summary>${esc(t("tableView", lang))}</summary><div class="table-scroll" tabindex="0" role="region" aria-label="${esc(`${t("mapTitle", lang)} · ${t("tableView", lang)}`)}"><table class="data-table">
+export function renderEqualisationTable(lang: Lang, year: number): string {
+  const lands = [...equalisation(year)].sort((a, b) => b.perResident - a.perResident);
+  return `<details class="more"><summary>${esc(t("tableView", lang))}</summary><div class="table-scroll" tabindex="0" role="region" aria-label="${esc(`${t("mapShort", lang)} ${year} · ${t("tableView", lang)}`)}"><table class="data-table">
     <thead><tr><th scope="col">${esc(t("land", lang))}</th><th scope="col" class="num">€ / ${esc(lang === "de" ? "Einw." : "resident")}</th><th scope="col" class="num">${esc(
       lang === "de" ? "Finanzkraftausgleich" : "Equalisation in VAT",
     )}</th><th scope="col" class="num">${esc(lang === "de" ? "BEZ" : "Federal grants")}</th></tr></thead>
@@ -278,6 +270,7 @@ export function renderEqualisationTable(lang: Lang): string {
 
 /** Every figure the slide shows, with the file it is read from. */
 export function renderDataTable(lang: Lang, you: YouModel, germany: GermanyModel): string {
+  const year = you.year;
   type Row = { group: string; label: string; value: string; file: string; where: string };
   const rows: Row[] = [];
   const p = you.payslip;
@@ -295,14 +288,14 @@ export function renderDataTable(lang: Lang, you: YouModel, germany: GermanyModel
     rows.push({ group: t("zoomGermany", lang), label: tr(node.label, lang), value: bn(node.value, lang), file: node.id.startsWith("c-") ? files.socialInsurance : files.byTax, where: node.id.startsWith("r-") ? files.legalAllocation : "" });
   }
   for (const b of germany.bridge) {
-    rows.push({ group: t("stateRevenue", lang), label: tr(b.label, lang), value: `${bn(b.value, lang)}${b.share !== undefined ? ` · ${pct(b.share, lang, 1)}` : ""}`, file: files.aggregates, where: "TR, D2REC, D5REC, D91REC, D61REC, B9 · 2024" });
+    rows.push({ group: t("stateRevenue", lang), label: tr(b.label, lang), value: `${bn(b.value, lang)}${b.share !== undefined ? ` · ${pct(b.share, lang, 1)}` : ""}`, file: files.aggregates, where: `TR, D2REC, D5REC, D91REC, D61REC, B9 · ${germany.stateYear}` });
   }
   for (const c of germany.cofog) {
-    rows.push({ group: t("stateSpending", lang), label: tr(c.label, lang), value: `${pct(c.value / germany.spendingTotal, lang, 1)} · ${bn(c.value, lang)}`, file: files.cofog, where: `S13 · ${c.code} · 2024` });
+    rows.push({ group: t("stateSpending", lang), label: tr(c.label, lang), value: `${pct(c.value / germany.spendingTotal, lang, 1)} · ${bn(c.value, lang)}`, file: files.cofog, where: `S13 · ${c.code} · ${germany.stateYear}` });
   }
-  rows.push({ group: t("stateSpending", lang), label: t("perResidentDay", lang), value: eur(perResidentPerDay(germany.spendingTotal), lang, 2), file: files.population, where: `${num(POPULATION_2024, lang)} ${t("germanyResidents", lang)} · 366` });
-  for (const land of equalisation()) {
-    rows.push({ group: t("mapTitle", lang), label: tr(land.name, lang), value: eur(land.perResident, lang), file: files.equalisation2024, where: "laender[].per_resident.fka_plus_bez" });
+  rows.push({ group: t("stateSpending", lang), label: t("perResidentDay", lang), value: eur(perResidentPerDay(germany.spendingTotal, germany.stateYear), lang, 2), file: files.population, where: `${num(populationOf(germany.stateYear), lang)} · ${germany.stateYear}` });
+  for (const land of equalisation(year)) {
+    rows.push({ group: `${t("mapShort", lang)} ${year}`, label: tr(land.name, lang), value: eur(land.perResident, lang), file: year >= 2025 ? files.equalisation2025 : files.equalisation2024, where: "laender[].per_resident.fka_plus_bez" });
   }
   for (const item of purchases()) {
     rows.push({ group: t("receiptLabel", lang), label: `${tr(item.label, lang)}*`, value: pct(item.taxShare, lang, 1), file: files.purchaseTaxes, where: `examples[id=${item.id}]` });
@@ -322,9 +315,9 @@ export function renderDataTable(lang: Lang, you: YouModel, germany: GermanyModel
         .join("")}</tbody></table></div></details>`;
 }
 
-export function renderSources(lang: Lang): string {
+export function renderSources(lang: Lang, year: number): string {
   const datasets = Object.values(files).map((file) => ({ label: { de: file, en: file }, file }));
-  return `${sourceList(equalisationSource(), lang)}
+  return `${sourceList(equalisationSource(year), lang)}
     <ul class="dataset-list">${datasets.map((d) => `<li><a href="${esc(repoBlob(d.file))}" rel="noreferrer noopener" target="_blank"><code>${esc(d.file)}</code></a></li>`).join("")}</ul>`;
 }
 
@@ -333,38 +326,34 @@ export function renderPage(state: PageState, you: YouModel, germany: GermanyMode
   return `
   <a class="skip-link" href="#hero">${esc(t("skip", lang))}</a>
   <header class="top">
-    <h1 class="title" id="title">${esc(t("title", lang))}</h1>
+    <h1 class="title" id="title">${esc(titleFor(state.year, lang))}</h1>
     <button type="button" class="controls-toggle" id="controls-toggle" aria-expanded="false" aria-controls="controls">${esc(t("settings", lang))}</button>
     ${renderControls(state)}
   </header>
   <main id="main">
   <p class="sr-only" id="live" aria-live="polite" aria-atomic="true"></p>
   <section class="hero" id="hero" aria-labelledby="title">
-    <div class="hero-bar">
-      ${renderLayerChips(state)}
-      <p class="hero-line" id="hero-line">${esc(state.zoom === "you" ? t("assumptions", lang) : t("switchGermany", lang))}</p>
+    ${renderLegendRow(state)}
+    <div class="hero-grid">
+      <aside class="map-panel" aria-labelledby="map-title">
+        <h2 class="map-title" id="map-title">${esc(`${t("mapShort", lang)} ${state.year}`)}</h2>
+        <div class="map" id="map"></div>
+        <div class="map-key" id="map-key"></div>
+        <p class="map-place" id="map-place">${esc(t("mapAll", lang))}</p>
+        <button type="button" class="link-btn" data-panel="ranking" aria-haspopup="dialog">${esc(t("ranking", lang))} <span aria-hidden="true">›</span></button>
+      </aside>
+      <div class="flow-wrap">
+        <div class="flow" id="flow">${renderHeroTable(state, you, germany)}${
+          options.staticBuild ? renderHeroTable({ ...state, zoom: state.zoom === "you" ? "germany" : "you" }, you, germany) : ""
+        }</div>
+        <div class="sr-only" id="flow-table"></div>
+      </div>
     </div>
-    <div class="flow" id="flow">${renderHeroTable(state, you, germany)}${
-      options.staticBuild ? renderHeroTable({ ...state, zoom: state.zoom === "you" ? "germany" : "you" }, you, germany) : ""
-    }</div>
-    <div class="sr-only" id="flow-table"></div>
-    <div class="receipts" id="receipts"></div>
-    ${renderLegend(state)}
-  </section>
-  <section class="section" id="equalisation" aria-labelledby="eq-title">
-    <h2 id="eq-title">${esc(t("mapTitle", lang))}</h2>
-    <p class="section-note">${esc(t("mapNote", lang))}</p>
-    <div class="eq-grid">
-      <div class="map" id="map"></div>
-      <div class="map-key" id="map-key"></div>
-      <div class="land-bars-wrap" id="land-bars"></div>
-    </div>
-    ${renderEqualisationTable(lang)}
-    <p class="attribution">${esc(String((raw.laenderGeo as unknown as { attribution: string }).attribution))} · ${esc(t("mapClick", lang))}</p>
+    <p class="hero-line" id="hero-line">${esc(state.zoom === "you" ? t("assumptions", lang) : t("switchGermany", lang))}</p>
   </section>
   <section class="section" id="taxes" aria-labelledby="taxes-title">
-    <h2 id="taxes-title">${esc(t("taxesTitle", lang))}</h2>
-    ${renderTaxTable(lang, 14)}
+    <h2 id="taxes-title">${esc(`${t("taxesTitle", lang)} ${state.year}`)}</h2>
+    ${renderTaxTable(lang, state.year, 14)}
   </section>
   <section class="section" id="time" aria-labelledby="time-title">
     <h2 id="time-title">${esc(t("timeTitle", lang))}</h2>
@@ -374,7 +363,8 @@ export function renderPage(state: PageState, you: YouModel, germany: GermanyMode
   <section class="section" id="sources" aria-labelledby="sources-title">
     <h2 id="sources-title">${esc(t("sourcesData", lang))}</h2>
     ${renderDataTable(lang, you, germany)}
-    <details class="more"><summary>${esc(lang === "de" ? "Datendateien" : "Data files")}</summary>${renderSources(lang)}</details>
+    <details class="more"><summary>${esc(lang === "de" ? "Datendateien" : "Data files")}</summary>${renderSources(lang, state.year)}</details>
+    <p class="attribution">${esc(String((raw.laenderGeo as unknown as { attribution: string }).attribution))}</p>
   </section>
   </main>
   <footer class="foot">

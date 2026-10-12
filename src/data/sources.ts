@@ -11,6 +11,7 @@ import legalAllocation from "../../data/de/taxes/legal-allocation.json" with { t
 import byTax from "../../data/de/taxes/by-tax.json" with { type: "json" };
 import byRecipient from "../../data/de/taxes/by-recipient.json" with { type: "json" };
 import federalBudget2024 from "../../data/de/federal/budget-2024.json" with { type: "json" };
+import federalBudget2025 from "../../data/de/federal/budget-2025.json" with { type: "json" };
 import federalOverview from "../../data/de/federal/overview.json" with { type: "json" };
 import laenderFunctions2022 from "../../data/de/laender/functions-2022.json" with { type: "json" };
 import berlinFunctions2024 from "../../data/de/berlin/functions-2024.json" with { type: "json" };
@@ -19,6 +20,7 @@ import socialInsurance from "../../data/de/social-insurance/accounts.json" with 
 import cofog from "../../data/de/government/cofog.json" with { type: "json" };
 import aggregates from "../../data/de/government/aggregates.json" with { type: "json" };
 import equalisation2024 from "../../data/de/equalisation/2024.json" with { type: "json" };
+import equalisation2025 from "../../data/de/equalisation/2025.json" with { type: "json" };
 import laenderMeta from "../../data/de/equalisation/laender-meta.json" with { type: "json" };
 import population from "../../data/de/population.json" with { type: "json" };
 import euRoundTrip from "../../data/de/eu/round-trip.json" with { type: "json" };
@@ -34,6 +36,7 @@ export const raw = {
   byTax,
   byRecipient,
   federalBudget2024,
+  federalBudget2025,
   federalOverview,
   laenderFunctions2022,
   berlinFunctions2024,
@@ -42,6 +45,7 @@ export const raw = {
   cofog,
   aggregates,
   equalisation2024,
+  equalisation2025,
   laenderMeta,
   population,
   euRoundTrip,
@@ -60,6 +64,7 @@ export const files = {
   byTax: "data/de/taxes/by-tax.json",
   byRecipient: "data/de/taxes/by-recipient.json",
   federalBudget2024: "data/de/federal/budget-2024.json",
+  federalBudget2025: "data/de/federal/budget-2025.json",
   federalOverview: "data/de/federal/overview.json",
   laenderFunctions2022: "data/de/laender/functions-2022.json",
   berlinFunctions2024: "data/de/berlin/functions-2024.json",
@@ -68,6 +73,7 @@ export const files = {
   cofog: "data/de/government/cofog.json",
   aggregates: "data/de/government/aggregates.json",
   equalisation2024: "data/de/equalisation/2024.json",
+  equalisation2025: "data/de/equalisation/2025.json",
   laenderMeta: "data/de/equalisation/laender-meta.json",
   population: "data/de/population.json",
   euRoundTrip: "data/de/eu/round-trip.json",

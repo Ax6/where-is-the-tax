@@ -37,7 +37,15 @@ for (const zoom of ["you", "germany"]) {
   SCENARIOS.push({ name: `${zoom}-en-light-390`, hash: `#zoom=${zoom}&lang=en`, width: 390, height: 844 });
   SCENARIOS.push({ name: `${zoom}-en-dark-390`, hash: `#zoom=${zoom}&lang=en&theme=dark`, width: 390, height: 844, colorScheme: "dark" });
 }
-SCENARIOS.push({ name: "you-en-drawer-1440", hash: "#zoom=you&lang=en&land=BY&pot=pot-land&open=pot:pot-land", width: 1440, height: 900 });
+SCENARIOS.push({ name: "you-en-drawer-1440", hash: "#zoom=you&lang=en&land=BY&open=pot:pot-land", width: 1440, height: 900 });
+SCENARIOS.push({ name: "you-en-2025-land-1440", hash: "#y=2025&lang=en&land=BE", width: 1440, height: 900 });
+SCENARIOS.push({ name: "germany-de-2025-dark-1440", hash: "#y=2025&zoom=germany&lang=de&theme=dark", width: 1440, height: 900, colorScheme: "dark" });
+SCENARIOS.push({ name: "you-en-highlight-1440", hash: "#y=2024&lang=en&hl=pension", width: 1440, height: 900 });
+SCENARIOS.push({ name: "you-en-shopping-panel-1440", hash: "#y=2024&lang=en&open=panel:shopping", width: 1440, height: 900 });
+SCENARIOS.push({ name: "you-de-ranking-panel-dark-1440", hash: "#y=2025&lang=de&theme=dark&land=BY&open=panel:ranking", width: 1440, height: 900, colorScheme: "dark" });
+SCENARIOS.push({ name: "you-en-prorata-drawer-1440", hash: "#y=2025&lang=en&land=HH&open=prorata:social", width: 1440, height: 900 });
+SCENARIOS.push({ name: "you-en-payslip-drawer-1440", hash: "#y=2025&lang=en&open=node:gross", width: 1440, height: 900 });
+SCENARIOS.push({ name: "you-en-shopping-panel-390", hash: "#y=2024&lang=en&open=panel:shopping", width: 390, height: 844 });
 SCENARIOS.push({ name: "you-de-drawer-dark-1440", hash: "#zoom=you&lang=de&theme=dark&open=node:wagetax", width: 1440, height: 900, colorScheme: "dark" });
 SCENARIOS.push({ name: "you-en-textures-1440", hash: "#zoom=you&lang=en&tex=1", width: 1440, height: 900 });
 SCENARIOS.push({ name: "you-en-forced-colors-1440", hash: "#zoom=you&lang=en", width: 1440, height: 900, forcedColors: "active" });

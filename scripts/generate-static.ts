@@ -8,18 +8,19 @@ import { renderPage, type PageState } from "../src/ui/page.ts";
 
 const state: PageState = {
   zoom: "you",
-  wage: defaultWage(2024),
+  wage: Math.round(defaultWage(2024)),
+  wageSet: false,
   land: GERMANY_CODE,
   year: 2024,
   lang: "en",
-  pot: "pot-fed",
   unit: "bn",
-  layer: "all",
+  estimate: true,
+  highlight: null,
   theme: "auto",
   tex: false,
 };
 
-const html = renderPage(state, buildYou(state.year, state.wage, state.land), buildGermany(), { staticBuild: true });
+const html = renderPage(state, buildYou(state.year, state.wage, state.land, { estimate: true }), buildGermany(state.year), { staticBuild: true });
 const outputRoot = resolve(".generated");
 await mkdir(outputRoot, { recursive: true });
 await writeFile(resolve(outputRoot, "static-content.html"), `${html.trim()}\n`);

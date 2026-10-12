@@ -128,14 +128,13 @@ test("wage tax goes 42.5 / 42.5 / 15; Berlin and Hamburg take Land and municipal
   assert.equal(buildYou(2024, 60_000, "NW").pots.find((p) => p.id === "pot-land")!.year, 2022);
 });
 
-test("slider ticks come from wage-reference.json: minimum wage*, full-time median, average, 2× average", () => {
+test("slider ticks come from wage-reference.json: minimum wage*, full-time median, average (no 2× average)", () => {
   assert.deepEqual(
     wageTicks(2024).map((tick) => [tick.id, tick.value, tick.fromYear ?? null]),
     [
       ["minimum", 25_812.8, null],
       ["median", 52_159, null],
       ["average", 62_235, null],
-      ["double", 124_470, null],
     ],
   );
   // 2026 earnings are not published yet: the ticks say they come from 2025

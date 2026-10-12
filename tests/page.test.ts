@@ -6,7 +6,7 @@ import { buildGermany, buildYou, defaultWage, GERMANY_CODE } from "../src/data/m
 import { REPO_URL } from "../src/data/sources.ts";
 import { renderPage, type PageState } from "../src/ui/page.ts";
 
-const base: PageState = { zoom: "you", wage: defaultWage(2024), land: GERMANY_CODE, year: 2024, lang: "en", pot: "pot-fed", unit: "bn", layer: "all", theme: "auto", tex: false };
+const base: PageState = { zoom: "you", wage: Math.round(defaultWage(2024)), wageSet: false, land: GERMANY_CODE, year: 2024, lang: "en", unit: "bn", estimate: true, highlight: null, theme: "auto", tex: false };
 
 for (const lang of ["en", "de"] as const) {
   for (const zoom of ["you", "germany"] as const) {
