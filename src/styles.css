@@ -511,6 +511,13 @@ li.legend-note {
   font-weight: 650;
 }
 
+.map-note {
+  margin: 0;
+  color: var(--muted);
+  font-size: 11.5px;
+  line-height: 1.35;
+}
+
 .nowrap {
   white-space: nowrap;
 }
@@ -669,16 +676,6 @@ li.legend-note {
   stroke-width: 1;
 }
 
-.focus-estimate .ribbon:not(.is-estimate),
-.focus-estimate .join-stream,
-.focus-estimate .join-wedge {
-  opacity: 0.12;
-}
-
-.focus-estimate .ribbon.is-estimate {
-  opacity: 0.5;
-}
-
 .has-focus .ribbon,
 .has-focus .join-stream,
 .has-focus .join-wedge {
@@ -745,8 +742,14 @@ li.legend-note {
 }
 
 .pot:hover .pot-bar,
-.pot:focus-visible .pot-bar {
+.pot:focus-visible .pot-bar,
+.pot.is-selected .pot-bar {
   opacity: 1;
+}
+
+.pot-label.is-selected .pot-name {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
 }
 
 .pot-borrowed {
@@ -801,28 +804,28 @@ li.legend-note {
   text-decoration: underline;
 }
 
-/* your € per year, pro rata* */
-.prorata-row {
+/* the selected budget's composition, with your euros pro rata* per row */
+.comp-bar {
+  opacity: 0.85;
+}
+
+.comp-seg {
   cursor: pointer;
 }
 
-.row-hit {
-  fill: transparent;
+.comp-seg:hover .comp-bar,
+.comp-seg:focus .comp-bar {
+  opacity: 1;
 }
 
-.prorata-row:hover .row-hit,
-.prorata-row:focus-visible .row-hit {
-  fill: var(--flow-ghost);
+.comp-hatch {
+  pointer-events: none;
 }
 
-.prorata-text {
+.comp-yours {
   fill: var(--ink);
-  font-size: 12.5px;
-}
-
-.prorata-if {
-  fill: var(--muted);
-  font-size: 11px;
+  font-size: 12px;
+  font-weight: 600;
 }
 
 .hatch-bg {
@@ -851,6 +854,13 @@ li.legend-note {
 .panel-note {
   fill: var(--ink-2);
   font-size: 11.5px;
+}
+
+.panel-more {
+  fill: var(--ink);
+  font-weight: 600;
+  text-decoration: underline;
+  cursor: pointer;
 }
 
 .bridge {
@@ -921,10 +931,6 @@ li.legend-note {
 .swatch.is-estimate {
   border: 1px dashed var(--ink-2);
   background: transparent;
-}
-
-.swatch.is-hatch {
-  background: repeating-linear-gradient(45deg, var(--ink) 0 1.4px, var(--page) 1.4px 4px);
 }
 
 .swatch.is-neutral {
@@ -1124,10 +1130,18 @@ li.legend-note {
   grid-template-columns: minmax(0, 1fr) 200px 64px;
   align-items: center;
   gap: 12px;
+  width: 100%;
   min-height: 36px;
+  padding: 0;
+  border: 0;
   border-bottom: 1px solid var(--hair);
+  background: none;
+  color: inherit;
+  font: inherit;
   font-size: 12.5px;
   line-height: 1.2;
+  text-align: left;
+  cursor: pointer;
 }
 
 .purchase-row:hover,
@@ -1774,11 +1788,6 @@ code {
   height: 100%;
 }
 
-.stage-row-bar span.is-estimate {
-  border: 1px dashed;
-  background: transparent;
-}
-
 .stage-row .swatch {
   margin: 0;
 }
@@ -2259,7 +2268,6 @@ code {
   }
 }
 
-
 @media print {
   .controls,
   .controls-toggle,
@@ -2288,6 +2296,10 @@ html:not(.enhanced) .legend-row [data-panel] {
 
 html:not(.enhanced) .hero-grid {
   grid-template-columns: 1fr;
+}
+
+html.enhanced .static-only {
+  display: none;
 }
 
 .noscript-note {

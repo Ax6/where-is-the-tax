@@ -40,7 +40,8 @@ export function textWidth(text: string, size = 12, weight = 400): number {
 
 /** Greedy word wrap into at most `maxLines` lines; the last line is ellipsised when words remain. */
 export function wrap(text: string, maxWidth: number, size = 12, weight = 400, maxLines = 2): string[] {
-  const words = text.split(/\s+/).filter(Boolean);
+  // break only at ordinary spaces: a no-break space (U+00A0) keeps "inheritance …)" together
+  const words = text.split(/[ \t\n]+/).filter(Boolean);
   const lines: string[] = [];
   let current = "";
   for (let i = 0; i < words.length; i += 1) {

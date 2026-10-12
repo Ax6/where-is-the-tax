@@ -1,6 +1,6 @@
 # ROADMAP — honest state of where-is-the-tax
 
-**As of 2026-10-12** (data layer; front end wired on branch `data-layer-and-slide`). Goal (CLAUDE.md): one interactive page, German and English, where anyone
+**As of 2026-10-12.** Goal (CLAUDE.md): one interactive page, German and English, where anyone
 sees at a glance where a German citizen's taxes go; data first, every figure true and sourced,
 contestable items marked.
 
@@ -13,17 +13,21 @@ bilingual labels everywhere, independent re-derivation logged. The **front end n
 against every example row and the 121 BMF Prüftabelle rows, You and Germany zooms, drawer,
 equalisation map, all-taxes table, time strip, DE/EN, mobile, static fallback and a Pages workflow;
 light/dark themes with validated palettes, a texture mode for forced colours, an axe-core + keyboard
-test (0 violations in 17 scenarios), wage-slider reference points and a household indirect-tax
-estimate (≈*) next to the exact payslip. It is live at https://ax6.github.io/where-is-the-tax/ (deployed 2026-10-12, PR #4); it has not been reviewed by a second person or tested with first-time visitors yet.
+test (0 violations), wage-slider reference points and a household indirect-tax estimate (≈*) next
+to the exact payslip. Since PR #6: a global 2024 | 2025 year switch, the equalisation map as place
+picker, and the selected budget's "of every €100" column with your euros per row (v4.1). It is live
+at https://ax6.github.io/where-is-the-tax/. An independent audit of PR #6 is logged in
+`docs/research/logs/2026-10-12-pr6-audit.md`. Nobody outside the agents has reviewed it yet, and it
+has not been tested with first-time visitors.
 
 ## Scoring rubric (data layer) and self-assessment
 
 | Criterion | Weight | Score /10 | Why |
 |---|---|---:|---|
-| Coverage of the citizen question (whole state, per tax, per recipient, Länder/equalisation, federal, Berlin, social insurance, EU, own payslip, purchases, time, debt) | 20 % | 8 | All blocks exist; missing: household indirect-tax total (only per-product), per-municipality view beyond Berlin, 2025 Berlin account, Länder functions newer than 2022. |
+| Coverage of the citizen question (whole state, per tax, per recipient, Länder/equalisation, federal, Berlin, social insurance, EU, own payslip, purchases, time, debt) | 20 % | 8 | All blocks exist, including the household indirect-tax estimate (LWR 2024, ≈*). Missing: per-municipality view beyond Berlin, 2025 Berlin account, Länder functions newer than 2022. |
 | Traceability to raw files (every number → file + coordinates) | 20 % | 9 | 117 raw files in the manifest (plus the payslip registry); every data file carries `source_ref` with coordinates; cached PDFs/HTML have committed extracts with page/row. Berlin functions-2024 re-derived from the PDF on 2026-10-12 (review D, 33/33). |
 | Reconciliation (parts sum to official totals, bases never mixed) | 15 % | 9 | Hard checks in every build + `check.py` (0 failures): federal XML → BMF Ist to ±0.3 Mio; COFOG hierarchy; FKA nets to 0; Länder VAT pool = Destatis to the thousand; tax hierarchies exact. |
-| Independent verification | 15 % | 8 | Four independent review passes logged (D: wages, household estimate, Funktionenplan, Berlin PDF re-derivation); (A: re-derivation of all main layers from raw files, every 2024 number reproduced; B: payslip, independent implementation matches 121 official BMF Prüftabellen rows; C: social insurance, PDFs re-read, 3 data mismatches fixed, 8 framing challenges applied). Not yet: a second pass on the Berlin functions-2024 extraction. |
+| Independent verification | 15 % | 8 | Four independent review passes logged (D: wages, household estimate, Funktionenplan, Berlin PDF re-derivation); (A: re-derivation of all main layers from raw files, every 2024 number reproduced; B: payslip, independent implementation matches 121 official BMF Prüftabellen rows; C: social insurance, PDFs re-read, 3 data mismatches fixed, 8 framing challenges applied). Review D re-derived the Berlin functions-2024 extraction (33/33). |
 | Freshness / vintage honesty | 10 % | 8 | 2024 hero + 2025 freshness, labelled; COFOG 2024 provisional; Länder functions 2022 (newest edition). |
 | Bilingual labels | 10 % | 8 | `label.de/en` on every row; COFOG/Funktionenplan English names are editorial translations (flagged); some 2-/3-digit federal function codes have no label. |
 | Rationalized constructs (simple, verified, contestables marked) | 10 % | 8 | `docs/research/RATIONALIZATION.md`: of-every-€100 for state, revenue, taxes, recipients, federal budget; per resident per day; payslip; shopping basket; EU; Berlin. Contestables marked `*`. |
@@ -66,7 +70,7 @@ estimate (≈*) next to the exact payslip. It is live at https://ax6.github.io/w
 | Front end | Global year control `2024 \| 2025` (hash `y=`): payslip, federal and social pots, equalisation, named taxes, EU, wage ticks and title follow it; 2026 only as one line in the payslip drawer | **done** (`tests/year.test.ts`, `tests/browser/interaction.test.ts`). Not published for 2025 and tagged instead: Länder functions 2022, municipal and Berlin accounts 2024, consolidated state (COFOG/ESA) 2024, household survey 2024 | `src/main.ts`, `src/data/model.ts` |
 | Front end | Controls slimmed: wage figure (click to type), slider in €1,000 steps snapping to reference wages with a value bubble, ticks `min* · median · avg` (names on hover), DE \| EN, theme and pattern icon buttons | **done** (2× average tick removed) | `src/ui/page.ts`, `src/main.ts` |
 | Front end | Map as place picker beside the flow ("All Länder · click a Land", click again to deselect); ranking in a side panel | **done** (browser test) | `src/viz/land-map.ts` |
-| Front end | "≈ Your € per year, pro rata*" across all budgets in eight common categories, conditional wording, per-budget drawer | **done**; the category mapping is a modelling choice, documented in `src/data/categories.ts`; rows sum to the exact total (`tests/prorata.test.ts`) | `src/data/prorata.ts` |
+| Front end | Selected budget's "of every €100" column with "≈ €X of yours*" per row and per drawer sub-item (v4.1; replaces the v4 cross-budget list, which misread the owner's request) | **done**; arithmetic on one budget at a time, no cross-budget category mapping; browser test `budget column` | `src/viz/hero.ts`, `src/ui/drawer-content.ts` |
 | Front end | Shopping panel (household estimate + ten purchases by tax share, law per row); legend row with recipient highlight; year tags only where the year differs | **done** (purchase strip and Payday / Fuel / Home chips removed) | `src/ui/drawer-content.ts`, `src/viz/hero.ts` |
 | Front end | Household indirect-tax estimate (≈*) in the You flow: class from net ÷ 12*, dashed ≈ ribbons from net pay to Federation / Länder / municipalities, never added to the exact payslip; "≈ estimate*" in the legend row toggles it | **done** (estimate by household class, LWR 2024 in both years; excise lines are lower bounds per the file's caveats) | `data/de/citizen/household-indirect-taxes.json`, `src/data/model.ts` |
 | Front end | Dark mode (own validated steps), texture mode / forced colours, axe + keyboard audit with a regression test | **done** (`npm run test:a11y`, in CI; 25 scenarios incl. 2025, panels, highlight; 0 violations) | `src/styles.css`, `tests/browser/` |
@@ -84,5 +88,5 @@ estimate (≈*) next to the exact payslip. It is live at https://ax6.github.io/w
 - The municipal 2024 product-area sum exceeds the published total by 58 Mio (0.016 %), kept as published; the Destatis 71211 before/after-distribution totals differ by 392 Mio (2024), unexplained in the metadata.
 - The social-insurance "payroll view" (€529.3bn) is a proxy; the inter-system double count (≥ €46.0bn) is a lower bound; the per-day social spending net of inter-system flows (≈ €25.9) is approximate.
 - Household indirect taxes are an estimate (`≈`, `*`): per-purpose VAT rates and assumed prices; the minimum-wage annual figure assumes 40 h × 52 weeks.
-- "Your € per year, pro rata*": arithmetic (your euros × each budget's own spending shares), not a trace of money; the mapping of each budget's lines to eight common categories is a modelling choice (`src/data/categories.ts`); shares mix vintages (Länder 2022, others 2024/2025) and the heading says so.
+- "≈ €X of yours*" (pro rata): arithmetic (your euros into one budget × that budget's share for a line), not a trace of money; worded "if your €… a year were spread like this budget".
 - Payslip: the average Zusatzbeitrag is a modelling assumption (the law uses the insurer's own rate); 2024/2025 tariff constants come from BMF Programmablaufpläne rather than the BGBl. text.

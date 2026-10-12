@@ -8,6 +8,7 @@ import {
   ENTITY_ORDER,
   equalisation,
   equalisationSource,
+  equalisationStatus,
   GERMANY_CODE,
   PAGE_YEARS,
   perResidentPerDay,
@@ -20,7 +21,6 @@ import {
   type GermanyModel,
   type YouModel,
 } from "../data/model.ts";
-import { proRata } from "../data/prorata.ts";
 import { files, REPO_URL, raw, repoBlob } from "../data/sources.ts";
 import { bn, eur, fill, num, pct, t, titleFor, tr, yearTag, type Lang } from "../i18n.ts";
 import { esc, sourceList, splitBar, swatch } from "./html.ts";
@@ -38,6 +38,8 @@ export interface PageState {
   estimate: boolean;
   /** recipient whose flows are highlighted from the legend */
   highlight: EntityId | null;
+  /** budget whose composition the right-hand column shows */
+  pot: string;
   /** "auto" follows prefers-color-scheme */
   theme: "auto" | "light" | "dark";
   /** recipient textures (always on under forced colours) */
@@ -182,7 +184,8 @@ export function renderHeroTable(state: PageState, you: YouModel, germany: German
         .join("")}</tbody></table>`;
   }
   const p = you.payslip;
-  const share = proRata(you);
+  const selected = you.pots.find((pot) => pot.id === state.pot) ?? you.pots[0]!;
+  const inflow = you.inflow[selected.id] ?? 0;
   return `<table class="data-table compact"><caption>${esc(`${t("stageGross", lang)} ${eur(p.gross, lang)} · ${you.year}`)}</caption>
     <thead><tr><th scope="col">${esc(t("stageDeductions", lang))}</th><th scope="col" class="num">${esc(t("amount", lang))}</th></tr></thead>
     <tbody>${you.flow.nodes
@@ -215,13 +218,14 @@ export function renderHeroTable(state: PageState, you: YouModel, germany: German
           `<tr><th scope="row">${swatch(pot.entity)}${esc(`${tr(pot.label, lang)} · ${yearTag(pot.year, pot.status, 0, lang)}`)}</th><td class="num">${esc(bn(pot.total, lang))}</td></tr>`,
       )
       .join("")}</tbody>
-    <thead><tr><th scope="col">${esc(`${t("proRataHeading", lang)} (${t("proRataShares", lang)} ${share.years[0]}–${share.years[1]})`)}</th><th scope="col" class="num">${esc(t("amount", lang))}</th></tr></thead>
-    <tbody>${share.rows
-      .map(
-        (row) =>
-          `<tr><th scope="row">${esc(`${tr(row.label, lang)}, ${t("proRataIf", lang)}`)}</th><td class="num">${esc(`≈ ${eur(row.exact, lang)}${row.estimate > 0.5 ? ` + ≈ ${eur(row.estimate, lang)}*` : ""}`)}</td></tr>`,
-      )
-      .join("")}</tbody></table>`;
+    <thead><tr><th scope="col">${esc(`${t("ofEvery100", lang)} · ${tr(selected.label, lang)}`)}</th><th scope="col" class="num">${esc(inflow > 0 ? t("yoursColumn", lang) : t("amount", lang))}</th></tr></thead>
+    <tbody>${selected.categories
+      .map((cat) => {
+        const share = cat.value / selected.compositionBase;
+        const mine = inflow * share;
+        return `<tr><th scope="row">${esc(`${pct(share, lang, 1)} · ${tr(cat.label, lang)}${cat.star ? "*" : ""}`)}</th><td class="num">${esc(inflow > 0 ? `${mine < 1 ? `< ${eur(1, lang)}` : `≈ ${eur(mine, lang)}`}*` : bn(cat.value, lang))}</td></tr>`;
+      })
+      .join("")}</tbody></table>${inflow > 0 ? `<p class="section-note">${esc(`* ${t("proRataIfYour", lang).replace("{eur}", eur(inflow, lang))}`)}</p>` : ""}`;
 }
 
 export function renderTaxTable(lang: Lang, year: number, limit?: number): string {
@@ -321,6 +325,10 @@ export function renderSources(lang: Lang, year: number): string {
     <ul class="dataset-list">${datasets.map((d) => `<li><a href="${esc(repoBlob(d.file))}" rel="noreferrer noopener" target="_blank"><code>${esc(d.file)}</code></a></li>`).join("")}</ul>`;
 }
 
+/** "Fiscal equalisation 2025 provisional": the settlement's status stays visible (designer's tag rule). */
+export const mapTitleFor = (year: number, lang: Lang): string =>
+  `${t("mapShort", lang)} ${yearTag(year, equalisationStatus(year).startsWith("provisional") ? "provisional" : "final", 0, lang)}`;
+
 export function renderPage(state: PageState, you: YouModel, germany: GermanyModel, options: { staticBuild?: boolean } = {}): string {
   const { lang } = state;
   return `
@@ -336,9 +344,10 @@ export function renderPage(state: PageState, you: YouModel, germany: GermanyMode
     ${renderLegendRow(state)}
     <div class="hero-grid">
       <aside class="map-panel" aria-labelledby="map-title">
-        <h2 class="map-title" id="map-title">${esc(`${t("mapShort", lang)} ${state.year}`)}</h2>
+        <h2 class="map-title" id="map-title">${esc(mapTitleFor(state.year, lang))}</h2>
         <div class="map" id="map"></div>
         <div class="map-key" id="map-key"></div>
+        <p class="map-note">${esc(t("mapNoteShort", lang))}</p>
         <p class="map-place" id="map-place">${esc(t("mapAll", lang))}</p>
         <button type="button" class="link-btn" data-panel="ranking" aria-haspopup="dialog">${esc(t("ranking", lang))} <span aria-hidden="true">›</span></button>
       </aside>
@@ -351,6 +360,15 @@ export function renderPage(state: PageState, you: YouModel, germany: GermanyMode
     </div>
     <p class="hero-line" id="hero-line">${esc(state.zoom === "you" ? t("assumptions", lang) : t("switchGermany", lang))}</p>
   </section>
+  ${
+    options.staticBuild
+      ? `<section class="section static-only" id="equalisation-static" aria-labelledby="equalisation-static-title">
+    <h2 id="equalisation-static-title">${esc(mapTitleFor(state.year, lang))}</h2>
+    <p class="section-note">${esc(t("mapNote", lang))}</p>
+    ${renderEqualisationTable(lang, state.year).replace('<details class="more">', '<details class="more" open>')}
+  </section>`
+      : ""
+  }
   <section class="section" id="taxes" aria-labelledby="taxes-title">
     <h2 id="taxes-title">${esc(`${t("taxesTitle", lang)} ${state.year}`)}</h2>
     ${renderTaxTable(lang, state.year, 14)}

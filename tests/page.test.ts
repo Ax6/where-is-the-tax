@@ -6,7 +6,7 @@ import { buildGermany, buildYou, defaultWage, GERMANY_CODE } from "../src/data/m
 import { REPO_URL } from "../src/data/sources.ts";
 import { renderPage, type PageState } from "../src/ui/page.ts";
 
-const base: PageState = { zoom: "you", wage: Math.round(defaultWage(2024)), wageSet: false, land: GERMANY_CODE, year: 2024, lang: "en", unit: "bn", estimate: true, highlight: null, theme: "auto", tex: false };
+const base: PageState = { zoom: "you", wage: Math.round(defaultWage(2024)), wageSet: false, land: GERMANY_CODE, year: 2024, lang: "en", unit: "bn", estimate: true, highlight: null, theme: "auto", tex: false, pot: "pot-fed" };
 
 for (const lang of ["en", "de"] as const) {
   for (const zoom of ["you", "germany"] as const) {
@@ -37,4 +37,14 @@ test("contestable items carry their marker: health rate *, payroll view *, purch
   assert.match(html, /at €1\.75\*/);
   const germany = renderPage({ ...base, zoom: "germany" }, buildYou(base.year, base.wage, base.land), buildGermany());
   assert.match(germany, /Pension contributions\*/);
+});
+
+test("no-JS build keeps the equalisation section: provisional title, pooled note, all 16 Länder", () => {
+  const html = renderPage(base, buildYou(base.year, base.wage, base.land), buildGermany(), { staticBuild: true });
+  const section = html.slice(html.indexOf('id="equalisation-static"'), html.indexOf('id="taxes"'));
+  assert.match(section, /Fiscal equalisation 2024 provisional/);
+  assert.match(section, /no payment from one Land to another/);
+  assert.equal([...section.matchAll(/<tr><th scope="row">/g)].length, 16);
+  // the interactive page has the map instead
+  assert.doesNotMatch(renderPage(base, buildYou(base.year, base.wage, base.land), buildGermany()), /equalisation-static/);
 });

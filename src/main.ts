@@ -3,7 +3,7 @@ import "./styles.css";
 import { buildGermany, buildYou, defaultWage, ENTITY_ORDER, equalisation, GERMANY_CODE, getPlace, PAGE_YEARS, timeSeries, type EntityId } from "./data/model.ts";
 import { eur, t, titleFor, tr, type Lang } from "./i18n.ts";
 import { drawerContent, purchaseDetail } from "./ui/drawer-content.ts";
-import { renderDataTable, renderHeroTable, renderLegendRow, renderPage, renderSources, renderTaxTable, renderWageTicks, WAGE_MAX, WAGE_MIN, WAGE_STEP, type PageState } from "./ui/page.ts";
+import { mapTitleFor, renderDataTable, renderHeroTable, renderLegendRow, renderPage, renderSources, renderTaxTable, renderWageTicks, WAGE_MAX, WAGE_MIN, WAGE_STEP, type PageState } from "./ui/page.ts";
 import { renderGermany, renderYou, type DrawerTarget, type PanelId } from "./viz/hero.ts";
 import { renderLandBars, renderLandMap } from "./viz/land-map.ts";
 import { renderGermanyStages, renderYouStages } from "./viz/stages.ts";
@@ -19,12 +19,16 @@ interface State extends PageState {
   open: string | null;
 }
 
+const DEFAULT_POT = "pot-fed";
+
 const isPageYear = (year: number): boolean => (PAGE_YEARS as readonly number[]).includes(year);
 
 function parseHash(): State {
   const params = new URLSearchParams(window.location.hash.replace(/^#/, ""));
   const yearParam = Number(params.get("y") ?? params.get("year"));
-  const year = isPageYear(yearParam) ? yearParam : PAGE_YEARS[0];
+  // old links: a payslip year past the page's last year (2026) opens that last year
+  const lastYear = PAGE_YEARS[PAGE_YEARS.length - 1]!;
+  const year = isPageYear(yearParam) ? yearParam : Number.isFinite(yearParam) && yearParam > lastYear ? lastYear : PAGE_YEARS[0];
   const wage = Number(params.get("wage"));
   const wageSet = params.has("wage") && Number.isFinite(wage) && wage > 0 && wage < 1e7;
   const lang = params.get("lang") === "de" || params.get("lang") === "en" ? (params.get("lang") as Lang) : navigator.language.toLowerCase().startsWith("de") ? "de" : "en";
@@ -38,10 +42,12 @@ function parseHash(): State {
     land: land === GERMANY_CODE || getPlace(land) ? land : GERMANY_CODE,
     lang,
     unit: params.get("unit") === "day" ? "day" : "bn",
-    estimate: params.get("est") !== "0",
+    // old links: "layer=payday" isolated the payslip, so the purchase estimate stays off
+    estimate: params.has("est") ? params.get("est") !== "0" : params.get("layer") !== "payday",
     highlight: highlight && ENTITY_ORDER.includes(highlight) ? highlight : null,
     theme: params.get("theme") === "dark" || params.get("theme") === "light" ? (params.get("theme") as "light" | "dark") : "auto",
     tex: params.get("tex") === "1",
+    pot: params.get("pot") ?? DEFAULT_POT,
     open: params.get("open"),
   };
 }
@@ -70,6 +76,9 @@ function hashOf(s: State): string {
   if (s.tex) {
     params.set("tex", "1");
   }
+  if (s.zoom === "you" && s.pot !== DEFAULT_POT) {
+    params.set("pot", s.pot);
+  }
   if (s.open) {
     params.set("open", s.open);
   }
@@ -79,6 +88,9 @@ function hashOf(s: State): string {
 let state = parseHash();
 const withEstimate = (s: State): boolean => s.zoom === "you" && s.estimate;
 let you = buildYou(state.year, state.wage, state.land, { estimate: withEstimate(state) });
+if (!you.pots.some((pot) => pot.id === state.pot)) {
+  state.pot = DEFAULT_POT;
+}
 let germany = buildGermany(state.year);
 let lands = equalisation(state.year);
 let lastTrigger: HTMLElement | null = null;
@@ -136,6 +148,9 @@ function update(next: Partial<State>, options: { animate?: boolean; full?: boole
   }
   if (state.year !== before.year || state.wage !== before.wage || state.land !== before.land || withEstimate(state) !== withEstimate(before)) {
     you = buildYou(state.year, state.wage, state.land, { estimate: withEstimate(state) });
+    if (!you.pots.some((pot) => pot.id === state.pot)) {
+      state.pot = DEFAULT_POT;
+    }
   }
   syncHash();
   if (state.theme !== before.theme || state.tex !== before.tex) {
@@ -156,7 +171,7 @@ function update(next: Partial<State>, options: { animate?: boolean; full?: boole
     refreshChrome();
   }
   renderHero(options.animate ?? false);
-  if (state.land !== before.land || state.year !== before.year) {
+  if (state.land !== before.land || state.year !== before.year || state.zoom !== before.zoom) {
     renderMap();
   }
   syncControls();
@@ -192,7 +207,7 @@ function refreshYear(): void {
   const { lang, year } = state;
   document.title = titleFor(year, lang);
   document.querySelector("#title")!.textContent = titleFor(year, lang);
-  document.querySelector("#map-title")!.textContent = `${t("mapShort", lang)} ${year}`;
+  document.querySelector("#map-title")!.textContent = mapTitleFor(year, lang);
   const ticks = document.querySelector("#wage-ticks");
   if (ticks) {
     ticks.outerHTML = renderWageTicks(state);
@@ -236,15 +251,16 @@ function renderHero(animate: boolean): void {
   hideTooltip();
   flow.classList.toggle("is-mobile", isMobile());
   const onOpen = (target: DrawerTarget) => openDrawer(target, document.activeElement as HTMLElement);
+  const onSelectPot = (id: string) => update({ pot: id });
   if (isMobile()) {
     if (state.zoom === "you") {
-      renderYouStages(flow, you, { lang: state.lang, year: state.year, onOpen });
+      renderYouStages(flow, you, { lang: state.lang, year: state.year, selectedPot: state.pot, onOpen, onSelectPot });
     } else {
       renderGermanyStages(flow, germany, { lang: state.lang, unit: state.unit, onOpen });
     }
     flow.dataset.highlight = state.highlight ?? "";
   } else {
-    const options = { lang: state.lang, year: state.year, unit: state.unit, animate, highlight: state.highlight, onOpen };
+    const options = { lang: state.lang, year: state.year, unit: state.unit, animate, highlight: state.highlight, selectedPot: state.pot, onSelectPot, onOpen };
     if (state.zoom === "you") {
       renderYou(flow, you, options);
     } else {
@@ -265,7 +281,7 @@ function renderMap(): void {
     return;
   }
   const { lang } = state;
-  renderLandMap(map, lands, { lang, year: state.year, selected: state.land, onSelect: (code) => update({ land: code }, { animate: true }) });
+  renderLandMap(map, lands, { lang, year: state.year, selected: state.land, zoom: state.zoom, onSelect: (code) => update({ land: code }, { animate: true }) });
   const max = Math.max(...lands.map((land) => Math.abs(land.perResident)));
   const money = (v: number) => (lang === "de" ? `${Math.round(v).toLocaleString("de-DE")} €` : `€${Math.round(v).toLocaleString("en-GB")}`);
   key.innerHTML = `<span class="key-ramp" aria-hidden="true"></span><span class="key-labels"><span>${t("mapPays", lang)} <span class="nowrap">−${money(max)}</span></span><span>${t("mapReceives", lang)} <span class="nowrap">+${money(max)}</span></span></span>`;
@@ -518,7 +534,7 @@ function decodeTarget(value: string): DrawerTarget | null {
   if (kind === "panel") {
     return id === "shopping" || id === "ranking" ? { kind, id } : null;
   }
-  if (kind === "node" || kind === "pot" || kind === "bridge" || kind === "purchase" || kind === "prorata") {
+  if (kind === "node" || kind === "pot" || kind === "bridge" || kind === "purchase") {
     return { kind, id };
   }
   return null;
@@ -538,6 +554,8 @@ function wirePurchaseRows(body: HTMLElement): void {
       show(box.left + 40, box.bottom);
     });
     row.addEventListener("blur", hideTooltip);
+    // the row opens that purchase's own drawer: price before tax and each tax inside it
+    row.addEventListener("click", () => openDrawer({ kind: "purchase", id: row.dataset.purchase! }, null));
   }
 }
 

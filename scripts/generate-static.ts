@@ -18,6 +18,7 @@ const state: PageState = {
   highlight: null,
   theme: "auto",
   tex: false,
+  pot: "pot-fed",
 };
 
 const html = renderPage(state, buildYou(state.year, state.wage, state.land, { estimate: true }), buildGermany(state.year), { staticBuild: true });

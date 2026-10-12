@@ -8,7 +8,6 @@
  * - per-person euros beyond the boundary exist only as pro rata*.
  */
 import { bi, type Bi } from "../i18n.ts";
-import { berlinCommon, federalCommon, laenderCommon, municipalCommon, socialCommon, type CommonId } from "./categories.ts";
 import { computePayslip, type PayslipParameters, type PayslipRow } from "./payslip.ts";
 import { files, raw } from "./sources.ts";
 
@@ -229,8 +228,6 @@ export interface Pot {
   note?: Bi;
   sources: SourceLink[];
   benchmark?: Benchmark;
-  /** own spending lines mapped to the common categories (sum = compositionBase), for pro rata* */
-  spending: { value: number; common: CommonId }[];
 }
 
 export interface Benchmark {
@@ -368,12 +365,6 @@ function federalPot(year: number): Pot {
       .sort((a, b) => b.value - a.value);
     return { id: `hf${hf.code}`, label: functionName(hf.code, hf.label), value: hf.amount_eur - removed, children };
   });
-  // pro rata*: own spending by 2-digit function (the grants in 221/224 removed), mapped to common categories
-  const spending = federal.hauptfunktionen.flatMap((hf) => {
-    const lines = (hf.funktionen ?? []).map((fn) => ({ value: fn.code === "22" ? fn.amount_eur - transfer : fn.amount_eur, common: federalCommon(fn.code) }));
-    const rest = hf.amount_eur - (hf.code === "2" ? transfer : 0) - lines.reduce((sum, line) => sum + line.value, 0);
-    return Math.abs(rest) > 1 ? [...lines, { value: rest, common: federalCommon(`${hf.code}0`) }] : lines;
-  });
   const own = federal.official_total_eur - transfer;
   const article = (raw.federalOverview.sources as Record<string, SourceLike>)[`${year}_article`];
   return {
@@ -402,7 +393,6 @@ function federalPot(year: number): Pot {
       link(bi(`Haushaltsrechnung des Bundes ${year} (XML)`, `Federal budget account ${year} (XML)`), federalPath(year), federal.sources.xml),
       link(bi(`BMF Monatsbericht: Abschluss ${year}`, `BMF monthly report: closing ${year}`), files.federalOverview, article),
     ],
-    spending,
   };
 }
 
@@ -472,17 +462,6 @@ function laenderChildEntries(measure: LaenderMeasure, code: string): { key: stri
     .map((name) => ({ name, value: measure.functions_meur[name] }))
     .filter((entry): entry is { name: string; value: number } => typeof entry.value === "number" && entry.value > 0)
     .map((entry) => ({ key: entry.name, strip, value: entry.value * 1e6 }));
-}
-
-/** Länder spending lines for pro rata*: sub-functions where a group mixes categories, the group remainder otherwise. */
-function laenderSpending(measure: LaenderMeasure): { value: number; common: CommonId }[] {
-  return Object.entries(measure.groups_meur).flatMap(([code, meur]) => {
-    const total = meur * 1e6;
-    const children = ["0", "1", "3", "8"].includes(code) ? laenderChildEntries(measure, code) : [];
-    const lines = children.map((child) => ({ value: child.value, common: laenderCommon(code, child.key.slice(child.strip)) }));
-    const rest = total - lines.reduce((sum, line) => sum + line.value, 0);
-    return Math.abs(rest) > 1 ? [...lines, { value: rest, common: laenderCommon(code) }] : lines;
-  });
 }
 
 /** Label of a Länder function: the file's bilingual label (child part only), else the German name marked (DE). */
@@ -569,11 +548,6 @@ function landPot(place: Place | undefined): Pot {
       basis: bi("Haushaltsrechnung 2024 (Kasse), ganzer Berliner Haushalt", "Annual account 2024 (cash), whole Berlin budget"),
       sources: [link(bi("Haushaltsrechnung Berlin 2024, Drucksache 19/2681", "Berlin annual account 2024, printed paper 19/2681"), files.berlinFunctions2024, berlin.source)],
       benchmark: benchmark("BE"),
-      spending: berlin.groups.flatMap((group) => {
-        const lines = (group.children ?? []).map((child) => ({ value: child.amount_eur, common: berlinCommon(group.code, child.code) }));
-        const rest = group.amount_eur - lines.reduce((sum, line) => sum + line.value, 0);
-        return Math.abs(rest) > 1 ? [...lines, { value: rest, common: berlinCommon(group.code) }] : lines;
-      }),
     };
   }
   const code = place?.code ?? "DE_LAENDER";
@@ -601,7 +575,6 @@ function landPot(place: Place | undefined): Pot {
         : bi("Gruppe 8 enthält Ausgleichszahlungen und Zinsen.", "Group 8 contains equalisation payments and interest."),
     sources: [laenderSource(bi("Destatis Rechnungsergebnisse 2022 (71711)", "Destatis annual accounts 2022 (71711)"))],
     benchmark: benchmark(place?.code ?? ""),
-    spending: laenderSpending(measure),
   };
 }
 
@@ -642,9 +615,6 @@ function municipalPot(place: Place | undefined): Pot | undefined {
     ),
     basis: bi("Jahresrechnungsstatistik 2024, kommunale Kernhaushalte", "Annual accounts statistics 2024, municipal core budgets"),
     sources: [link(bi("Destatis Rechnungsergebnisse der Gemeinden 2024 (71717)", "Destatis municipal annual accounts 2024 (71717)"), files.municipalFunctions2024, municipal.source)],
-    spending: Object.entries(areas)
-      .filter(([id]) => id !== "total")
-      .map(([id, value]) => ({ value: value * 1e6, common: municipalCommon(id) })),
   };
 }
 
@@ -758,7 +728,6 @@ function socialPot(entity: "pension" | "health" | "care" | "unemp", accountYear 
     sources: (SOCIAL_SOURCES[system] ?? []).map((ref) =>
       link(bi(`${meta.label.de} ${accountYear}`, `${meta.label.en} ${accountYear}`), files.socialInsurance, social.sources[ref.replace("2024", String(accountYear))] ?? social.sources[ref]),
     ),
-    spending: items.map((item) => ({ value: item.value, common: socialCommon(entity, item.label.en) })),
   };
 }
 
@@ -1172,11 +1141,11 @@ export function buildGermany(year = 2024): GermanyModel {
     label: bi("Steuern auf Kapitalerträge", "Taxes on capital income"),
     parts: [...capital.entries()].map(([to, value]) => ({ to, value })),
   });
-  taxNodes.push({ id: "STEUERNVB20", label: bi("Bundessteuern (Energie, Tabak, Soli …)", "Federal taxes (energy, tobacco, soli …)"), parts: [{ to: "fed", value: taxValue("STEUERNVB20", Y), share: 1 }] });
-  taxNodes.push({ id: "STEUERNVL20", label: bi("Landessteuern (Grunderwerb, Erbschaft …)", "Länder taxes (real estate, inheritance …)"), parts: [{ to: "land", value: taxValue("STEUERNVL20", Y), share: 1 }] });
+  taxNodes.push({ id: "STEUERNVB20", label: bi("Bundessteuern (Energie, Tabak, Soli\u00a0…)", "Federal taxes (energy, tobacco, soli\u00a0…)"), parts: [{ to: "fed", value: taxValue("STEUERNVB20", Y), share: 1 }] });
+  taxNodes.push({ id: "STEUERNVL20", label: bi("Landessteuern (Grunderwerb, Erbschaft\u00a0…)", "Länder taxes (real estate, inheritance\u00a0…)"), parts: [{ to: "land", value: taxValue("STEUERNVL20", Y), share: 1 }] });
   taxNodes.push({
     id: "municipal-other",
-    label: bi("Grundsteuer und übrige Gemeindesteuern", "Property tax and other local taxes"),
+    label: bi("Grundsteuer u.\u00a0a.", "Property and local taxes"),
     parts: [{ to: "muni", value: taxValue("STEUERNVK20", Y) - taxValue("STEUERARTK30", Y), share: 1 }],
   });
   taxNodes.push({ id: "STEUERARTZ10", label: allocation("STEUERARTZ10").label, parts: [{ to: "eu", value: taxValue("STEUERARTZ10", Y), share: 1 }] });
@@ -1287,11 +1256,8 @@ export function buildGermany(year = 2024): GermanyModel {
 // Purchases (per purchase, exact per-unit law, assumed prices *)
 // ---------------------------------------------------------------------------------------------
 
-export type LayerId = "payday" | "shopping" | "fuel" | "home";
-
 export interface Purchase {
   id: string;
-  layer: LayerId;
   /** statutory basis of each tax inside (purchase-taxes.json) */
   laws: string[];
   label: Bi;
@@ -1302,19 +1268,6 @@ export interface Purchase {
   taxShare: number;
   assumption: string;
 }
-
-const PURCHASE_LAYER: Record<string, LayerId> = {
-  petrol_litre: "fuel",
-  diesel_litre: "fuel",
-  electricity_kwh: "fuel",
-  cigarettes_pack: "shopping",
-  beer_half_litre: "shopping",
-  coffee_pack: "shopping",
-  groceries: "shopping",
-  electronics: "shopping",
-  car_insurance: "shopping",
-  flat_purchase_berlin: "home",
-};
 
 const EXCISE_RECIPIENT: Record<string, { entity: EntityId; label: Bi }> = {
   energy_tax: { entity: "fed", label: bi("Energiesteuer → Bund", "Energy tax → Federation") },
@@ -1372,7 +1325,6 @@ export function purchases(year = 2024): Purchase[] {
     return {
       id: example.id,
       laws,
-      layer: PURCHASE_LAYER[example.id] ?? "shopping",
       label: example.label,
       price: example.price_eur,
       star: true,
