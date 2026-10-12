@@ -2,9 +2,11 @@
  * Mobile layout: the Sankey is not rotated. Each stage becomes one 100 % stacked bar with a tappable list
  * (amount and share) under it.
  */
-import { perResidentPerDay, type EntityId, type GermanyModel, type YouModel } from "../data/model.ts";
-import { bn, eur, pct, t, tr, type Bi, type Lang } from "../i18n.ts";
-import type { DrawerTarget } from "./hero.ts";
+import { COMMON } from "../data/categories.ts";
+import { cofogRows, perResidentPerDay, type EntityId, type GermanyModel, type YouModel } from "../data/model.ts";
+import { proRata } from "../data/prorata.ts";
+import { bn, eur, pct, t, tr, yearTag, type Bi, type Lang } from "../i18n.ts";
+import { shoppingHook, type DrawerTarget } from "./hero.ts";
 
 interface Row {
   key: string;
@@ -21,6 +23,11 @@ interface Row {
   target?: DrawerTarget;
   select?: string;
   selected?: boolean;
+  /** rows mode: stacked parts by recipient (pro rata*), scaled to `max` */
+  parts?: { entity: EntityId; value: number; estimate?: boolean }[];
+  max?: number;
+  /** no colour key (rows that mix recipients carry their colours in the bar) */
+  noSwatch?: boolean;
 }
 
 function stage(parent: HTMLElement, title: string, rows: Row[], options: { lang: Lang; onOpen: (target: DrawerTarget) => void; onSelect?: (id: string) => void; note?: string; base?: number; mixedBases?: boolean; rows?: boolean }): void {
@@ -60,6 +67,9 @@ function stage(parent: HTMLElement, title: string, rows: Row[], options: { lang:
       swatch.style.background = `var(--e-${row.entity})`;
       swatch.dataset.entity = row.entity;
     }
+    if (row.noSwatch) {
+      swatch.style.visibility = "hidden";
+    }
     const name = document.createElement("span");
     name.className = "stage-name";
     name.textContent = row.label;
@@ -79,15 +89,23 @@ function stage(parent: HTMLElement, title: string, rows: Row[], options: { lang:
     button.append(swatch, name, value, share);
     if (options.rows) {
       // true-size bars, no shares: these budgets are separate pots (different levels, years, transfers between them)
-      const max = Math.max(...rows.map((r) => r.value));
+      const max = row.max ?? Math.max(...rows.map((r) => r.value));
       const track = document.createElement("span");
       track.className = "stage-row-bar";
-      const fill = document.createElement("span");
-      fill.style.width = `${(row.value / max) * 100}%`;
-      if (row.entity) {
-        fill.style.background = `var(--e-${row.entity})`;
+      for (const part of row.parts ?? [{ entity: row.entity, value: row.value }]) {
+        const fill = document.createElement("span");
+        fill.style.width = `${(part.value / max) * 100}%`;
+        if (part.entity) {
+          fill.dataset.entity = part.entity;
+          if ("estimate" in part && part.estimate) {
+            fill.className = "is-estimate";
+            fill.style.borderColor = `var(--e-${part.entity})`;
+          } else {
+            fill.style.background = `var(--e-${part.entity})`;
+          }
+        }
+        track.append(fill);
       }
-      track.append(fill);
       button.append(track);
     }
     button.addEventListener("click", () => {
@@ -115,7 +133,7 @@ const label = (bi: Bi, lang: Lang) => tr(bi, lang);
 export function renderYouStages(
   container: HTMLElement,
   model: YouModel,
-  options: { lang: Lang; selectedPot: string; onOpen: (target: DrawerTarget) => void; onSelectPot: (id: string) => void },
+  options: { lang: Lang; year: number; onOpen: (target: DrawerTarget) => void },
 ): void {
   const { lang } = options;
   container.replaceChildren();
@@ -181,38 +199,61 @@ export function renderYouStages(
       { key: "est-land", label: lang === "de" ? "Länder" : "Länder", value: e.recipients.land, display: `≈ ${eur(e.recipients.land, lang)}`, entity: "land", target: { kind: "node", id: "estimate" } },
       { key: "est-muni", label: lang === "de" ? "Gemeinden" : "Municipalities", value: e.recipients.muni, display: `≈ ${eur(e.recipients.muni, lang)}`, entity: "muni", target: { kind: "node", id: "estimate" } },
     ];
-    stage(container, `${t("estimateLabel", lang)} · ≈ ${eur(e.total, lang)} ${lang === "de" ? "im Jahr" : "a year"}`, parts, {
+    stage(container, `${t("estimateLabel", lang)} · ≈ ${eur(e.total, lang)} ${lang === "de" ? "im Jahr" : "a year"}${e.year !== options.year ? ` · ${e.year}` : ""}`, parts, {
       lang,
       onOpen: options.onOpen,
       note: `${tr(e.label, lang)}*. ${lang === "de" ? "Schätzung, nicht Teil des Lohnzettels." : "Estimate, not part of the payslip."}`,
     });
+    const hook = document.createElement("button");
+    hook.type = "button";
+    hook.className = "link-btn stage-hook";
+    hook.textContent = shoppingHook(options.year, lang);
+    hook.addEventListener("click", () => options.onOpen({ kind: "panel", id: "shopping" }));
+    container.lastElementChild?.append(hook);
   }
   const pots: Row[] = model.pots.map((pot) => ({
     key: pot.id,
-    label: `${label(pot.label, lang)} · ${pot.year}${pot.status === "provisional" ? "p" : ""}`,
+    label: label(pot.label, lang),
+    sub: yearTag(pot.year, pot.status, options.year, lang) || undefined,
     value: pot.total,
     display: bn(pot.total, lang),
     entity: pot.entity,
-    select: pot.id,
-    selected: pot.id === options.selectedPot,
+    target: { kind: "pot" as const, id: pot.id },
   }));
-  stage(container, `${t("stagePots", lang)} (${t("boundary", lang)})`, pots, { lang, onOpen: options.onOpen, onSelect: options.onSelectPot, rows: true, mixedBases: true });
-  const selected = model.pots.find((pot) => pot.id === options.selectedPot) ?? model.pots[0]!;
-  const inflow = model.inflow[selected.id] ?? 0;
-  const comp: Row[] = selected.categories.map((cat) => ({
-    key: cat.id,
-    label: label(cat.label, lang),
-    value: cat.value,
-    display: inflow > 0 ? `${eur((inflow * cat.value) / selected.compositionBase, lang)}*` : bn(cat.value, lang),
-    entity: selected.entity,
-    target: { kind: "pot" as const, id: selected.id },
-  }));
-  stage(container, `${t("ofEvery100", lang)} · ${label(selected.label, lang)}`, comp, {
-    lang,
-    onOpen: options.onOpen,
-    base: selected.compositionBase,
-    note: `${bn(selected.compositionBase, lang)} ${label(selected.compositionLabel, lang)}. ${t("proRataNote", lang)}`,
-  });
+  stage(container, `${t("stagePots", lang)} · ${t("boundary", lang)}`, pots, { lang, onOpen: options.onOpen, rows: true, mixedBases: true });
+  // your euros pro rata*, by common category across all budgets
+  const data = proRata(model);
+  const [from, to] = data.years;
+  const max = Math.max(...data.rows.map((row) => row.exact + row.estimate));
+  stage(
+    container,
+    `${t("proRataHeading", lang)} (${t("proRataShares", lang)} ${from === to ? from : `${from}–${to}`})`,
+    data.rows.map((row) => ({
+      key: row.id,
+      label: tr(COMMON.find((c) => c.id === row.id)!.short, lang),
+      sub: `${t("proRataIf", lang)}${row.estimate > 0.5 ? ` · +\u00a0≈\u00a0${eur(row.estimate, lang)}*` : ""}`,
+      noSwatch: true,
+      value: row.exact,
+      display: `≈ ${eur(row.exact, lang)}`,
+      target: { kind: "prorata" as const, id: row.id },
+      parts: entityParts(row.byPot),
+      max,
+    })),
+    { lang, onOpen: options.onOpen, rows: true, mixedBases: true },
+  );
+}
+
+function entityParts(parts: { entity: EntityId; exact: number; estimate: number }[]): { entity: EntityId; value: number; estimate?: boolean }[] {
+  const exact = new Map<EntityId, number>();
+  const estimate = new Map<EntityId, number>();
+  for (const part of parts) {
+    exact.set(part.entity, (exact.get(part.entity) ?? 0) + part.exact);
+    estimate.set(part.entity, (estimate.get(part.entity) ?? 0) + part.estimate);
+  }
+  return [
+    ...[...exact.entries()].filter(([, v]) => v > 0).map(([entity, value]) => ({ entity, value })),
+    ...[...estimate.entries()].filter(([, v]) => v > 0.5).map(([entity, value]) => ({ entity, value, estimate: true })),
+  ];
 }
 
 export function renderGermanyStages(
@@ -222,7 +263,10 @@ export function renderGermanyStages(
 ): void {
   const { lang, unit } = options;
   container.replaceChildren();
-  const fmt = (v: number) => (unit === "day" ? eur(perResidentPerDay(v), lang, 2) : bn(v, lang));
+  const fmt = (v: number, year = model.year) => (unit === "day" ? eur(perResidentPerDay(v, year), lang, 2) : bn(v, lang));
+  const SY = model.stateYear;
+  const revenueTag = yearTag(SY, "final", model.year, lang);
+  const spendingTag = yearTag(SY, cofogRows.find((row) => row.sector === "S13" && row.code === "TOTAL")?.status[String(SY)] ?? "final", model.year, lang);
   const col = (stageIndex: number): Row[] =>
     model.flow.nodes
       .filter((n) => n.stage === stageIndex)
@@ -237,16 +281,16 @@ export function renderGermanyStages(
         shareBase: n.id.startsWith("t-") || ["r-fed", "r-land", "r-muni", "r-eu"].includes(n.id) ? model.taxesTotal : undefined,
       }));
   const shareNote = lang === "de" ? "Anteile: an allen Steuern (Kasse). Beiträge sind ein anderer Topf, ohne Anteil." : "Shares: of all tax (cash). Contributions are a separate pool, shown without a share.";
-  stage(container, t("stageTaxes", lang), col(0), { lang, onOpen: options.onOpen, mixedBases: true, note: shareNote });
+  stage(container, `${t("stageTaxes", lang)} ${model.year}`, col(0), { lang, onOpen: options.onOpen, mixedBases: true, note: shareNote });
   stage(container, t("stageRecipients", lang), col(1), { lang, onOpen: options.onOpen, mixedBases: true });
   stage(
     container,
-    t("stateRevenue", lang),
+    `${t("stateRevenue", lang)}${revenueTag ? ` · ${revenueTag}` : ""}`,
     model.bridge.map((b) => ({
       key: b.id,
       label: label(b.label, lang),
       value: b.value,
-      display: fmt(b.value),
+      display: fmt(b.value, SY),
       kind: b.id === "borrowed" ? ("borrowed" as const) : ("neutral" as const),
       target: { kind: "bridge" as const, id: b.id },
       // shares of revenue (the construct); borrowing is shown in euros only
@@ -256,8 +300,8 @@ export function renderGermanyStages(
   );
   stage(
     container,
-    t("stateSpending", lang),
-    model.cofog.map((c) => ({ key: c.code, label: label(c.label, lang), value: c.value, display: fmt(c.value), kind: "neutral" as const, target: { kind: "cofog" as const, code: c.code } })),
-    { lang, onOpen: options.onOpen, note: `${t("spendingTotal", lang)} ${bn(model.spendingTotal, lang)} = ${eur(perResidentPerDay(model.spendingTotal), lang, 2)} ${t("perResidentDay", lang)}` },
+    `${t("stateSpending", lang)}${spendingTag ? ` · ${spendingTag}` : ""}`,
+    model.cofog.map((c) => ({ key: c.code, label: label(c.label, lang), value: c.value, display: fmt(c.value, SY), kind: "neutral" as const, target: { kind: "cofog" as const, code: c.code } })),
+    { lang, onOpen: options.onOpen, note: `${t("spendingTotal", lang)} ${bn(model.spendingTotal, lang)} = ${eur(perResidentPerDay(model.spendingTotal, SY), lang, 2)} ${t("perResidentDay", lang)}` },
   );
 }

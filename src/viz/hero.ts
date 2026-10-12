@@ -2,32 +2,41 @@
  * The master flow (desktop): GROSS WAGE → TAXES & CONTRIBUTIONS → WHO RECEIVES IT ‖ THE POT IT JOINS,
  * and the Germany zoom: NAMED TAXES & CONTRIBUTIONS → RECIPIENTS ‖ THE CONSOLIDATED STATE.
  */
+import { COMMON } from "../data/categories.ts";
 import {
+  cofogRows,
   perResidentPerDay,
+  purchases,
   type EntityId,
   type GermanyModel,
   type Pot,
   type YouModel,
 } from "../data/model.ts";
-import { bn, eur, num, pct, t, tr, type Lang } from "../i18n.ts";
+import { proRata, type ProRataRow } from "../data/prorata.ts";
+import { bi, bn, eur, num, pct, t, tr, yearTag, type Lang } from "../i18n.ts";
 import { layoutFlow, layoutPots, lerp, resolveColumn, ribbonPath, spreadLabels, type FlowLayout, type LayoutNode } from "./flow-layout.ts";
 import { multiline, svgEl, textWidth, wrap } from "./svg.ts";
 import { hideTooltip, showTooltip, tooltipText, type TooltipContent } from "./tooltip.ts";
+
+export type PanelId = "shopping" | "ranking";
 
 export type DrawerTarget =
   | { kind: "node"; id: string }
   | { kind: "pot"; id: string }
   | { kind: "cofog"; code: string }
   | { kind: "bridge"; id: string }
-  | { kind: "purchase"; id: string };
+  | { kind: "purchase"; id: string }
+  | { kind: "panel"; id: PanelId }
+  | { kind: "prorata"; id: string };
 
 export interface HeroOptions {
   lang: Lang;
-  selectedPot: string;
-  dimmed: boolean;
+  /** the page's selected year: tags show only where a figure's year differs */
+  year: number;
   unit: "bn" | "day";
   animate: boolean;
-  onSelectPot: (id: string) => void;
+  /** recipient highlighted from the legend */
+  highlight: EntityId | null;
   onOpen: (target: DrawerTarget) => void;
 }
 
@@ -130,8 +139,19 @@ function tagEntities(svg: SVGSVGElement): void {
   }
 }
 
-function stageLabel(svg: SVGSVGElement, x: number, text: string, anchor: "start" | "end" | "middle" = "start"): void {
-  svgEl(svg, "text", { x, y: 14, class: "stage-label", "text-anchor": anchor }, text);
+/** Column heading (mono 11 px); wraps to two lines above the plot when it does not fit `maxWidth`. */
+function stageLabel(svg: SVGSVGElement, x: number, text: string, anchor: "start" | "end" | "middle" = "start", maxWidth = Infinity): void {
+  const charW = 6.7;
+  if (text.length * charW <= maxWidth) {
+    svgEl(svg, "text", { x, y: 14, class: "stage-label", "text-anchor": anchor }, text);
+    return;
+  }
+  const words = text.split(" ");
+  let first = "";
+  while (words.length && `${first} ${words[0]}`.trim().length * charW <= maxWidth) {
+    first = `${first} ${words.shift()}`.trim();
+  }
+  multiline(svg, [first, words.join(" ")], { x, y: 8, class: "stage-label", "text-anchor": anchor }, 12);
 }
 
 function boundary(svg: SVGSVGElement, x: number, top: number, bottom: number, lang: Lang): void {
@@ -209,6 +229,8 @@ interface LabelSpec {
   anchorX: number;
   nodeY: number;
   nodeH: number;
+  /** extra height kept free under the block (for a line drawn by the caller) */
+  reserve?: number;
 }
 
 interface LabelOptions {
@@ -229,7 +251,15 @@ interface LabelOptions {
  * Direct labels for one column: big nodes get "name / value" blocks, small nodes one line; blocks keep a
  * minimum gap and stay near their node, with a leader line when they had to move.
  */
-function placeLabels(parent: Element, specs: LabelSpec[], o: LabelOptions): Map<string, SVGGElement> {
+interface PlacedLabel {
+  g: SVGGElement;
+  /** text x and the block's top / height (without the reserve) */
+  x: number;
+  y: number;
+  h: number;
+}
+
+function placeLabels(parent: Element, specs: LabelSpec[], o: LabelOptions): Map<string, PlacedLabel> {
   const lineH = 13.5;
   const blocks = specs.map((spec) => {
     const valueWidth = textWidth(spec.value, 12, 650);
@@ -237,11 +267,11 @@ function placeLabels(parent: Element, specs: LabelSpec[], o: LabelOptions): Map<
     const fits = textWidth(spec.name, 12, 500) + 6 + valueWidth <= o.maxWidth;
     const compact = spec.nodeH < o.compactBelow && (fits || spec.nodeH < 6);
     const lines = compact ? [wrap(spec.name, o.maxWidth - valueWidth - 6, 12, 500, 1)[0] ?? ""] : wrap(spec.name, o.maxWidth, 12, 500, o.maxLines ?? 2);
-    const h = compact ? lineH : (lines.length + 1) * lineH;
+    const h = (compact ? lineH : (lines.length + 1) * lineH) + (spec.reserve ?? 0);
     return { spec, compact, lines, h, y: spec.nodeY + spec.nodeH / 2 - h / 2, width: Math.max(valueWidth, ...lines.map((line) => textWidth(line, 12, 500))) + (compact ? valueWidth + 6 : 0) };
   });
   resolveColumn(blocks, o.top, o.bottom, o.gap);
-  const out = new Map<string, SVGGElement>();
+  const out = new Map<string, PlacedLabel>();
   const dir = o.side === "right" ? 1 : -1;
   for (const block of blocks) {
     const { spec } = block;
@@ -257,7 +287,7 @@ function placeLabels(parent: Element, specs: LabelSpec[], o: LabelOptions): Map<
         x: o.side === "right" ? x - 3 : x - block.width - 3,
         y: block.y - 1,
         width: block.width + 6,
-        height: block.h + 2,
+        height: block.h - (spec.reserve ?? 0) + 2,
         rx: 2,
         class: "label-backdrop",
       });
@@ -270,7 +300,7 @@ function placeLabels(parent: Element, specs: LabelSpec[], o: LabelOptions): Map<
     } else {
       multiline(g, [...block.lines, spec.value], { x, y: block.y + 10.5, class: "node-label", "text-anchor": anchor }, lineH, (i) => (i === block.lines.length ? "num strong" : undefined));
     }
-    out.set(spec.key, g);
+    out.set(spec.key, { g, x, y: block.y, h: block.h - (spec.reserve ?? 0) });
   }
   return out;
 }
@@ -286,27 +316,30 @@ export function renderYou(container: HTMLElement, model: YouModel, options: Hero
   const top = 30;
   const bottom = H - 6;
   const plotH = bottom - top;
-  const leftLabel = Math.min(132, W * 0.095);
+  const leftLabel = Math.min(124, W * 0.1);
   const x0 = leftLabel;
-  const x1 = W * 0.235;
-  const x2 = W * 0.4;
-  const xb = W * 0.565;
-  const xp = W * 0.59;
+  const x1 = W * 0.215;
+  const x2 = W * 0.37;
+  const xb = W * 0.525;
+  const xp = W * 0.55;
   const potW = 14;
   const lane = 10;
   const potLabelX = xp + potW + lane + 6;
-  const panelX = W * 0.755;
+  const panelX = Math.max(W * 0.72, W - 340);
   const nodeW = 12;
 
   container.replaceChildren();
   const svg = svgEl(container, "svg", {
-    class: `hero-svg${options.dimmed ? " is-dimmed" : ""}`,
+    class: "hero-svg",
     width: W,
     height: H,
     viewBox: `0 0 ${W} ${H}`,
     role: "group",
     "aria-label": `${t("stageGross", lang)} → ${t("stageDeductions", lang)} → ${t("stageRecipients", lang)} → ${t("stagePots", lang)}`,
   });
+  if (options.highlight) {
+    svg.dataset.highlight = options.highlight;
+  }
   defs(svg);
 
   // ---- pots (right of the boundary), laid out first: recipients align to them
@@ -339,10 +372,10 @@ export function renderYou(container: HTMLElement, model: YouModel, options: Hero
   });
   const nodeById = new Map(flow.nodes.map((node) => [node.id, node]));
 
-  stageLabel(svg, 0, t("stageGross", lang));
-  stageLabel(svg, x1, t("stageDeductions", lang));
-  stageLabel(svg, x2, t("stageRecipients", lang));
-  stageLabel(svg, xp, wrap(t("stagePots", lang), panelX - xp - 16, 11, 400, 1)[0] ?? "");
+  stageLabel(svg, 0, t("stageGross", lang), "start", x1 - 8);
+  stageLabel(svg, x1, t("stageDeductions", lang), "start", x2 - x1 - 8);
+  stageLabel(svg, x2, t("stageRecipients", lang), "start", xb - x2 - 10);
+  stageLabel(svg, xp, t("stagePots", lang), "start", panelX - xp - 14);
 
   const ribbons = svgEl(svg, "g", { class: "ribbons" });
   const joins = svgEl(svg, "g", { class: "joins" });
@@ -483,6 +516,7 @@ export function renderYou(container: HTMLElement, model: YouModel, options: Hero
         nodeH: stage === 0 ? Math.min(node.h, 80) : node.h,
       };
     });
+    const hookLines = hookLinesFor(options.year, lang, x2 - x1 - 22);
     if (stage === 1 && model.estimate && estimateEdges.length) {
       // the ≈ input sits beside the exact payslip, where its ribbons leave net pay
       const net = column.find((node) => node.id === "net")!;
@@ -491,10 +525,12 @@ export function renderYou(container: HTMLElement, model: YouModel, options: Hero
       specs.unshift({
         key: "estimate",
         name: t("estimateLabel", lang),
-        value: `≈ ${eur(model.estimate.total, lang)} ${lang === "de" ? "im Jahr" : "a year"}`,
+        // the survey year shows when it differs from the selected year
+        value: `≈ ${eur(model.estimate.total, lang)} ${lang === "de" ? "im Jahr" : "a year"}${model.estimate.year !== options.year ? ` · ${model.estimate.year}` : ""}`,
         anchorX: net.x + net.w,
         nodeY: top0,
         nodeH: bottom0 - top0,
+        reserve: 14 * hookLines.length,
       });
     }
     const placed = placeLabels(
@@ -511,18 +547,32 @@ export function renderYou(container: HTMLElement, model: YouModel, options: Hero
         backdrop: stage > 0,
       },
     );
-    for (const [id, g] of placed) {
-      relate(id, g);
+    for (const [id, label] of placed) {
+      relate(id, label.g);
+    }
+    const hook = placed.get("estimate");
+    if (hook) {
+      // muted second line: two everyday purchases, opening the Shopping panel
+      const text = shoppingHook(options.year, lang);
+      const hookG = svgEl(nodes, "g", { class: "hook" });
+      svgEl(hookG, "rect", { x: hook.x - 3, y: hook.y + hook.h, width: Math.max(...hookLines.map((line) => textWidth(line, 11.5, 400))) + 6, height: 14 * hookLines.length, rx: 2, class: "label-backdrop" });
+      const el = multiline(hookG, hookLines, { x: hook.x, y: hook.y + hook.h + 11, class: "label-hook" }, 13.5);
+      interactive(
+        el,
+        lang,
+        () => ({ title: t("shoppingTitle", lang), lines: [t("purchasesHeading", lang)], status: "law" as const, hint: true }),
+        () => options.onOpen({ kind: "panel", id: "shopping" }),
+        undefined,
+        { visible: text.replace(/ ›$/, "") },
+      );
     }
   }
 
   // ---- pots
   const potGroup = svgEl(svg, "g", { class: "pots" });
   const potLabelGroup = svgEl(svg, "g", { class: "pot-labels", "aria-hidden": "true" });
-  const selected = potById.get(options.selectedPot) ?? potLayout.pots[0]!;
   for (const p of potLayout.pots) {
-    const isSelected = p === selected;
-    const g = svgEl(potGroup, "g", { class: `pot${isSelected ? " is-selected" : ""}`, "data-pot": p.pot.id });
+    const g = svgEl(potGroup, "g", { class: "pot", "data-pot": p.pot.id });
     const rect = svgEl(g, "rect", { x: xp, y: p.y, width: potW, height: p.h, rx: 2, fill: entityFill(p.pot.entity), class: "pot-bar", "data-key": `p-${p.pot.id}` });
     if (p.pot.borrowed) {
       const h = p.pot.borrowed * potLayout.scale;
@@ -537,8 +587,9 @@ export function renderYou(container: HTMLElement, model: YouModel, options: Hero
       g as unknown as SVGElement,
       lang,
       () => potTooltip(p.pot, model.inflow[p.pot.id] ?? 0, lang),
-      () => options.onSelectPot(p.pot.id),
+      () => options.onOpen({ kind: "pot", id: p.pot.id }),
       (on) => highlight([p.pot.id, ...p.pot.recipients], on),
+      { visible: potText(p.pot, lang) },
     );
   }
   // transfer connectors: federal grants to pension and health insurance
@@ -561,38 +612,43 @@ export function renderYou(container: HTMLElement, model: YouModel, options: Hero
     }
   }
 
-  // pot labels: name (≤ 2 lines) + total and year, pushed apart where pots are small
+  // pot labels: "Name · €bn" (wrapped to ≤ 2 lines), then a muted tag only when the year differs or is provisional
   const lineH = 13.5;
-  const potLabelWidth = panelX - potLabelX - 14;
+  const potLabelWidth = panelX - potLabelX - 18;
   const potBlocks = potLayout.pots.map((p) => {
-    const name = wrap(tr(p.pot.label, lang), potLabelWidth, 12, 600, 2);
-    const yearTag = `${p.pot.year}${p.pot.status === "provisional" ? "p" : ""}`;
-    const lines = [...name, `${bn(p.pot.total, lang)} · ${yearTag}`];
-    const h = lines.length * lineH;
-    return { p, lines, nameLines: name.length, h, y: p.y + p.h / 2 - h / 2 };
+    const lines = potLines(p.pot, potLabelWidth, lang);
+    const tag = yearTag(p.pot.year, p.pot.status, options.year, lang);
+    const h = (lines.length + (tag ? 1 : 0)) * lineH - (tag ? 1.5 : 0);
+    return { p, lines, tag, h, y: p.y + p.h / 2 - h / 2 };
   });
-  resolveColumn(potBlocks, top + 4, bottom, 12);
+  resolveColumn(potBlocks, top + 4, bottom, 10);
   for (const block of potBlocks) {
     const { p } = block;
-    const g = svgEl(potLabelGroup, "g", { class: `pot-label${p === selected ? " is-selected" : ""}` });
+    const g = svgEl(potLabelGroup, "g", { class: "pot-label" });
     const centre = p.y + p.h / 2;
     const blockCentre = block.y + block.h / 2;
     if (Math.abs(blockCentre - centre) > p.h / 2 + 2) {
       svgEl(g, "path", { d: `M${xp + potW + lane + 2},${centre}L${potLabelX - 2},${blockCentre}`, class: "leader" });
     }
-    multiline(g, block.lines, { x: potLabelX, y: block.y + 10, class: "pot-text" }, lineH, (i) => (i < block.nameLines ? "pot-name" : "num muted"));
-    g.addEventListener("click", () => options.onSelectPot(p.pot.id));
+    multiline(g, block.lines, { x: potLabelX, y: block.y + 10, class: "pot-text pot-name" }, lineH);
+    if (block.tag) {
+      svgEl(g, "text", { x: potLabelX, y: block.y + 10 + block.lines.length * lineH - 1.5, class: "tag-text" }, block.tag);
+    }
+    g.addEventListener("click", () => options.onOpen({ kind: "pot", id: p.pot.id }));
     relate(p.pot.id, g);
   }
 
-  // ---- composition panel of the selected pot
-  renderComposition(svg, selected.pot, model.inflow[selected.pot.id] ?? 0, {
+  // ---- your euros, pro rata*, by common category across all budgets
+  renderProRata(svg, model, {
     x: panelX,
     width: W - panelX,
     top,
     bottom,
     lang,
-    onOpen: () => options.onOpen({ kind: "pot", id: selected.pot.id }),
+    year: options.year,
+    onOpen: (id) => options.onOpen({ kind: "prorata", id }),
+    relate,
+    highlight,
   });
 
   tagEntities(svg);
@@ -618,97 +674,155 @@ function potTooltip(pot: Pot, inflow: number, lang: Lang): TooltipContent {
   return { value: bn(pot.total, lang), title: tr(pot.label, lang), lines, status: pot.status, hint: true };
 }
 
+/** Pot label lines: "Federal budget · €465.7bn" on one line when it fits, else name (≤ 2 lines) and amount. */
+function potLines(pot: Pot, width: number, lang: Lang): string[] {
+  const full = potText(pot, lang);
+  if (textWidth(full, 12, 600) <= width) {
+    return [full];
+  }
+  const name = wrap(tr(pot.label, lang), width, 12, 600, 2);
+  const last = `${name[name.length - 1]} · ${bn(pot.total, lang)}`;
+  if (textWidth(last, 12, 600) <= width) {
+    return [...name.slice(0, -1), last];
+  }
+  // the amount on its own line: no dangling separator
+  return [...name, bn(pot.total, lang)];
+}
+
+const potText = (pot: Pot, lang: Lang): string => `${tr(pot.label, lang)} · ${bn(pot.total, lang)}`;
+
+/** "e.g. petrol 53 % · cigarettes 63 % ›", from the purchase data. */
+const HOOK_ITEMS = [
+  { id: "petrol_litre", label: bi("Benzin", "petrol") },
+  { id: "cigarettes_pack", label: bi("Zigaretten", "cigarettes") },
+];
+export function shoppingHook(year: number, lang: Lang): string {
+  return hookParts(year, lang).join(" ");
+}
+
+/** The hook as breakable parts: "e.g. petrol 53 % ·" | "cigarettes 63 % ›". */
+function hookParts(year: number, lang: Lang): string[] {
+  const items = purchases(year);
+  const parts = HOOK_ITEMS.map((hook) => {
+    const item = items.find((candidate) => candidate.id === hook.id);
+    return item ? `${tr(hook.label, lang)} ${pct(item.taxShare, lang, 0)}` : "";
+  }).filter(Boolean);
+  return parts.map((part, index) => `${index === 0 ? `${lang === "de" ? "z. B." : "e.g."} ` : ""}${part}${index < parts.length - 1 ? " ·" : " ›"}`);
+}
+
+function hookLinesFor(year: number, lang: Lang, width: number): string[] {
+  const full = shoppingHook(year, lang);
+  return textWidth(full, 11.5, 400) <= width ? [full] : hookParts(year, lang);
+}
+
 interface PanelOptions {
   x: number;
   width: number;
   top: number;
   bottom: number;
   lang: Lang;
-  onOpen: () => void;
+  year: number;
+  onOpen: (id: string) => void;
+  relate: (key: string, el: Element) => void;
+  highlight: (keys: string[], on: boolean) => void;
 }
 
-/** The selected pot's composition: a 100 % bar with direct labels, in % (exact); € only pro rata* on hover. */
-export function renderComposition(svg: SVGSVGElement, pot: Pot, inflow: number, o: PanelOptions): void {
+const rowEntities = (row: ProRataRow): { entity: EntityId; exact: number; estimate: number }[] => {
+  const byEntity = new Map<EntityId, { entity: EntityId; exact: number; estimate: number }>();
+  for (const part of row.byPot) {
+    const item = byEntity.get(part.entity) ?? { entity: part.entity, exact: 0, estimate: 0 };
+    item.exact += part.exact;
+    item.estimate += part.estimate;
+    byEntity.set(part.entity, item);
+  }
+  return [...byEntity.values()].filter((item) => item.exact + item.estimate > 0);
+};
+
+/**
+ * "≈ Your € per year, pro rata*": your euros into each budget × that budget's own spending shares, summed by
+ * common category (src/data/categories.ts). Bars stacked by recipient hue; the ≈ household part dashed.
+ * Every row is worded conditionally.
+ */
+export function renderProRata(svg: SVGSVGElement, model: YouModel, o: PanelOptions): void {
   const { lang } = o;
-  const g = svgEl(svg, "g", { class: "composition" });
-  svgEl(g, "text", { x: o.x, y: 14, class: "stage-label" }, `${t("ofEvery100", lang)} · ${tr(pot.label, lang)}`);
-  const headerLines = wrap(`${bn(pot.compositionBase, lang)} ${tr(pot.compositionLabel, lang)}`, o.width - 8, 11.5, 400, 2);
-  multiline(g, headerLines, { x: o.x, y: o.top + 10, class: "panel-sub" }, 13);
-  const barTop = o.top + 14 + headerLines.length * 13;
-  const footer = (pot.transferOut ? 30 : 0) + (pot.borrowed ? 30 : 0) + 18;
-  const barBottom = o.bottom - footer;
-  const barH = barBottom - barTop;
-  const barW = 12;
-  const gap = 2;
-  const cats = pot.categories;
-  const usable = barH - gap * (cats.length - 1);
-  let y = barTop;
-  const segs = cats.map((cat) => {
-    const h = Math.max(1, (cat.value / pot.compositionBase) * usable);
-    const seg = { cat, y, h };
-    y += h + gap;
-    return seg;
-  });
-  const labelX = o.x + barW + 10;
-  const placed = spreadLabels(
-    segs.map((s) => s.y + s.h / 2),
-    30,
-    barTop + 6,
-    barBottom,
-  );
-  segs.forEach((s, index) => {
-    const share = s.cat.value / pot.compositionBase;
-    const segG = svgEl(g, "g", { class: "comp-seg" });
-    svgEl(segG, "rect", { x: o.x, y: s.y, width: barW, height: s.h, rx: 1.5, fill: entityFill(pot.entity), class: "comp-bar" });
-    const hatch = svgEl(segG, "rect", { x: o.x, y: s.y, width: barW, height: s.h, fill: "url(#hatch)", class: "comp-hatch" });
-    hatch.setAttribute("opacity", "0");
-    const ly = placed[index]!;
-    if (Math.abs(ly - (s.y + s.h / 2)) > s.h / 2) {
-      svgEl(segG, "path", { d: `M${o.x + barW + 1},${s.y + s.h / 2}L${labelX - 2},${ly - 4}`, class: "leader" });
+  const data = proRata(model);
+  const g = svgEl(svg, "g", { class: "prorata" });
+  const [from, to] = data.years;
+  svgEl(g, "text", { x: o.x, y: 14, class: "stage-label" }, t("proRataHeading", lang));
+  svgEl(g, "text", { x: o.x, y: o.top + 9, class: "panel-sub" }, `(${t("proRataShares", lang)} ${from === to ? from : `${from}–${to}`})`);
+  const rowsTop = o.top + 22;
+  const n = data.rows.length;
+  const rowH = Math.min(66, (o.bottom - rowsTop) / Math.max(n, 1));
+  const max = Math.max(...data.rows.map((row) => row.exact + row.estimate));
+  const trackW = o.width - 12;
+  data.rows.forEach((row, index) => {
+    const y = rowsTop + index * rowH;
+    const short = tr(COMMON.find((c) => c.id === row.id)!.short, lang);
+    const value = `≈ ${eur(row.exact, lang)}`;
+    const rowG = svgEl(g, "g", { class: "prorata-row" });
+    svgEl(rowG, "rect", { x: o.x - 4, y: y - 2, width: o.width, height: rowH - 4, class: "row-hit" });
+    const nameMax = o.width - 14 - textWidth(`${value} · `, 12.5, 650);
+    const name = wrap(short, nameMax, 12.5, 500, 1)[0] ?? short;
+    const line1 = svgEl(rowG, "text", { x: o.x, y: y + 12, class: "prorata-text" });
+    svgEl(line1, "tspan", { class: "num strong" }, `${value} `);
+    // trailing space: assistive tech joins the two text lines
+    svgEl(line1, "tspan", {}, `· ${name} `);
+    // the ≈ part rides on the conditional line; where that does not fit, it sits after the bar
+    const estimateText = row.estimate > 0.5 ? `+ ≈ ${eur(row.estimate, lang)}*` : "";
+    const withEstimate = estimateText ? `${t("proRataIf", lang)} · ${estimateText}` : t("proRataIf", lang);
+    const estimateInline = textWidth(withEstimate, 11, 400) <= o.width - 8;
+    const conditional = estimateInline ? withEstimate : (wrap(t("proRataIf", lang), o.width - 8, 11, 400, 1)[0] ?? "");
+    svgEl(rowG, "text", { x: o.x, y: y + 26, class: "prorata-if" }, conditional);
+    let bx = o.x;
+    const barY = y + 32;
+    const barH = Math.max(5, Math.min(9, rowH - 40));
+    for (const part of rowEntities(row)) {
+      const w = (part.exact / max) * trackW;
+      if (w > 0.2) {
+        svgEl(rowG, "rect", { x: bx, y: barY, width: Math.max(0.5, w - 1), height: barH, rx: 1, fill: entityFill(part.entity), class: "prorata-seg" });
+        bx += w;
+      }
     }
-    const nameLines = wrap(`${tr(s.cat.label, lang)}${s.cat.star ? "*" : ""}`, o.width - barW - 72, 12, 400, 2);
-    const ty = ly - 1 - (nameLines.length - 1) * 6.5;
-    svgEl(segG, "text", { x: labelX, y: ty, class: "comp-pct num strong" }, pct(share, lang, 1));
-    multiline(segG, nameLines, { x: labelX + 50, y: ty, class: "comp-name" }, 13);
+    for (const part of rowEntities(row)) {
+      const w = (part.estimate / max) * trackW;
+      if (w > 0.6) {
+        svgEl(rowG, "rect", { x: bx + 0.5, y: barY + 0.5, width: Math.max(0.5, w - 1.5), height: barH - 1, class: "node-estimate", stroke: entityFill(part.entity) });
+        bx += w;
+      }
+    }
+    const afterBar = !estimateInline && estimateText && bx + 6 + textWidth(estimateText, 11, 400) <= o.x + o.width;
+    if (afterBar) {
+      svgEl(rowG, "text", { x: bx + 5, y: barY + barH - 0.5, class: "prorata-if" }, estimateText);
+    }
+    const entities = rowEntities(row);
     interactive(
-      segG as unknown as SVGElement,
+      rowG as unknown as SVGElement,
       lang,
       () => ({
-        value: pct(share, lang, 1),
-        title: tr(s.cat.label, lang),
-        lines: [`${bn(s.cat.value, lang)} ${lang === "de" ? "von" : "of"} ${bn(pot.compositionBase, lang)}`],
-        prorata: inflow > 0 ? `${t("proRata", lang)}: ${eur(inflow, lang)} × ${pct(share, lang, 1)} = ${eur(inflow * share, lang)}` : undefined,
-        status: pot.status,
-        body: inflow > 0 ? tr(PRO_RATA, lang) : undefined,
+        value,
+        title: tr(row.label, lang),
+        lines: entities.map((part) => `${ENTITY_SHORT[part.entity][lang]} ≈ ${eur(part.exact, lang)}${part.estimate > 0.5 ? ` + ≈ ${eur(part.estimate, lang)}*` : ""}`),
+        status: "assumption" as const,
+        body: tr(PRO_RATA, lang),
         hint: true,
       }),
-      o.onOpen,
-      (on) => hatch.setAttribute("opacity", on ? "1" : "0"),
-      { visible: `${pct(share, lang, 1)} ${nameLines.join(" ")}` },
+      () => o.onOpen(row.id),
+      (on) => o.highlight(row.byPot.flatMap((part) => [part.potId, ...(model.pots.find((pot) => pot.id === part.potId)?.recipients ?? [])]), on),
+      { visible: `${value} · ${name} ${conditional}${afterBar ? ` ${estimateText}` : ""}` },
     );
   });
-  let fy = barBottom + 16;
-  if (pot.transferOut) {
-    const lines = wrap(`${tr(pot.transferOut.label, lang)}: ${bn(pot.transferOut.value, lang)}`, o.width - 20, 11.5, 400, 2);
-    svgEl(g, "rect", { x: o.x + 0.75, y: fy - 9, width: barW - 1.5, height: 9, class: "pot-transfer", stroke: entityFill(pot.entity) });
-    multiline(g, lines, { x: labelX, y: fy, class: "panel-note" }, 13);
-    fy += 30;
-  }
-  if (pot.borrowed) {
-    svgEl(g, "rect", { x: o.x, y: fy - 9, width: barW, height: 9, class: "pot-borrowed" });
-    svgEl(g, "text", { x: labelX, y: fy, class: "panel-note" }, `${t("borrowed", lang)}: ${bn(pot.borrowed, lang)} (${lang === "de" ? "Nettokreditaufnahme" : "net borrowing"})`);
-  }
-  const more = svgEl(g, "text", { x: o.x, y: o.bottom - 2, class: "panel-more" }, lang === "de" ? "Details, Vergleich und Quellen ›" : "Details, comparison and sources ›");
-  more.setAttribute("tabindex", "0");
-  more.setAttribute("role", "button");
-  more.addEventListener("click", o.onOpen);
-  more.addEventListener("keydown", (event) => {
-    if (event.key === "Enter" || event.key === " ") {
-      event.preventDefault();
-      o.onOpen();
-    }
-  });
 }
+
+const ENTITY_SHORT: Record<EntityId, { de: string; en: string }> = {
+  fed: { de: "über den Bund", en: "via the Federation" },
+  land: { de: "über das Land", en: "via the Land" },
+  muni: { de: "über die Gemeinden", en: "via municipalities" },
+  eu: { de: "EU", en: "EU" },
+  pension: { de: "Rentenversicherung", en: "pension insurance" },
+  health: { de: "Krankenversicherung", en: "health insurance" },
+  care: { de: "Pflegeversicherung", en: "care insurance" },
+  unemp: { de: "Arbeitslosenversicherung", en: "unemployment insurance" },
+};
 
 const PRO_RATA = {
   de: "* Anteilig: wenn Ihr Beitrag so verteilt wäre wie dieser Haushalt. Geld im Haushalt trägt keine Herkunft.",
@@ -732,12 +846,20 @@ export function renderGermany(container: HTMLElement, model: GermanyModel, optio
   const xb = W * 0.545;
   const xr = W * 0.585;
   const xc = W * 0.75;
-  const value = (eurValue: number, digits?: number): string =>
-    unit === "day" ? `${eur(perResidentPerDay(eurValue), lang, 2)} ${t("perResidentDay", lang)}` : bn(eurValue, lang, digits ?? 1);
-  const short = (eurValue: number): string => (unit === "day" ? eur(perResidentPerDay(eurValue), lang, 2) : bn(eurValue, lang, 1));
+  // left side: cash receipts of the selected year; right side: the consolidated state of its latest year
+  const Y = model.year;
+  const SY = model.stateYear;
+  const value = (eurValue: number, digits?: number, year = Y): string =>
+    unit === "day" ? `${eur(perResidentPerDay(eurValue, year), lang, 2)} ${t("perResidentDay", lang)}` : bn(eurValue, lang, digits ?? 1);
+  const short = (eurValue: number, year = Y): string => (unit === "day" ? eur(perResidentPerDay(eurValue, year), lang, 2) : bn(eurValue, lang, 1));
+  const revenueTag = yearTag(SY, "final", options.year, lang);
+  const spendingTag = yearTag(SY, cofogRows.find((row) => row.sector === "S13" && row.code === "TOTAL")?.status[String(SY)] ?? "final", options.year, lang);
 
   container.replaceChildren();
   const svg = svgEl(container, "svg", { class: "hero-svg", width: W, height: H, viewBox: `0 0 ${W} ${H}`, role: "group", "aria-label": t("zoomGermany", lang) });
+  if (options.highlight) {
+    svg.dataset.highlight = options.highlight;
+  }
   defs(svg);
 
   // one € scale for both sides, so sizes compare; the right side (spending) is the tallest
@@ -745,10 +867,10 @@ export function renderGermany(container: HTMLElement, model: GermanyModel, optio
   const flow = layoutFlow(model.flow, { stageX: [x0, x1], top: top + 20, height: plotH - 40, nodeWidth: nodeW, gap: 9, gapAfter: { "t-STEUERARTZ10": 22, "r-eu": 22 }, scale, minHeight: 2 });
   const nodeById = new Map(flow.nodes.map((node) => [node.id, node]));
 
-  stageLabel(svg, x0 + nodeW, t("stageTaxes", lang), "end");
   stageLabel(svg, x1, t("stageRecipients", lang));
-  stageLabel(svg, xr, t("stateRevenue", lang));
-  stageLabel(svg, xc, t("stateSpending", lang));
+  stageLabel(svg, x0 + nodeW, `${t("stageTaxes", lang)} ${Y}`, "end");
+  stageLabel(svg, xr, `${t("stateRevenue", lang)}${revenueTag ? ` · ${revenueTag}` : ""}`, "start", xc - xr - 12);
+  stageLabel(svg, xc, `${t("stateSpending", lang)}${spendingTag ? ` · ${spendingTag}` : ""}`, "start", W - xc);
 
   const ribbons = svgEl(svg, "g", { class: "ribbons" });
   const nodes = svgEl(svg, "g", { class: "nodes" });
@@ -836,16 +958,16 @@ export function renderGermany(container: HTMLElement, model: GermanyModel, optio
     const r = svgEl(right, "rect", { x: xr, y: b.y, width: nodeW, height: Math.max(1, b.h), rx: 1.5, class: `bridge bridge-${b.seg.id}` });
     const labelLines =
       b.seg.id === "borrowed"
-        ? [tr(b.seg.label, lang), short(b.seg.value)]
+        ? [tr(b.seg.label, lang), short(b.seg.value, SY)]
         : [tr(b.seg.label, lang), `${pct(b.seg.share ?? 0, lang, 1)} ${lang === "de" ? "der Einnahmen" : "of revenue"}`];
     multiline(right, labelLines, { x: xr + nodeW + 8, y: b.y + Math.min(b.h / 2, 30) - 4, class: "node-label" }, 14, (i) => (i === 1 ? "num strong" : undefined));
     interactive(
       r,
       lang,
       () => ({
-        value: b.seg.share !== undefined ? pct(b.seg.share, lang, 1) : short(b.seg.value),
-        title: tr(b.seg.label, lang),
-        lines: [`${value(b.seg.value)} (${t("esaNote", lang)})`],
+        value: b.seg.share !== undefined ? pct(b.seg.share, lang, 1) : short(b.seg.value, SY),
+        title: `${tr(b.seg.label, lang)} ${SY}`,
+        lines: [`${value(b.seg.value, 1, SY)} (${t("esaNote", lang)})`],
         status: "official",
         body: b.seg.id === "taxes" ? tr(ESA_CASH, lang) : undefined,
         hint: true,
@@ -876,24 +998,25 @@ export function renderGermany(container: HTMLElement, model: GermanyModel, optio
       svgEl(g, "path", { d: `M${xc + nodeW + 1},${s.y + s.h / 2}L${xc + nodeW + 7},${ly - 4}`, class: "leader" });
     }
     const share = s.fn.value / total;
-    svgEl(g, "text", { x: xc + nodeW + 10, y: ly, class: "num strong comp-pct" }, unit === "day" ? eur(perResidentPerDay(s.fn.value), lang, 2) : pct(share, lang, 1));
+    svgEl(g, "text", { x: xc + nodeW + 10, y: ly, class: "num strong comp-pct" }, unit === "day" ? eur(perResidentPerDay(s.fn.value, SY), lang, 2) : pct(share, lang, 1));
     svgEl(g, "text", { x: xc + nodeW + 66, y: ly, class: "comp-name" }, wrap(tr(s.fn.label, lang), W - xc - nodeW - 70, 12, 400, 1)[0] ?? "");
     interactive(
       g as unknown as SVGElement,
       lang,
       () => ({
         value: pct(share, lang, 1),
-        title: tr(s.fn.label, lang),
-        lines: [bn(s.fn.value, lang), `${eur(perResidentPerDay(s.fn.value), lang, 2)} ${t("perResidentDay", lang)}`],
+        title: `${tr(s.fn.label, lang)} ${SY}`,
+        lines: [bn(s.fn.value, lang), `${eur(perResidentPerDay(s.fn.value, SY), lang, 2)} ${t("perResidentDay", lang)}`],
         status: "provisional",
         hint: true,
       }),
       () => options.onOpen({ kind: "cofog", code: s.fn.code }),
       undefined,
-      { visible: `${unit === "day" ? eur(perResidentPerDay(s.fn.value), lang, 2) : pct(share, lang, 1)} ${wrap(tr(s.fn.label, lang), W - xc - nodeW - 70, 12, 400, 1)[0] ?? ""}` },
+      { visible: `${unit === "day" ? eur(perResidentPerDay(s.fn.value, SY), lang, 2) : pct(share, lang, 1)} ${wrap(tr(s.fn.label, lang), W - xc - nodeW - 70, 12, 400, 1)[0] ?? ""}` },
     );
   });
-  svgEl(right, "text", { x: xc, y: yTop + barH + 18, class: "panel-note" }, `${t("spendingTotal", lang)} ${bn(total, lang)} = ${eur(perResidentPerDay(total), lang, 2)} ${t("perResidentDay", lang)}`);
+  const totalLines = wrap(`${t("spendingTotal", lang)} ${SY}: ${bn(total, lang)} = ${eur(perResidentPerDay(total, SY), lang, 2)} ${t("perResidentDay", lang)}`, W - xc - 4, 11.5, 400, 2);
+  multiline(right, totalLines, { x: xc, y: yTop + barH + 16, class: "panel-note" }, 13);
   tagEntities(svg);
   tween(container, svg, options.animate);
 }

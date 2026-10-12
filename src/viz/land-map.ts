@@ -1,5 +1,6 @@
 /**
- * Equalisation map: € per resident (fiscal capacity equalisation + all supplementary federal grants), 2024.
+ * Equalisation map: € per resident (fiscal capacity equalisation + all supplementary federal grants) of the
+ * selected year. It is also the place picker: click a Land to see your flow there, click it again for all Länder.
  * Diverging brown (pays in) ↔ teal (receives) around a neutral grey; the poles are not recipient hues.
  * No bilateral wires: the system is one pooled calculation.
  */
@@ -7,7 +8,7 @@ import { geoMercator, geoPath } from "d3-geo";
 import { interpolateLab } from "d3-interpolate";
 import { scaleLinear } from "d3-scale";
 
-import { GERMANY_CODE, type EqualisationLand } from "../data/model.ts";
+import { equalisationStatus, GERMANY_CODE, type EqualisationLand, type Status } from "../data/model.ts";
 import { raw } from "../data/sources.ts";
 import { eur, money, t, tr, type Lang } from "../i18n.ts";
 import { svgEl } from "./svg.ts";
@@ -39,11 +40,12 @@ export function mapScale(lands: EqualisationLand[]): (value: number) => string {
 export function renderLandMap(
   container: HTMLElement,
   lands: EqualisationLand[],
-  options: { lang: Lang; selected: string; onSelect: (code: string) => void },
+  options: { lang: Lang; year: number; selected: string; onSelect: (code: string) => void },
 ): void {
   const { lang } = options;
   container.replaceChildren();
   const color = mapScale(lands);
+  const status: Status = equalisationStatus(options.year).startsWith("provisional") ? "provisional" : "official";
   const byCode = new Map(lands.map((land) => [land.code, land]));
   const width = 300;
   const height = 400;
@@ -55,7 +57,7 @@ export function renderLandMap(
     geo as never,
   );
   const path = geoPath(projection);
-  const svg = svgEl(container, "svg", { class: "map-svg", viewBox: `0 0 ${width} ${height}`, role: "group", "aria-label": t("mapTitle", lang) });
+  const svg = svgEl(container, "svg", { class: "map-svg", viewBox: `0 0 ${width} ${height}`, role: "group", "aria-label": `${t("mapTitle", lang)} · ${options.year}` });
   for (const feature of geo.features) {
     const land = byCode.get(feature.properties.code);
     if (!land) {
@@ -68,9 +70,11 @@ export function renderLandMap(
       tabindex: 0,
       role: "button",
       "aria-pressed": String(feature.properties.code === options.selected),
-      "aria-label": `${tr(land.name, lang)}: ${land.perResident >= 0 ? t("mapReceives", lang) : t("mapPays", lang)} ${eur(Math.abs(land.perResident), lang)}`,
+      "aria-label": `${tr(land.name, lang)}: ${land.perResident >= 0 ? t("mapReceives", lang) : t("mapPays", lang)} ${eur(Math.abs(land.perResident), lang)}${
+        feature.properties.code === options.selected ? `. ${t("mapDeselect", lang)}` : ""
+      }`,
     });
-    const select = () => options.onSelect(feature.properties.code === options.selected ? GERMANY_CODE : feature.properties.code);
+    const select = () => options.onSelect(nextPlace(options.selected, feature.properties.code));
     shape.addEventListener("click", select);
     shape.addEventListener("keydown", (event) => {
       if (event.key === "Enter" || event.key === " ") {
@@ -87,8 +91,8 @@ export function renderLandMap(
             `${lang === "de" ? "Finanzkraftausgleich" : "Equalisation within VAT"}: ${land.fka >= 0 ? "+" : ""}${money(land.fka, lang)}`,
             `${lang === "de" ? "Bundesergänzungszuweisungen" : "Supplementary federal grants"}: ${money(land.bez, lang)}`,
           ],
-          status: "provisional",
-          body: t("mapClick", lang),
+          status,
+          body: feature.properties.code === options.selected ? t("mapDeselect", lang) : t("mapClick", lang),
         },
         { x, y },
         lang,
@@ -100,7 +104,10 @@ export function renderLandMap(
   }
 }
 
-/** Sorted diverging bars beside the map: the readable twin of the colours. */
+/** Clicking the selected Land goes back to all Länder; any other Land becomes the selection. */
+export const nextPlace = (selected: string, clicked: string): string => (clicked === selected ? GERMANY_CODE : clicked);
+
+/** Sorted diverging bars (ranking panel): the readable twin of the colours. */
 export function renderLandBars(
   container: HTMLElement,
   lands: EqualisationLand[],
@@ -135,7 +142,7 @@ export function renderLandBars(
     value.className = "land-bar-value num";
     value.textContent = `${land.perResident >= 0 ? "+" : "−"}${eur(Math.abs(land.perResident), lang)}`;
     button.append(name, track, value);
-    button.addEventListener("click", () => options.onSelect(land.code === options.selected ? GERMANY_CODE : land.code));
+    button.addEventListener("click", () => options.onSelect(nextPlace(options.selected, land.code)));
     li.append(button);
     list.append(li);
   }

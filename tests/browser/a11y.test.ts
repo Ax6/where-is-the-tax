@@ -28,7 +28,7 @@ test("keyboard: drawer takes focus, makes the page inert, Escape returns focus",
   const browser = await chromium.launch();
   try {
     const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
-    await page.goto(`${url}#zoom=you&lang=en`, { waitUntil: "networkidle" });
+    await page.goto(`${url}#y=2024&lang=en`, { waitUntil: "networkidle" });
     // the first focusable marks of the flow are its nodes, in stage order, with names
     const node = page.locator(".hero-svg .node[role='button']").first();
     await node.focus();
@@ -45,13 +45,22 @@ test("keyboard: drawer takes focus, makes the page inert, Escape returns focus",
     assert.equal(await page.evaluate(() => document.activeElement?.getAttribute("data-key")), "n-gross");
     // ribbons are pointer-only and hidden from assistive tech
     assert.equal(await page.locator(".hero-svg .ribbon:not([tabindex='-1'])").count(), 0);
-    // tab order: after the layer chips, the next stop is the first flow node
-    await page.locator(".chip").last().focus();
+    // tab order: legend row, then the map (place picker) and its ranking link, then the flow's first node
+    await page.locator(".map-panel [data-panel='ranking']").focus();
     await page.keyboard.press("Tab");
     assert.equal(await page.evaluate(() => document.activeElement?.getAttribute("data-key")), "n-gross");
-    // the live region announces the payslip after a wage change
-    await page.fill("#wage-number", "60000");
-    await page.press("#wage-number", "Enter");
+    // the slider moves in whole €1,000 steps by keyboard and snaps to a reference wage within €500
+    await page.locator("#wage-range").focus();
+    await page.keyboard.press("ArrowRight");
+    await page.waitForFunction(() => document.querySelector("#wage-figure")?.textContent === "€53,000");
+    await page.keyboard.press("ArrowLeft");
+    await page.waitForFunction(() => document.querySelector("#wage-figure")?.textContent === "€52,159");
+    assert.match((await page.locator("#wage-range").getAttribute("aria-valuetext")) ?? "", /€52,159 · median/);
+    // click-to-type on the wage figure; the live region announces the payslip
+    await page.click("#wage-figure");
+    await page.fill("#wage-input", "60000");
+    await page.press("#wage-input", "Enter");
+    assert.equal(await page.evaluate(() => document.activeElement?.id), "wage-figure");
     await page.waitForFunction(() => /€60,000/.test(document.querySelector("#live")?.textContent ?? ""), undefined, { timeout: 5000 });
   } finally {
     await browser.close();

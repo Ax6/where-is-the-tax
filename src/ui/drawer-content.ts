@@ -12,36 +12,47 @@ import {
   cofogRows,
   cofogSource,
   equalisation,
+  equalisationFile,
   equalisationSource,
-  euRoundTrip2024,
+  equalisationStatus,
+  euRoundTrip,
   householdCaveats,
   householdEstimate,
   householdSource,
   tradeTaxLevy,
   euSource,
-  payrollView2024,
+  payrollViewOf,
+  payslip,
   payslipParams,
+  payslipYears,
   payslipSource,
   perResidentPerDay,
   populationSource,
   purchaseSource,
   purchases,
   taxSeries,
-  vatSplit2024,
+  vatSplit,
   type EntityId,
   type GermanyModel,
   type Pot,
   type SourceLink,
   type YouModel,
 } from "../data/model.ts";
-import { files, raw } from "../data/sources.ts";
-import { bi, bn, eur, money, pct, t, tr, type Bi, type Lang } from "../i18n.ts";
+import { COMMON, type CommonId } from "../data/categories.ts";
+import { proRata } from "../data/prorata.ts";
+import { files, raw, repoBlob } from "../data/sources.ts";
+import { bi, bn, eur, fill, money, pct, t, tr, yearTag, type Bi, type Lang } from "../i18n.ts";
 import type { DrawerTarget } from "../viz/hero.ts";
 import { badge, esc, sourceList, splitBar, swatch } from "./html.ts";
+import { renderEqualisationTable } from "./page.ts";
 
 export interface DrawerContext {
   lang: Lang;
   zoom: "you" | "germany";
+  /** the page's selected year */
+  year: number;
+  /** selected place (DE = all Länder) */
+  land: string;
   you: YouModel;
   germany: GermanyModel;
   unit: "bn" | "day";
@@ -113,6 +124,10 @@ export function drawerContent(target: DrawerTarget, ctx: DrawerContext): DrawerC
       return bridgeDrawer(target.id, ctx);
     case "purchase":
       return purchaseDrawer(target.id, ctx);
+    case "panel":
+      return target.id === "shopping" ? shoppingPanel(ctx) : rankingPanel(ctx);
+    case "prorata":
+      return proRataDrawer(target.id as CommonId, ctx);
     case "node":
       return ctx.zoom === "you" ? youNodeDrawer(target.id, ctx) : germanyNodeDrawer(target.id, ctx);
   }
@@ -138,7 +153,11 @@ function payslipTable(ctx: DrawerContext): string {
     ${line(t("netPay", lang), p.totals.net, "strong")}
     ${line(`${t("employerGhost", lang)}`, p.totals.social_employer)}
     ${line(lang === "de" ? "Kosten des Arbeitsplatzes" : "Cost of the job", p.totals.employer_total_cost, "strong")}
-  </tbody></table>
+  </tbody></table>${
+    payslipYears.includes(2026) && ctx.you.year !== 2026
+      ? `<p class="drawer-next">${esc(fill(t("sameWage2026", lang), eur(payslip(2026, p.gross).totals.net, lang)))}</p>`
+      : ""
+  }
   <p class="drawer-note">${esc(t("assumptions", lang))}. ${esc(
     lang === "de"
       ? `Jahreslohnsteuer nach Programmablaufplan ${ctx.you.year}; die Veranlagung kann abweichen.`
@@ -166,7 +185,7 @@ function youNodeDrawer(id: string, ctx: DrawerContext): DrawerContent {
                 lang === "de" ? "Schätzung, nicht Teil des Lohnzettels." : "Estimate, not part of the payslip."
               }`,
             )}</p>` +
-              rows(purchases().map((item) => ({ label: `${tr(item.label, lang)}*`, value: pct(item.taxShare, lang, 0), share: item.taxShare })), 1),
+              rows(purchases(ctx.year).map((item) => ({ label: `${tr(item.label, lang)}*`, value: pct(item.taxShare, lang, 0), share: item.taxShare })), 1),
           )
         : "";
     return {
@@ -299,7 +318,7 @@ function estimateDrawer(ctx: DrawerContext): DrawerContent {
   ];
   return {
     title: t("estimateLabel", lang),
-    html: `${header(`≈ ${eur(e.total, lang)}`, `${lang === "de" ? "im Jahr" : "a year"} · ${tr(e.label, lang)}*`, "estimate", lang)}
+    html: `${header(`≈ ${eur(e.total, lang)}`, `${lang === "de" ? "im Jahr" : "a year"} · ${tr(e.label, lang)}*${e.year !== ctx.year ? ` · ${e.year}` : ""}`, "estimate", lang)}
       <p class="drawer-note">${esc(
         lang === "de"
           ? `Ihr Netto ${eur(you.payslip.totals.net, lang)} ÷ 12 = ${eur(e.monthlyNet, lang)} im Monat ordnet Sie dieser Haushaltsklasse zu* (ein Verdiener; bei Paaren beide Netto addieren). Konsum der Klasse ≈ ${eur(e.consumptionMonth, lang)} im Monat; davon ≈ ${pct(e.shareOfConsumption, lang, 1)} Steuern.`
@@ -318,7 +337,7 @@ function potDrawer(pot: Pot, ctx: DrawerContext): DrawerContent {
   const { lang } = ctx;
   const inflow = ctx.you.inflow[pot.id] ?? 0;
   const estimateIn = pot.recipients.reduce((sum, id) => sum + (ctx.you.flow.nodes.find((n) => n.id === id)?.estimate ?? 0), 0);
-  const yearTag = `${pot.year}${pot.status === "provisional" ? "p" : ""}`;
+  const tag = yearTag(pot.year, pot.status, 0, lang);
   const breakdown = pot.categories
     .map((cat) => {
       const share = cat.value / pot.compositionBase;
@@ -341,7 +360,7 @@ function potDrawer(pot: Pot, ctx: DrawerContext): DrawerContent {
   ].filter((row): row is { label: string; value: string } => Boolean(row));
   return {
     title: tr(pot.label, lang),
-    html: `${header(bn(pot.total, lang), `${yearTag} · ${tr(pot.basis, lang)}`, pot.status, lang)}
+    html: `${header(bn(pot.total, lang), `${tag} · ${tr(pot.basis, lang)}`, pot.status, lang)}
       ${inflow > 0 ? `<p class="drawer-joins">${esc(`${eur(inflow, lang)} ${t("joins", lang)} ${bn(pot.total, lang)}${estimateIn > 0 ? ` · + ≈ ${eur(estimateIn, lang)}* ${lang === "de" ? "aus Ihren Einkäufen (Schätzung)" : "from your purchases (estimate)"}` : ""}`)}</p>` : ""}
       ${section(`${t("breakdown", lang)} · ${t("ofEvery100", lang)} ${tr(pot.compositionLabel, lang)}`, breakdown)}
       ${
@@ -387,19 +406,20 @@ function germanyNodeDrawer(id: string, ctx: DrawerContext): DrawerContent {
   const { lang, germany } = ctx;
   const node = germany.flow.nodes.find((n) => n.id === id);
   const title = node ? tr(node.label, lang) : id;
-  const fmt = (v: number) => (ctx.unit === "day" ? `${eur(perResidentPerDay(v), lang, 2)} ${t("perResidentDay", lang)}` : bn(v, lang));
+  const Y = String(germany.year);
+  const fmt = (v: number) => (ctx.unit === "day" ? `${eur(perResidentPerDay(v, germany.year), lang, 2)} ${t("perResidentDay", lang)}` : bn(v, lang));
   if (!node) {
     return { title, html: "" };
   }
   const outEdges = germany.flow.edges.filter((edge) => edge.from === id);
   const splitParts = outEdges.map((edge) => ({ entity: edge.entity, share: edge.value / node.value }));
   if (id === "r-eu") {
-    const eu = euRoundTrip2024();
+    const eu = euRoundTrip(germany.year);
     return {
       title,
       html: `${header(fmt(node.value), lang === "de" ? "Zölle, per Gesetz direkt an die EU" : "Customs duties, by law straight to the EU", "official", lang)}
       ${section(
-        lang === "de" ? "Die Rundreise 2024 (EU-Kommission)" : "The round trip 2024 (European Commission)",
+        lang === "de" ? `Die Rundreise ${Y} (EU-Kommission)` : `The round trip ${Y} (European Commission)`,
         rows([
           { label: lang === "de" ? "Deutschland zahlt (alle Eigenmittel)" : "Germany pays (all own resources)", value: bn(eu.paid, lang), share: eu.paid, entity: "eu" },
           { label: lang === "de" ? "EU-Ausgaben in Deutschland" : "EU spending in Germany", value: bn(eu.spentInGermany, lang), share: eu.spentInGermany },
@@ -416,7 +436,9 @@ function germanyNodeDrawer(id: string, ctx: DrawerContext): DrawerContent {
   }
   if (id.startsWith("c-")) {
     const system = { "c-pension": "pension", "c-health": "health", "c-care": "ltc", "c-unemp": "unemployment" }[id]!;
-    const payers = (raw.socialInsurance as unknown as { contributions_by_payer_all_systems: Record<string, Record<string, unknown>> }).contributions_by_payer_all_systems["2024"]!;
+    const byYear = (raw.socialInsurance as unknown as { contributions_by_payer_all_systems: Record<string, Record<string, unknown>> }).contributions_by_payer_all_systems;
+    const payerYear = byYear[Y] ? Y : "2024";
+    const payers = byYear[payerYear]!;
     const payerRows = Object.entries(payers)
       .filter(([, value]) => typeof value === "object" && value !== null && "by_system" in (value as object))
       .map(([key, value]) => ({ key, amount: ((value as { by_system: Record<string, number> }).by_system[system] ?? 0) }))
@@ -435,22 +457,22 @@ function germanyNodeDrawer(id: string, ctx: DrawerContext): DrawerContent {
       title,
       html: `${header(fmt(node.value), lang === "de" ? "Beiträge auf Löhne, Näherung*" : "Contributions on wages, a proxy*", "official", lang)}
       ${section(
-        lang === "de" ? "Wer Beiträge zahlt (alle Zahler 2024)" : "Who pays contributions (all payers 2024)",
+        lang === "de" ? `Wer Beiträge zahlt (alle Zahler ${payerYear})` : `Who pays contributions (all payers ${payerYear})`,
         rows(payerRows.map((row) => ({ label: tr(payerLabel[row.key] ?? bi(row.key, row.key), lang), value: bn(row.amount, lang), share: row.amount / total, entity: node.entity }))) +
-          `<p class="drawer-note">${esc(tr(payrollView2024.label, lang))}. ${esc(
+          `<p class="drawer-note">${esc(tr(payrollViewOf(germany.year).label, lang))}. ${esc(
             lang === "de"
               ? "Mindestens 46,0 Mrd. € der Beiträge aller vier Systeme zahlt ein System an ein anderes; im Bild zählt jeder Euro einmal."
               : "At least €46.0bn of all four systems' contributions is paid by one system to another; in the picture each euro counts once.",
           )}</p>`,
       )}
-      ${section(t("sources", lang), sourceList([{ label: bi("Sozialversicherung 2024, Beiträge nach Zahlern", "Social insurance 2024, contributions by payer"), file: files.socialInsurance }], lang))}`,
+      ${section(t("sources", lang), sourceList([{ label: bi(`Sozialversicherung ${payerYear}, Beiträge nach Zahlern`, `Social insurance ${payerYear}, contributions by payer`), file: files.socialInsurance }], lang))}`,
     };
   }
   if (id.startsWith("r-")) {
     const entity = id.slice(2);
     const recipientRow = { fed: "STEUERNVB10", land: "STEUERNVL10", muni: "STEUERNVK10" }[entity as "fed" | "land" | "muni"];
     const after = recipientRow ? byRecipientRows.find((row) => row.id === recipientRow) : undefined;
-    const children = after ? byRecipientRows.filter((row) => row.parent === after.id && (row.values_eur["2024"] ?? 0) !== 0) : [];
+    const children = after ? byRecipientRows.filter((row) => row.parent === after.id && (row.values_eur[Y] ?? 0) !== 0) : [];
     const inEdges = germany.flow.edges.filter((edge) => edge.to === id);
     return {
       title,
@@ -466,9 +488,9 @@ function germanyNodeDrawer(id: string, ctx: DrawerContext): DrawerContent {
       ${
         after
           ? section(
-              lang === "de" ? `Nach Verteilung: ${bn(after.values_eur["2024"] ?? 0, lang)}` : `After distribution: ${bn(after.values_eur["2024"] ?? 0, lang)}`,
-              rows(children.map((row) => ({ label: tr(row.label, lang), value: bn(row.values_eur["2024"] ?? 0, lang) }))) +
-                `<p class="drawer-note">${esc(lang === "de" ? "Kasse 2024, Destatis 71211-0002. Negative Zeilen: Zahlungen an EU oder Länder." : "Cash 2024, Destatis 71211-0002. Negative rows: payments to the EU or the Länder.")}</p>`,
+              lang === "de" ? `Nach Verteilung: ${bn(after.values_eur[Y] ?? 0, lang)}` : `After distribution: ${bn(after.values_eur[Y] ?? 0, lang)}`,
+              rows(children.map((row) => ({ label: tr(row.label, lang), value: bn(row.values_eur[Y] ?? 0, lang) }))) +
+                `<p class="drawer-note">${esc(lang === "de" ? `Kasse ${Y}, Destatis 71211-0002. Negative Zeilen: Zahlungen an EU oder Länder.` : `Cash ${Y}, Destatis 71211-0002. Negative rows: payments to the EU or the Länder.`)}</p>`,
             )
           : ""
       }
@@ -481,38 +503,39 @@ function germanyNodeDrawer(id: string, ctx: DrawerContext): DrawerContent {
   let srcs: SourceLink[] = [byTaxSource()];
   let series: { year: number; value: number }[] = [];
   if (taxId === "vat") {
-    const statutory = (raw.equalisation2024 as unknown as { totals: { vat: { statutory_shares_pct: Record<string, number> } } }).totals.vat.statutory_shares_pct;
+    const statutory = (equalisationFile(germany.year) as unknown as { totals: { vat: { statutory_shares_pct: Record<string, number> } } }).totals.vat.statutory_shares_pct;
+    const split = vatSplit(germany.year);
     mechanism =
       `<p class="drawer-note">${esc(lang === "de" ? "Grundanteile nach § 1 Abs. 1 FAG" : "Base shares, § 1 (1) FAG")}</p>${splitBar([
         { entity: "fed", share: statutory.bund! },
         { entity: "land", share: statutory.laender! },
         { entity: "muni", share: statutory.gemeinden! },
       ])}
-      <p class="drawer-note">${esc(lang === "de" ? "Ergebnis 2024 nach den festen Beträgen" : "Outcome 2024 after the fixed amounts")}</p>${splitBar([
-        { entity: "fed", share: vatSplit2024.fed },
-        { entity: "land", share: vatSplit2024.laender },
-        { entity: "muni", share: vatSplit2024.muni },
+      <p class="drawer-note">${esc(lang === "de" ? `Ergebnis ${Y} nach den festen Beträgen` : `Outcome ${Y} after the fixed amounts`)}</p>${splitBar([
+        { entity: "fed", share: split.fed },
+        { entity: "land", share: split.laender },
+        { entity: "muni", share: split.muni },
       ])}${rows([
-        { label: tr(bi("Bund", "Federation"), lang), value: `${pct(vatSplit2024.fed / vatSplit2024.total, lang, 2)} · ${bn(vatSplit2024.fed, lang)}`, entity: "fed" },
-        { label: tr(bi("Länder-Topf", "Länder pool"), lang), value: `${pct(vatSplit2024.laender / vatSplit2024.total, lang, 2)} · ${bn(vatSplit2024.laender, lang)}`, entity: "land" },
-        { label: tr(bi("Gemeinden", "Municipalities"), lang), value: `${pct(vatSplit2024.muni / vatSplit2024.total, lang, 2)} · ${bn(vatSplit2024.muni, lang)}`, entity: "muni" },
+        { label: tr(bi("Bund", "Federation"), lang), value: `${pct(split.fed / split.total, lang, 2)} · ${bn(split.fed, lang)}`, entity: "fed" },
+        { label: tr(bi("Länder-Topf", "Länder pool"), lang), value: `${pct(split.laender / split.total, lang, 2)} · ${bn(split.laender, lang)}`, entity: "land" },
+        { label: tr(bi("Gemeinden", "Municipalities"), lang), value: `${pct(split.muni / split.total, lang, 2)} · ${bn(split.muni, lang)}`, entity: "muni" },
       ])}
       <p class="drawer-note">${esc(
         lang === "de"
-          ? "Der Länder-Topf ist eine Formel, kein Haushalt: verteilt nach Einwohnern, dann Zu- und Abschläge nach Finanzkraft (Karte unten)."
-          : "The Länder pool is a formula, not a budget: shared by population, then supplements and deductions by fiscal capacity (map below).",
+          ? "Der Länder-Topf ist eine Formel, kein Haushalt: verteilt nach Einwohnern, dann Zu- und Abschläge nach Finanzkraft (Karte)."
+          : "The Länder pool is a formula, not a budget: shared by population, then supplements and deductions by fiscal capacity (map).",
       )}</p>${quotes("STEUERARTG60", lang)}`;
-    srcs = [byTaxSource(), ...equalisationSource(), ...allocationSource("STEUERARTG60")];
+    srcs = [byTaxSource(), ...equalisationSource(germany.year), ...allocationSource("STEUERARTG60")];
     series = taxSeries("STEUERARTG60").map((p, i) => ({ year: p.year, value: p.value + (taxSeries("STEUERARTG70")[i]?.value ?? 0) }));
   } else if (GROUP_CHILDREN[id]) {
     const parent = GROUP_CHILDREN[id]!;
     const children = byTaxRows
-      .filter((row) => row.parent === parent && row.id !== "STEUERARTK30" && (row.values_eur["2024"] ?? 0) > 0)
-      .sort((a, b) => (b.values_eur["2024"] ?? 0) - (a.values_eur["2024"] ?? 0));
-    mechanism = rows(children.map((row) => ({ label: tr(row.label, lang), value: bn(row.values_eur["2024"] ?? 0, lang, 2), share: (row.values_eur["2024"] ?? 0) / node.value, entity: node.entity })));
+      .filter((row) => row.parent === parent && row.id !== "STEUERARTK30" && (row.values_eur[Y] ?? 0) > 0)
+      .sort((a, b) => (b.values_eur[Y] ?? 0) - (a.values_eur[Y] ?? 0));
+    mechanism = rows(children.map((row) => ({ label: tr(row.label, lang), value: bn(row.values_eur[Y] ?? 0, lang, 2), share: (row.values_eur[Y] ?? 0) / node.value, entity: node.entity })));
     series = taxSeries(parent);
   } else if (id === "t-capital") {
-    mechanism = rows(["STEUERARTG30", "STEUERARTG40"].map((tid) => ({ label: `${tr(allocation(tid).label, lang)} · ${Object.values(allocation(tid).shares ?? {}).map((s) => pct(s, lang, 0)).join(" / ")}`, value: bn(byTaxRows.find((row) => row.id === tid)?.values_eur["2024"] ?? 0, lang) })));
+    mechanism = rows(["STEUERARTG30", "STEUERARTG40"].map((tid) => ({ label: `${tr(allocation(tid).label, lang)} · ${Object.values(allocation(tid).shares ?? {}).map((s) => pct(s, lang, 0)).join(" / ")}`, value: bn(byTaxRows.find((row) => row.id === tid)?.values_eur[Y] ?? 0, lang) })));
     srcs = [byTaxSource(), ...allocationSource("STEUERARTG30"), ...allocationSource("STEUERARTG40")];
   } else {
     const kind = allocation(taxId).kind;
@@ -538,7 +561,7 @@ function germanyNodeDrawer(id: string, ctx: DrawerContext): DrawerContent {
   }
   return {
     title,
-    html: `${header(fmt(node.value), `${pct(node.value / germany.taxesTotal, lang, 1)} ${lang === "de" ? "aller Steuern 2024 (Kasse)" : "of all tax 2024 (cash)"}`, "official", lang)}
+    html: `${header(fmt(node.value), `${pct(node.value / germany.taxesTotal, lang, 1)} ${lang === "de" ? `aller Steuern ${Y} (Kasse)` : `of all tax ${Y} (cash)`}`, "official", lang)}
       ${section(t("mechanism", lang), mechanism)}
       ${series.length ? section(lang === "de" ? "1999–2025" : "1999–2025", spark(series, lang, title)) : ""}
       ${section(t("sources", lang), sourceList(srcs, lang))}`,
@@ -556,7 +579,7 @@ function cofogDrawer(code: string, ctx: DrawerContext): DrawerContent {
     .map(([year, v]) => ({ year: Number(year), value: (v ?? 0) * 1e6 }));
   return {
     title: tr(fn.label, lang),
-    html: `${header(bn(fn.value, lang), `${pct(fn.value / germany.spendingTotal, lang, 1)} · ${eur(perResidentPerDay(fn.value), lang, 2)} ${t("perResidentDay", lang)}`, "provisional", lang)}
+    html: `${header(bn(fn.value, lang), `${germany.stateYear} · ${pct(fn.value / germany.spendingTotal, lang, 1)} · ${eur(perResidentPerDay(fn.value, germany.stateYear), lang, 2)} ${t("perResidentDay", lang)}`, "provisional", lang)}
       ${section(t("breakdown", lang), rows(fn.children.map((child) => ({ label: tr(child.label, lang), value: bn(child.value, lang), share: child.value / fn.value }))))}
       <p class="drawer-note">${esc(
         lang === "de"
@@ -571,7 +594,8 @@ function cofogDrawer(code: string, ctx: DrawerContext): DrawerContent {
 function bridgeDrawer(id: string, ctx: DrawerContext): DrawerContent {
   const { lang, germany } = ctx;
   const seg = germany.bridge.find((b) => b.id === id)!;
-  const agg = (aid: string, label?: Bi) => ({ label: label ? tr(label, lang) : aid, value: bn(aggregate(aid), lang) });
+  const SY = String(germany.stateYear);
+  const agg = (aid: string, label?: Bi) => ({ label: label ? tr(label, lang) : aid, value: bn(aggregate(aid, SY), lang) });
   const parts: Record<string, { label: string; value: string }[]> = {
     taxes: [agg("D2REC", bi("Produktions- und Importabgaben", "Taxes on production and imports")), agg("D5REC", bi("Einkommen- und Vermögensteuern", "Taxes on income and wealth")), agg("D91REC", bi("Vermögenswirksame Steuern", "Capital taxes"))],
     contributions: [agg("D611REC", bi("Tatsächliche Arbeitgeberbeiträge", "Employers' actual contributions")), agg("D613REC", bi("Beiträge der Haushalte", "Households' actual contributions"))],
@@ -581,11 +605,11 @@ function bridgeDrawer(id: string, ctx: DrawerContext): DrawerContent {
       agg("D7REC", bi("Laufende Transfers", "Current transfers")),
       agg("D9REC", bi("Vermögenstransfers", "Capital transfers")),
     ],
-    borrowed: [agg("GD", bi("Schuldenstand Ende 2024 (Maastricht)", "Gross debt end-2024 (Maastricht)")), agg("D41PAY", bi("Zinsausgaben 2024", "Interest paid 2024"))],
+    borrowed: [agg("GD", bi(`Schuldenstand Ende ${SY} (Maastricht)`, `Gross debt end-${SY} (Maastricht)`)), agg("D41PAY", bi(`Zinsausgaben ${SY}`, `Interest paid ${SY}`))],
   };
   return {
     title: tr(seg.label, lang),
-    html: `${header(bn(seg.value, lang), seg.share !== undefined ? `${pct(seg.share, lang, 1)} ${lang === "de" ? "der Staatseinnahmen" : "of state revenue"}` : `${eur(seg.value / raw.population.germany["2024"], lang)} ${lang === "de" ? "je Einwohner" : "per resident"}`, "official", lang)}
+    html: `${header(bn(seg.value, lang), `${SY} · ${seg.share !== undefined ? `${pct(seg.share, lang, 1)} ${lang === "de" ? "der Staatseinnahmen" : "of state revenue"}` : `${eur(seg.value / (raw.population.germany as Record<string, number>)[SY]!, lang)} ${lang === "de" ? "je Einwohner" : "per resident"}`}`, "official", lang)}
       ${section(t("breakdown", lang), rows(parts[id] ?? []))}
       <p class="drawer-note">${esc(
         lang === "de"
@@ -598,7 +622,7 @@ function bridgeDrawer(id: string, ctx: DrawerContext): DrawerContent {
 
 function purchaseDrawer(id: string, ctx: DrawerContext): DrawerContent {
   const { lang } = ctx;
-  const item = purchases().find((p) => p.id === id)!;
+  const item = purchases(ctx.year).find((p) => p.id === id)!;
   const total = item.price;
   return {
     title: `${tr(item.label, lang)}*`,
@@ -609,8 +633,144 @@ function purchaseDrawer(id: string, ctx: DrawerContext): DrawerContent {
           item.segments.map((seg) => ({ label: tr(seg.label, lang), value: eur(seg.value, lang, seg.value < 10 ? 4 : 2), entity: seg.entity })),
         )}<p class="drawer-note">* ${esc(item.assumption)}</p>`,
       )}
-      ${section(t("sources", lang), sourceList([purchaseSource(), ...equalisationSource()], lang))}`,
+      ${section(t("sources", lang), sourceList([purchaseSource(), ...equalisationSource(ctx.year)], lang))}`,
   };
 }
 
 export const equalisationLands = equalisation;
+
+// --- panels --------------------------------------------------------------------------------
+
+const ENTITY_NAME: Record<EntityId, Bi> = {
+  fed: bi("Bund", "Federation"),
+  land: bi("Länder", "Länder"),
+  muni: bi("Gemeinden", "Municipalities"),
+  eu: bi("EU", "EU"),
+  pension: bi("Rentenversicherung", "Pension insurance"),
+  health: bi("Krankenversicherung", "Health insurance"),
+  care: bi("Pflegeversicherung", "Care insurance"),
+  unemp: bi("Arbeitslosenversicherung", "Unemployment insurance"),
+};
+
+/** Tax inside one purchase, by recipient; the row label without its trailing "(2026)" vintage. */
+function purchaseParts(id: string, year: number) {
+  const item = purchases(year).find((candidate) => candidate.id === id)!;
+  const tax = item.segments.filter((seg) => seg.entity);
+  const byEntity = new Map<EntityId, number>();
+  for (const seg of tax) {
+    byEntity.set(seg.entity!, (byEntity.get(seg.entity!) ?? 0) + seg.value);
+  }
+  const vintage = /\s*\((\d{4})\)$/.exec(item.label.en)?.[1];
+  const order: EntityId[] = ["fed", "land", "muni", "eu", "pension", "health", "care", "unemp"];
+  const sorted = [...byEntity.entries()].sort((a, b) => order.indexOf(a[0]) - order.indexOf(b[0]));
+  return { item, taxEur: tax.reduce((sum, seg) => sum + seg.value, 0), byEntity: sorted, vintage: vintage ? Number(vintage) : undefined };
+}
+
+/** Hover / focus text of one purchase row: € tax per unit, recipient split, legal basis. */
+export function purchaseDetail(id: string, year: number, lang: Lang): { value: string; title: string; lines: string[] } {
+  const { item, taxEur, byEntity } = purchaseParts(id, year);
+  return {
+    value: `${eur(taxEur, lang, taxEur < 10 ? 2 : 0)} ${lang === "de" ? "Steuer" : "tax"}`,
+    title: `${tr(item.label, lang)}*`,
+    lines: [
+      byEntity.map(([entity, value]) => `${tr(ENTITY_NAME[entity], lang)} ${eur(value, lang, value < 10 ? 2 : 0)}`).join(" · "),
+      item.laws.join(" · "),
+      `* ${item.assumption}`,
+    ],
+  };
+}
+
+function shoppingPanel(ctx: DrawerContext): DrawerContent {
+  const { lang } = ctx;
+  const estimate = estimateDrawer(ctx);
+  const items = purchases(ctx.year).sort((a, b) => b.taxShare - a.taxShare);
+  const purchaseRows = items
+    .map((item) => {
+      const { taxEur, byEntity, vintage } = purchaseParts(item.id, ctx.year);
+      const label = tr(item.label, lang).replace(/\s*\(\d{4}\)$/, "");
+      const detail = purchaseDetail(item.id, ctx.year, lang);
+      const segs = byEntity
+        .map(([entity, value]) => `<span class="pr-seg" data-entity="${entity}" style="width:${((value / item.price) * 100).toFixed(2)}%;background:var(--e-${entity})"></span>`)
+        .join("");
+      return `<li class="purchase-row" tabindex="0" data-purchase="${esc(item.id)}" aria-describedby="pd-${esc(item.id)}">
+        <span class="pr-label">${esc(`${label}*`)}${vintage && vintage !== ctx.year ? ` <span class="tag">${vintage}</span>` : ""}</span>
+        <span class="pr-track" aria-hidden="true">${segs}</span>
+        <span class="pr-share num">${esc(`${pct(item.taxShare, lang, 0)} ${lang === "de" ? "Steuer" : "tax"}`)}</span>
+        <span class="sr-only" id="pd-${esc(item.id)}">${esc(`${detail.value}. ${detail.lines.join(". ")}`)}</span>
+      </li>`;
+    })
+    .join("");
+  return {
+    title: t("shoppingTitle", lang),
+    html: `<section class="drawer-section panel-estimate"><h3>${esc(estimate.title)}</h3>${estimate.html}</section>
+      <section class="drawer-section"><h3>${esc(t("purchasesHeading", lang))}</h3>
+        <ul class="purchase-rows">${purchaseRows}</ul>
+        <p class="drawer-note">${esc(t("purchasesCaption", lang))}</p>
+        ${sourceList([purchaseSource(), ...equalisationSource(ctx.year)], lang)}
+      </section>`,
+  };
+}
+
+function rankingPanel(ctx: DrawerContext): DrawerContent {
+  const { lang } = ctx;
+  const status = equalisationStatus(ctx.year).startsWith("provisional") ? "provisional" : "official";
+  return {
+    title: `${t("mapShort", lang)} ${ctx.year}`,
+    html: `<p class="drawer-sub">${esc(`${t("ranking", lang)} · ${lang === "de" ? "€ je Einwohner: Finanzkraftausgleich + Bundesergänzungszuweisungen" : "€ per resident: equalisation within VAT + supplementary federal grants"}`)} ${badge(status, lang)}</p>
+      <div id="rank-bars" class="rank-bars"></div>
+      ${renderEqualisationTable(lang, ctx.year)}
+      <p class="drawer-note">${esc(
+        lang === "de"
+          ? "Ein gemeinsamer Ausgleich, keine Zahlungen von Land zu Land. Klick auf ein Land zeigt Ihren Fluss dort; nochmals klicken: alle Länder."
+          : "One pooled calculation, no payments from Land to Land. Click a Land to see your flow there; click again for all Länder.",
+      )}</p>
+      ${section(t("sources", lang), sourceList(equalisationSource(ctx.year), lang))}`,
+  };
+}
+
+function proRataDrawer(id: CommonId, ctx: DrawerContext): DrawerContent {
+  const { lang, you } = ctx;
+  const data = proRata(you);
+  const row = data.rows.find((candidate) => candidate.id === id) ?? data.rows[0]!;
+  const [from, to] = data.years;
+  const parts = [...row.byPot].filter((part) => part.exact + part.estimate > 0.5).sort((a, b) => b.exact + b.estimate - (a.exact + a.estimate));
+  const sentence = parts
+    .map((part) => `${eur(part.exact, lang)} ${lang === "de" ? "über" : "via"} ${tr(part.label, lang)}`)
+    .join(" + ");
+  const potShare = (potId: string): number => {
+    const pot = you.pots.find((candidate) => candidate.id === potId)!;
+    const total = pot.spending.reduce((sum, line) => sum + line.value, 0);
+    const ids = new Set<string>([row.id, ...(row.merged ?? [])]);
+    return pot.spending.filter((line) => ids.has(line.common)).reduce((sum, line) => sum + line.value, 0) / total;
+  };
+  const merged = row.merged?.length ? row.merged.map((m) => tr(COMMON.find((c) => c.id === m)!.label, lang)).join(", ") : "";
+  return {
+    title: tr(row.label, lang),
+    html: `${header(`≈ ${eur(row.exact, lang)}`, `${lang === "de" ? "im Jahr, anteilig*, wenn verteilt wie diese Haushalte" : "a year, pro rata*, if spread like these budgets"}${row.estimate > 0.5 ? ` · + ≈ ${eur(row.estimate, lang)}*` : ""}`, "assumption", lang)}
+      <p class="drawer-joins">${esc(`${tr(COMMON.find((c) => c.id === row.id)!.short, lang)}: ${sentence}`)}</p>
+      ${section(
+        lang === "de" ? "Je Haushalt" : "By budget",
+        rows(
+          parts.map((part) => {
+            const pot = you.pots.find((candidate) => candidate.id === part.potId)!;
+            const tag = yearTag(part.year, pot.status, 0, lang);
+            return {
+              label: `${tr(part.label, lang)} · ${tag}`,
+              sub: `${pct(potShare(part.potId), lang, 1)} ${lang === "de" ? "seiner eigenen Ausgaben" : "of its own spending"} × ${eur(you.inflow[part.potId] ?? 0, lang)}${lang === "de" ? " von Ihnen" : " from you"}`,
+              value: `≈ ${eur(part.exact, lang)}${part.estimate > 0.5 ? ` + ≈ ${eur(part.estimate, lang)}*` : ""}`,
+              share: part.exact + part.estimate,
+              entity: part.entity,
+            };
+          }),
+        ),
+      )}
+      ${merged ? `<p class="drawer-note">${esc(`${lang === "de" ? "Enthält" : "Includes"}: ${merged}.`)}</p>` : ""}
+      <p class="drawer-note prorata">${esc(
+        lang === "de"
+          ? `* Anteilig: Ihre Euro in jeden Haushalt × dessen eigene Ausgabenanteile (${from}–${to}), über alle Haushalte nach gemeinsamen Kategorien summiert. Geld im Haushalt trägt keine Herkunft; das ist eine Rechnung, keine Zuordnung. ≈* Einkäufe: Schätzung, getrennt ausgewiesen.`
+          : `* Pro rata: your euros into each budget × that budget's own spending shares (${from}–${to}), summed across budgets by common category. Money in a budget carries no origin; this is arithmetic, not a trace. ≈* purchases: estimate, shown separately.`,
+      )}</p>
+      <p class="drawer-note">(${esc(lang === "de" ? "Kategorie-Zuordnung, siehe" : "category mapping, see")} <a href="${esc(repoBlob("src/data/categories.ts"))}" rel="noreferrer noopener" target="_blank"><code>src/data/categories.ts</code></a>)</p>
+      ${section(t("sources", lang), sourceList(parts.flatMap((part) => you.pots.find((pot) => pot.id === part.potId)?.sources ?? []), lang))}`,
+  };
+}
