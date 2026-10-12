@@ -14,14 +14,14 @@ against every example row and the 121 BMF Prüftabelle rows, You and Germany zoo
 equalisation map, all-taxes table, time strip, DE/EN, mobile, static fallback and a Pages workflow;
 light/dark themes with validated palettes, a texture mode for forced colours, an axe-core + keyboard
 test (0 violations in 17 scenarios), wage-slider reference points and a household indirect-tax
-estimate (≈*) next to the exact payslip. It has not been deployed or reviewed by a second person yet.
+estimate (≈*) next to the exact payslip. It is live at https://ax6.github.io/where-is-the-tax/ (deployed 2026-10-12, PR #4); it has not been reviewed by a second person or tested with first-time visitors yet.
 
 ## Scoring rubric (data layer) and self-assessment
 
 | Criterion | Weight | Score /10 | Why |
 |---|---|---:|---|
 | Coverage of the citizen question (whole state, per tax, per recipient, Länder/equalisation, federal, Berlin, social insurance, EU, own payslip, purchases, time, debt) | 20 % | 8 | All blocks exist; missing: household indirect-tax total (only per-product), per-municipality view beyond Berlin, 2025 Berlin account, Länder functions newer than 2022. |
-| Traceability to raw files (every number → file + coordinates) | 20 % | 9 | 117 raw files in the manifest (plus the payslip registry); every data file carries `source_ref` with coordinates; cached PDFs/HTML have committed extracts with page/row. Berlin functions-2024 still rests on the August extraction (re-verification pending). |
+| Traceability to raw files (every number → file + coordinates) | 20 % | 9 | 117 raw files in the manifest (plus the payslip registry); every data file carries `source_ref` with coordinates; cached PDFs/HTML have committed extracts with page/row. Berlin functions-2024 re-derived from the PDF on 2026-10-12 (review D, 33/33). |
 | Reconciliation (parts sum to official totals, bases never mixed) | 15 % | 9 | Hard checks in every build + `check.py` (0 failures): federal XML → BMF Ist to ±0.3 Mio; COFOG hierarchy; FKA nets to 0; Länder VAT pool = Destatis to the thousand; tax hierarchies exact. |
 | Independent verification | 15 % | 8 | Four independent review passes logged (D: wages, household estimate, Funktionenplan, Berlin PDF re-derivation); (A: re-derivation of all main layers from raw files, every 2024 number reproduced; B: payslip, independent implementation matches 121 official BMF Prüftabellen rows; C: social insurance, PDFs re-read, 3 data mismatches fixed, 8 framing challenges applied). Not yet: a second pass on the Berlin functions-2024 extraction. |
 | Freshness / vintage honesty | 10 % | 8 | 2024 hero + 2025 freshness, labelled; COFOG 2024 provisional; Länder functions 2022 (newest edition). |
@@ -61,13 +61,13 @@ estimate (≈*) next to the exact payslip. It has not been deployed or reviewed 
 | Verification | Berlin functions-2024 PDF re-derivation (review D: 31 of 33 amounts verbatim, 2 via Rechnungssoll − Reste, total exact) | **done** | `docs/research/logs/2026-10-12-review-D-wages-household.md` |
 | Front end | Read `data/` only (hard-coded figures deleted); German UI; whole-state view; payslip; purchases (per item and ≈* per household); time series; debt | **done** | `src/` |
 | Front end | Data check of the v2 envelope + `check.py` in CI (`npm run check:data`) | **done** | `scripts/check-data.ts`, `.github/workflows/ci.yml` |
-| Front end | Visual design per CLAUDE.md (one interactive slide, less text); GitHub Pages deploy | **done, not yet deployed or externally reviewed** | `src/`, `.github/workflows/pages.yml`, `docs/screenshots/` |
+| Front end | Visual design per CLAUDE.md (one interactive slide, less text); GitHub Pages deploy | **done, deployed; not externally reviewed** | `src/`, `.github/workflows/ci.yml`, `docs/screenshots/` |
 | Front end | Plan conformance (`docs/FRONTEND_PLAN.md` v3.1), reviewed 2026-10-12 against screenshots | **done**: You/Germany zooms, statutory payslip (42 examples + 121 BMF rows exact), pots at true size with % composition and pro rata* on hover, transfers removed, borrowing segment, drawer, equalisation map, all-taxes table, time strip, DE/EN, mobile, no-JS, URL state. Round-2 fixes applied (label collisions, Germany ribbon order, mobile employee/employer consistency, trade-tax levy, "(DE)" markers) | `docs/screenshots/` |
 | Front end | Wage-slider ticks: minimum wage* (40 h × 52 weeks), full-time median, average, 2× average | **done** (2026 earnings not published yet: ticks use 2025 and say so) | `data/de/citizen/wage-reference.json`, `src/ui/page.ts` |
 | Front end | Household indirect-tax estimate (≈*) in the You flow: class from net ÷ 12*, dashed ≈ ribbons from net pay to Federation / Länder / municipalities, never added to the exact payslip; Shopping chip toggles it | **done** (estimate by household class, LWR 2024; excise lines are lower bounds per the file's caveats) | `data/de/citizen/household-indirect-taxes.json`, `src/data/model.ts` |
 | Front end | Dark mode (own validated steps), texture mode / forced colours, axe + keyboard audit with a regression test | **done** (`npm run test:a11y`, in CI) | `src/styles.css`, `tests/browser/` |
 | Front end | Non-expert comprehension test (does a first-time visitor get the "ah-ha"?) | **not done** | — |
-| Front end | Pages deploy actually run | **not done** (work is on branch `data-layer-and-slide`; rounds 3–4 uncommitted at the time of writing) | `.github/workflows/pages.yml` |
+| Front end | Pages deploy | **done**: CI runs all checks, then deploys `main` to https://ax6.github.io/where-is-the-tax/ (first deploy 2026-10-12, PR #4) | `.github/workflows/ci.yml` |
 | Data | `legal-allocation.json` lacks a structured trade-tax levy share; `data/README.md` header text still mentions removed legacy files; `build_berlin.py` still reads the legacy Berlin file; German-only sub-function labels (Länder, Berlin); 149 null federal function labels | **open** | `data/`, `scripts/research/` |
 
 ## Contestable items (must be marked `*` on the page)
