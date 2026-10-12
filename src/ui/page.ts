@@ -20,7 +20,6 @@ import {
   type GermanyModel,
   type YouModel,
 } from "../data/model.ts";
-import { proRata } from "../data/prorata.ts";
 import { files, REPO_URL, raw, repoBlob } from "../data/sources.ts";
 import { bn, eur, fill, num, pct, t, titleFor, tr, yearTag, type Lang } from "../i18n.ts";
 import { esc, sourceList, splitBar, swatch } from "./html.ts";
@@ -38,6 +37,8 @@ export interface PageState {
   estimate: boolean;
   /** recipient whose flows are highlighted from the legend */
   highlight: EntityId | null;
+  /** budget whose composition the right-hand column shows */
+  pot: string;
   /** "auto" follows prefers-color-scheme */
   theme: "auto" | "light" | "dark";
   /** recipient textures (always on under forced colours) */
@@ -182,7 +183,8 @@ export function renderHeroTable(state: PageState, you: YouModel, germany: German
         .join("")}</tbody></table>`;
   }
   const p = you.payslip;
-  const share = proRata(you);
+  const selected = you.pots.find((pot) => pot.id === state.pot) ?? you.pots[0]!;
+  const inflow = you.inflow[selected.id] ?? 0;
   return `<table class="data-table compact"><caption>${esc(`${t("stageGross", lang)} ${eur(p.gross, lang)} · ${you.year}`)}</caption>
     <thead><tr><th scope="col">${esc(t("stageDeductions", lang))}</th><th scope="col" class="num">${esc(t("amount", lang))}</th></tr></thead>
     <tbody>${you.flow.nodes
@@ -215,13 +217,14 @@ export function renderHeroTable(state: PageState, you: YouModel, germany: German
           `<tr><th scope="row">${swatch(pot.entity)}${esc(`${tr(pot.label, lang)} · ${yearTag(pot.year, pot.status, 0, lang)}`)}</th><td class="num">${esc(bn(pot.total, lang))}</td></tr>`,
       )
       .join("")}</tbody>
-    <thead><tr><th scope="col">${esc(`${t("proRataHeading", lang)} (${t("proRataShares", lang)} ${share.years[0]}–${share.years[1]})`)}</th><th scope="col" class="num">${esc(t("amount", lang))}</th></tr></thead>
-    <tbody>${share.rows
-      .map(
-        (row) =>
-          `<tr><th scope="row">${esc(`${tr(row.label, lang)}, ${t("proRataIf", lang)}`)}</th><td class="num">${esc(`≈ ${eur(row.exact, lang)}${row.estimate > 0.5 ? ` + ≈ ${eur(row.estimate, lang)}*` : ""}`)}</td></tr>`,
-      )
-      .join("")}</tbody></table>`;
+    <thead><tr><th scope="col">${esc(`${t("ofEvery100", lang)} · ${tr(selected.label, lang)}`)}</th><th scope="col" class="num">${esc(inflow > 0 ? t("yoursColumn", lang) : t("amount", lang))}</th></tr></thead>
+    <tbody>${selected.categories
+      .map((cat) => {
+        const share = cat.value / selected.compositionBase;
+        const mine = inflow * share;
+        return `<tr><th scope="row">${esc(`${pct(share, lang, 1)} · ${tr(cat.label, lang)}${cat.star ? "*" : ""}`)}</th><td class="num">${esc(inflow > 0 ? `${mine < 1 ? `< ${eur(1, lang)}` : `≈ ${eur(mine, lang)}`}*` : bn(cat.value, lang))}</td></tr>`;
+      })
+      .join("")}</tbody></table>${inflow > 0 ? `<p class="section-note">${esc(`* ${t("proRataIfYour", lang).replace("{eur}", eur(inflow, lang))}`)}</p>` : ""}`;
 }
 
 export function renderTaxTable(lang: Lang, year: number, limit?: number): string {

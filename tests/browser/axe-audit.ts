@@ -43,7 +43,7 @@ SCENARIOS.push({ name: "germany-de-2025-dark-1440", hash: "#y=2025&zoom=germany&
 SCENARIOS.push({ name: "you-en-highlight-1440", hash: "#y=2024&lang=en&hl=pension", width: 1440, height: 900 });
 SCENARIOS.push({ name: "you-en-shopping-panel-1440", hash: "#y=2024&lang=en&open=panel:shopping", width: 1440, height: 900 });
 SCENARIOS.push({ name: "you-de-ranking-panel-dark-1440", hash: "#y=2025&lang=de&theme=dark&land=BY&open=panel:ranking", width: 1440, height: 900, colorScheme: "dark" });
-SCENARIOS.push({ name: "you-en-prorata-drawer-1440", hash: "#y=2025&lang=en&land=HH&open=prorata:social", width: 1440, height: 900 });
+SCENARIOS.push({ name: "you-en-land-pot-drawer-1440", hash: "#y=2025&lang=en&land=HH&pot=pot-land&open=pot:pot-land", width: 1440, height: 900 });
 SCENARIOS.push({ name: "you-en-payslip-drawer-1440", hash: "#y=2025&lang=en&open=node:gross", width: 1440, height: 900 });
 SCENARIOS.push({ name: "you-en-shopping-panel-390", hash: "#y=2024&lang=en&open=panel:shopping", width: 390, height: 844 });
 SCENARIOS.push({ name: "you-de-drawer-dark-1440", hash: "#zoom=you&lang=de&theme=dark&open=node:wagetax", width: 1440, height: 900, colorScheme: "dark" });

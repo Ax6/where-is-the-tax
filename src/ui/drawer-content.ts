@@ -38,9 +38,7 @@ import {
   type SourceLink,
   type YouModel,
 } from "../data/model.ts";
-import { COMMON, type CommonId } from "../data/categories.ts";
-import { proRata } from "../data/prorata.ts";
-import { files, raw, repoBlob } from "../data/sources.ts";
+import { files, raw } from "../data/sources.ts";
 import { bi, bn, eur, fill, money, pct, t, tr, yearTag, type Bi, type Lang } from "../i18n.ts";
 import type { DrawerTarget } from "../viz/hero.ts";
 import { badge, esc, sourceList, splitBar, swatch } from "./html.ts";
@@ -126,8 +124,6 @@ export function drawerContent(target: DrawerTarget, ctx: DrawerContext): DrawerC
       return purchaseDrawer(target.id, ctx);
     case "panel":
       return target.id === "shopping" ? shoppingPanel(ctx) : rankingPanel(ctx);
-    case "prorata":
-      return proRataDrawer(target.id as CommonId, ctx);
     case "node":
       return ctx.zoom === "you" ? youNodeDrawer(target.id, ctx) : germanyNodeDrawer(target.id, ctx);
   }
@@ -333,6 +329,9 @@ function estimateDrawer(ctx: DrawerContext): DrawerContent {
 
 // --- pots ------------------------------------------------------------------------------------
 
+/** "≈ €8 of yours*": a pro rata* share of your euros into this budget. */
+const yours = (value: number, lang: Lang): string => `${value < 1 ? `< ${eur(1, lang)}` : `≈ ${eur(value, lang)}`} ${t("ofYours", lang)}*`;
+
 function potDrawer(pot: Pot, ctx: DrawerContext): DrawerContent {
   const { lang } = ctx;
   const inflow = ctx.you.inflow[pot.id] ?? 0;
@@ -348,9 +347,21 @@ function potDrawer(pot: Pot, ctx: DrawerContext): DrawerContent {
           value: `${pct(share, lang, 1)} · ${bn(cat.value, lang)}`,
           share,
           entity: pot.entity,
-          sub: inflow > 0 ? `${t("proRata", lang)} ${eur(inflow * share, lang)}` : undefined,
+          sub: inflow > 0 ? yours(inflow * share, lang) : undefined,
         },
-      ], 1)}</summary>${children.length ? rows(children.map((child) => ({ label: tr(child.label, lang), value: bn(child.value, lang), share: child.value / cat.value })), 1) : ""}</details>`;
+      ], 1)}</summary>${
+        children.length
+          ? rows(
+              children.map((child) => ({
+                label: tr(child.label, lang),
+                value: bn(child.value, lang),
+                share: child.value / cat.value,
+                sub: inflow > 0 ? yours((inflow * child.value) / pot.compositionBase, lang) : undefined,
+              })),
+              1,
+            )
+          : ""
+      }</details>`;
     })
     .join("");
   const transfers = [
@@ -725,52 +736,5 @@ function rankingPanel(ctx: DrawerContext): DrawerContent {
           : "One pooled calculation, no payments from Land to Land. Click a Land to see your flow there; click again for all Länder.",
       )}</p>
       ${section(t("sources", lang), sourceList(equalisationSource(ctx.year), lang))}`,
-  };
-}
-
-function proRataDrawer(id: CommonId, ctx: DrawerContext): DrawerContent {
-  const { lang, you } = ctx;
-  const data = proRata(you);
-  const row = data.rows.find((candidate) => candidate.id === id) ?? data.rows[0]!;
-  const [from, to] = data.years;
-  const parts = [...row.byPot].filter((part) => part.exact + part.estimate > 0.5).sort((a, b) => b.exact + b.estimate - (a.exact + a.estimate));
-  const sentence = parts
-    .map((part) => `${eur(part.exact, lang)} ${lang === "de" ? "über" : "via"} ${tr(part.label, lang)}`)
-    .join(" + ");
-  const potShare = (potId: string): number => {
-    const pot = you.pots.find((candidate) => candidate.id === potId)!;
-    const total = pot.spending.reduce((sum, line) => sum + line.value, 0);
-    const ids = new Set<string>([row.id, ...(row.merged ?? [])]);
-    return pot.spending.filter((line) => ids.has(line.common)).reduce((sum, line) => sum + line.value, 0) / total;
-  };
-  const merged = row.merged?.length ? row.merged.map((m) => tr(COMMON.find((c) => c.id === m)!.label, lang)).join(", ") : "";
-  return {
-    title: tr(row.label, lang),
-    html: `${header(`≈ ${eur(row.exact, lang)}`, `${lang === "de" ? "im Jahr, anteilig*, wenn verteilt wie diese Haushalte" : "a year, pro rata*, if spread like these budgets"}${row.estimate > 0.5 ? ` · + ≈ ${eur(row.estimate, lang)}*` : ""}`, "assumption", lang)}
-      <p class="drawer-joins">${esc(`${tr(COMMON.find((c) => c.id === row.id)!.short, lang)}: ${sentence}`)}</p>
-      ${section(
-        lang === "de" ? "Je Haushalt" : "By budget",
-        rows(
-          parts.map((part) => {
-            const pot = you.pots.find((candidate) => candidate.id === part.potId)!;
-            const tag = yearTag(part.year, pot.status, 0, lang);
-            return {
-              label: `${tr(part.label, lang)} · ${tag}`,
-              sub: `${pct(potShare(part.potId), lang, 1)} ${lang === "de" ? "seiner eigenen Ausgaben" : "of its own spending"} × ${eur(you.inflow[part.potId] ?? 0, lang)}${lang === "de" ? " von Ihnen" : " from you"}`,
-              value: `≈ ${eur(part.exact, lang)}${part.estimate > 0.5 ? ` + ≈ ${eur(part.estimate, lang)}*` : ""}`,
-              share: part.exact + part.estimate,
-              entity: part.entity,
-            };
-          }),
-        ),
-      )}
-      ${merged ? `<p class="drawer-note">${esc(`${lang === "de" ? "Enthält" : "Includes"}: ${merged}.`)}</p>` : ""}
-      <p class="drawer-note prorata">${esc(
-        lang === "de"
-          ? `* Anteilig: Ihre Euro in jeden Haushalt × dessen eigene Ausgabenanteile (${from}–${to}), über alle Haushalte nach gemeinsamen Kategorien summiert. Geld im Haushalt trägt keine Herkunft; das ist eine Rechnung, keine Zuordnung. ≈* Einkäufe: Schätzung, getrennt ausgewiesen.`
-          : `* Pro rata: your euros into each budget × that budget's own spending shares (${from}–${to}), summed across budgets by common category. Money in a budget carries no origin; this is arithmetic, not a trace. ≈* purchases: estimate, shown separately.`,
-      )}</p>
-      <p class="drawer-note">(${esc(lang === "de" ? "Kategorie-Zuordnung, siehe" : "category mapping, see")} <a href="${esc(repoBlob("src/data/categories.ts"))}" rel="noreferrer noopener" target="_blank"><code>src/data/categories.ts</code></a>)</p>
-      ${section(t("sources", lang), sourceList(parts.flatMap((part) => you.pots.find((pot) => pot.id === part.potId)?.sources ?? []), lang))}`,
   };
 }

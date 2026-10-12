@@ -2,7 +2,6 @@
  * The master flow (desktop): GROSS WAGE → TAXES & CONTRIBUTIONS → WHO RECEIVES IT ‖ THE POT IT JOINS,
  * and the Germany zoom: NAMED TAXES & CONTRIBUTIONS → RECIPIENTS ‖ THE CONSOLIDATED STATE.
  */
-import { COMMON } from "../data/categories.ts";
 import {
   cofogRows,
   perResidentPerDay,
@@ -12,7 +11,6 @@ import {
   type Pot,
   type YouModel,
 } from "../data/model.ts";
-import { proRata, type ProRataRow } from "../data/prorata.ts";
 import { bi, bn, eur, num, pct, t, tr, yearTag, type Lang } from "../i18n.ts";
 import { layoutFlow, layoutPots, lerp, resolveColumn, ribbonPath, spreadLabels, type FlowLayout, type LayoutNode } from "./flow-layout.ts";
 import { multiline, svgEl, textWidth, wrap } from "./svg.ts";
@@ -26,8 +24,7 @@ export type DrawerTarget =
   | { kind: "cofog"; code: string }
   | { kind: "bridge"; id: string }
   | { kind: "purchase"; id: string }
-  | { kind: "panel"; id: PanelId }
-  | { kind: "prorata"; id: string };
+  | { kind: "panel"; id: PanelId };
 
 export interface HeroOptions {
   lang: Lang;
@@ -37,6 +34,9 @@ export interface HeroOptions {
   animate: boolean;
   /** recipient highlighted from the legend */
   highlight: EntityId | null;
+  /** the budget whose composition the right-hand column shows */
+  selectedPot: string;
+  onSelectPot: (id: string) => void;
   onOpen: (target: DrawerTarget) => void;
 }
 
@@ -571,8 +571,9 @@ export function renderYou(container: HTMLElement, model: YouModel, options: Hero
   // ---- pots
   const potGroup = svgEl(svg, "g", { class: "pots" });
   const potLabelGroup = svgEl(svg, "g", { class: "pot-labels", "aria-hidden": "true" });
+  const selected = potLayout.pots.find((p) => p.pot.id === options.selectedPot) ?? potLayout.pots[0]!;
   for (const p of potLayout.pots) {
-    const g = svgEl(potGroup, "g", { class: "pot", "data-pot": p.pot.id });
+    const g = svgEl(potGroup, "g", { class: `pot${p === selected ? " is-selected" : ""}`, "data-pot": p.pot.id });
     const rect = svgEl(g, "rect", { x: xp, y: p.y, width: potW, height: p.h, rx: 2, fill: entityFill(p.pot.entity), class: "pot-bar", "data-key": `p-${p.pot.id}` });
     if (p.pot.borrowed) {
       const h = p.pot.borrowed * potLayout.scale;
@@ -587,7 +588,7 @@ export function renderYou(container: HTMLElement, model: YouModel, options: Hero
       g as unknown as SVGElement,
       lang,
       () => potTooltip(p.pot, model.inflow[p.pot.id] ?? 0, lang),
-      () => options.onOpen({ kind: "pot", id: p.pot.id }),
+      () => options.onSelectPot(p.pot.id),
       (on) => highlight([p.pot.id, ...p.pot.recipients], on),
       { visible: potText(p.pot, lang) },
     );
@@ -624,7 +625,7 @@ export function renderYou(container: HTMLElement, model: YouModel, options: Hero
   resolveColumn(potBlocks, top + 4, bottom, 10);
   for (const block of potBlocks) {
     const { p } = block;
-    const g = svgEl(potLabelGroup, "g", { class: "pot-label" });
+    const g = svgEl(potLabelGroup, "g", { class: `pot-label${p === selected ? " is-selected" : ""}` });
     const centre = p.y + p.h / 2;
     const blockCentre = block.y + block.h / 2;
     if (Math.abs(blockCentre - centre) > p.h / 2 + 2) {
@@ -634,21 +635,18 @@ export function renderYou(container: HTMLElement, model: YouModel, options: Hero
     if (block.tag) {
       svgEl(g, "text", { x: potLabelX, y: block.y + 10 + block.lines.length * lineH - 1.5, class: "tag-text" }, block.tag);
     }
-    g.addEventListener("click", () => options.onOpen({ kind: "pot", id: p.pot.id }));
+    g.addEventListener("click", () => options.onSelectPot(p.pot.id));
     relate(p.pot.id, g);
   }
 
-  // ---- your euros, pro rata*, by common category across all budgets
-  renderProRata(svg, model, {
+  // ---- composition of the selected budget, with your euros pro rata* per row
+  renderComposition(svg, selected.pot, model.inflow[selected.pot.id] ?? 0, {
     x: panelX,
     width: W - panelX,
     top,
     bottom,
     lang,
-    year: options.year,
-    onOpen: (id) => options.onOpen({ kind: "prorata", id }),
-    relate,
-    highlight,
+    onOpen: () => options.onOpen({ kind: "pot", id: selected.pot.id }),
   });
 
   tagEntities(svg);
@@ -721,108 +719,111 @@ interface PanelOptions {
   top: number;
   bottom: number;
   lang: Lang;
-  year: number;
-  onOpen: (id: string) => void;
-  relate: (key: string, el: Element) => void;
-  highlight: (keys: string[], on: boolean) => void;
+  onOpen: () => void;
 }
 
-const rowEntities = (row: ProRataRow): { entity: EntityId; exact: number; estimate: number }[] => {
-  const byEntity = new Map<EntityId, { entity: EntityId; exact: number; estimate: number }>();
-  for (const part of row.byPot) {
-    const item = byEntity.get(part.entity) ?? { entity: part.entity, exact: 0, estimate: 0 };
-    item.exact += part.exact;
-    item.estimate += part.estimate;
-    byEntity.set(part.entity, item);
-  }
-  return [...byEntity.values()].filter((item) => item.exact + item.estimate > 0);
-};
+/** "≈ €950" for a pro rata* share of your euros; "< €1" below one euro. */
+const yoursText = (value: number, lang: Lang): string => (value < 1 ? `< ${eur(1, lang)}` : `≈ ${eur(value, lang)}`);
 
 /**
- * "≈ Your € per year, pro rata*": your euros into each budget × that budget's own spending shares, summed by
- * common category (src/data/categories.ts). Bars stacked by recipient hue; the ≈ household part dashed.
- * Every row is worded conditionally.
+ * The selected budget's composition: a 100 % bar with direct labels in % (exact), and on each row your euros
+ * pro rata* (your euros into this budget × the row's share). Clicking a budget switches the column.
  */
-export function renderProRata(svg: SVGSVGElement, model: YouModel, o: PanelOptions): void {
+export function renderComposition(svg: SVGSVGElement, pot: Pot, inflow: number, o: PanelOptions): void {
   const { lang } = o;
-  const data = proRata(model);
-  const g = svgEl(svg, "g", { class: "prorata" });
-  const [from, to] = data.years;
-  svgEl(g, "text", { x: o.x, y: 14, class: "stage-label" }, t("proRataHeading", lang));
-  svgEl(g, "text", { x: o.x, y: o.top + 9, class: "panel-sub" }, `(${t("proRataShares", lang)} ${from === to ? from : `${from}–${to}`})`);
-  const rowsTop = o.top + 22;
-  const n = data.rows.length;
-  const rowH = Math.min(66, (o.bottom - rowsTop) / Math.max(n, 1));
-  const max = Math.max(...data.rows.map((row) => row.exact + row.estimate));
-  const trackW = o.width - 12;
-  data.rows.forEach((row, index) => {
-    const y = rowsTop + index * rowH;
-    const short = tr(COMMON.find((c) => c.id === row.id)!.short, lang);
-    const value = `≈ ${eur(row.exact, lang)}`;
-    const rowG = svgEl(g, "g", { class: "prorata-row" });
-    svgEl(rowG, "rect", { x: o.x - 4, y: y - 2, width: o.width, height: rowH - 4, class: "row-hit" });
-    const nameMax = o.width - 14 - textWidth(`${value} · `, 12.5, 650);
-    const name = wrap(short, nameMax, 12.5, 500, 1)[0] ?? short;
-    const line1 = svgEl(rowG, "text", { x: o.x, y: y + 12, class: "prorata-text" });
-    svgEl(line1, "tspan", { class: "num strong" }, `${value} `);
-    // trailing space: assistive tech joins the two text lines
-    svgEl(line1, "tspan", {}, `· ${name} `);
-    // the ≈ part rides on the conditional line; where that does not fit, it sits after the bar
-    const estimateText = row.estimate > 0.5 ? `+ ≈ ${eur(row.estimate, lang)}*` : "";
-    const withEstimate = estimateText ? `${t("proRataIf", lang)} · ${estimateText}` : t("proRataIf", lang);
-    const estimateInline = textWidth(withEstimate, 11, 400) <= o.width - 8;
-    const conditional = estimateInline ? withEstimate : (wrap(t("proRataIf", lang), o.width - 8, 11, 400, 1)[0] ?? "");
-    svgEl(rowG, "text", { x: o.x, y: y + 26, class: "prorata-if" }, conditional);
-    let bx = o.x;
-    const barY = y + 32;
-    const barH = Math.max(5, Math.min(9, rowH - 40));
-    for (const part of rowEntities(row)) {
-      const w = (part.exact / max) * trackW;
-      if (w > 0.2) {
-        svgEl(rowG, "rect", { x: bx, y: barY, width: Math.max(0.5, w - 1), height: barH, rx: 1, fill: entityFill(part.entity), class: "prorata-seg" });
-        bx += w;
-      }
+  const g = svgEl(svg, "g", { class: "composition" });
+  svgEl(g, "text", { x: o.x, y: 14, class: "stage-label" }, `${t("ofEvery100", lang)} · ${tr(pot.label, lang)}`);
+  const headerLines = wrap(`${bn(pot.compositionBase, lang)} ${tr(pot.compositionLabel, lang)}`, o.width - 8, 11.5, 400, 2);
+  multiline(g, headerLines, { x: o.x, y: o.top + 10, class: "panel-sub" }, 13);
+  const yours = inflow > 0;
+  const yoursW = yours ? 62 : 0;
+  if (yours) {
+    svgEl(g, "text", { x: o.x + o.width - 4, y: o.top + 14 + headerLines.length * 13 + 6, class: "panel-sub", "text-anchor": "end" }, t("yoursColumn", lang));
+  }
+  const barTop = o.top + 14 + headerLines.length * 13 + (yours ? 14 : 0);
+  const noteLines = yours ? wrap(`* ${t("proRataIfYour", lang).replace("{eur}", eur(inflow, lang))}`, o.width - 8, 11, 400, 2) : [];
+  const footer = (pot.transferOut ? 30 : 0) + (pot.borrowed ? 30 : 0) + noteLines.length * 13 + (yours ? 6 : 0) + 18;
+  const barBottom = o.bottom - footer;
+  const barH = barBottom - barTop;
+  const barW = 12;
+  const gap = 2;
+  const cats = pot.categories;
+  const usable = barH - gap * (cats.length - 1);
+  let y = barTop;
+  const segs = cats.map((cat) => {
+    const h = Math.max(1, (cat.value / pot.compositionBase) * usable);
+    const seg = { cat, y, h };
+    y += h + gap;
+    return seg;
+  });
+  const labelX = o.x + barW + 10;
+  const placed = spreadLabels(
+    segs.map((s) => s.y + s.h / 2),
+    30,
+    barTop + 6,
+    barBottom,
+  );
+  segs.forEach((s, index) => {
+    const share = s.cat.value / pot.compositionBase;
+    const segG = svgEl(g, "g", { class: "comp-seg" });
+    svgEl(segG, "rect", { x: o.x, y: s.y, width: barW, height: s.h, rx: 1.5, fill: entityFill(pot.entity), class: "comp-bar" });
+    const hatch = svgEl(segG, "rect", { x: o.x, y: s.y, width: barW, height: s.h, fill: "url(#hatch)", class: "comp-hatch" });
+    hatch.setAttribute("opacity", "0");
+    const ly = placed[index]!;
+    if (Math.abs(ly - (s.y + s.h / 2)) > s.h / 2) {
+      svgEl(segG, "path", { d: `M${o.x + barW + 1},${s.y + s.h / 2}L${labelX - 2},${ly - 4}`, class: "leader" });
     }
-    for (const part of rowEntities(row)) {
-      const w = (part.estimate / max) * trackW;
-      if (w > 0.6) {
-        svgEl(rowG, "rect", { x: bx + 0.5, y: barY + 0.5, width: Math.max(0.5, w - 1.5), height: barH - 1, class: "node-estimate", stroke: entityFill(part.entity) });
-        bx += w;
-      }
+    const nameLines = wrap(`${tr(s.cat.label, lang)}${s.cat.star ? "*" : ""}`, o.width - barW - 72 - yoursW, 12, 400, 2);
+    const ty = ly - 1 - (nameLines.length - 1) * 6.5;
+    svgEl(segG, "text", { x: labelX, y: ty, class: "comp-pct num strong" }, pct(share, lang, 1));
+    multiline(segG, nameLines, { x: labelX + 50, y: ty, class: "comp-name" }, 13);
+    const mine = inflow * share;
+    if (yours) {
+      svgEl(segG, "text", { x: o.x + o.width - 4, y: ty, class: "comp-yours num", "text-anchor": "end" }, `${yoursText(mine, lang)}*`);
     }
-    const afterBar = !estimateInline && estimateText && bx + 6 + textWidth(estimateText, 11, 400) <= o.x + o.width;
-    if (afterBar) {
-      svgEl(rowG, "text", { x: bx + 5, y: barY + barH - 0.5, class: "prorata-if" }, estimateText);
-    }
-    const entities = rowEntities(row);
     interactive(
-      rowG as unknown as SVGElement,
+      segG as unknown as SVGElement,
       lang,
       () => ({
-        value,
-        title: tr(row.label, lang),
-        lines: entities.map((part) => `${ENTITY_SHORT[part.entity][lang]} ≈ ${eur(part.exact, lang)}${part.estimate > 0.5 ? ` + ≈ ${eur(part.estimate, lang)}*` : ""}`),
-        status: "assumption" as const,
-        body: tr(PRO_RATA, lang),
+        value: pct(share, lang, 1),
+        title: tr(s.cat.label, lang),
+        lines: [`${bn(s.cat.value, lang)} ${lang === "de" ? "von" : "of"} ${bn(pot.compositionBase, lang)}`],
+        prorata: yours ? `${t("proRata", lang)}: ${eur(inflow, lang)} × ${pct(share, lang, 1)} = ${eur(mine, lang)}` : undefined,
+        status: pot.status,
+        body: yours ? tr(PRO_RATA, lang) : undefined,
         hint: true,
       }),
-      () => o.onOpen(row.id),
-      (on) => o.highlight(row.byPot.flatMap((part) => [part.potId, ...(model.pots.find((pot) => pot.id === part.potId)?.recipients ?? [])]), on),
-      { visible: `${value} · ${name} ${conditional}${afterBar ? ` ${estimateText}` : ""}` },
+      o.onOpen,
+      (on) => hatch.setAttribute("opacity", on ? "1" : "0"),
+      { visible: `${pct(share, lang, 1)} ${nameLines.join(" ")}${yours ? ` ${yoursText(mine, lang)}*` : ""}` },
     );
   });
+  let fy = barBottom + 16;
+  if (pot.transferOut) {
+    const lines = wrap(`${tr(pot.transferOut.label, lang)}: ${bn(pot.transferOut.value, lang)}`, o.width - 20, 11.5, 400, 2);
+    svgEl(g, "rect", { x: o.x + 0.75, y: fy - 9, width: barW - 1.5, height: 9, class: "pot-transfer", stroke: entityFill(pot.entity) });
+    multiline(g, lines, { x: labelX, y: fy, class: "panel-note" }, 13);
+    fy += 30;
+  }
+  if (pot.borrowed) {
+    svgEl(g, "rect", { x: o.x, y: fy - 9, width: barW, height: 9, class: "pot-borrowed" });
+    svgEl(g, "text", { x: labelX, y: fy, class: "panel-note" }, `${t("borrowed", lang)}: ${bn(pot.borrowed, lang)} (${lang === "de" ? "Nettokreditaufnahme" : "net borrowing"})`);
+    fy += 30;
+  }
+  if (noteLines.length) {
+    multiline(g, noteLines, { x: o.x, y: fy - 6, class: "panel-note" }, 13);
+  }
+  const more = svgEl(g, "text", { x: o.x, y: o.bottom - 2, class: "panel-more" }, lang === "de" ? "Details, Vergleich und Quellen ›" : "Details, comparison and sources ›");
+  more.setAttribute("tabindex", "0");
+  more.setAttribute("role", "button");
+  more.addEventListener("click", o.onOpen);
+  more.addEventListener("keydown", (event) => {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      o.onOpen();
+    }
+  });
 }
-
-const ENTITY_SHORT: Record<EntityId, { de: string; en: string }> = {
-  fed: { de: "über den Bund", en: "via the Federation" },
-  land: { de: "über das Land", en: "via the Land" },
-  muni: { de: "über die Gemeinden", en: "via municipalities" },
-  eu: { de: "EU", en: "EU" },
-  pension: { de: "Rentenversicherung", en: "pension insurance" },
-  health: { de: "Krankenversicherung", en: "health insurance" },
-  care: { de: "Pflegeversicherung", en: "care insurance" },
-  unemp: { de: "Arbeitslosenversicherung", en: "unemployment insurance" },
-};
 
 const PRO_RATA = {
   de: "* Anteilig: wenn Ihr Beitrag so verteilt wäre wie dieser Haushalt. Geld im Haushalt trägt keine Herkunft.",

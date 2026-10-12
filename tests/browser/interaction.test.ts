@@ -78,3 +78,29 @@ test("map as place picker: click a Land, click it again for all Länder", { time
     server.close();
   }
 });
+
+test("budget column: clicking a budget switches its composition and every row carries your euros", { timeout: 120_000 }, async () => {
+  const { server, url } = await serveDist();
+  const browser = await chromium.launch();
+  try {
+    const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
+    await page.goto(`${url}#y=2025&lang=en&wage=31400`, { waitUntil: "networkidle" });
+    // default: the federal budget, "of every €100", with a "≈ yours*" figure on each row
+    assert.match((await page.locator(".composition .stage-label").textContent()) ?? "", /of every €100 · Federal budget/);
+    const rows = await page.locator(".composition .comp-seg").count();
+    assert.ok(rows > 3);
+    assert.equal(await page.locator(".composition .comp-yours").count(), rows);
+    // clicking the Länder budget switches the column and records it in the URL
+    await page.click(".pot[data-pot='pot-land']");
+    await page.waitForFunction(() => /pot=pot-land/.test(window.location.hash));
+    assert.match((await page.locator(".composition .stage-label").textContent()) ?? "", /Länder budgets/);
+    assert.equal(await page.locator(".pot.is-selected").getAttribute("data-pot"), "pot-land");
+    // the budget drawer gives your euros for each sub-item too
+    await page.click(".composition .panel-more");
+    await page.waitForSelector("#drawer:not([hidden]) .dr-sub");
+    assert.match((await page.locator("#drawer .dr-sub").first().textContent()) ?? "", /of yours\*/);
+  } finally {
+    await browser.close();
+    server.close();
+  }
+});

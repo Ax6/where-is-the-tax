@@ -87,7 +87,7 @@ test("tags show only where the year differs or the figure is provisional", () =>
 });
 
 test("rendered page and drawers follow the year; 2026 appears only as the payslip's one line", () => {
-  const state: PageState = { zoom: "you", wage: 54_066, wageSet: false, land: GERMANY_CODE, year: 2025, lang: "en", unit: "bn", estimate: true, highlight: null, theme: "auto", tex: false };
+  const state: PageState = { zoom: "you", wage: 54_066, wageSet: false, land: GERMANY_CODE, year: 2025, lang: "en", unit: "bn", estimate: true, highlight: null, theme: "auto", tex: false, pot: "pot-fed" };
   const you = buildYou(2025, state.wage, state.land, { estimate: true });
   const germany = buildGermany(2025);
   const html = renderPage(state, you, germany);

@@ -5,9 +5,11 @@ Status: **v4 (2026-10-12)**. History:
 - v2 merged in the good ideas from the existing prototype.
 - v3 applies an independent critique; v3.1 added the data contract.
 - v4 applies the site owner's redesign with a designer's decisions: one global year control
-  (2024 | 2025), the map as place picker beside the flow, "your € per year, pro rata\*" across
-  all budgets instead of one selected pot's composition, the Shopping panel instead of the
+  (2024 | 2025), the map as place picker beside the flow, the Shopping panel instead of the
   purchase strip, a merged legend/chip row, and tags only where a year differs.
+- v4.1 (2026-10-12) corrects a miscommunication in v4. v4 replaced the selected budget's "of every €100"
+  column with a cross-budget "your € per year" list. The owner wanted the column kept, with your euros
+  added. The column is back, and each row and each drawer sub-item now shows "≈ €X of yours\*".
 
 ## The question, at two zooms
 
@@ -25,7 +27,7 @@ say so in one line.
 ## The master flow (left → right)
 
 ```
-GROSS WAGE → TAXES & CONTRIBUTIONS → WHO RECEIVES IT (by law) ‖ boundary ‖ TOTAL BUDGET IT GOES INTO → ≈ YOUR € PER YEAR, PRO RATA*
+GROSS WAGE → TAXES & CONTRIBUTIONS → WHO RECEIVES IT (by law) ‖ boundary ‖ TOTAL BUDGET IT GOES INTO → OF EVERY €100 (selected budget, ≈ yours*)
 ```
 
 - **Gross wage** is one bar. Employer contributions sit beside it as a ghost bar labelled
@@ -44,16 +46,15 @@ GROSS WAGE → TAXES & CONTRIBUTIONS → WHO RECEIVES IT (by law) ‖ boundary �
   - §30 SGB IV fences each system to its own tasks, but inside the fence contributions mix with
     federal grants, the Gesundheitsfonds, and reserve movements.
   - So the honest contrast is **"fenced pool vs. general budget"**, never "traceable vs. not".
-- **Personal € beyond the boundary (v4):** a right-hand column "≈ Your € per year, pro rata\*
-  (shares 2022–2025)". Your euros into each budget × that budget's own spending shares, summed
-  across budgets into eight common categories (mapping documented in `src/data/categories.ts`,
-  rows tested to sum to the total in `tests/prorata.test.ts`). At most six rows plus "other",
-  sorted. Every row is worded conditionally ("≈ €742 · transport and infrastructure, if spread
-  like these budgets"); bars are stacked by recipient hue; the ≈\* household estimate is a
-  separate dashed part, never mixed into the exact euros. A row's drawer gives the per-budget
-  breakdown ("€348 via Federal budget + €216 via Bavaria budget") and links the mapping. Mixed
-  source lines that cannot be split (e.g. municipal "building, transport, utilities") go to
-  "other", never to a named category. Never "your tax paid for".
+- **Personal € beyond the boundary (v4.1):** the right-hand column shows the selected budget's
+  composition, "of every €100 · Federal budget". Clicking a budget switches it, and the URL keeps
+  it as `pot=`. Each row shows the exact % plus "≈ €X\*" under a "≈ yours\*" header: your euros
+  into this budget × the row's share. A footnote reads "if your €1,117 a year were spread like
+  this budget". The budget drawer repeats this for every sub-item ("Defence (federal only) €67.0bn ·
+  ≈ €207 of yours\*").
+  - Each budget is shown on its own, so there is no cross-budget category mapping. The ≈\*
+    household estimate stays out of these euros.
+  - Never "your tax paid for".
 - **Remove transfers at every scale.** Federal grants to pension and health insurance are a
   transfer edge, not federal spending. The federal pot's composition excludes them, so the same
   euro never appears twice.
@@ -131,7 +132,8 @@ The data year is labelled per value. A Land whose spending data is 2021 says so 
 - **Desktop 1440×900:** the control row, the legend row, the map (240 px) and the master flow
   (~1,130 px) fit without scrolling. Drawers and panels overlay from the right.
 - **Mobile 390 px:** don't rotate the Sankey. Each stage becomes one 100 % stacked bar, with a
-  tappable list under it showing amount and share; the last stage is the pro rata\* list. The map
+  tappable list under it showing amount and share. Budgets are selectable, and the last stage is the
+  selected budget's composition with "≈ €X of yours\*" per row. The map
   sits at the top beside its key; year and all controls collapse into the settings sheet; panels
   are full-height sheets with 48 px purchase rows (label above the bar).
 - **No JavaScript:** a static summary and table.
@@ -147,7 +149,6 @@ numbers and its `*` markers as given.
 |---|---|---|
 | Payslip (You zoom) | `de/citizen/payslip-parameters.json` | Computed in the browser from the parameters. **A unit test must reproduce every row of `payslip-examples.json` exactly.** Year 2024 or 2025 from the global control; 2026 only as the drawer's one line. |
 | Year (v4) | all files below | 2025 is read where it exists: federal budget (Ist, reconciled to €493.3bn, "2025 provisional"), social insurance, equalisation (provisional), named taxes, EU, wage references, population. Not published for 2025: Länder functions (2022), Berlin and municipal accounts (2024), COFOG/ESA state side (2024), household survey (2024): these keep their year tag. `tests/year.test.ts` checks every view. |
-| Pro rata\* (v4) | each pot's own spending lines | Mapped to eight common categories in `src/data/categories.ts` (federal Funktionenplan codes, Destatis Länder groups, Berlin's account, municipal product areas, social insurers' lines). |
 | Employer ghost bar | same | |
 | Legal split of each tax | `de/taxes/legal-allocation.json` | Wage tax 42.5/42.5/15; VAT annual formula |
 | Purchase layers ≈ | `de/citizen/purchase-taxes.json` | Rates are law; prices carry `*` |
