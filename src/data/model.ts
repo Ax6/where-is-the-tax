@@ -1141,11 +1141,11 @@ export function buildGermany(year = 2024): GermanyModel {
     label: bi("Steuern auf Kapitalerträge", "Taxes on capital income"),
     parts: [...capital.entries()].map(([to, value]) => ({ to, value })),
   });
-  taxNodes.push({ id: "STEUERNVB20", label: bi("Bundessteuern (Energie, Tabak, Soli …)", "Federal taxes (energy, tobacco, soli …)"), parts: [{ to: "fed", value: taxValue("STEUERNVB20", Y), share: 1 }] });
-  taxNodes.push({ id: "STEUERNVL20", label: bi("Landessteuern (Grunderwerb, Erbschaft …)", "Länder taxes (real estate, inheritance …)"), parts: [{ to: "land", value: taxValue("STEUERNVL20", Y), share: 1 }] });
+  taxNodes.push({ id: "STEUERNVB20", label: bi("Bundessteuern (Energie, Tabak, Soli\u00a0…)", "Federal taxes (energy, tobacco, soli\u00a0…)"), parts: [{ to: "fed", value: taxValue("STEUERNVB20", Y), share: 1 }] });
+  taxNodes.push({ id: "STEUERNVL20", label: bi("Landessteuern (Grunderwerb, Erbschaft\u00a0…)", "Länder taxes (real estate, inheritance\u00a0…)"), parts: [{ to: "land", value: taxValue("STEUERNVL20", Y), share: 1 }] });
   taxNodes.push({
     id: "municipal-other",
-    label: bi("Grundsteuer und übrige Gemeindesteuern", "Property tax and other local taxes"),
+    label: bi("Grundsteuer u.\u00a0a.", "Property and local taxes"),
     parts: [{ to: "muni", value: taxValue("STEUERNVK20", Y) - taxValue("STEUERARTK30", Y), share: 1 }],
   });
   taxNodes.push({ id: "STEUERARTZ10", label: allocation("STEUERARTZ10").label, parts: [{ to: "eu", value: taxValue("STEUERARTZ10", Y), share: 1 }] });

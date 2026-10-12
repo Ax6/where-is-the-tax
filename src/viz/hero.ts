@@ -146,6 +146,12 @@ function stageLabel(svg: SVGSVGElement, x: number, text: string, anchor: "start"
     svgEl(svg, "text", { x, y: 14, class: "stage-label", "text-anchor": anchor }, text);
     return;
   }
+  // a slightly smaller single line reads better than a wrapped header that crowds the chart
+  const size = (11 * maxWidth) / (text.length * charW);
+  if (size >= 9.5) {
+    svgEl(svg, "text", { x, y: 14, class: "stage-label", "text-anchor": anchor, style: `font-size:${size.toFixed(2)}px` }, text);
+    return;
+  }
   const words = text.split(" ");
   let first = "";
   while (words.length && `${first} ${words[0]}`.trim().length * charW <= maxWidth) {
@@ -757,9 +763,18 @@ export function renderComposition(svg: SVGSVGElement, pot: Pot, inflow: number, 
     return seg;
   });
   const labelX = o.x + barW + 10;
+  // long category names get a third line when every row still fits; otherwise two lines with "…"
+  const nameWidth = o.width - barW - 72 - yoursW;
+  const nameOf = (cat: (typeof cats)[number], lines: number) => wrap(`${tr(cat.label, lang)}${cat.star ? "*" : ""}`, nameWidth, 12, 400, lines);
+  let names = cats.map((cat) => nameOf(cat, 3));
+  let rowGap = names.some((lines) => lines.length > 2) ? 43 : 30;
+  if (cats.length * rowGap > barBottom - barTop - 6) {
+    names = cats.map((cat) => nameOf(cat, 2));
+    rowGap = 30;
+  }
   const placed = spreadLabels(
     segs.map((s) => s.y + s.h / 2),
-    30,
+    rowGap,
     barTop + 6,
     barBottom,
   );
@@ -773,7 +788,7 @@ export function renderComposition(svg: SVGSVGElement, pot: Pot, inflow: number, 
     if (Math.abs(ly - (s.y + s.h / 2)) > s.h / 2) {
       svgEl(segG, "path", { d: `M${o.x + barW + 1},${s.y + s.h / 2}L${labelX - 2},${ly - 4}`, class: "leader" });
     }
-    const nameLines = wrap(`${tr(s.cat.label, lang)}${s.cat.star ? "*" : ""}`, o.width - barW - 72 - yoursW, 12, 400, 2);
+    const nameLines = names[index]!;
     const ty = ly - 1 - (nameLines.length - 1) * 6.5;
     svgEl(segG, "text", { x: labelX, y: ty, class: "comp-pct num strong" }, pct(share, lang, 1));
     multiline(segG, nameLines, { x: labelX + 50, y: ty, class: "comp-name" }, 13);
