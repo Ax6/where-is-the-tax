@@ -1,7 +1,8 @@
 # Research learnings
 
-> Research status: **COLLECTED, AWAITING INDEPENDENT VERIFICATION** (2026-08-05). The complete
-> evidence-backed analysis is in
+> Research status: **CORE ROUTE CLAIMS INDEPENDENTLY VERIFIED** (2026-08-05). Later all-Länder,
+> account, and social-insurance additions are cross-checked but still await an independent pass;
+> observation-level provenance and evidence snapshots also remain. The complete analysis is in
 > [`GERMANY_FISCAL_GRAPH_2026-08-05.md`](./GERMANY_FISCAL_GRAPH_2026-08-05.md).
 
 This file carries stable conclusions into future research runs. Volatile availability, release
