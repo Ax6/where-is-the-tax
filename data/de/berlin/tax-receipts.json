@@ -1,0 +1,557 @@
+{
+ "schema_version": 2,
+ "id": "de.berlin.tax_receipts",
+ "title": {
+  "de": "Steuereinnahmen des Landes Berlin (Land- und Gemeindeanteile)",
+  "en": "Tax receipts of Berlin (Land and municipal roles)"
+ },
+ "unit": "EUR",
+ "basis": "Cash receipts Jan-Dec as published monthly by the Senatsverwaltung für Finanzen; Berlin is Land and municipality at once, so both roles appear. Gross trade tax is shown with the levy paid to the Federation/Land as a negative line.",
+ "generated": "2026-10-09",
+ "generated_by": "scripts/research/build_berlin.py",
+ "groups": {
+  "land_share_joint": {
+   "de": "Landesanteil an den Gemeinschaftsteuern",
+   "en": "Land share of joint taxes"
+  },
+  "land_taxes": {
+   "de": "Landessteuern",
+   "en": "Land taxes"
+  },
+  "municipal_taxes": {
+   "de": "Gemeindesteuern",
+   "en": "Municipal taxes"
+  },
+  "municipal_share_joint": {
+   "de": "Gemeindeanteile an Gemeinschaftsteuern",
+   "en": "Municipal share of joint taxes"
+  }
+ },
+ "years": {
+  "2024": {
+   "status": "final cash receipts (Jan-Dec)",
+   "total_eur": 27302328000,
+   "groups_eur": {
+    "land_share_joint": 19308385000,
+    "land_taxes": 1445364000,
+    "municipal_taxes": 3770265000,
+    "municipal_share_joint": 2778314000
+   },
+   "items": [
+    {
+     "id": "land_share_joint:Lohnsteuer",
+     "label": {
+      "de": "Lohnsteuer",
+      "en": "Wage tax"
+     },
+     "group": "land_share_joint",
+     "value_eur": 5182891000,
+     "csv_row": 2
+    },
+    {
+     "id": "land_share_joint:Veranlagte Einkommensteuer",
+     "label": {
+      "de": "Veranlagte Einkommensteuer",
+      "en": "Assessed income tax"
+     },
+     "group": "land_share_joint",
+     "value_eur": 1377656000,
+     "csv_row": 3
+    },
+    {
+     "id": "land_share_joint:Nicht veranlagte Steuer vom Ertrag",
+     "label": {
+      "de": "Nicht veranlagte Steuer vom Ertrag",
+      "en": "Non-assessed taxes on yields"
+     },
+     "group": "land_share_joint",
+     "value_eur": 497227000,
+     "csv_row": 4
+    },
+    {
+     "id": "land_share_joint:Abgeltungsteuer auf Zins.- u. Veräußerungserträge",
+     "label": {
+      "de": "Abgeltungsteuer auf Zins.- u. Veräußerungserträge",
+      "en": "Final withholding tax"
+     },
+     "group": "land_share_joint",
+     "value_eur": 408594000,
+     "csv_row": 5
+    },
+    {
+     "id": "land_share_joint:Körperschaftsteuer",
+     "label": {
+      "de": "Körperschaftsteuer",
+      "en": "Corporation tax"
+     },
+     "group": "land_share_joint",
+     "value_eur": 1094631000,
+     "csv_row": 6
+    },
+    {
+     "id": "land_share_joint:Umsatzsteuer",
+     "label": {
+      "de": "Umsatzsteuer",
+      "en": "VAT"
+     },
+     "group": "land_share_joint",
+     "value_eur": 9105159000,
+     "csv_row": 7
+    },
+    {
+     "id": "land_share_joint:Einfuhr-Umsatzsteuer",
+     "label": {
+      "de": "Einfuhr-Umsatzsteuer",
+      "en": "Import VAT"
+     },
+     "group": "land_share_joint",
+     "value_eur": 1488726000,
+     "csv_row": 8
+    },
+    {
+     "id": "land_share_joint:Gewerbesteuerumlage Land",
+     "label": {
+      "de": "Gewerbesteuerumlage Land",
+      "en": "Trade-tax levy (Land component)"
+     },
+     "group": "land_share_joint",
+     "value_eur": 153501000,
+     "csv_row": 9
+    },
+    {
+     "id": "land_taxes:Vermögensteuer",
+     "label": {
+      "de": "Vermögensteuer",
+      "en": "Net worth tax"
+     },
+     "group": "land_taxes",
+     "value_eur": 0,
+     "csv_row": 10
+    },
+    {
+     "id": "land_taxes:Erbschaftsteuer",
+     "label": {
+      "de": "Erbschaftsteuer",
+      "en": "Inheritance tax"
+     },
+     "group": "land_taxes",
+     "value_eur": 415369000,
+     "csv_row": 11
+    },
+    {
+     "id": "land_taxes:Grunderwerbsteuer",
+     "label": {
+      "de": "Grunderwerbsteuer",
+      "en": "Real-estate transfer tax"
+     },
+     "group": "land_taxes",
+     "value_eur": 910834000,
+     "csv_row": 12
+    },
+    {
+     "id": "land_taxes:Rennwett- und Lotteriesteuer",
+     "label": {
+      "de": "Rennwett- und Lotteriesteuer",
+      "en": "Betting and lottery tax"
+     },
+     "group": "land_taxes",
+     "value_eur": 82463000,
+     "csv_row": 13
+    },
+    {
+     "id": "land_taxes:Biersteuer",
+     "label": {
+      "de": "Biersteuer",
+      "en": "Beer tax"
+     },
+     "group": "land_taxes",
+     "value_eur": 11323000,
+     "csv_row": 14
+    },
+    {
+     "id": "land_taxes:Feuerschutzsteuer",
+     "label": {
+      "de": "Feuerschutzsteuer",
+      "en": "Fire protection tax"
+     },
+     "group": "land_taxes",
+     "value_eur": 25375000,
+     "csv_row": 15
+    },
+    {
+     "id": "municipal_taxes:Grundsteuer",
+     "label": {
+      "de": "Grundsteuer",
+      "en": "Property tax"
+     },
+     "group": "municipal_taxes",
+     "value_eur": 870447000,
+     "csv_row": 16
+    },
+    {
+     "id": "municipal_taxes:Gewerbesteuer",
+     "label": {
+      "de": "Gewerbesteuer",
+      "en": "Trade tax (gross)"
+     },
+     "group": "municipal_taxes",
+     "value_eur": 3011215000,
+     "csv_row": 17
+    },
+    {
+     "id": "municipal_taxes:Gewerbesteuerumlage Gesamt",
+     "label": {
+      "de": "Gewerbesteuerumlage Gesamt",
+      "en": "Trade-tax levy paid (total)"
+     },
+     "group": "municipal_taxes",
+     "value_eur": -262074000,
+     "csv_row": 18
+    },
+    {
+     "id": "municipal_taxes:Vergnügungsteuer",
+     "label": {
+      "de": "Vergnügungsteuer",
+      "en": "Entertainment tax"
+     },
+     "group": "municipal_taxes",
+     "value_eur": 32908000,
+     "csv_row": 19
+    },
+    {
+     "id": "municipal_taxes:Hundesteuer",
+     "label": {
+      "de": "Hundesteuer",
+      "en": "Dog tax"
+     },
+     "group": "municipal_taxes",
+     "value_eur": 12786000,
+     "csv_row": 20
+    },
+    {
+     "id": "municipal_taxes:Zweitwohnungsteuer",
+     "label": {
+      "de": "Zweitwohnungsteuer",
+      "en": "Second-home tax"
+     },
+     "group": "municipal_taxes",
+     "value_eur": 15364000,
+     "csv_row": 21
+    },
+    {
+     "id": "municipal_taxes:Übernachtungsteuer",
+     "label": {
+      "de": "Übernachtungsteuer",
+      "en": "Overnight-stay tax"
+     },
+     "group": "municipal_taxes",
+     "value_eur": 89619000,
+     "csv_row": 22
+    },
+    {
+     "id": "municipal_share_joint:Umsatzsteuer",
+     "label": {
+      "de": "Umsatzsteuer",
+      "en": "VAT"
+     },
+     "group": "municipal_share_joint",
+     "value_eur": 351392000,
+     "csv_row": 23
+    },
+    {
+     "id": "municipal_share_joint:Lohn- und Einkommensteuer",
+     "label": {
+      "de": "Lohn- und Einkommensteuer",
+      "en": "Wage and income tax"
+     },
+     "group": "municipal_share_joint",
+     "value_eur": 2315487000,
+     "csv_row": 24
+    },
+    {
+     "id": "municipal_share_joint:Abgeltungsteuer auf Zins.-u.V.erträge",
+     "label": {
+      "de": "Abgeltungsteuer auf Zins.-u.V.erträge",
+      "en": "Final withholding tax"
+     },
+     "group": "municipal_share_joint",
+     "value_eur": 111435000,
+     "csv_row": 25
+    }
+   ],
+   "source": {
+    "source_id": "berlin_steuereinnahmen",
+    "file": "steuereinnahmen_12_2024.csv",
+    "path": "research/raw/berlin_steuereinnahmen/steuereinnahmen_12_2024.csv",
+    "url": "https://www.berlin.de/sen/finanzen/service/daten/steuereinnahmen_12_2024.csv",
+    "retrieved": "2026-10-09T12:45:32Z",
+    "sha256": "a98e6049260a31d7dd7e5b4ccc438f82dec1cd6b0586cf490308a0d6f7cb84b6",
+    "licence": "CC BY (cc-by per CKAN metadata); attribution: Senatsverwaltung für Finanzen Berlin",
+    "coordinates": "column 'Einnahmen Januar bis Dezember' (T EUR) × 1000; row numbers per item"
+   }
+  },
+  "2025": {
+   "status": "final cash receipts (Jan-Dec)",
+   "total_eur": 28656044000,
+   "groups_eur": {
+    "land_share_joint": 19930649000,
+    "land_taxes": 1632271000,
+    "municipal_taxes": 4129888000,
+    "municipal_share_joint": 2963236000
+   },
+   "items": [
+    {
+     "id": "land_share_joint:Lohnsteuer",
+     "label": {
+      "de": "Lohnsteuer",
+      "en": "Wage tax"
+     },
+     "group": "land_share_joint",
+     "value_eur": 5562634000,
+     "csv_row": 2
+    },
+    {
+     "id": "land_share_joint:Veranlagte Einkommensteuer",
+     "label": {
+      "de": "Veranlagte Einkommensteuer",
+      "en": "Assessed income tax"
+     },
+     "group": "land_share_joint",
+     "value_eur": 1378186000,
+     "csv_row": 3
+    },
+    {
+     "id": "land_share_joint:Nicht veranlagte Steuer vom Ertrag",
+     "label": {
+      "de": "Nicht veranlagte Steuer vom Ertrag",
+      "en": "Non-assessed taxes on yields"
+     },
+     "group": "land_share_joint",
+     "value_eur": 558668000,
+     "csv_row": 4
+    },
+    {
+     "id": "land_share_joint:Abgeltungsteuer auf Zins.- u. Veräußerungserträge",
+     "label": {
+      "de": "Abgeltungsteuer auf Zins.- u. Veräußerungserträge",
+      "en": "Final withholding tax"
+     },
+     "group": "land_share_joint",
+     "value_eur": 519362000,
+     "csv_row": 5
+    },
+    {
+     "id": "land_share_joint:Körperschaftsteuer",
+     "label": {
+      "de": "Körperschaftsteuer",
+      "en": "Corporation tax"
+     },
+     "group": "land_share_joint",
+     "value_eur": 1084539000,
+     "csv_row": 6
+    },
+    {
+     "id": "land_share_joint:Umsatzsteuer",
+     "label": {
+      "de": "Umsatzsteuer",
+      "en": "VAT"
+     },
+     "group": "land_share_joint",
+     "value_eur": 9206063000,
+     "csv_row": 7
+    },
+    {
+     "id": "land_share_joint:Einfuhr-Umsatzsteuer",
+     "label": {
+      "de": "Einfuhr-Umsatzsteuer",
+      "en": "Import VAT"
+     },
+     "group": "land_share_joint",
+     "value_eur": 1461059000,
+     "csv_row": 8
+    },
+    {
+     "id": "land_share_joint:Gewerbesteuerumlage Land",
+     "label": {
+      "de": "Gewerbesteuerumlage Land",
+      "en": "Trade-tax levy (Land component)"
+     },
+     "group": "land_share_joint",
+     "value_eur": 160138000,
+     "csv_row": 9
+    },
+    {
+     "id": "land_taxes:Vermögensteuer",
+     "label": {
+      "de": "Vermögensteuer",
+      "en": "Net worth tax"
+     },
+     "group": "land_taxes",
+     "value_eur": 1000,
+     "csv_row": 10
+    },
+    {
+     "id": "land_taxes:Erbschaftsteuer",
+     "label": {
+      "de": "Erbschaftsteuer",
+      "en": "Inheritance tax"
+     },
+     "group": "land_taxes",
+     "value_eur": 510995000,
+     "csv_row": 11
+    },
+    {
+     "id": "land_taxes:Grunderwerbsteuer",
+     "label": {
+      "de": "Grunderwerbsteuer",
+      "en": "Real-estate transfer tax"
+     },
+     "group": "land_taxes",
+     "value_eur": 990911000,
+     "csv_row": 12
+    },
+    {
+     "id": "land_taxes:Rennwett- und Lotteriesteuer",
+     "label": {
+      "de": "Rennwett- und Lotteriesteuer",
+      "en": "Betting and lottery tax"
+     },
+     "group": "land_taxes",
+     "value_eur": 90740000,
+     "csv_row": 13
+    },
+    {
+     "id": "land_taxes:Biersteuer",
+     "label": {
+      "de": "Biersteuer",
+      "en": "Beer tax"
+     },
+     "group": "land_taxes",
+     "value_eur": 11716000,
+     "csv_row": 14
+    },
+    {
+     "id": "land_taxes:Feuerschutzsteuer",
+     "label": {
+      "de": "Feuerschutzsteuer",
+      "en": "Fire protection tax"
+     },
+     "group": "land_taxes",
+     "value_eur": 27908000,
+     "csv_row": 15
+    },
+    {
+     "id": "municipal_taxes:Grundsteuer",
+     "label": {
+      "de": "Grundsteuer",
+      "en": "Property tax"
+     },
+     "group": "municipal_taxes",
+     "value_eur": 883572000,
+     "csv_row": 16
+    },
+    {
+     "id": "municipal_taxes:Gewerbesteuer",
+     "label": {
+      "de": "Gewerbesteuer",
+      "en": "Trade tax (gross)"
+     },
+     "group": "municipal_taxes",
+     "value_eur": 3301506000,
+     "csv_row": 17
+    },
+    {
+     "id": "municipal_taxes:Gewerbesteuerumlage Gesamt",
+     "label": {
+      "de": "Gewerbesteuerumlage Gesamt",
+      "en": "Trade-tax levy paid (total)"
+     },
+     "group": "municipal_taxes",
+     "value_eur": -273406000,
+     "csv_row": 18
+    },
+    {
+     "id": "municipal_taxes:Vergnügungsteuer",
+     "label": {
+      "de": "Vergnügungsteuer",
+      "en": "Entertainment tax"
+     },
+     "group": "municipal_taxes",
+     "value_eur": 34888000,
+     "csv_row": 19
+    },
+    {
+     "id": "municipal_taxes:Hundesteuer",
+     "label": {
+      "de": "Hundesteuer",
+      "en": "Dog tax"
+     },
+     "group": "municipal_taxes",
+     "value_eur": 12440000,
+     "csv_row": 20
+    },
+    {
+     "id": "municipal_taxes:Zweitwohnungsteuer",
+     "label": {
+      "de": "Zweitwohnungsteuer",
+      "en": "Second-home tax"
+     },
+     "group": "municipal_taxes",
+     "value_eur": 20538000,
+     "csv_row": 21
+    },
+    {
+     "id": "municipal_taxes:Übernachtungsteuer",
+     "label": {
+      "de": "Übernachtungsteuer",
+      "en": "Overnight-stay tax"
+     },
+     "group": "municipal_taxes",
+     "value_eur": 150350000,
+     "csv_row": 22
+    },
+    {
+     "id": "municipal_share_joint:Umsatzsteuer",
+     "label": {
+      "de": "Umsatzsteuer",
+      "en": "VAT"
+     },
+     "group": "municipal_share_joint",
+     "value_eur": 371891000,
+     "csv_row": 23
+    },
+    {
+     "id": "municipal_share_joint:Lohn- und Einkommensteuer",
+     "label": {
+      "de": "Lohn- und Einkommensteuer",
+      "en": "Wage and income tax"
+     },
+     "group": "municipal_share_joint",
+     "value_eur": 2449701000,
+     "csv_row": 24
+    },
+    {
+     "id": "municipal_share_joint:Abgeltungsteuer auf Zins.-u.V.erträge",
+     "label": {
+      "de": "Abgeltungsteuer auf Zins.-u.V.erträge",
+      "en": "Final withholding tax"
+     },
+     "group": "municipal_share_joint",
+     "value_eur": 141644000,
+     "csv_row": 25
+    }
+   ],
+   "source": {
+    "source_id": "berlin_steuereinnahmen",
+    "file": "steuereinnahmen_122025.csv",
+    "path": "research/raw/berlin_steuereinnahmen/steuereinnahmen_122025.csv",
+    "url": "https://www.berlin.de/sen/finanzen/service/daten/steuereinnahmen_122025.csv",
+    "retrieved": "2026-10-09T12:45:32Z",
+    "sha256": "97f8003fbcbafe87cbe4af26d661623e7dbdd313e571db50be7e2e31117f2488",
+    "licence": "CC BY (cc-by per CKAN metadata); attribution: Senatsverwaltung für Finanzen Berlin",
+    "coordinates": "column 'Einnahmen Januar bis Dezember' (T EUR) × 1000; row numbers per item"
+   }
+  }
+ },
+ "licence_note": "CC BY, attribution 'Senatsverwaltung für Finanzen Berlin' (datenregister.berlin.de package metadata)"
+}

@@ -1,0 +1,2140 @@
+{
+ "schema_version": 2,
+ "id": "de.government.cash_by_level",
+ "title": {
+  "de": "Kassenergebnisse des Öffentlichen Gesamthaushalts nach Ebenen und Arten",
+  "en": "Cash results of the overall public budget by level and economic type"
+ },
+ "unit": "MEUR",
+ "basis": "Cash statistics (Kassenstatistik), core and extra budgets, calendar year (1st-4th quarter); 'bereinigt' = net of payments within the same level; the Gesamthaushalt column is consolidated across levels",
+ "generated": "2026-10-09",
+ "generated_by": "scripts/research/build_cash_levels.py",
+ "years": [
+  2024,
+  2025
+ ],
+ "columns": {
+  "gesamthaushalt": {
+   "de": "Öffentlicher Gesamthaushalt (konsolidiert)",
+   "en": "Overall public budget (consolidated)"
+  },
+  "bund": {
+   "de": "Bund",
+   "en": "Federation"
+  },
+  "eu_anteile": {
+   "de": "EU-Anteile",
+   "en": "EU shares"
+  },
+  "laender": {
+   "de": "Länder",
+   "en": "Länder"
+  },
+  "gemeinden": {
+   "de": "Gemeinden/Gemeindeverbände",
+   "en": "Municipalities"
+  },
+  "sozialversicherung": {
+   "de": "Sozialversicherung",
+   "en": "Social insurance"
+  }
+ },
+ "sources": {
+  "2024": {
+   "source_id": "destatis_kassenergebnisse",
+   "file": "kassenergebnisse-2024-q1-4.xlsx",
+   "path": "research/cache/destatis_kassenergebnisse/kassenergebnisse-2024-q1-4.xlsx",
+   "url": "https://www.destatis.de/DE/Themen/Staat/Oeffentliche-Finanzen/Ausgaben-Einnahmen/Publikationen/Downloads-Ausgaben-und-Einnahmen/statistischer-bericht-kassenergebnis-gesamthaushalt-2140200243245.xlsx?__blob=publicationFile",
+   "retrieved": "2026-10-09T12:45:24Z",
+   "sha256": "1a016dfd8e8d2f3c26da7e19fd770879f7283a92b8e8e90285e18380b7077d05",
+   "licence": "DL-DE-BY-2.0 (stated on the workbook's Impressum sheet); attribution: Statistisches Bundesamt (Destatis), report code, year",
+   "coordinates": "sheet csv-71511-01, rows listed in research/extracts/destatis_kassenergebnisse/csv-71511-01-2024-2025.csv"
+  },
+  "2025": {
+   "source_id": "destatis_kassenergebnisse",
+   "file": "kassenergebnisse-2025-q1-4.xlsx",
+   "path": "research/cache/destatis_kassenergebnisse/kassenergebnisse-2025-q1-4.xlsx",
+   "url": "https://www.destatis.de/DE/Themen/Staat/Oeffentliche-Finanzen/Ausgaben-Einnahmen/Publikationen/Downloads-Ausgaben-und-Einnahmen/statistischer-bericht-kassenergebnis-gesamthaushalt-2140200253245.xlsx?__blob=publicationFile",
+   "retrieved": "2026-10-09T12:45:25Z",
+   "sha256": "1fe867e7bdf8ed01fd802cdef8689ae9d05a197617693d4ad30993685f8c7d1d",
+   "licence": "DL-DE-BY-2.0 (stated on the workbook's Impressum sheet); attribution: Statistisches Bundesamt (Destatis), report code, year",
+   "coordinates": "sheet csv-71511-01, rows listed in research/extracts/destatis_kassenergebnisse/csv-71511-01-2024-2025.csv"
+  }
+ },
+ "rows": [
+  {
+   "year": 2024,
+   "order": 1,
+   "label": {
+    "de": "Ausgaben, Personalausgaben",
+    "en": "Staff"
+   },
+   "scope": "Kern- und Extrahaushalte",
+   "values_meur": {
+    "gesamthaushalt": 406670.3,
+    "bund": 74290.70000000001,
+    "eu_anteile": null,
+    "laender": 199503.9,
+    "gemeinden": 106172.5,
+    "sozialversicherung": 26703.199999999997
+   }
+  },
+  {
+   "year": 2024,
+   "order": 2,
+   "label": {
+    "de": "Ausgaben, Laufender Sachaufwand",
+    "en": "Running material expenses"
+   },
+   "scope": "Kern- und Extrahaushalte",
+   "values_meur": {
+    "gesamthaushalt": 615594.5,
+    "bund": 94812.5,
+    "eu_anteile": null,
+    "laender": 80507.90000000001,
+    "gemeinden": 95379.90000000001,
+    "sozialversicherung": 344894.19999999995
+   }
+  },
+  {
+   "year": 2024,
+   "order": 3,
+   "label": {
+    "de": "Ausgaben, Zinsausgaben",
+    "en": "Interest"
+   },
+   "scope": "Kern- und Extrahaushalte",
+   "values_meur": {
+    "gesamthaushalt": 58302.0,
+    "bund": 42621.9,
+    "eu_anteile": null,
+    "laender": 11305.5,
+    "gemeinden": 4115.1,
+    "sozialversicherung": 259.5
+   }
+  },
+  {
+   "year": 2024,
+   "order": 4,
+   "label": {
+    "de": "Ausgaben, Zinsausgaben an Öffentlichen Gesamthaushalt",
+    "en": "Ausgaben, Zinsausgaben an Öffentlichen Gesamthaushalt"
+   },
+   "scope": "Kern- und Extrahaushalte",
+   "values_meur": {
+    "gesamthaushalt": 1137.5,
+    "bund": 118.9,
+    "eu_anteile": null,
+    "laender": 331.1,
+    "gemeinden": 443.1,
+    "sozialversicherung": 244.4
+   }
+  },
+  {
+   "year": 2024,
+   "order": 5,
+   "label": {
+    "de": "Ausgaben, Zinsausgaben an andere Bereiche",
+    "en": "Ausgaben, Zinsausgaben an andere Bereiche"
+   },
+   "scope": "Kern- und Extrahaushalte",
+   "values_meur": {
+    "gesamthaushalt": 57164.5,
+    "bund": 42503.0,
+    "eu_anteile": null,
+    "laender": 10974.4,
+    "gemeinden": 3672.0,
+    "sozialversicherung": 15.100000000000001
+   }
+  },
+  {
+   "year": 2024,
+   "order": 6,
+   "label": {
+    "de": "Ausgaben, Laufende Zuweisungen und Zuschüsse, Schuldendiensthilfen",
+    "en": "Current grants and subsidies"
+   },
+   "scope": "Kern- und Extrahaushalte",
+   "values_meur": {
+    "gesamthaushalt": 1677397.1,
+    "bund": 354195.3,
+    "eu_anteile": 30620.5,
+    "laender": 239027.0,
+    "gemeinden": 218961.89999999997,
+    "sozialversicherung": 834592.4
+   }
+  },
+  {
+   "year": 2024,
+   "order": 7,
+   "label": {
+    "de": "Ausgaben, Laufende Zuweisungen und Zuschüsse, Schuldendiensthilfen, an Öffentlichen Gesamthaushalt",
+    "en": "Ausgaben, Laufende Zuweisungen und Zuschüsse, Schuldendiensthilfen, an Öffentlichen Gesamthaushalt"
+   },
+   "scope": "Kern- und Extrahaushalte",
+   "values_meur": {
+    "gesamthaushalt": 866627.6,
+    "bund": 247697.8,
+    "eu_anteile": null,
+    "laender": 178983.5,
+    "gemeinden": 99269.79999999999,
+    "sozialversicherung": 340676.5
+   }
+  },
+  {
+   "year": 2024,
+   "order": 8,
+   "label": {
+    "de": "Ausgaben, Laufende Zuweisungen und Zuschüsse, Schuldendiensthilfen, an andere Bereiche",
+    "en": "Ausgaben, Laufende Zuweisungen und Zuschüsse, Schuldendiensthilfen, an andere Bereiche"
+   },
+   "scope": "Kern- und Extrahaushalte",
+   "values_meur": {
+    "gesamthaushalt": 810769.5,
+    "bund": 106497.5,
+    "eu_anteile": 30620.5,
+    "laender": 60043.50000000001,
+    "gemeinden": 119692.09999999999,
+    "sozialversicherung": 493915.9
+   }
+  },
+  {
+   "year": 2024,
+   "order": 9,
+   "label": {
+    "de": "Ausgaben, abzüglich Zahlungen von gleicher Ebene der laufenden Rechnung",
+    "en": "Ausgaben, abzüglich Zahlungen von gleicher Ebene der laufenden Rechnung"
+   },
+   "scope": "Kern- und Extrahaushalte",
+   "values_meur": {
+    "gesamthaushalt": 874694.6,
+    "bund": 33275.4,
+    "eu_anteile": null,
+    "laender": 43091.40000000001,
+    "gemeinden": 84809.19999999998,
+    "sozialversicherung": 336851.8
+   }
+  },
+  {
+   "year": 2024,
+   "order": 10,
+   "label": {
+    "de": "Ausgaben, Ausgaben der laufenden Rechnung",
+    "en": "Current expenditure"
+   },
+   "scope": "Kern- und Extrahaushalte",
+   "values_meur": {
+    "gesamthaushalt": 1883269.2999999998,
+    "bund": 532644.9,
+    "eu_anteile": 30620.5,
+    "laender": 487253.20000000007,
+    "gemeinden": 339820.2,
+    "sozialversicherung": 869597.5
+   }
+  },
+  {
+   "year": 2024,
+   "order": 11,
+   "label": {
+    "de": "Ausgaben, Sachinvestitionen",
+    "en": "Fixed investment"
+   },
+   "scope": "Kern- und Extrahaushalte",
+   "values_meur": {
+    "gesamthaushalt": 107275.0,
+    "bund": 33505.3,
+    "eu_anteile": null,
+    "laender": 21114.2,
+    "gemeinden": 52084.0,
+    "sozialversicherung": 571.5
+   }
+  },
+  {
+   "year": 2024,
+   "order": 12,
+   "label": {
+    "de": "Ausgaben, Baumaßnahmen",
+    "en": "Construction"
+   },
+   "scope": "Kern- und Extrahaushalte",
+   "values_meur": {
+    "gesamthaushalt": 63857.700000000004,
+    "bund": 16328.100000000002,
+    "eu_anteile": null,
+    "laender": 10953.7,
+    "gemeinden": 36414.6,
+    "sozialversicherung": 161.3
+   }
+  },
+  {
+   "year": 2024,
+   "order": 13,
+   "label": {
+    "de": "Ausgaben, Erwerb von Sachvermögen",
+    "en": "Ausgaben, Erwerb von Sachvermögen"
+   },
+   "scope": "Kern- und Extrahaushalte",
+   "values_meur": {
+    "gesamthaushalt": 43417.09999999999,
+    "bund": 17177.2,
+    "eu_anteile": null,
+    "laender": 10160.3,
+    "gemeinden": 15669.399999999998,
+    "sozialversicherung": 410.20000000000005
+   }
+  },
+  {
+   "year": 2024,
+   "order": 14,
+   "label": {
+    "de": "Ausgaben, Vermögensübertragungen",
+    "en": "Capital transfers"
+   },
+   "scope": "Kern- und Extrahaushalte",
+   "values_meur": {
+    "gesamthaushalt": 114711.3,
+    "bund": 64965.00000000001,
+    "eu_anteile": null,
+    "laender": 43915.100000000006,
+    "gemeinden": 5809.3,
+    "sozialversicherung": 21.9
+   }
+  },
+  {
+   "year": 2024,
+   "order": 15,
+   "label": {
+    "de": "Ausgaben, Vermögensübertragungen an Öffentlichen Gesamthaushalt",
+    "en": "Ausgaben, Vermögensübertragungen an Öffentlichen Gesamthaushalt"
+   },
+   "scope": "Kern- und Extrahaushalte",
+   "values_meur": {
+    "gesamthaushalt": 60294.600000000006,
+    "bund": 29999.4,
+    "eu_anteile": null,
+    "laender": 27020.300000000003,
+    "gemeinden": 3274.5,
+    "sozialversicherung": 0.4
+   }
+  },
+  {
+   "year": 2024,
+   "order": 16,
+   "label": {
+    "de": "Ausgaben, Vermögensübertragungen an andere Bereiche",
+    "en": "Ausgaben, Vermögensübertragungen an andere Bereiche"
+   },
+   "scope": "Kern- und Extrahaushalte",
+   "values_meur": {
+    "gesamthaushalt": 54416.70000000001,
+    "bund": 34965.600000000006,
+    "eu_anteile": null,
+    "laender": 16894.8,
+    "gemeinden": 2534.8,
+    "sozialversicherung": 21.5
+   }
+  },
+  {
+   "year": 2024,
+   "order": 17,
+   "label": {
+    "de": "Ausgaben, Darlehen",
+    "en": "Loans granted"
+   },
+   "scope": "Kern- und Extrahaushalte",
+   "values_meur": {
+    "gesamthaushalt": 19562.199999999997,
+    "bund": 11281.599999999999,
+    "eu_anteile": null,
+    "laender": 4691.9,
+    "gemeinden": 3588.7,
+    "sozialversicherung": null
+   }
+  },
+  {
+   "year": 2024,
+   "order": 18,
+   "label": {
+    "de": "Ausgaben, Darlehen an Öffentlichen Gesamthaushalt",
+    "en": "Ausgaben, Darlehen an Öffentlichen Gesamthaushalt"
+   },
+   "scope": "Kern- und Extrahaushalte",
+   "values_meur": {
+    "gesamthaushalt": 14856.199999999999,
+    "bund": 11020.3,
+    "eu_anteile": null,
+    "laender": 652.9000000000001,
+    "gemeinden": 3183.0,
+    "sozialversicherung": null
+   }
+  },
+  {
+   "year": 2024,
+   "order": 19,
+   "label": {
+    "de": "Ausgaben, Darlehen an andere Bereiche",
+    "en": "Ausgaben, Darlehen an andere Bereiche"
+   },
+   "scope": "Kern- und Extrahaushalte",
+   "values_meur": {
+    "gesamthaushalt": 4705.999999999999,
+    "bund": 261.3,
+    "eu_anteile": null,
+    "laender": 4038.9999999999995,
+    "gemeinden": 405.70000000000005,
+    "sozialversicherung": null
+   }
+  },
+  {
+   "year": 2024,
+   "order": 20,
+   "label": {
+    "de": "Ausgaben, Erwerb von Beteiligungen",
+    "en": "Equity acquisitions"
+   },
+   "scope": "Kern- und Extrahaushalte",
+   "values_meur": {
+    "gesamthaushalt": 27808.5,
+    "bund": 7628.299999999999,
+    "eu_anteile": null,
+    "laender": 11614.500000000002,
+    "gemeinden": 4154.1,
+    "sozialversicherung": 4411.599999999999
+   }
+  },
+  {
+   "year": 2024,
+   "order": 21,
+   "label": {
+    "de": "Ausgaben, Tilgungsausgaben an Öffentlichen Gesamthaushalt",
+    "en": "Ausgaben, Tilgungsausgaben an Öffentlichen Gesamthaushalt"
+   },
+   "scope": "Kern- und Extrahaushalte",
+   "values_meur": {
+    "gesamthaushalt": 10808.1,
+    "bund": 10508.6,
+    "eu_anteile": null,
+    "laender": 127.9,
+    "gemeinden": 171.60000000000002,
+    "sozialversicherung": null
+   }
+  },
+  {
+   "year": 2024,
+   "order": 22,
+   "label": {
+    "de": "Ausgaben, Inanspruchnahme aus Gewährleistungen",
+    "en": "Ausgaben, Inanspruchnahme aus Gewährleistungen"
+   },
+   "scope": "Kern- und Extrahaushalte",
+   "values_meur": {
+    "gesamthaushalt": 2138.2000000000003,
+    "bund": 1665.9,
+    "eu_anteile": null,
+    "laender": 472.3,
+    "gemeinden": null,
+    "sozialversicherung": null
+   }
+  },
+  {
+   "year": 2024,
+   "order": 23,
+   "label": {
+    "de": "Ausgaben, abzüglich Zahlungen von gleicher Ebene der Kapitalrechnung",
+    "en": "Ausgaben, abzüglich Zahlungen von gleicher Ebene der Kapitalrechnung"
+   },
+   "scope": "Kern- und Extrahaushalte",
+   "values_meur": {
+    "gesamthaushalt": 83478.2,
+    "bund": 42243.8,
+    "eu_anteile": null,
+    "laender": 6836.100000000002,
+    "gemeinden": 4712.2,
+    "sozialversicherung": 0.4
+   }
+  },
+  {
+   "year": 2024,
+   "order": 24,
+   "label": {
+    "de": "Ausgaben, Ausgaben der Kapitalrechnung",
+    "en": "Capital expenditure"
+   },
+   "scope": "Kern- und Extrahaushalte",
+   "values_meur": {
+    "gesamthaushalt": 198824.90000000002,
+    "bund": 87311.0,
+    "eu_anteile": null,
+    "laender": 75099.7,
+    "gemeinden": 61095.50000000001,
+    "sozialversicherung": 5004.599999999999
+   }
+  },
+  {
+   "year": 2024,
+   "order": 25,
+   "label": {
+    "de": "Ausgaben, Bereinigte Ausgaben",
+    "en": "Adjusted expenditure"
+   },
+   "scope": "Kern- und Extrahaushalte",
+   "values_meur": {
+    "gesamthaushalt": 2082094.1999999997,
+    "bund": 619955.9,
+    "eu_anteile": 30620.5,
+    "laender": 562352.9,
+    "gemeinden": 400915.7,
+    "sozialversicherung": 874602.1
+   }
+  },
+  {
+   "year": 2024,
+   "order": 26,
+   "label": {
+    "de": "Einnahmen, Steuern und steuerähnliche Abgaben",
+    "en": "Taxes and tax-like levies (incl. social contributions for the social-insurance column)"
+   },
+   "scope": "Kern- und Extrahaushalte",
+   "values_meur": {
+    "gesamthaushalt": 1656680.7999999998,
+    "bund": 408126.5,
+    "eu_anteile": 31968.0,
+    "laender": 377028.80000000005,
+    "gemeinden": 132055.50000000003,
+    "sozialversicherung": 707501.9999999999
+   }
+  },
+  {
+   "year": 2024,
+   "order": 27,
+   "label": {
+    "de": "Einnahmen, Einnahmen aus wirtschaftlicher Tätigkeit",
+    "en": "Income from economic activity"
+   },
+   "scope": "Kern- und Extrahaushalte",
+   "values_meur": {
+    "gesamthaushalt": 38824.9,
+    "bund": 9531.1,
+    "eu_anteile": null,
+    "laender": 12409.500000000002,
+    "gemeinden": 16387.4,
+    "sozialversicherung": 496.90000000000003
+   }
+  },
+  {
+   "year": 2024,
+   "order": 28,
+   "label": {
+    "de": "Einnahmen, Zinseinnahmen",
+    "en": "Interest received"
+   },
+   "scope": "Kern- und Extrahaushalte",
+   "values_meur": {
+    "gesamthaushalt": 24489.5,
+    "bund": 13789.0,
+    "eu_anteile": null,
+    "laender": 3827.0,
+    "gemeinden": 2792.4999999999995,
+    "sozialversicherung": 4081.0
+   }
+  },
+  {
+   "year": 2024,
+   "order": 29,
+   "label": {
+    "de": "Einnahmen, Zinseinnahmen vom Öffentlichen Gesamthaushalt",
+    "en": "Einnahmen, Zinseinnahmen vom Öffentlichen Gesamthaushalt"
+   },
+   "scope": "Kern- und Extrahaushalte",
+   "values_meur": {
+    "gesamthaushalt": 1920.1,
+    "bund": 742.4,
+    "eu_anteile": null,
+    "laender": 368.69999999999993,
+    "gemeinden": 564.6,
+    "sozialversicherung": 244.4
+   }
+  },
+  {
+   "year": 2024,
+   "order": 30,
+   "label": {
+    "de": "Einnahmen, Zinseinnahmen von anderen Bereichen",
+    "en": "Einnahmen, Zinseinnahmen von anderen Bereichen"
+   },
+   "scope": "Kern- und Extrahaushalte",
+   "values_meur": {
+    "gesamthaushalt": 22569.4,
+    "bund": 13046.6,
+    "eu_anteile": null,
+    "laender": 3458.3,
+    "gemeinden": 2227.8999999999996,
+    "sozialversicherung": 3836.6
+   }
+  },
+  {
+   "year": 2024,
+   "order": 31,
+   "label": {
+    "de": "Einnahmen, Laufende Zuweisungen und Zuschüsse, Schuldendiensthilfen",
+    "en": "Current grants received"
+   },
+   "scope": "Kern- und Extrahaushalte",
+   "values_meur": {
+    "gesamthaushalt": 919596.0,
+    "bund": 66776.4,
+    "eu_anteile": -1347.5,
+    "laender": 139028.6,
+    "gemeinden": 233180.40000000002,
+    "sozialversicherung": 481958.1
+   }
+  },
+  {
+   "year": 2024,
+   "order": 32,
+   "label": {
+    "de": "Einnahmen, Laufende Zuweisungen und Zuschüsse, Schuldendiensthilfen, vom Öffentlichen Gesamthaushalt",
+    "en": "Einnahmen, Laufende Zuweisungen und Zuschüsse, Schuldendiensthilfen, vom Öffentlichen Gesamthaushalt"
+   },
+   "scope": "Kern- und Extrahaushalte",
+   "values_meur": {
+    "gesamthaushalt": 872774.7000000001,
+    "bund": 48022.1,
+    "eu_anteile": null,
+    "laender": 123070.30000000002,
+    "gemeinden": 222347.30000000002,
+    "sozialversicherung": 479335.0
+   }
+  },
+  {
+   "year": 2024,
+   "order": 33,
+   "label": {
+    "de": "Einnahmen, Laufende Zuweisungen und Zuschüsse, Schuldendiensthilfen, von anderen Bereichen",
+    "en": "Einnahmen, Laufende Zuweisungen und Zuschüsse, Schuldendiensthilfen, von anderen Bereichen"
+   },
+   "scope": "Kern- und Extrahaushalte",
+   "values_meur": {
+    "gesamthaushalt": 46821.30000000001,
+    "bund": 18754.300000000003,
+    "eu_anteile": -1347.5,
+    "laender": 15958.3,
+    "gemeinden": 10833.100000000002,
+    "sozialversicherung": 2623.1
+   }
+  },
+  {
+   "year": 2024,
+   "order": 34,
+   "label": {
+    "de": "Einnahmen, Sonstige laufende Einnahmen",
+    "en": "Other current revenue"
+   },
+   "scope": "Kern- und Extrahaushalte",
+   "values_meur": {
+    "gesamthaushalt": 147034.19999999998,
+    "bund": 56164.2,
+    "eu_anteile": null,
+    "laender": 33169.6,
+    "gemeinden": 52741.4,
+    "sozialversicherung": 4959.0
+   }
+  },
+  {
+   "year": 2024,
+   "order": 35,
+   "label": {
+    "de": "Einnahmen, abzüglich Zahlungen von gleicher Ebene der laufenden Rechnung",
+    "en": "Einnahmen, abzüglich Zahlungen von gleicher Ebene der laufenden Rechnung"
+   },
+   "scope": "Kern- und Extrahaushalte",
+   "values_meur": {
+    "gesamthaushalt": 874694.6,
+    "bund": 33275.4,
+    "eu_anteile": null,
+    "laender": 43091.40000000001,
+    "gemeinden": 84809.19999999998,
+    "sozialversicherung": 336851.8
+   }
+  },
+  {
+   "year": 2024,
+   "order": 36,
+   "label": {
+    "de": "Einnahmen, Einnahmen der laufenden Rechnung",
+    "en": "Current revenue"
+   },
+   "scope": "Kern- und Extrahaushalte",
+   "values_meur": {
+    "gesamthaushalt": 1911930.7999999998,
+    "bund": 521111.79999999993,
+    "eu_anteile": 30620.5,
+    "laender": 522371.80000000005,
+    "gemeinden": 352348.0000000001,
+    "sozialversicherung": 862145.2
+   }
+  },
+  {
+   "year": 2024,
+   "order": 37,
+   "label": {
+    "de": "Einnahmen, Veräußerung von Vermögen",
+    "en": "Asset sales"
+   },
+   "scope": "Kern- und Extrahaushalte",
+   "values_meur": {
+    "gesamthaushalt": 40151.899999999994,
+    "bund": 28563.6,
+    "eu_anteile": null,
+    "laender": 4760.3,
+    "gemeinden": 4925.299999999999,
+    "sozialversicherung": 1902.6999999999998
+   }
+  },
+  {
+   "year": 2024,
+   "order": 38,
+   "label": {
+    "de": "Einnahmen, Vermögensübertragungen",
+    "en": "Capital transfers received"
+   },
+   "scope": "Kern- und Extrahaushalte",
+   "values_meur": {
+    "gesamthaushalt": 65684.9,
+    "bund": 23485.0,
+    "eu_anteile": null,
+    "laender": 21834.899999999998,
+    "gemeinden": 20364.6,
+    "sozialversicherung": 0.4
+   }
+  },
+  {
+   "year": 2024,
+   "order": 39,
+   "label": {
+    "de": "Einnahmen, Vermögensübertragungen vom Öffentlichen Gesamthaushalt",
+    "en": "Einnahmen, Vermögensübertragungen vom Öffentlichen Gesamthaushalt"
+   },
+   "scope": "Kern- und Extrahaushalte",
+   "values_meur": {
+    "gesamthaushalt": 58449.899999999994,
+    "bund": 22463.4,
+    "eu_anteile": null,
+    "laender": 17587.499999999996,
+    "gemeinden": 18398.6,
+    "sozialversicherung": 0.4
+   }
+  },
+  {
+   "year": 2024,
+   "order": 40,
+   "label": {
+    "de": "Einnahmen, Vermögensübertragungen von anderen Bereichen",
+    "en": "Einnahmen, Vermögensübertragungen von anderen Bereichen"
+   },
+   "scope": "Kern- und Extrahaushalte",
+   "values_meur": {
+    "gesamthaushalt": 7235.000000000001,
+    "bund": 1021.6,
+    "eu_anteile": null,
+    "laender": 4247.400000000001,
+    "gemeinden": 1966.0,
+    "sozialversicherung": null
+   }
+  },
+  {
+   "year": 2024,
+   "order": 41,
+   "label": {
+    "de": "Einnahmen, Darlehensrückflüsse",
+    "en": "Loan repayments received"
+   },
+   "scope": "Kern- und Extrahaushalte",
+   "values_meur": {
+    "gesamthaushalt": 31342.100000000002,
+    "bund": 26479.300000000003,
+    "eu_anteile": null,
+    "laender": 1871.5,
+    "gemeinden": 2980.7000000000003,
+    "sozialversicherung": 10.6
+   }
+  },
+  {
+   "year": 2024,
+   "order": 42,
+   "label": {
+    "de": "Einnahmen, Darlehensrückflüsse vom Öffentlichen Gesamthaushalt",
+    "en": "Einnahmen, Darlehensrückflüsse vom Öffentlichen Gesamthaushalt"
+   },
+   "scope": "Kern- und Extrahaushalte",
+   "values_meur": {
+    "gesamthaushalt": 13824.800000000001,
+    "bund": 10649.2,
+    "eu_anteile": null,
+    "laender": 501.5,
+    "gemeinden": 2674.1000000000004,
+    "sozialversicherung": null
+   }
+  },
+  {
+   "year": 2024,
+   "order": 43,
+   "label": {
+    "de": "Einnahmen, Darlehensrückflüsse von anderen Bereichen",
+    "en": "Einnahmen, Darlehensrückflüsse von anderen Bereichen"
+   },
+   "scope": "Kern- und Extrahaushalte",
+   "values_meur": {
+    "gesamthaushalt": 17517.299999999996,
+    "bund": 15830.1,
+    "eu_anteile": null,
+    "laender": 1370.0,
+    "gemeinden": 306.6,
+    "sozialversicherung": 10.6
+   }
+  },
+  {
+   "year": 2024,
+   "order": 44,
+   "label": {
+    "de": "Einnahmen, Schuldenaufnahmen beim Öffentlichen Gesamthaushalt",
+    "en": "Einnahmen, Schuldenaufnahmen beim Öffentlichen Gesamthaushalt"
+   },
+   "scope": "Kern- und Extrahaushalte",
+   "values_meur": {
+    "gesamthaushalt": 11203.7,
+    "bund": 11000.0,
+    "eu_anteile": null,
+    "laender": null,
+    "gemeinden": 203.7,
+    "sozialversicherung": null
+   }
+  },
+  {
+   "year": 2024,
+   "order": 45,
+   "label": {
+    "de": "Einnahmen, Einnahmen aus der Inanspruchnahme von Gewährleistungen",
+    "en": "Einnahmen, Einnahmen aus der Inanspruchnahme von Gewährleistungen"
+   },
+   "scope": "Kern- und Extrahaushalte",
+   "values_meur": {
+    "gesamthaushalt": 745.8,
+    "bund": 627.8,
+    "eu_anteile": null,
+    "laender": 118.0,
+    "gemeinden": null,
+    "sozialversicherung": null
+   }
+  },
+  {
+   "year": 2024,
+   "order": 46,
+   "label": {
+    "de": "Einnahmen, abzüglich Zahlungen von gleicher Ebene der Kapitalrechnung",
+    "en": "Einnahmen, abzüglich Zahlungen von gleicher Ebene der Kapitalrechnung"
+   },
+   "scope": "Kern- und Extrahaushalte",
+   "values_meur": {
+    "gesamthaushalt": 83478.2,
+    "bund": 42243.8,
+    "eu_anteile": null,
+    "laender": 6836.100000000002,
+    "gemeinden": 4712.2,
+    "sozialversicherung": 0.4
+   }
+  },
+  {
+   "year": 2024,
+   "order": 47,
+   "label": {
+    "de": "Einnahmen, Einnahmen der Kapitalrechnung",
+    "en": "Capital revenue"
+   },
+   "scope": "Kern- und Extrahaushalte",
+   "values_meur": {
+    "gesamthaushalt": 65650.2,
+    "bund": 47911.90000000001,
+    "eu_anteile": null,
+    "laender": 21748.499999999996,
+    "gemeinden": 23762.1,
+    "sozialversicherung": 1913.2999999999997
+   }
+  },
+  {
+   "year": 2024,
+   "order": 48,
+   "label": {
+    "de": "Einnahmen, Bereinigte Einnahmen",
+    "en": "Adjusted revenue"
+   },
+   "scope": "Kern- und Extrahaushalte",
+   "values_meur": {
+    "gesamthaushalt": 1977580.9999999998,
+    "bund": 569023.7,
+    "eu_anteile": 30620.5,
+    "laender": 544120.3,
+    "gemeinden": 376110.1000000001,
+    "sozialversicherung": 864058.5
+   }
+  },
+  {
+   "year": 2024,
+   "order": 49,
+   "label": {
+    "de": "Finanzierungsübersicht, Saldo der haushaltstechnischen Verrechnungen",
+    "en": "Finanzierungsübersicht, Saldo der haushaltstechnischen Verrechnungen"
+   },
+   "scope": "Kern- und Extrahaushalte",
+   "values_meur": {
+    "gesamthaushalt": 80.89999999999748,
+    "bund": 37.60000000000002,
+    "eu_anteile": null,
+    "laender": 12.199999999998909,
+    "gemeinden": null,
+    "sozialversicherung": 31.099999999998545
+   }
+  },
+  {
+   "year": 2024,
+   "order": 50,
+   "label": {
+    "de": "Finanzierungsübersicht, Finanzierungssaldo",
+    "en": "Financing balance"
+   },
+   "scope": "Kern- und Extrahaushalte",
+   "values_meur": {
+    "gesamthaushalt": -104432.3,
+    "bund": -50894.6,
+    "eu_anteile": null,
+    "laender": -18220.4,
+    "gemeinden": -24805.6,
+    "sozialversicherung": -10512.5
+   }
+  },
+  {
+   "year": 2024,
+   "order": 51,
+   "label": {
+    "de": "Besondere Finanzierungsvorgänge, Ausgaben",
+    "en": "Besondere Finanzierungsvorgänge, Ausgaben"
+   },
+   "scope": "Kern- und Extrahaushalte",
+   "values_meur": {
+    "gesamthaushalt": 514055.60000000003,
+    "bund": 388307.60000000003,
+    "eu_anteile": null,
+    "laender": 107669.79999999999,
+    "gemeinden": 14001.0,
+    "sozialversicherung": 4077.2
+   }
+  },
+  {
+   "year": 2024,
+   "order": 52,
+   "label": {
+    "de": "Besondere Finanzierungsvorgänge, Schuldentilgung am Kreditmarkt",
+    "en": "Debt repayment on the credit market"
+   },
+   "scope": "Kern- und Extrahaushalte",
+   "values_meur": {
+    "gesamthaushalt": 472891.2,
+    "bund": 363829.4,
+    "eu_anteile": null,
+    "laender": 99360.2,
+    "gemeinden": 9701.6,
+    "sozialversicherung": null
+   }
+  },
+  {
+   "year": 2024,
+   "order": 53,
+   "label": {
+    "de": "Besondere Finanzierungsvorgänge, Rückzahlung Innerer Darlehen",
+    "en": "Besondere Finanzierungsvorgänge, Rückzahlung Innerer Darlehen"
+   },
+   "scope": "Kern- und Extrahaushalte",
+   "values_meur": {
+    "gesamthaushalt": 12.9,
+    "bund": null,
+    "eu_anteile": null,
+    "laender": null,
+    "gemeinden": 12.9,
+    "sozialversicherung": null
+   }
+  },
+  {
+   "year": 2024,
+   "order": 54,
+   "label": {
+    "de": "Besondere Finanzierungsvorgänge, Zuführungen an Rücklagen",
+    "en": "Besondere Finanzierungsvorgänge, Zuführungen an Rücklagen"
+   },
+   "scope": "Kern- und Extrahaushalte",
+   "values_meur": {
+    "gesamthaushalt": 41104.1,
+    "bund": 24478.2,
+    "eu_anteile": null,
+    "laender": 8299.099999999999,
+    "gemeinden": 4249.6,
+    "sozialversicherung": 4077.2
+   }
+  },
+  {
+   "year": 2024,
+   "order": 55,
+   "label": {
+    "de": "Besondere Finanzierungsvorgänge, Deckung von Vorjahresfehlbeträgen",
+    "en": "Besondere Finanzierungsvorgänge, Deckung von Vorjahresfehlbeträgen"
+   },
+   "scope": "Kern- und Extrahaushalte",
+   "values_meur": {
+    "gesamthaushalt": 47.4,
+    "bund": null,
+    "eu_anteile": null,
+    "laender": 10.5,
+    "gemeinden": 36.9,
+    "sozialversicherung": null
+   }
+  },
+  {
+   "year": 2024,
+   "order": 56,
+   "label": {
+    "de": "Besondere Finanzierungsvorgänge, Einnahmen",
+    "en": "Besondere Finanzierungsvorgänge, Einnahmen"
+   },
+   "scope": "Kern- und Extrahaushalte",
+   "values_meur": {
+    "gesamthaushalt": 611955.1,
+    "bund": 459988.89999999997,
+    "eu_anteile": null,
+    "laender": 111550.8,
+    "gemeinden": 25689.5,
+    "sozialversicherung": 14725.9
+   }
+  },
+  {
+   "year": 2024,
+   "order": 57,
+   "label": {
+    "de": "Besondere Finanzierungsvorgänge, Schuldenaufnahmen am Kreditmarkt",
+    "en": "Borrowing on the credit market"
+   },
+   "scope": "Kern- und Extrahaushalte",
+   "values_meur": {
+    "gesamthaushalt": 525331.8,
+    "bund": 414742.7,
+    "eu_anteile": null,
+    "laender": 89515.6,
+    "gemeinden": 21073.5,
+    "sozialversicherung": null
+   }
+  },
+  {
+   "year": 2024,
+   "order": 58,
+   "label": {
+    "de": "Besondere Finanzierungsvorgänge, Innere Darlehen",
+    "en": "Besondere Finanzierungsvorgänge, Innere Darlehen"
+   },
+   "scope": "Kern- und Extrahaushalte",
+   "values_meur": {
+    "gesamthaushalt": 8.0,
+    "bund": null,
+    "eu_anteile": null,
+    "laender": null,
+    "gemeinden": 8.0,
+    "sozialversicherung": null
+   }
+  },
+  {
+   "year": 2024,
+   "order": 59,
+   "label": {
+    "de": "Besondere Finanzierungsvorgänge, Entnahmen aus Rücklagen",
+    "en": "Besondere Finanzierungsvorgänge, Entnahmen aus Rücklagen"
+   },
+   "scope": "Kern- und Extrahaushalte",
+   "values_meur": {
+    "gesamthaushalt": 84352.79999999999,
+    "bund": 45044.899999999994,
+    "eu_anteile": null,
+    "laender": 19974.000000000004,
+    "gemeinden": 4608.0,
+    "sozialversicherung": 14725.9
+   }
+  },
+  {
+   "year": 2024,
+   "order": 60,
+   "label": {
+    "de": "Besondere Finanzierungsvorgänge, Überschüsse aus Vorjahren",
+    "en": "Besondere Finanzierungsvorgänge, Überschüsse aus Vorjahren"
+   },
+   "scope": "Kern- und Extrahaushalte",
+   "values_meur": {
+    "gesamthaushalt": 2061.2,
+    "bund": null,
+    "eu_anteile": null,
+    "laender": 2061.2,
+    "gemeinden": null,
+    "sozialversicherung": null
+   }
+  },
+  {
+   "year": 2024,
+   "order": 61,
+   "label": {
+    "de": "Besondere Finanzierungsvorgänge, Münzeinnahmen",
+    "en": "Besondere Finanzierungsvorgänge, Münzeinnahmen"
+   },
+   "scope": "Kern- und Extrahaushalte",
+   "values_meur": {
+    "gesamthaushalt": 201.3,
+    "bund": 201.3,
+    "eu_anteile": null,
+    "laender": null,
+    "gemeinden": null,
+    "sozialversicherung": null
+   }
+  },
+  {
+   "year": 2025,
+   "order": 1,
+   "label": {
+    "de": "Ausgaben, Personalausgaben",
+    "en": "Staff"
+   },
+   "scope": "Kern- und Extrahaushalte",
+   "values_meur": {
+    "gesamthaushalt": 434408.2,
+    "bund": 78276.8,
+    "eu_anteile": null,
+    "laender": 214488.8,
+    "gemeinden": 113382.2,
+    "sozialversicherung": 28260.399999999998
+   }
+  },
+  {
+   "year": 2025,
+   "order": 2,
+   "label": {
+    "de": "Ausgaben, Laufender Sachaufwand",
+    "en": "Running material expenses"
+   },
+   "scope": "Kern- und Extrahaushalte",
+   "values_meur": {
+    "gesamthaushalt": 657512.6,
+    "bund": 103035.2,
+    "eu_anteile": null,
+    "laender": 83516.4,
+    "gemeinden": 99126.49999999997,
+    "sozialversicherung": 371834.5
+   }
+  },
+  {
+   "year": 2025,
+   "order": 3,
+   "label": {
+    "de": "Ausgaben, Zinsausgaben",
+    "en": "Interest"
+   },
+   "scope": "Kern- und Extrahaushalte",
+   "values_meur": {
+    "gesamthaushalt": 53219.8,
+    "bund": 36608.1,
+    "eu_anteile": null,
+    "laender": 11782.2,
+    "gemeinden": 4685.9,
+    "sozialversicherung": 143.60000000000002
+   }
+  },
+  {
+   "year": 2025,
+   "order": 4,
+   "label": {
+    "de": "Ausgaben, Zinsausgaben an Öffentlichen Gesamthaushalt",
+    "en": "Ausgaben, Zinsausgaben an Öffentlichen Gesamthaushalt"
+   },
+   "scope": "Kern- und Extrahaushalte",
+   "values_meur": {
+    "gesamthaushalt": 1134.9,
+    "bund": 315.1,
+    "eu_anteile": null,
+    "laender": 229.8,
+    "gemeinden": 455.7,
+    "sozialversicherung": 134.3
+   }
+  },
+  {
+   "year": 2025,
+   "order": 5,
+   "label": {
+    "de": "Ausgaben, Zinsausgaben an andere Bereiche",
+    "en": "Ausgaben, Zinsausgaben an andere Bereiche"
+   },
+   "scope": "Kern- und Extrahaushalte",
+   "values_meur": {
+    "gesamthaushalt": 52084.9,
+    "bund": 36293.0,
+    "eu_anteile": null,
+    "laender": 11552.400000000001,
+    "gemeinden": 4230.2,
+    "sozialversicherung": 9.299999999999999
+   }
+  },
+  {
+   "year": 2025,
+   "order": 6,
+   "label": {
+    "de": "Ausgaben, Laufende Zuweisungen und Zuschüsse, Schuldendiensthilfen",
+    "en": "Current grants and subsidies"
+   },
+   "scope": "Kern- und Extrahaushalte",
+   "values_meur": {
+    "gesamthaushalt": 1774545.4999999998,
+    "bund": 361966.1,
+    "eu_anteile": 33409.9,
+    "laender": 241591.09999999998,
+    "gemeinden": 232919.8,
+    "sozialversicherung": 904658.5999999999
+   }
+  },
+  {
+   "year": 2025,
+   "order": 7,
+   "label": {
+    "de": "Ausgaben, Laufende Zuweisungen und Zuschüsse, Schuldendiensthilfen, an Öffentlichen Gesamthaushalt",
+    "en": "Ausgaben, Laufende Zuweisungen und Zuschüsse, Schuldendiensthilfen, an Öffentlichen Gesamthaushalt"
+   },
+   "scope": "Kern- und Extrahaushalte",
+   "values_meur": {
+    "gesamthaushalt": 924281.0,
+    "bund": 255897.6,
+    "eu_anteile": null,
+    "laender": 185675.0,
+    "gemeinden": 105791.0,
+    "sozialversicherung": 376917.39999999997
+   }
+  },
+  {
+   "year": 2025,
+   "order": 8,
+   "label": {
+    "de": "Ausgaben, Laufende Zuweisungen und Zuschüsse, Schuldendiensthilfen, an andere Bereiche",
+    "en": "Ausgaben, Laufende Zuweisungen und Zuschüsse, Schuldendiensthilfen, an andere Bereiche"
+   },
+   "scope": "Kern- und Extrahaushalte",
+   "values_meur": {
+    "gesamthaushalt": 850264.5,
+    "bund": 106068.5,
+    "eu_anteile": 33409.9,
+    "laender": 55916.09999999999,
+    "gemeinden": 127128.79999999999,
+    "sozialversicherung": 527741.2
+   }
+  },
+  {
+   "year": 2025,
+   "order": 9,
+   "label": {
+    "de": "Ausgaben, abzüglich Zahlungen von gleicher Ebene der laufenden Rechnung",
+    "en": "Ausgaben, abzüglich Zahlungen von gleicher Ebene der laufenden Rechnung"
+   },
+   "scope": "Kern- und Extrahaushalte",
+   "values_meur": {
+    "gesamthaushalt": 934570.8,
+    "bund": 35482.2,
+    "eu_anteile": null,
+    "laender": 43662.09999999999,
+    "gemeinden": 90980.1,
+    "sozialversicherung": 371966.9
+   }
+  },
+  {
+   "year": 2025,
+   "order": 10,
+   "label": {
+    "de": "Ausgaben, Ausgaben der laufenden Rechnung",
+    "en": "Current expenditure"
+   },
+   "scope": "Kern- und Extrahaushalte",
+   "values_meur": {
+    "gesamthaushalt": 1985115.2999999996,
+    "bund": 544404.2000000001,
+    "eu_anteile": 33409.9,
+    "laender": 507716.79999999993,
+    "gemeinden": 359134.29999999993,
+    "sozialversicherung": 932930.2999999999
+   }
+  },
+  {
+   "year": 2025,
+   "order": 11,
+   "label": {
+    "de": "Ausgaben, Sachinvestitionen",
+    "en": "Fixed investment"
+   },
+   "scope": "Kern- und Extrahaushalte",
+   "values_meur": {
+    "gesamthaushalt": 113557.29999999999,
+    "bund": 37017.6,
+    "eu_anteile": null,
+    "laender": 21666.600000000006,
+    "gemeinden": 53884.7,
+    "sozialversicherung": 988.4
+   }
+  },
+  {
+   "year": 2025,
+   "order": 12,
+   "label": {
+    "de": "Ausgaben, Baumaßnahmen",
+    "en": "Construction"
+   },
+   "scope": "Kern- und Extrahaushalte",
+   "values_meur": {
+    "gesamthaushalt": 67815.79999999999,
+    "bund": 18067.0,
+    "eu_anteile": null,
+    "laender": 11452.599999999999,
+    "gemeinden": 37978.2,
+    "sozialversicherung": 318.0
+   }
+  },
+  {
+   "year": 2025,
+   "order": 13,
+   "label": {
+    "de": "Ausgaben, Erwerb von Sachvermögen",
+    "en": "Ausgaben, Erwerb von Sachvermögen"
+   },
+   "scope": "Kern- und Extrahaushalte",
+   "values_meur": {
+    "gesamthaushalt": 45741.8,
+    "bund": 18950.800000000003,
+    "eu_anteile": null,
+    "laender": 10214.1,
+    "gemeinden": 15906.5,
+    "sozialversicherung": 670.4000000000001
+   }
+  },
+  {
+   "year": 2025,
+   "order": 14,
+   "label": {
+    "de": "Ausgaben, Vermögensübertragungen",
+    "en": "Capital transfers"
+   },
+   "scope": "Kern- und Extrahaushalte",
+   "values_meur": {
+    "gesamthaushalt": 127858.7,
+    "bund": 74488.1,
+    "eu_anteile": null,
+    "laender": 47506.2,
+    "gemeinden": 5760.999999999999,
+    "sozialversicherung": 103.4
+   }
+  },
+  {
+   "year": 2025,
+   "order": 15,
+   "label": {
+    "de": "Ausgaben, Vermögensübertragungen an Öffentlichen Gesamthaushalt",
+    "en": "Ausgaben, Vermögensübertragungen an Öffentlichen Gesamthaushalt"
+   },
+   "scope": "Kern- und Extrahaushalte",
+   "values_meur": {
+    "gesamthaushalt": 72640.6,
+    "bund": 39183.6,
+    "eu_anteile": null,
+    "laender": 29837.399999999998,
+    "gemeinden": 3619.5999999999995,
+    "sozialversicherung": null
+   }
+  },
+  {
+   "year": 2025,
+   "order": 16,
+   "label": {
+    "de": "Ausgaben, Vermögensübertragungen an andere Bereiche",
+    "en": "Ausgaben, Vermögensübertragungen an andere Bereiche"
+   },
+   "scope": "Kern- und Extrahaushalte",
+   "values_meur": {
+    "gesamthaushalt": 55218.100000000006,
+    "bund": 35304.5,
+    "eu_anteile": null,
+    "laender": 17668.8,
+    "gemeinden": 2141.3999999999996,
+    "sozialversicherung": 103.4
+   }
+  },
+  {
+   "year": 2025,
+   "order": 17,
+   "label": {
+    "de": "Ausgaben, Darlehen",
+    "en": "Loans granted"
+   },
+   "scope": "Kern- und Extrahaushalte",
+   "values_meur": {
+    "gesamthaushalt": 24868.8,
+    "bund": 15427.4,
+    "eu_anteile": null,
+    "laender": 5338.1,
+    "gemeinden": 4035.8,
+    "sozialversicherung": 67.5
+   }
+  },
+  {
+   "year": 2025,
+   "order": 18,
+   "label": {
+    "de": "Ausgaben, Darlehen an Öffentlichen Gesamthaushalt",
+    "en": "Ausgaben, Darlehen an Öffentlichen Gesamthaushalt"
+   },
+   "scope": "Kern- und Extrahaushalte",
+   "values_meur": {
+    "gesamthaushalt": 9367.6,
+    "bund": 5252.299999999999,
+    "eu_anteile": null,
+    "laender": 441.1,
+    "gemeinden": 3674.2000000000003,
+    "sozialversicherung": null
+   }
+  },
+  {
+   "year": 2025,
+   "order": 19,
+   "label": {
+    "de": "Ausgaben, Darlehen an andere Bereiche",
+    "en": "Ausgaben, Darlehen an andere Bereiche"
+   },
+   "scope": "Kern- und Extrahaushalte",
+   "values_meur": {
+    "gesamthaushalt": 15501.2,
+    "bund": 10175.1,
+    "eu_anteile": null,
+    "laender": 4897.0,
+    "gemeinden": 361.6,
+    "sozialversicherung": 67.5
+   }
+  },
+  {
+   "year": 2025,
+   "order": 20,
+   "label": {
+    "de": "Ausgaben, Erwerb von Beteiligungen",
+    "en": "Equity acquisitions"
+   },
+   "scope": "Kern- und Extrahaushalte",
+   "values_meur": {
+    "gesamthaushalt": 27507.199999999997,
+    "bund": 12888.5,
+    "eu_anteile": null,
+    "laender": 6328.299999999999,
+    "gemeinden": 4912.4,
+    "sozialversicherung": 3378.0
+   }
+  },
+  {
+   "year": 2025,
+   "order": 21,
+   "label": {
+    "de": "Ausgaben, Tilgungsausgaben an Öffentlichen Gesamthaushalt",
+    "en": "Ausgaben, Tilgungsausgaben an Öffentlichen Gesamthaushalt"
+   },
+   "scope": "Kern- und Extrahaushalte",
+   "values_meur": {
+    "gesamthaushalt": 4998.4,
+    "bund": 4757.3,
+    "eu_anteile": null,
+    "laender": 105.39999999999999,
+    "gemeinden": 135.70000000000002,
+    "sozialversicherung": null
+   }
+  },
+  {
+   "year": 2025,
+   "order": 22,
+   "label": {
+    "de": "Ausgaben, Inanspruchnahme aus Gewährleistungen",
+    "en": "Ausgaben, Inanspruchnahme aus Gewährleistungen"
+   },
+   "scope": "Kern- und Extrahaushalte",
+   "values_meur": {
+    "gesamthaushalt": 3883.6000000000004,
+    "bund": 3283.4,
+    "eu_anteile": null,
+    "laender": 600.2,
+    "gemeinden": null,
+    "sozialversicherung": null
+   }
+  },
+  {
+   "year": 2025,
+   "order": 23,
+   "label": {
+    "de": "Ausgaben, abzüglich Zahlungen von gleicher Ebene der Kapitalrechnung",
+    "en": "Ausgaben, abzüglich Zahlungen von gleicher Ebene der Kapitalrechnung"
+   },
+   "scope": "Kern- und Extrahaushalte",
+   "values_meur": {
+    "gesamthaushalt": 79755.20000000001,
+    "bund": 34269.600000000006,
+    "eu_anteile": null,
+    "laender": 8505.8,
+    "gemeinden": 4589.299999999999,
+    "sozialversicherung": null
+   }
+  },
+  {
+   "year": 2025,
+   "order": 24,
+   "label": {
+    "de": "Ausgaben, Ausgaben der Kapitalrechnung",
+    "en": "Capital expenditure"
+   },
+   "scope": "Kern- und Extrahaushalte",
+   "values_meur": {
+    "gesamthaushalt": 222919.10000000003,
+    "bund": 113592.69999999998,
+    "eu_anteile": null,
+    "laender": 73039.2,
+    "gemeinden": 64140.299999999996,
+    "sozialversicherung": 4537.3
+   }
+  },
+  {
+   "year": 2025,
+   "order": 25,
+   "label": {
+    "de": "Ausgaben, Bereinigte Ausgaben",
+    "en": "Adjusted expenditure"
+   },
+   "scope": "Kern- und Extrahaushalte",
+   "values_meur": {
+    "gesamthaushalt": 2208034.3999999994,
+    "bund": 657996.9,
+    "eu_anteile": 33409.9,
+    "laender": 580755.9999999999,
+    "gemeinden": 423274.5999999999,
+    "sozialversicherung": 937467.6
+   }
+  },
+  {
+   "year": 2025,
+   "order": 26,
+   "label": {
+    "de": "Einnahmen, Steuern und steuerähnliche Abgaben",
+    "en": "Taxes and tax-like levies (incl. social contributions for the social-insurance column)"
+   },
+   "scope": "Kern- und Extrahaushalte",
+   "values_meur": {
+    "gesamthaushalt": 1761857.0,
+    "bund": 423199.7,
+    "eu_anteile": 34867.0,
+    "laender": 395753.10000000003,
+    "gemeinden": 136524.2,
+    "sozialversicherung": 771513.0
+   }
+  },
+  {
+   "year": 2025,
+   "order": 27,
+   "label": {
+    "de": "Einnahmen, Einnahmen aus wirtschaftlicher Tätigkeit",
+    "en": "Income from economic activity"
+   },
+   "scope": "Kern- und Extrahaushalte",
+   "values_meur": {
+    "gesamthaushalt": 37043.4,
+    "bund": 8627.9,
+    "eu_anteile": null,
+    "laender": 11279.200000000003,
+    "gemeinden": 16701.7,
+    "sozialversicherung": 434.6
+   }
+  },
+  {
+   "year": 2025,
+   "order": 28,
+   "label": {
+    "de": "Einnahmen, Zinseinnahmen",
+    "en": "Interest received"
+   },
+   "scope": "Kern- und Extrahaushalte",
+   "values_meur": {
+    "gesamthaushalt": 19950.499999999996,
+    "bund": 10675.699999999999,
+    "eu_anteile": null,
+    "laender": 3530.7,
+    "gemeinden": 2434.0,
+    "sozialversicherung": 3310.1
+   }
+  },
+  {
+   "year": 2025,
+   "order": 29,
+   "label": {
+    "de": "Einnahmen, Zinseinnahmen vom Öffentlichen Gesamthaushalt",
+    "en": "Einnahmen, Zinseinnahmen vom Öffentlichen Gesamthaushalt"
+   },
+   "scope": "Kern- und Extrahaushalte",
+   "values_meur": {
+    "gesamthaushalt": 2184.7000000000003,
+    "bund": 1114.8,
+    "eu_anteile": null,
+    "laender": 339.6,
+    "gemeinden": 596.0,
+    "sozialversicherung": 134.3
+   }
+  },
+  {
+   "year": 2025,
+   "order": 30,
+   "label": {
+    "de": "Einnahmen, Zinseinnahmen von anderen Bereichen",
+    "en": "Einnahmen, Zinseinnahmen von anderen Bereichen"
+   },
+   "scope": "Kern- und Extrahaushalte",
+   "values_meur": {
+    "gesamthaushalt": 17765.8,
+    "bund": 9560.9,
+    "eu_anteile": null,
+    "laender": 3191.1,
+    "gemeinden": 1838.0,
+    "sozialversicherung": 3175.7999999999997
+   }
+  },
+  {
+   "year": 2025,
+   "order": 31,
+   "label": {
+    "de": "Einnahmen, Laufende Zuweisungen und Zuschüsse, Schuldendiensthilfen",
+    "en": "Current grants received"
+   },
+   "scope": "Kern- und Extrahaushalte",
+   "values_meur": {
+    "gesamthaushalt": 965721.7999999999,
+    "bund": 51866.299999999996,
+    "eu_anteile": -1457.1,
+    "laender": 144838.9,
+    "gemeinden": 246886.09999999998,
+    "sozialversicherung": 523587.6
+   }
+  },
+  {
+   "year": 2025,
+   "order": 32,
+   "label": {
+    "de": "Einnahmen, Laufende Zuweisungen und Zuschüsse, Schuldendiensthilfen, vom Öffentlichen Gesamthaushalt",
+    "en": "Einnahmen, Laufende Zuweisungen und Zuschüsse, Schuldendiensthilfen, vom Öffentlichen Gesamthaushalt"
+   },
+   "scope": "Kern- und Extrahaushalte",
+   "values_meur": {
+    "gesamthaushalt": 932385.8999999999,
+    "bund": 47025.6,
+    "eu_anteile": null,
+    "laender": 129000.99999999999,
+    "gemeinden": 235487.3,
+    "sozialversicherung": 520872.0
+   }
+  },
+  {
+   "year": 2025,
+   "order": 33,
+   "label": {
+    "de": "Einnahmen, Laufende Zuweisungen und Zuschüsse, Schuldendiensthilfen, von anderen Bereichen",
+    "en": "Einnahmen, Laufende Zuweisungen und Zuschüsse, Schuldendiensthilfen, von anderen Bereichen"
+   },
+   "scope": "Kern- und Extrahaushalte",
+   "values_meur": {
+    "gesamthaushalt": 33335.899999999994,
+    "bund": 4840.7,
+    "eu_anteile": -1457.1,
+    "laender": 15837.899999999998,
+    "gemeinden": 11398.8,
+    "sozialversicherung": 2715.6
+   }
+  },
+  {
+   "year": 2025,
+   "order": 34,
+   "label": {
+    "de": "Einnahmen, Sonstige laufende Einnahmen",
+    "en": "Other current revenue"
+   },
+   "scope": "Kern- und Extrahaushalte",
+   "values_meur": {
+    "gesamthaushalt": 154411.80000000002,
+    "bund": 55272.6,
+    "eu_anteile": null,
+    "laender": 38708.1,
+    "gemeinden": 55356.9,
+    "sozialversicherung": 5074.2
+   }
+  },
+  {
+   "year": 2025,
+   "order": 35,
+   "label": {
+    "de": "Einnahmen, abzüglich Zahlungen von gleicher Ebene der laufenden Rechnung",
+    "en": "Einnahmen, abzüglich Zahlungen von gleicher Ebene der laufenden Rechnung"
+   },
+   "scope": "Kern- und Extrahaushalte",
+   "values_meur": {
+    "gesamthaushalt": 934570.8,
+    "bund": 35482.2,
+    "eu_anteile": null,
+    "laender": 43662.09999999999,
+    "gemeinden": 90980.1,
+    "sozialversicherung": 371966.9
+   }
+  },
+  {
+   "year": 2025,
+   "order": 36,
+   "label": {
+    "de": "Einnahmen, Einnahmen der laufenden Rechnung",
+    "en": "Current revenue"
+   },
+   "scope": "Kern- und Extrahaushalte",
+   "values_meur": {
+    "gesamthaushalt": 2004413.6999999995,
+    "bund": 514160.10000000003,
+    "eu_anteile": 33409.9,
+    "laender": 550448.0000000001,
+    "gemeinden": 366922.80000000005,
+    "sozialversicherung": 931952.6
+   }
+  },
+  {
+   "year": 2025,
+   "order": 37,
+   "label": {
+    "de": "Einnahmen, Veräußerung von Vermögen",
+    "en": "Asset sales"
+   },
+   "scope": "Kern- und Extrahaushalte",
+   "values_meur": {
+    "gesamthaushalt": 42749.200000000004,
+    "bund": 30008.4,
+    "eu_anteile": null,
+    "laender": 4974.999999999999,
+    "gemeinden": 5100.3,
+    "sozialversicherung": 2665.4999999999995
+   }
+  },
+  {
+   "year": 2025,
+   "order": 38,
+   "label": {
+    "de": "Einnahmen, Vermögensübertragungen",
+    "en": "Capital transfers received"
+   },
+   "scope": "Kern- und Extrahaushalte",
+   "values_meur": {
+    "gesamthaushalt": 83185.8,
+    "bund": 38991.6,
+    "eu_anteile": null,
+    "laender": 23310.900000000005,
+    "gemeinden": 20883.2,
+    "sozialversicherung": 0.1
+   }
+  },
+  {
+   "year": 2025,
+   "order": 39,
+   "label": {
+    "de": "Einnahmen, Vermögensübertragungen vom Öffentlichen Gesamthaushalt",
+    "en": "Einnahmen, Vermögensübertragungen vom Öffentlichen Gesamthaushalt"
+   },
+   "scope": "Kern- und Extrahaushalte",
+   "values_meur": {
+    "gesamthaushalt": 68587.50000000001,
+    "bund": 29288.6,
+    "eu_anteile": null,
+    "laender": 20462.000000000004,
+    "gemeinden": 18836.8,
+    "sozialversicherung": 0.1
+   }
+  },
+  {
+   "year": 2025,
+   "order": 40,
+   "label": {
+    "de": "Einnahmen, Vermögensübertragungen von anderen Bereichen",
+    "en": "Einnahmen, Vermögensübertragungen von anderen Bereichen"
+   },
+   "scope": "Kern- und Extrahaushalte",
+   "values_meur": {
+    "gesamthaushalt": 14598.300000000001,
+    "bund": 9703.0,
+    "eu_anteile": null,
+    "laender": 2848.9000000000005,
+    "gemeinden": 2046.4,
+    "sozialversicherung": null
+   }
+  },
+  {
+   "year": 2025,
+   "order": 41,
+   "label": {
+    "de": "Einnahmen, Darlehensrückflüsse",
+    "en": "Loan repayments received"
+   },
+   "scope": "Kern- und Extrahaushalte",
+   "values_meur": {
+    "gesamthaushalt": 27025.300000000003,
+    "bund": 22383.9,
+    "eu_anteile": null,
+    "laender": 1798.5,
+    "gemeinden": 2807.2000000000003,
+    "sozialversicherung": 35.7
+   }
+  },
+  {
+   "year": 2025,
+   "order": 42,
+   "label": {
+    "de": "Einnahmen, Darlehensrückflüsse vom Öffentlichen Gesamthaushalt",
+    "en": "Einnahmen, Darlehensrückflüsse vom Öffentlichen Gesamthaushalt"
+   },
+   "scope": "Kern- und Extrahaushalte",
+   "values_meur": {
+    "gesamthaushalt": 8490.8,
+    "bund": 5653.5,
+    "eu_anteile": null,
+    "laender": 398.19999999999993,
+    "gemeinden": 2439.1000000000004,
+    "sozialversicherung": null
+   }
+  },
+  {
+   "year": 2025,
+   "order": 43,
+   "label": {
+    "de": "Einnahmen, Darlehensrückflüsse von anderen Bereichen",
+    "en": "Einnahmen, Darlehensrückflüsse von anderen Bereichen"
+   },
+   "scope": "Kern- und Extrahaushalte",
+   "values_meur": {
+    "gesamthaushalt": 18534.5,
+    "bund": 16730.4,
+    "eu_anteile": null,
+    "laender": 1400.3,
+    "gemeinden": 368.1,
+    "sozialversicherung": 35.7
+   }
+  },
+  {
+   "year": 2025,
+   "order": 44,
+   "label": {
+    "de": "Einnahmen, Schuldenaufnahmen beim Öffentlichen Gesamthaushalt",
+    "en": "Einnahmen, Schuldenaufnahmen beim Öffentlichen Gesamthaushalt"
+   },
+   "scope": "Kern- und Extrahaushalte",
+   "values_meur": {
+    "gesamthaushalt": 2677.4,
+    "bund": 1000.0,
+    "eu_anteile": null,
+    "laender": null,
+    "gemeinden": 240.0,
+    "sozialversicherung": 1437.4
+   }
+  },
+  {
+   "year": 2025,
+   "order": 45,
+   "label": {
+    "de": "Einnahmen, Einnahmen aus der Inanspruchnahme von Gewährleistungen",
+    "en": "Einnahmen, Einnahmen aus der Inanspruchnahme von Gewährleistungen"
+   },
+   "scope": "Kern- und Extrahaushalte",
+   "values_meur": {
+    "gesamthaushalt": 445.7,
+    "bund": 324.7,
+    "eu_anteile": null,
+    "laender": 121.0,
+    "gemeinden": null,
+    "sozialversicherung": null
+   }
+  },
+  {
+   "year": 2025,
+   "order": 46,
+   "label": {
+    "de": "Einnahmen, abzüglich Zahlungen von gleicher Ebene der Kapitalrechnung",
+    "en": "Einnahmen, abzüglich Zahlungen von gleicher Ebene der Kapitalrechnung"
+   },
+   "scope": "Kern- und Extrahaushalte",
+   "values_meur": {
+    "gesamthaushalt": 79755.20000000001,
+    "bund": 34269.600000000006,
+    "eu_anteile": null,
+    "laender": 8505.8,
+    "gemeinden": 4589.299999999999,
+    "sozialversicherung": null
+   }
+  },
+  {
+   "year": 2025,
+   "order": 47,
+   "label": {
+    "de": "Einnahmen, Einnahmen der Kapitalrechnung",
+    "en": "Capital revenue"
+   },
+   "scope": "Kern- und Extrahaushalte",
+   "values_meur": {
+    "gesamthaushalt": 76328.20000000001,
+    "bund": 58438.899999999994,
+    "eu_anteile": null,
+    "laender": 21699.300000000003,
+    "gemeinden": 24441.4,
+    "sozialversicherung": 4138.7
+   }
+  },
+  {
+   "year": 2025,
+   "order": 48,
+   "label": {
+    "de": "Einnahmen, Bereinigte Einnahmen",
+    "en": "Adjusted revenue"
+   },
+   "scope": "Kern- und Extrahaushalte",
+   "values_meur": {
+    "gesamthaushalt": 2080741.8999999994,
+    "bund": 572599.0,
+    "eu_anteile": 33409.9,
+    "laender": 572147.3000000002,
+    "gemeinden": 391364.20000000007,
+    "sozialversicherung": 936091.2999999999
+   }
+  },
+  {
+   "year": 2025,
+   "order": 49,
+   "label": {
+    "de": "Finanzierungsübersicht, Saldo der haushaltstechnischen Verrechnungen",
+    "en": "Finanzierungsübersicht, Saldo der haushaltstechnischen Verrechnungen"
+   },
+   "scope": "Kern- und Extrahaushalte",
+   "values_meur": {
+    "gesamthaushalt": -32.19999999999459,
+    "bund": 35.799999999999955,
+    "eu_anteile": null,
+    "laender": -96.79999999999745,
+    "gemeinden": null,
+    "sozialversicherung": 28.80000000000291
+   }
+  },
+  {
+   "year": 2025,
+   "order": 50,
+   "label": {
+    "de": "Finanzierungsübersicht, Finanzierungssaldo",
+    "en": "Financing balance"
+   },
+   "scope": "Kern- und Extrahaushalte",
+   "values_meur": {
+    "gesamthaushalt": -127324.7,
+    "bund": -85362.1,
+    "eu_anteile": null,
+    "laender": -8705.5,
+    "gemeinden": -31910.4,
+    "sozialversicherung": -1347.5
+   }
+  },
+  {
+   "year": 2025,
+   "order": 51,
+   "label": {
+    "de": "Besondere Finanzierungsvorgänge, Ausgaben",
+    "en": "Besondere Finanzierungsvorgänge, Ausgaben"
+   },
+   "scope": "Kern- und Extrahaushalte",
+   "values_meur": {
+    "gesamthaushalt": 465624.89999999997,
+    "bund": 343121.0,
+    "eu_anteile": null,
+    "laender": 99665.70000000001,
+    "gemeinden": 14244.099999999999,
+    "sozialversicherung": 8594.1
+   }
+  },
+  {
+   "year": 2025,
+   "order": 52,
+   "label": {
+    "de": "Besondere Finanzierungsvorgänge, Schuldentilgung am Kreditmarkt",
+    "en": "Debt repayment on the credit market"
+   },
+   "scope": "Kern- und Extrahaushalte",
+   "values_meur": {
+    "gesamthaushalt": 415625.0,
+    "bund": 312021.8,
+    "eu_anteile": null,
+    "laender": 92750.00000000001,
+    "gemeinden": 10802.199999999999,
+    "sozialversicherung": 51.0
+   }
+  },
+  {
+   "year": 2025,
+   "order": 53,
+   "label": {
+    "de": "Besondere Finanzierungsvorgänge, Rückzahlung Innerer Darlehen",
+    "en": "Besondere Finanzierungsvorgänge, Rückzahlung Innerer Darlehen"
+   },
+   "scope": "Kern- und Extrahaushalte",
+   "values_meur": {
+    "gesamthaushalt": 6.5,
+    "bund": null,
+    "eu_anteile": null,
+    "laender": null,
+    "gemeinden": 6.5,
+    "sozialversicherung": null
+   }
+  },
+  {
+   "year": 2025,
+   "order": 54,
+   "label": {
+    "de": "Besondere Finanzierungsvorgänge, Zuführungen an Rücklagen",
+    "en": "Besondere Finanzierungsvorgänge, Zuführungen an Rücklagen"
+   },
+   "scope": "Kern- und Extrahaushalte",
+   "values_meur": {
+    "gesamthaushalt": 49905.2,
+    "bund": 31099.2,
+    "eu_anteile": null,
+    "laender": 6865.9,
+    "gemeinden": 3397.0,
+    "sozialversicherung": 8543.1
+   }
+  },
+  {
+   "year": 2025,
+   "order": 55,
+   "label": {
+    "de": "Besondere Finanzierungsvorgänge, Deckung von Vorjahresfehlbeträgen",
+    "en": "Besondere Finanzierungsvorgänge, Deckung von Vorjahresfehlbeträgen"
+   },
+   "scope": "Kern- und Extrahaushalte",
+   "values_meur": {
+    "gesamthaushalt": 88.2,
+    "bund": null,
+    "eu_anteile": null,
+    "laender": 49.800000000000004,
+    "gemeinden": 38.4,
+    "sozialversicherung": null
+   }
+  },
+  {
+   "year": 2025,
+   "order": 56,
+   "label": {
+    "de": "Besondere Finanzierungsvorgänge, Einnahmen",
+    "en": "Besondere Finanzierungsvorgänge, Einnahmen"
+   },
+   "scope": "Kern- und Extrahaushalte",
+   "values_meur": {
+    "gesamthaushalt": 569695.1,
+    "bund": 422697.99999999994,
+    "eu_anteile": null,
+    "laender": 107418.30000000002,
+    "gemeinden": 29430.499999999996,
+    "sozialversicherung": 10148.3
+   }
+  },
+  {
+   "year": 2025,
+   "order": 57,
+   "label": {
+    "de": "Besondere Finanzierungsvorgänge, Schuldenaufnahmen am Kreditmarkt",
+    "en": "Borrowing on the credit market"
+   },
+   "scope": "Kern- und Extrahaushalte",
+   "values_meur": {
+    "gesamthaushalt": 520370.3,
+    "bund": 404403.39999999997,
+    "eu_anteile": null,
+    "laender": 90582.90000000002,
+    "gemeinden": 25383.999999999996,
+    "sozialversicherung": null
+   }
+  },
+  {
+   "year": 2025,
+   "order": 58,
+   "label": {
+    "de": "Besondere Finanzierungsvorgänge, Innere Darlehen",
+    "en": "Besondere Finanzierungsvorgänge, Innere Darlehen"
+   },
+   "scope": "Kern- und Extrahaushalte",
+   "values_meur": {
+    "gesamthaushalt": 4.8,
+    "bund": null,
+    "eu_anteile": null,
+    "laender": null,
+    "gemeinden": 4.8,
+    "sozialversicherung": null
+   }
+  },
+  {
+   "year": 2025,
+   "order": 59,
+   "label": {
+    "de": "Besondere Finanzierungsvorgänge, Entnahmen aus Rücklagen",
+    "en": "Besondere Finanzierungsvorgänge, Entnahmen aus Rücklagen"
+   },
+   "scope": "Kern- und Extrahaushalte",
+   "values_meur": {
+    "gesamthaushalt": 46650.899999999994,
+    "bund": 18175.0,
+    "eu_anteile": null,
+    "laender": 14285.9,
+    "gemeinden": 4041.7,
+    "sozialversicherung": 10148.3
+   }
+  },
+  {
+   "year": 2025,
+   "order": 60,
+   "label": {
+    "de": "Besondere Finanzierungsvorgänge, Überschüsse aus Vorjahren",
+    "en": "Besondere Finanzierungsvorgänge, Überschüsse aus Vorjahren"
+   },
+   "scope": "Kern- und Extrahaushalte",
+   "values_meur": {
+    "gesamthaushalt": 2549.5000000000014,
+    "bund": null,
+    "eu_anteile": null,
+    "laender": 2549.5000000000014,
+    "gemeinden": null,
+    "sozialversicherung": null
+   }
+  },
+  {
+   "year": 2025,
+   "order": 61,
+   "label": {
+    "de": "Besondere Finanzierungsvorgänge, Münzeinnahmen",
+    "en": "Besondere Finanzierungsvorgänge, Münzeinnahmen"
+   },
+   "scope": "Kern- und Extrahaushalte",
+   "values_meur": {
+    "gesamthaushalt": 119.6,
+    "bund": 119.6,
+    "eu_anteile": null,
+    "laender": null,
+    "gemeinden": null,
+    "sozialversicherung": null
+   }
+  }
+ ]
+}

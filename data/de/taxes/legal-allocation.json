@@ -1,0 +1,2220 @@
+{
+ "schema_version": 2,
+ "id": "de.taxes.legal_allocation",
+ "title": {
+  "de": "Wer bekommt welche Steuer? Gesetzliche Ertragshoheit je Steuerart",
+  "en": "Who receives which tax? Statutory allocation per named tax"
+ },
+ "unit": "share (0-1) and EUR",
+ "basis": "Statute (Art. 106 GG, FAG, GemFinRefG) in force at retrieval; shares applied to Destatis cash receipts give the statutory split before decomposition, equalisation and grants. The statutory split is a derived figure, not an observation.",
+ "generated": "2026-10-09",
+ "generated_by": "scripts/research/build_legal.py",
+ "recipients": {
+  "federation": {
+   "de": "Bund",
+   "en": "Federation"
+  },
+  "laender": {
+   "de": "Länder",
+   "en": "Länder"
+  },
+  "municipalities": {
+   "de": "Gemeinden",
+   "en": "Municipalities"
+  },
+  "eu": {
+   "de": "EU",
+   "en": "EU"
+  }
+ },
+ "kinds": {
+  "fixed_share": {
+   "de": "Fester gesetzlicher Anteil",
+   "en": "Fixed statutory share"
+  },
+  "annual_formula": {
+   "de": "Jährliche gesetzliche Formel",
+   "en": "Annual statutory formula"
+  },
+  "exclusive_assignment": {
+   "de": "Ausschließlich zugewiesen",
+   "en": "Assigned exclusively"
+  },
+  "state_law": {
+   "de": "Nach Landesrecht",
+   "en": "Under Land law"
+  }
+ },
+ "notes": [
+  "Statutory split × receipts ignores timing and the geographic decomposition; the observed outcome per recipient is in by-recipient.json.",
+  "VAT has no fixed share: see equalisation files for the effective yearly split.",
+  "Trade tax is shown gross; the levy to Federation and Land is in by-recipient.json (STEUERNVK30, STEUERNVB50, STEUERNVL50)."
+ ],
+ "rows": [
+  {
+   "id": "STEUERARTG10",
+   "label": {
+    "de": "Lohnsteuer",
+    "en": "Wage tax"
+   },
+   "group": "joint",
+   "kind": "fixed_share",
+   "shares": {
+    "federation": 0.425,
+    "laender": 0.425,
+    "municipalities": 0.15
+   },
+   "legal_basis": [
+    {
+     "section": "Art. 106 (3) GG",
+     "quote": "Am Aufkommen der Einkommensteuer und der Körperschaftsteuer sind der Bund und die Länder je zur Hälfte beteiligt",
+     "source": {
+      "source_id": "gesetze_im_internet",
+      "file": "gg_art_106.html",
+      "path": "research/raw/gesetze_im_internet/gg_art_106.html",
+      "url": "https://www.gesetze-im-internet.de/gg/art_106.html",
+      "retrieved": "2026-10-09T12:45:40Z",
+      "sha256": "d56ce0989da3d96ba488e15421eb306fe7dafb1f4c9b148c5a545f4b374a1665",
+      "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+      "coordinates": "text contains: Am Aufkommen der Einkommensteuer und der Körperschaftsteuer sind der Bund und die Länder je zur Hälfte beteiligt"
+     }
+    },
+    {
+     "section": "§ 1 GemFinRefG",
+     "quote": "15 Prozent",
+     "source": {
+      "source_id": "gesetze_im_internet_allocation",
+      "file": "gemfinrefg_1.html",
+      "path": "research/raw/gesetze_im_internet_allocation/gemfinrefg_1.html",
+      "url": "https://www.gesetze-im-internet.de/gemfinrefg/__1.html",
+      "retrieved": "2026-10-09T12:56:19Z",
+      "sha256": "cb74f5f2a15b2f7db776ad8aac607628f47480c7f1f326bac9731e2d3bd25be3",
+      "licence": "Official works (§ 5 UrhG)",
+      "coordinates": "text contains: 15 Prozent"
+     }
+    }
+   ],
+   "receipts_eur": {
+    "2024": 248920397000,
+    "2025": 262688387000
+   },
+   "statutory_split_eur": {
+    "2024": {
+     "federation": 105791168725,
+     "laender": 105791168725,
+     "municipalities": 37338059550
+    },
+    "2025": {
+     "federation": 111642564475,
+     "laender": 111642564475,
+     "municipalities": 39403258050
+    }
+   },
+   "note": {
+    "de": "Gemeinden erhalten 15 % vorab; der Rest wird hälftig geteilt (42,5 / 42,5). Die Lohnsteuer wird nach dem Wohnsitz des Arbeitnehmers auf die Länder zerlegt (§ 7 ZerlG).",
+    "en": "Municipalities take 15 % first; the rest is halved (42.5 / 42.5). Wage tax is apportioned to the Land of residence (§ 7 ZerlG)."
+   }
+  },
+  {
+   "id": "STEUERARTG20",
+   "label": {
+    "de": "Veranlagte Einkommensteuer",
+    "en": "Assessed income tax"
+   },
+   "group": "joint",
+   "kind": "fixed_share",
+   "shares": {
+    "federation": 0.425,
+    "laender": 0.425,
+    "municipalities": 0.15
+   },
+   "legal_basis": [
+    {
+     "section": "Art. 106 (3) GG",
+     "quote": "je zur Hälfte beteiligt",
+     "source": {
+      "source_id": "gesetze_im_internet",
+      "file": "gg_art_106.html",
+      "path": "research/raw/gesetze_im_internet/gg_art_106.html",
+      "url": "https://www.gesetze-im-internet.de/gg/art_106.html",
+      "retrieved": "2026-10-09T12:45:40Z",
+      "sha256": "d56ce0989da3d96ba488e15421eb306fe7dafb1f4c9b148c5a545f4b374a1665",
+      "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+      "coordinates": "text contains: je zur Hälfte beteiligt"
+     }
+    },
+    {
+     "section": "§ 1 GemFinRefG",
+     "quote": "15 Prozent",
+     "source": {
+      "source_id": "gesetze_im_internet_allocation",
+      "file": "gemfinrefg_1.html",
+      "path": "research/raw/gesetze_im_internet_allocation/gemfinrefg_1.html",
+      "url": "https://www.gesetze-im-internet.de/gemfinrefg/__1.html",
+      "retrieved": "2026-10-09T12:56:19Z",
+      "sha256": "cb74f5f2a15b2f7db776ad8aac607628f47480c7f1f326bac9731e2d3bd25be3",
+      "licence": "Official works (§ 5 UrhG)",
+      "coordinates": "text contains: 15 Prozent"
+     }
+    }
+   ],
+   "receipts_eur": {
+    "2024": 74844797000,
+    "2025": 78361594000
+   },
+   "statutory_split_eur": {
+    "2024": {
+     "federation": 31809038725,
+     "laender": 31809038725,
+     "municipalities": 11226719550
+    },
+    "2025": {
+     "federation": 33303677450,
+     "laender": 33303677450,
+     "municipalities": 11754239100
+    }
+   },
+   "note": null
+  },
+  {
+   "id": "STEUERARTG30",
+   "label": {
+    "de": "Nicht veranlagte Steuern vom Ertrag",
+    "en": "Non-assessed taxes on yields"
+   },
+   "group": "joint",
+   "kind": "fixed_share",
+   "shares": {
+    "federation": 0.5,
+    "laender": 0.5
+   },
+   "legal_basis": [
+    {
+     "section": "Art. 106 (3) GG",
+     "quote": "je zur Hälfte beteiligt",
+     "source": {
+      "source_id": "gesetze_im_internet",
+      "file": "gg_art_106.html",
+      "path": "research/raw/gesetze_im_internet/gg_art_106.html",
+      "url": "https://www.gesetze-im-internet.de/gg/art_106.html",
+      "retrieved": "2026-10-09T12:45:40Z",
+      "sha256": "d56ce0989da3d96ba488e15421eb306fe7dafb1f4c9b148c5a545f4b374a1665",
+      "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+      "coordinates": "text contains: je zur Hälfte beteiligt"
+     }
+    }
+   ],
+   "receipts_eur": {
+    "2024": 34022775000,
+    "2025": 31118117000
+   },
+   "statutory_split_eur": {
+    "2024": {
+     "federation": 17011387500,
+     "laender": 17011387500
+    },
+    "2025": {
+     "federation": 15559058500,
+     "laender": 15559058500
+    }
+   },
+   "note": {
+    "de": "Nicht veranlagte Steuern vom Ertrag (Kapitalertragsteuer auf Dividenden) gehören zur Einkommen-/Körperschaftsteuer; kein Gemeindeanteil.",
+    "en": "Non-assessed taxes on yields (withholding on dividends) belong to income/corporation tax; no municipal share."
+   }
+  },
+  {
+   "id": "STEUERARTG40",
+   "label": {
+    "de": "Abgeltungssteuer",
+    "en": "Final withholding tax"
+   },
+   "group": "joint",
+   "kind": "fixed_share",
+   "shares": {
+    "federation": 0.44,
+    "laender": 0.44,
+    "municipalities": 0.12
+   },
+   "legal_basis": [
+    {
+     "section": "§ 1 GemFinRefG",
+     "quote": "12 Prozent",
+     "source": {
+      "source_id": "gesetze_im_internet_allocation",
+      "file": "gemfinrefg_1.html",
+      "path": "research/raw/gesetze_im_internet_allocation/gemfinrefg_1.html",
+      "url": "https://www.gesetze-im-internet.de/gemfinrefg/__1.html",
+      "retrieved": "2026-10-09T12:56:19Z",
+      "sha256": "cb74f5f2a15b2f7db776ad8aac607628f47480c7f1f326bac9731e2d3bd25be3",
+      "licence": "Official works (§ 5 UrhG)",
+      "coordinates": "text contains: 12 Prozent"
+     }
+    },
+    {
+     "section": "Art. 106 (3) GG",
+     "quote": "je zur Hälfte beteiligt",
+     "source": {
+      "source_id": "gesetze_im_internet",
+      "file": "gg_art_106.html",
+      "path": "research/raw/gesetze_im_internet/gg_art_106.html",
+      "url": "https://www.gesetze-im-internet.de/gg/art_106.html",
+      "retrieved": "2026-10-09T12:45:40Z",
+      "sha256": "d56ce0989da3d96ba488e15421eb306fe7dafb1f4c9b148c5a545f4b374a1665",
+      "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+      "coordinates": "text contains: je zur Hälfte beteiligt"
+     }
+    }
+   ],
+   "receipts_eur": {
+    "2024": 19267089000,
+    "2025": 24800905000
+   },
+   "statutory_split_eur": {
+    "2024": {
+     "federation": 8477519160,
+     "laender": 8477519160,
+     "municipalities": 2312050680
+    },
+    "2025": {
+     "federation": 10912398200,
+     "laender": 10912398200,
+     "municipalities": 2976108600
+    }
+   },
+   "note": null
+  },
+  {
+   "id": "STEUERARTG50",
+   "label": {
+    "de": "Körperschaftsteuer",
+    "en": "Corporation tax"
+   },
+   "group": "joint",
+   "kind": "fixed_share",
+   "shares": {
+    "federation": 0.5,
+    "laender": 0.5
+   },
+   "legal_basis": [
+    {
+     "section": "Art. 106 (3) GG",
+     "quote": "je zur Hälfte beteiligt",
+     "source": {
+      "source_id": "gesetze_im_internet",
+      "file": "gg_art_106.html",
+      "path": "research/raw/gesetze_im_internet/gg_art_106.html",
+      "url": "https://www.gesetze-im-internet.de/gg/art_106.html",
+      "retrieved": "2026-10-09T12:45:40Z",
+      "sha256": "d56ce0989da3d96ba488e15421eb306fe7dafb1f4c9b148c5a545f4b374a1665",
+      "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+      "coordinates": "text contains: je zur Hälfte beteiligt"
+     }
+    }
+   ],
+   "receipts_eur": {
+    "2024": 39757560000,
+    "2025": 39164161000
+   },
+   "statutory_split_eur": {
+    "2024": {
+     "federation": 19878780000,
+     "laender": 19878780000
+    },
+    "2025": {
+     "federation": 19582080500,
+     "laender": 19582080500
+    }
+   },
+   "note": {
+    "de": "Der Länderanteil wird nach Betriebsstätten (Arbeitslöhnen) zerlegt.",
+    "en": "The Länder half is apportioned by establishments (payroll)."
+   }
+  },
+  {
+   "id": "STEUERARTG60",
+   "label": {
+    "de": "Umsatzsteuer",
+    "en": "Turnover tax"
+   },
+   "group": "joint",
+   "kind": "annual_formula",
+   "shares": null,
+   "legal_basis": [
+    {
+     "section": "Art. 106 (3) GG",
+     "quote": "Die Anteile von Bund und Ländern an der Umsatzsteuer werden durch Bundesgesetz",
+     "source": {
+      "source_id": "gesetze_im_internet",
+      "file": "gg_art_106.html",
+      "path": "research/raw/gesetze_im_internet/gg_art_106.html",
+      "url": "https://www.gesetze-im-internet.de/gg/art_106.html",
+      "retrieved": "2026-10-09T12:45:40Z",
+      "sha256": "d56ce0989da3d96ba488e15421eb306fe7dafb1f4c9b148c5a545f4b374a1665",
+      "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+      "coordinates": "text contains: Die Anteile von Bund und Ländern an der Umsatzsteuer werden durch Bundesgesetz"
+     }
+    },
+    {
+     "section": "§ 1 (1) FAG",
+     "quote": "52,81398351 45,19007254 1,99594395",
+     "source": {
+      "source_id": "gesetze_im_internet",
+      "file": "finausglg_1.html",
+      "path": "research/raw/gesetze_im_internet/finausglg_1.html",
+      "url": "https://www.gesetze-im-internet.de/finausglg_2005/__1.html",
+      "retrieved": "2026-10-09T12:45:40Z",
+      "sha256": "e243c805b44243a2cbef34474a223974cff8fe7450f1e418d870419b7f1643aa",
+      "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+      "coordinates": "text contains: 52,81398351 45,19007254 1,99594395"
+     }
+    }
+   ],
+   "receipts_eur": {
+    "2024": 228650545000,
+    "2025": 236266675000
+   },
+   "statutory_split_eur": null,
+   "note": {
+    "de": "Grundanteile Bund 52,81 % / Länder 45,19 % / Gemeinden 2,00 %, jährlich um feste Euro-Beträge verschoben (§ 1 (2) FAG). Das tatsächliche Ergebnis steht in data/de/equalisation/<Jahr>.json (2024: Bund 48,10 %, Länder 49,11 %, Gemeinden 2,79 %).",
+    "en": "Base shares Federation 52.81 % / Länder 45.19 % / municipalities 2.00 %, shifted every year by fixed euro amounts (§ 1 (2) FAG). The effective outcome is in data/de/equalisation/<year>.json (2024: 48.10 / 49.11 / 2.79 %)."
+   }
+  },
+  {
+   "id": "STEUERARTG70",
+   "label": {
+    "de": "Einfuhrumsatzsteuer",
+    "en": "Import turnover tax"
+   },
+   "group": "joint",
+   "kind": "annual_formula",
+   "shares": null,
+   "legal_basis": [
+    {
+     "section": "§ 1 FAG",
+     "quote": "Das Aufkommen der Umsatzsteuer wird auf Bund, Länder und Gemeinden",
+     "source": {
+      "source_id": "gesetze_im_internet",
+      "file": "finausglg_1.html",
+      "path": "research/raw/gesetze_im_internet/finausglg_1.html",
+      "url": "https://www.gesetze-im-internet.de/finausglg_2005/__1.html",
+      "retrieved": "2026-10-09T12:45:40Z",
+      "sha256": "e243c805b44243a2cbef34474a223974cff8fe7450f1e418d870419b7f1643aa",
+      "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+      "coordinates": "text contains: Das Aufkommen der Umsatzsteuer wird auf Bund, Länder und Gemeinden"
+     }
+    }
+   ],
+   "receipts_eur": {
+    "2024": 73492793000,
+    "2025": 73939162000
+   },
+   "statutory_split_eur": null,
+   "note": {
+    "de": "Einfuhrumsatzsteuer folgt der Umsatzsteuerverteilung.",
+    "en": "Import VAT follows the VAT allocation."
+   }
+  },
+  {
+   "id": "STEUERARTB10",
+   "label": {
+    "de": "Versicherungsteuer",
+    "en": "Insurance tax"
+   },
+   "group": "federal",
+   "kind": "exclusive_assignment",
+   "shares": {
+    "federation": 1.0
+   },
+   "legal_basis": [
+    {
+     "section": "Art. 106 (1) GG",
+     "quote": "die Versicherungsteuer",
+     "source": {
+      "source_id": "gesetze_im_internet",
+      "file": "gg_art_106.html",
+      "path": "research/raw/gesetze_im_internet/gg_art_106.html",
+      "url": "https://www.gesetze-im-internet.de/gg/art_106.html",
+      "retrieved": "2026-10-09T12:45:40Z",
+      "sha256": "d56ce0989da3d96ba488e15421eb306fe7dafb1f4c9b148c5a545f4b374a1665",
+      "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+      "coordinates": "text contains: die Versicherungsteuer"
+     }
+    }
+   ],
+   "receipts_eur": {
+    "2024": 18227342000,
+    "2025": 19611316000
+   },
+   "statutory_split_eur": {
+    "2024": {
+     "federation": 18227342000
+    },
+    "2025": {
+     "federation": 19611316000
+    }
+   },
+   "note": null
+  },
+  {
+   "id": "STEUERARTB20",
+   "label": {
+    "de": "Tabaksteuer",
+    "en": "Tobacco tax"
+   },
+   "group": "federal",
+   "kind": "exclusive_assignment",
+   "shares": {
+    "federation": 1.0
+   },
+   "legal_basis": [
+    {
+     "section": "Art. 106 (1) GG",
+     "quote": "die Verbrauchsteuern",
+     "source": {
+      "source_id": "gesetze_im_internet",
+      "file": "gg_art_106.html",
+      "path": "research/raw/gesetze_im_internet/gg_art_106.html",
+      "url": "https://www.gesetze-im-internet.de/gg/art_106.html",
+      "retrieved": "2026-10-09T12:45:40Z",
+      "sha256": "d56ce0989da3d96ba488e15421eb306fe7dafb1f4c9b148c5a545f4b374a1665",
+      "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+      "coordinates": "text contains: die Verbrauchsteuern"
+     }
+    }
+   ],
+   "receipts_eur": {
+    "2024": 15637395000,
+    "2025": 17631933000
+   },
+   "statutory_split_eur": {
+    "2024": {
+     "federation": 15637395000
+    },
+    "2025": {
+     "federation": 17631933000
+    }
+   },
+   "note": null
+  },
+  {
+   "id": "STEUERARTB30",
+   "label": {
+    "de": "Kaffeesteuer",
+    "en": "Coffee tax"
+   },
+   "group": "federal",
+   "kind": "exclusive_assignment",
+   "shares": {
+    "federation": 1.0
+   },
+   "legal_basis": [
+    {
+     "section": "Art. 106 (1) GG",
+     "quote": "die Verbrauchsteuern",
+     "source": {
+      "source_id": "gesetze_im_internet",
+      "file": "gg_art_106.html",
+      "path": "research/raw/gesetze_im_internet/gg_art_106.html",
+      "url": "https://www.gesetze-im-internet.de/gg/art_106.html",
+      "retrieved": "2026-10-09T12:45:40Z",
+      "sha256": "d56ce0989da3d96ba488e15421eb306fe7dafb1f4c9b148c5a545f4b374a1665",
+      "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+      "coordinates": "text contains: die Verbrauchsteuern"
+     }
+    }
+   ],
+   "receipts_eur": {
+    "2024": 992299000,
+    "2025": 1037899000
+   },
+   "statutory_split_eur": {
+    "2024": {
+     "federation": 992299000
+    },
+    "2025": {
+     "federation": 1037899000
+    }
+   },
+   "note": null
+  },
+  {
+   "id": "STEUERARTB40",
+   "label": {
+    "de": "Alkoholsteuer",
+    "en": "Alcohol tax"
+   },
+   "group": "federal",
+   "kind": "exclusive_assignment",
+   "shares": {
+    "federation": 1.0
+   },
+   "legal_basis": [
+    {
+     "section": "Art. 106 (1) GG",
+     "quote": "die Verbrauchsteuern",
+     "source": {
+      "source_id": "gesetze_im_internet",
+      "file": "gg_art_106.html",
+      "path": "research/raw/gesetze_im_internet/gg_art_106.html",
+      "url": "https://www.gesetze-im-internet.de/gg/art_106.html",
+      "retrieved": "2026-10-09T12:45:40Z",
+      "sha256": "d56ce0989da3d96ba488e15421eb306fe7dafb1f4c9b148c5a545f4b374a1665",
+      "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+      "coordinates": "text contains: die Verbrauchsteuern"
+     }
+    }
+   ],
+   "receipts_eur": {
+    "2024": 1979629000,
+    "2025": 2050494000
+   },
+   "statutory_split_eur": {
+    "2024": {
+     "federation": 1979629000
+    },
+    "2025": {
+     "federation": 2050494000
+    }
+   },
+   "note": null
+  },
+  {
+   "id": "STEUERARTB45",
+   "label": {
+    "de": "Alkopopsteuer",
+    "en": "Alcopops tax"
+   },
+   "group": "federal",
+   "kind": "exclusive_assignment",
+   "shares": {
+    "federation": 1.0
+   },
+   "legal_basis": [
+    {
+     "section": "Art. 106 (1) GG",
+     "quote": "die Verbrauchsteuern",
+     "source": {
+      "source_id": "gesetze_im_internet",
+      "file": "gg_art_106.html",
+      "path": "research/raw/gesetze_im_internet/gg_art_106.html",
+      "url": "https://www.gesetze-im-internet.de/gg/art_106.html",
+      "retrieved": "2026-10-09T12:45:40Z",
+      "sha256": "d56ce0989da3d96ba488e15421eb306fe7dafb1f4c9b148c5a545f4b374a1665",
+      "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+      "coordinates": "text contains: die Verbrauchsteuern"
+     }
+    }
+   ],
+   "receipts_eur": {
+    "2024": 1382000,
+    "2025": -237000
+   },
+   "statutory_split_eur": {
+    "2024": {
+     "federation": 1382000
+    },
+    "2025": {
+     "federation": -237000
+    }
+   },
+   "note": null
+  },
+  {
+   "id": "STEUERARTB50",
+   "label": {
+    "de": "Schaumweinsteuer",
+    "en": "Sparkling wine tax"
+   },
+   "group": "federal",
+   "kind": "exclusive_assignment",
+   "shares": {
+    "federation": 1.0
+   },
+   "legal_basis": [
+    {
+     "section": "Art. 106 (1) GG",
+     "quote": "die Verbrauchsteuern",
+     "source": {
+      "source_id": "gesetze_im_internet",
+      "file": "gg_art_106.html",
+      "path": "research/raw/gesetze_im_internet/gg_art_106.html",
+      "url": "https://www.gesetze-im-internet.de/gg/art_106.html",
+      "retrieved": "2026-10-09T12:45:40Z",
+      "sha256": "d56ce0989da3d96ba488e15421eb306fe7dafb1f4c9b148c5a545f4b374a1665",
+      "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+      "coordinates": "text contains: die Verbrauchsteuern"
+     }
+    }
+   ],
+   "receipts_eur": {
+    "2024": 351968000,
+    "2025": 364615000
+   },
+   "statutory_split_eur": {
+    "2024": {
+     "federation": 351968000
+    },
+    "2025": {
+     "federation": 364615000
+    }
+   },
+   "note": null
+  },
+  {
+   "id": "STEUERARTB60",
+   "label": {
+    "de": "Zwischenerzeugnissteuer",
+    "en": "Tax on sherry, port and similar beverages"
+   },
+   "group": "federal",
+   "kind": "exclusive_assignment",
+   "shares": {
+    "federation": 1.0
+   },
+   "legal_basis": [
+    {
+     "section": "Art. 106 (1) GG",
+     "quote": "die Verbrauchsteuern",
+     "source": {
+      "source_id": "gesetze_im_internet",
+      "file": "gg_art_106.html",
+      "path": "research/raw/gesetze_im_internet/gg_art_106.html",
+      "url": "https://www.gesetze-im-internet.de/gg/art_106.html",
+      "retrieved": "2026-10-09T12:45:40Z",
+      "sha256": "d56ce0989da3d96ba488e15421eb306fe7dafb1f4c9b148c5a545f4b374a1665",
+      "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+      "coordinates": "text contains: die Verbrauchsteuern"
+     }
+    }
+   ],
+   "receipts_eur": {
+    "2024": 25466000,
+    "2025": 23011000
+   },
+   "statutory_split_eur": {
+    "2024": {
+     "federation": 25466000
+    },
+    "2025": {
+     "federation": 23011000
+    }
+   },
+   "note": null
+  },
+  {
+   "id": "STEUERARTB70",
+   "label": {
+    "de": "Energiesteuer",
+    "en": "Energy tax"
+   },
+   "group": "federal",
+   "kind": "exclusive_assignment",
+   "shares": {
+    "federation": 1.0
+   },
+   "legal_basis": [
+    {
+     "section": "Art. 106 (1) GG",
+     "quote": "die Verbrauchsteuern",
+     "source": {
+      "source_id": "gesetze_im_internet",
+      "file": "gg_art_106.html",
+      "path": "research/raw/gesetze_im_internet/gg_art_106.html",
+      "url": "https://www.gesetze-im-internet.de/gg/art_106.html",
+      "retrieved": "2026-10-09T12:45:40Z",
+      "sha256": "d56ce0989da3d96ba488e15421eb306fe7dafb1f4c9b148c5a545f4b374a1665",
+      "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+      "coordinates": "text contains: die Verbrauchsteuern"
+     }
+    }
+   ],
+   "receipts_eur": {
+    "2024": 35087015000,
+    "2025": 37563070000
+   },
+   "statutory_split_eur": {
+    "2024": {
+     "federation": 35087015000
+    },
+    "2025": {
+     "federation": 37563070000
+    }
+   },
+   "note": null
+  },
+  {
+   "id": "STEUERARTB75",
+   "label": {
+    "de": "Stromsteuer",
+    "en": "Electricity tax"
+   },
+   "group": "federal",
+   "kind": "exclusive_assignment",
+   "shares": {
+    "federation": 1.0
+   },
+   "legal_basis": [
+    {
+     "section": "Art. 106 (1) GG",
+     "quote": "die Verbrauchsteuern",
+     "source": {
+      "source_id": "gesetze_im_internet",
+      "file": "gg_art_106.html",
+      "path": "research/raw/gesetze_im_internet/gg_art_106.html",
+      "url": "https://www.gesetze-im-internet.de/gg/art_106.html",
+      "retrieved": "2026-10-09T12:45:40Z",
+      "sha256": "d56ce0989da3d96ba488e15421eb306fe7dafb1f4c9b148c5a545f4b374a1665",
+      "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+      "coordinates": "text contains: die Verbrauchsteuern"
+     }
+    }
+   ],
+   "receipts_eur": {
+    "2024": 5153423000,
+    "2025": 5855795000
+   },
+   "statutory_split_eur": {
+    "2024": {
+     "federation": 5153423000
+    },
+    "2025": {
+     "federation": 5855795000
+    }
+   },
+   "note": null
+  },
+  {
+   "id": "STEUERARTB77",
+   "label": {
+    "de": "Kraftfahrzeugsteuer (Bund)",
+    "en": "Motor vehicle tax (Federation)"
+   },
+   "group": "federal",
+   "kind": "exclusive_assignment",
+   "shares": {
+    "federation": 1.0
+   },
+   "legal_basis": [
+    {
+     "section": "Art. 106 (1) GG",
+     "quote": "die Kraftfahrzeugsteuer",
+     "source": {
+      "source_id": "gesetze_im_internet",
+      "file": "gg_art_106.html",
+      "path": "research/raw/gesetze_im_internet/gg_art_106.html",
+      "url": "https://www.gesetze-im-internet.de/gg/art_106.html",
+      "retrieved": "2026-10-09T12:45:40Z",
+      "sha256": "d56ce0989da3d96ba488e15421eb306fe7dafb1f4c9b148c5a545f4b374a1665",
+      "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+      "coordinates": "text contains: die Kraftfahrzeugsteuer"
+     }
+    }
+   ],
+   "receipts_eur": {
+    "2024": 9667296000,
+    "2025": 9598468000
+   },
+   "statutory_split_eur": {
+    "2024": {
+     "federation": 9667296000
+    },
+    "2025": {
+     "federation": 9598468000
+    }
+   },
+   "note": null
+  },
+  {
+   "id": "STEUERARTB78",
+   "label": {
+    "de": "Luftverkehrsteuer",
+    "en": "Aviation tax"
+   },
+   "group": "federal",
+   "kind": "exclusive_assignment",
+   "shares": {
+    "federation": 1.0
+   },
+   "legal_basis": [
+    {
+     "section": "Art. 106 (1) GG",
+     "quote": "sonstige auf motorisierte Verkehrsmittel bezogene Verkehrsteuern",
+     "source": {
+      "source_id": "gesetze_im_internet",
+      "file": "gg_art_106.html",
+      "path": "research/raw/gesetze_im_internet/gg_art_106.html",
+      "url": "https://www.gesetze-im-internet.de/gg/art_106.html",
+      "retrieved": "2026-10-09T12:45:40Z",
+      "sha256": "d56ce0989da3d96ba488e15421eb306fe7dafb1f4c9b148c5a545f4b374a1665",
+      "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+      "coordinates": "text contains: sonstige auf motorisierte Verkehrsmittel bezogene Verkehrsteuern"
+     }
+    }
+   ],
+   "receipts_eur": {
+    "2024": 1832551000,
+    "2025": 2062614000
+   },
+   "statutory_split_eur": {
+    "2024": {
+     "federation": 1832551000
+    },
+    "2025": {
+     "federation": 2062614000
+    }
+   },
+   "note": null
+  },
+  {
+   "id": "STEUERARTB79",
+   "label": {
+    "de": "Kernbrennstoffsteuer",
+    "en": "Nuclear fuel tax"
+   },
+   "group": "federal",
+   "kind": "exclusive_assignment",
+   "shares": {
+    "federation": 1.0
+   },
+   "legal_basis": [
+    {
+     "section": "Art. 106 (1) GG",
+     "quote": "die Verbrauchsteuern",
+     "source": {
+      "source_id": "gesetze_im_internet",
+      "file": "gg_art_106.html",
+      "path": "research/raw/gesetze_im_internet/gg_art_106.html",
+      "url": "https://www.gesetze-im-internet.de/gg/art_106.html",
+      "retrieved": "2026-10-09T12:45:40Z",
+      "sha256": "d56ce0989da3d96ba488e15421eb306fe7dafb1f4c9b148c5a545f4b374a1665",
+      "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+      "coordinates": "text contains: die Verbrauchsteuern"
+     }
+    }
+   ],
+   "receipts_eur": {
+    "2024": null,
+    "2025": null
+   },
+   "statutory_split_eur": {
+    "2024": null,
+    "2025": null
+   },
+   "note": null
+  },
+  {
+   "id": "STEUERARTB80",
+   "label": {
+    "de": "Solidaritätszuschlag",
+    "en": "Solidarity surcharge"
+   },
+   "group": "federal",
+   "kind": "exclusive_assignment",
+   "shares": {
+    "federation": 1.0
+   },
+   "legal_basis": [
+    {
+     "section": "Art. 106 (1) GG",
+     "quote": "die Ergänzungsabgabe zur Einkommensteuer und zur Körperschaftsteuer",
+     "source": {
+      "source_id": "gesetze_im_internet",
+      "file": "gg_art_106.html",
+      "path": "research/raw/gesetze_im_internet/gg_art_106.html",
+      "url": "https://www.gesetze-im-internet.de/gg/art_106.html",
+      "retrieved": "2026-10-09T12:45:40Z",
+      "sha256": "d56ce0989da3d96ba488e15421eb306fe7dafb1f4c9b148c5a545f4b374a1665",
+      "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+      "coordinates": "text contains: die Ergänzungsabgabe zur Einkommensteuer und zur Körperschaftsteuer"
+     }
+    }
+   ],
+   "receipts_eur": {
+    "2024": 12634294000,
+    "2025": 12878008000
+   },
+   "statutory_split_eur": {
+    "2024": {
+     "federation": 12634294000
+    },
+    "2025": {
+     "federation": 12878008000
+    }
+   },
+   "note": null
+  },
+  {
+   "id": "STEUERARTB85",
+   "label": {
+    "de": "EU-Energiekrisenbeitrag",
+    "en": "EU energy crisis contribution"
+   },
+   "group": "federal",
+   "kind": "exclusive_assignment",
+   "shares": {
+    "federation": 1.0
+   },
+   "legal_basis": [
+    {
+     "section": "Art. 106 (1) GG",
+     "quote": "die Verbrauchsteuern",
+     "source": {
+      "source_id": "gesetze_im_internet",
+      "file": "gg_art_106.html",
+      "path": "research/raw/gesetze_im_internet/gg_art_106.html",
+      "url": "https://www.gesetze-im-internet.de/gg/art_106.html",
+      "retrieved": "2026-10-09T12:45:40Z",
+      "sha256": "d56ce0989da3d96ba488e15421eb306fe7dafb1f4c9b148c5a545f4b374a1665",
+      "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+      "coordinates": "text contains: die Verbrauchsteuern"
+     }
+    }
+   ],
+   "receipts_eur": {
+    "2024": 1936160000,
+    "2025": 133826000
+   },
+   "statutory_split_eur": {
+    "2024": {
+     "federation": 1936160000
+    },
+    "2025": {
+     "federation": 133826000
+    }
+   },
+   "note": null
+  },
+  {
+   "id": "STEUERARTB90",
+   "label": {
+    "de": "Pauschalierte Eingangsabgaben",
+    "en": "Flat-rate import charges"
+   },
+   "group": "federal",
+   "kind": "exclusive_assignment",
+   "shares": {
+    "federation": 1.0
+   },
+   "legal_basis": [
+    {
+     "section": "Art. 106 (1) GG",
+     "quote": "Abgaben im Rahmen der Europäischen Gemeinschaften",
+     "source": {
+      "source_id": "gesetze_im_internet",
+      "file": "gg_art_106.html",
+      "path": "research/raw/gesetze_im_internet/gg_art_106.html",
+      "url": "https://www.gesetze-im-internet.de/gg/art_106.html",
+      "retrieved": "2026-10-09T12:45:40Z",
+      "sha256": "d56ce0989da3d96ba488e15421eb306fe7dafb1f4c9b148c5a545f4b374a1665",
+      "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+      "coordinates": "text contains: Abgaben im Rahmen der Europäischen Gemeinschaften"
+     }
+    }
+   ],
+   "receipts_eur": {
+    "2024": 2161000,
+    "2025": 2175000
+   },
+   "statutory_split_eur": {
+    "2024": {
+     "federation": 2161000
+    },
+    "2025": {
+     "federation": 2175000
+    }
+   },
+   "note": null
+  },
+  {
+   "id": "STEUERARTB100",
+   "label": {
+    "de": "Sonstige Bundessteuern",
+    "en": "Other federal taxes"
+   },
+   "group": "federal",
+   "kind": "exclusive_assignment",
+   "shares": {
+    "federation": 1.0
+   },
+   "legal_basis": [
+    {
+     "section": "Art. 106 (1) GG",
+     "quote": "stehen dem Bund zu",
+     "source": {
+      "source_id": "gesetze_im_internet",
+      "file": "gg_art_106.html",
+      "path": "research/raw/gesetze_im_internet/gg_art_106.html",
+      "url": "https://www.gesetze-im-internet.de/gg/art_106.html",
+      "retrieved": "2026-10-09T12:45:40Z",
+      "sha256": "d56ce0989da3d96ba488e15421eb306fe7dafb1f4c9b148c5a545f4b374a1665",
+      "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+      "coordinates": "text contains: stehen dem Bund zu"
+     }
+    }
+   ],
+   "receipts_eur": {
+    "2024": 4000,
+    "2025": 2000
+   },
+   "statutory_split_eur": {
+    "2024": {
+     "federation": 4000
+    },
+    "2025": {
+     "federation": 2000
+    }
+   },
+   "note": null
+  },
+  {
+   "id": "STEUERARTZ10",
+   "label": {
+    "de": "Zölle",
+    "en": "Customs duties"
+   },
+   "group": "customs",
+   "kind": "exclusive_assignment",
+   "shares": {
+    "eu": 1.0
+   },
+   "legal_basis": [
+    {
+     "section": "Art. 106 (1) Nr. 1 GG",
+     "quote": "die Zölle",
+     "source": {
+      "source_id": "gesetze_im_internet",
+      "file": "gg_art_106.html",
+      "path": "research/raw/gesetze_im_internet/gg_art_106.html",
+      "url": "https://www.gesetze-im-internet.de/gg/art_106.html",
+      "retrieved": "2026-10-09T12:45:40Z",
+      "sha256": "d56ce0989da3d96ba488e15421eb306fe7dafb1f4c9b148c5a545f4b374a1665",
+      "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+      "coordinates": "text contains: die Zölle"
+     }
+    }
+   ],
+   "receipts_eur": {
+    "2024": 5463168000,
+    "2025": 5859720000
+   },
+   "statutory_split_eur": {
+    "2024": {
+     "eu": 5463168000
+    },
+    "2025": {
+     "eu": 5859720000
+    }
+   },
+   "note": {
+    "de": "Zölle sind traditionelle EU-Eigenmittel; Deutschland behält 25 % Erhebungskostenpauschale (EU-Eigenmittelbeschluss), Destatis bucht die Zölle vollständig als EU-Eigenmittel.",
+    "en": "Customs duties are traditional EU own resources; Germany retains a 25 % collection-cost share (EU Own Resources Decision); Destatis books customs fully as EU own resources."
+   }
+  },
+  {
+   "id": "STEUERARTL10",
+   "label": {
+    "de": "Vermögensteuer",
+    "en": "Net worth tax"
+   },
+   "group": "land",
+   "kind": "exclusive_assignment",
+   "shares": {
+    "laender": 1.0
+   },
+   "legal_basis": [
+    {
+     "section": "Art. 106 (2) GG",
+     "quote": "die Vermögensteuer",
+     "source": {
+      "source_id": "gesetze_im_internet",
+      "file": "gg_art_106.html",
+      "path": "research/raw/gesetze_im_internet/gg_art_106.html",
+      "url": "https://www.gesetze-im-internet.de/gg/art_106.html",
+      "retrieved": "2026-10-09T12:45:40Z",
+      "sha256": "d56ce0989da3d96ba488e15421eb306fe7dafb1f4c9b148c5a545f4b374a1665",
+      "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+      "coordinates": "text contains: die Vermögensteuer"
+     }
+    }
+   ],
+   "receipts_eur": {
+    "2024": -11000,
+    "2025": 0
+   },
+   "statutory_split_eur": {
+    "2024": {
+     "laender": -11000
+    },
+    "2025": {
+     "laender": 0
+    }
+   },
+   "note": null
+  },
+  {
+   "id": "STEUERARTL20",
+   "label": {
+    "de": "Erbschaftsteuer",
+    "en": "Inheritance tax"
+   },
+   "group": "land",
+   "kind": "exclusive_assignment",
+   "shares": {
+    "laender": 1.0
+   },
+   "legal_basis": [
+    {
+     "section": "Art. 106 (2) GG",
+     "quote": "die Erbschaftsteuer",
+     "source": {
+      "source_id": "gesetze_im_internet",
+      "file": "gg_art_106.html",
+      "path": "research/raw/gesetze_im_internet/gg_art_106.html",
+      "url": "https://www.gesetze-im-internet.de/gg/art_106.html",
+      "retrieved": "2026-10-09T12:45:40Z",
+      "sha256": "d56ce0989da3d96ba488e15421eb306fe7dafb1f4c9b148c5a545f4b374a1665",
+      "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+      "coordinates": "text contains: die Erbschaftsteuer"
+     }
+    }
+   ],
+   "receipts_eur": {
+    "2024": 9990396000,
+    "2025": 15412435000
+   },
+   "statutory_split_eur": {
+    "2024": {
+     "laender": 9990396000
+    },
+    "2025": {
+     "laender": 15412435000
+    }
+   },
+   "note": null
+  },
+  {
+   "id": "STEUERARTL30",
+   "label": {
+    "de": "Grunderwerbsteuer",
+    "en": "Tax on acquisition of real estate"
+   },
+   "group": "land",
+   "kind": "exclusive_assignment",
+   "shares": {
+    "laender": 1.0
+   },
+   "legal_basis": [
+    {
+     "section": "Art. 106 (2) GG",
+     "quote": "die Verkehrsteuern",
+     "source": {
+      "source_id": "gesetze_im_internet",
+      "file": "gg_art_106.html",
+      "path": "research/raw/gesetze_im_internet/gg_art_106.html",
+      "url": "https://www.gesetze-im-internet.de/gg/art_106.html",
+      "retrieved": "2026-10-09T12:45:40Z",
+      "sha256": "d56ce0989da3d96ba488e15421eb306fe7dafb1f4c9b148c5a545f4b374a1665",
+      "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+      "coordinates": "text contains: die Verkehrsteuern"
+     }
+    }
+   ],
+   "receipts_eur": {
+    "2024": 12749700000,
+    "2025": 15097041000
+   },
+   "statutory_split_eur": {
+    "2024": {
+     "laender": 12749700000
+    },
+    "2025": {
+     "laender": 15097041000
+    }
+   },
+   "note": null
+  },
+  {
+   "id": "STEUERARTL40",
+   "label": {
+    "de": "Kraftfahrzeugsteuer (Land)",
+    "en": "Motor vehicle tax (Land)"
+   },
+   "group": "land",
+   "kind": "exclusive_assignment",
+   "shares": {
+    "laender": 1.0
+   },
+   "legal_basis": [
+    {
+     "section": "Art. 106 (2) GG",
+     "quote": "die Kraftfahrzeugsteuer",
+     "source": {
+      "source_id": "gesetze_im_internet",
+      "file": "gg_art_106.html",
+      "path": "research/raw/gesetze_im_internet/gg_art_106.html",
+      "url": "https://www.gesetze-im-internet.de/gg/art_106.html",
+      "retrieved": "2026-10-09T12:45:40Z",
+      "sha256": "d56ce0989da3d96ba488e15421eb306fe7dafb1f4c9b148c5a545f4b374a1665",
+      "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+      "coordinates": "text contains: die Kraftfahrzeugsteuer"
+     }
+    }
+   ],
+   "receipts_eur": {
+    "2024": null,
+    "2025": null
+   },
+   "statutory_split_eur": {
+    "2024": null,
+    "2025": null
+   },
+   "note": null
+  },
+  {
+   "id": "STEUERARTL51",
+   "label": {
+    "de": "Totalisatorsteuer",
+    "en": "Totalisator tax"
+   },
+   "group": "land",
+   "kind": "exclusive_assignment",
+   "shares": {
+    "laender": 1.0
+   },
+   "legal_basis": [
+    {
+     "section": "Art. 106 (2) GG",
+     "quote": "die Verkehrsteuern",
+     "source": {
+      "source_id": "gesetze_im_internet",
+      "file": "gg_art_106.html",
+      "path": "research/raw/gesetze_im_internet/gg_art_106.html",
+      "url": "https://www.gesetze-im-internet.de/gg/art_106.html",
+      "retrieved": "2026-10-09T12:45:40Z",
+      "sha256": "d56ce0989da3d96ba488e15421eb306fe7dafb1f4c9b148c5a545f4b374a1665",
+      "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+      "coordinates": "text contains: die Verkehrsteuern"
+     }
+    }
+   ],
+   "receipts_eur": {
+    "2024": 5695000,
+    "2025": 5718000
+   },
+   "statutory_split_eur": {
+    "2024": {
+     "laender": 5695000
+    },
+    "2025": {
+     "laender": 5718000
+    }
+   },
+   "note": null
+  },
+  {
+   "id": "STEUERARTL52",
+   "label": {
+    "de": "Andere Rennwettsteuer",
+    "en": "Other betting tax"
+   },
+   "group": "land",
+   "kind": "exclusive_assignment",
+   "shares": {
+    "laender": 1.0
+   },
+   "legal_basis": [
+    {
+     "section": "Art. 106 (2) GG",
+     "quote": "die Verkehrsteuern",
+     "source": {
+      "source_id": "gesetze_im_internet",
+      "file": "gg_art_106.html",
+      "path": "research/raw/gesetze_im_internet/gg_art_106.html",
+      "url": "https://www.gesetze-im-internet.de/gg/art_106.html",
+      "retrieved": "2026-10-09T12:45:40Z",
+      "sha256": "d56ce0989da3d96ba488e15421eb306fe7dafb1f4c9b148c5a545f4b374a1665",
+      "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+      "coordinates": "text contains: die Verkehrsteuern"
+     }
+    }
+   ],
+   "receipts_eur": {
+    "2024": 853000,
+    "2025": 686000
+   },
+   "statutory_split_eur": {
+    "2024": {
+     "laender": 853000
+    },
+    "2025": {
+     "laender": 686000
+    }
+   },
+   "note": null
+  },
+  {
+   "id": "STEUERARTL53",
+   "label": {
+    "de": "Lotteriesteuer",
+    "en": "Lottery tax"
+   },
+   "group": "land",
+   "kind": "exclusive_assignment",
+   "shares": {
+    "laender": 1.0
+   },
+   "legal_basis": [
+    {
+     "section": "Art. 106 (2) GG",
+     "quote": "die Verkehrsteuern",
+     "source": {
+      "source_id": "gesetze_im_internet",
+      "file": "gg_art_106.html",
+      "path": "research/raw/gesetze_im_internet/gg_art_106.html",
+      "url": "https://www.gesetze-im-internet.de/gg/art_106.html",
+      "retrieved": "2026-10-09T12:45:40Z",
+      "sha256": "d56ce0989da3d96ba488e15421eb306fe7dafb1f4c9b148c5a545f4b374a1665",
+      "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+      "coordinates": "text contains: die Verkehrsteuern"
+     }
+    }
+   ],
+   "receipts_eur": {
+    "2024": 1806838000,
+    "2025": 1788995000
+   },
+   "statutory_split_eur": {
+    "2024": {
+     "laender": 1806838000
+    },
+    "2025": {
+     "laender": 1788995000
+    }
+   },
+   "note": null
+  },
+  {
+   "id": "STEUERARTL54",
+   "label": {
+    "de": "Sportwettsteuer",
+    "en": "Sports betting tax"
+   },
+   "group": "land",
+   "kind": "exclusive_assignment",
+   "shares": {
+    "laender": 1.0
+   },
+   "legal_basis": [
+    {
+     "section": "Art. 106 (2) GG",
+     "quote": "die Verkehrsteuern",
+     "source": {
+      "source_id": "gesetze_im_internet",
+      "file": "gg_art_106.html",
+      "path": "research/raw/gesetze_im_internet/gg_art_106.html",
+      "url": "https://www.gesetze-im-internet.de/gg/art_106.html",
+      "retrieved": "2026-10-09T12:45:40Z",
+      "sha256": "d56ce0989da3d96ba488e15421eb306fe7dafb1f4c9b148c5a545f4b374a1665",
+      "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+      "coordinates": "text contains: die Verkehrsteuern"
+     }
+    }
+   ],
+   "receipts_eur": {
+    "2024": 423267000,
+    "2025": 419498000
+   },
+   "statutory_split_eur": {
+    "2024": {
+     "laender": 423267000
+    },
+    "2025": {
+     "laender": 419498000
+    }
+   },
+   "note": null
+  },
+  {
+   "id": "STEUERARTL55",
+   "label": {
+    "de": "Online-Pokersteuer",
+    "en": "Online poker tax"
+   },
+   "group": "land",
+   "kind": "exclusive_assignment",
+   "shares": {
+    "laender": 1.0
+   },
+   "legal_basis": [
+    {
+     "section": "Art. 106 (2) GG",
+     "quote": "die Verkehrsteuern",
+     "source": {
+      "source_id": "gesetze_im_internet",
+      "file": "gg_art_106.html",
+      "path": "research/raw/gesetze_im_internet/gg_art_106.html",
+      "url": "https://www.gesetze-im-internet.de/gg/art_106.html",
+      "retrieved": "2026-10-09T12:45:40Z",
+      "sha256": "d56ce0989da3d96ba488e15421eb306fe7dafb1f4c9b148c5a545f4b374a1665",
+      "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+      "coordinates": "text contains: die Verkehrsteuern"
+     }
+    }
+   ],
+   "receipts_eur": {
+    "2024": 35481000,
+    "2025": 33027000
+   },
+   "statutory_split_eur": {
+    "2024": {
+     "laender": 35481000
+    },
+    "2025": {
+     "laender": 33027000
+    }
+   },
+   "note": null
+  },
+  {
+   "id": "STEUERARTL56",
+   "label": {
+    "de": "Virtuelle Automatensteuer",
+    "en": "Virtual slot machine game tax"
+   },
+   "group": "land",
+   "kind": "exclusive_assignment",
+   "shares": {
+    "laender": 1.0
+   },
+   "legal_basis": [
+    {
+     "section": "Art. 106 (2) GG",
+     "quote": "die Verkehrsteuern",
+     "source": {
+      "source_id": "gesetze_im_internet",
+      "file": "gg_art_106.html",
+      "path": "research/raw/gesetze_im_internet/gg_art_106.html",
+      "url": "https://www.gesetze-im-internet.de/gg/art_106.html",
+      "retrieved": "2026-10-09T12:45:40Z",
+      "sha256": "d56ce0989da3d96ba488e15421eb306fe7dafb1f4c9b148c5a545f4b374a1665",
+      "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+      "coordinates": "text contains: die Verkehrsteuern"
+     }
+    }
+   ],
+   "receipts_eur": {
+    "2024": 213489000,
+    "2025": 214597000
+   },
+   "statutory_split_eur": {
+    "2024": {
+     "laender": 213489000
+    },
+    "2025": {
+     "laender": 214597000
+    }
+   },
+   "note": null
+  },
+  {
+   "id": "STEUERARTL60",
+   "label": {
+    "de": "Feuerschutzsteuer",
+    "en": "Fire protection tax"
+   },
+   "group": "land",
+   "kind": "exclusive_assignment",
+   "shares": {
+    "laender": 1.0
+   },
+   "legal_basis": [
+    {
+     "section": "Art. 106 (2) GG",
+     "quote": "die Verkehrsteuern",
+     "source": {
+      "source_id": "gesetze_im_internet",
+      "file": "gg_art_106.html",
+      "path": "research/raw/gesetze_im_internet/gg_art_106.html",
+      "url": "https://www.gesetze-im-internet.de/gg/art_106.html",
+      "retrieved": "2026-10-09T12:45:40Z",
+      "sha256": "d56ce0989da3d96ba488e15421eb306fe7dafb1f4c9b148c5a545f4b374a1665",
+      "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+      "coordinates": "text contains: die Verkehrsteuern"
+     }
+    }
+   ],
+   "receipts_eur": {
+    "2024": 724491000,
+    "2025": 773037000
+   },
+   "statutory_split_eur": {
+    "2024": {
+     "laender": 724491000
+    },
+    "2025": {
+     "laender": 773037000
+    }
+   },
+   "note": null
+  },
+  {
+   "id": "STEUERARTL70",
+   "label": {
+    "de": "Biersteuer",
+    "en": "Beer tax"
+   },
+   "group": "land",
+   "kind": "exclusive_assignment",
+   "shares": {
+    "laender": 1.0
+   },
+   "legal_basis": [
+    {
+     "section": "Art. 106 (2) GG",
+     "quote": "die Biersteuer",
+     "source": {
+      "source_id": "gesetze_im_internet",
+      "file": "gg_art_106.html",
+      "path": "research/raw/gesetze_im_internet/gg_art_106.html",
+      "url": "https://www.gesetze-im-internet.de/gg/art_106.html",
+      "retrieved": "2026-10-09T12:45:40Z",
+      "sha256": "d56ce0989da3d96ba488e15421eb306fe7dafb1f4c9b148c5a545f4b374a1665",
+      "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+      "coordinates": "text contains: die Biersteuer"
+     }
+    }
+   ],
+   "receipts_eur": {
+    "2024": 558337000,
+    "2025": 539713000
+   },
+   "statutory_split_eur": {
+    "2024": {
+     "laender": 558337000
+    },
+    "2025": {
+     "laender": 539713000
+    }
+   },
+   "note": null
+  },
+  {
+   "id": "STEUERARTL80",
+   "label": {
+    "de": "Sonstige Landessteuern",
+    "en": "Other Land taxes"
+   },
+   "group": "land",
+   "kind": "exclusive_assignment",
+   "shares": {
+    "laender": 1.0
+   },
+   "legal_basis": [
+    {
+     "section": "Art. 106 (2) GG",
+     "quote": "steht den Ländern zu",
+     "source": {
+      "source_id": "gesetze_im_internet",
+      "file": "gg_art_106.html",
+      "path": "research/raw/gesetze_im_internet/gg_art_106.html",
+      "url": "https://www.gesetze-im-internet.de/gg/art_106.html",
+      "retrieved": "2026-10-09T12:45:40Z",
+      "sha256": "d56ce0989da3d96ba488e15421eb306fe7dafb1f4c9b148c5a545f4b374a1665",
+      "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+      "coordinates": "text contains: steht den Ländern zu"
+     }
+    }
+   ],
+   "receipts_eur": {
+    "2024": 8000,
+    "2025": 2000
+   },
+   "statutory_split_eur": {
+    "2024": {
+     "laender": 8000
+    },
+    "2025": {
+     "laender": 2000
+    }
+   },
+   "note": null
+  },
+  {
+   "id": "STEUERARTK30",
+   "label": {
+    "de": "Gewerbesteuer (brutto)",
+    "en": "Trade tax (gross)"
+   },
+   "group": "municipal",
+   "kind": "exclusive_assignment",
+   "shares": {
+    "municipalities": 1.0
+   },
+   "legal_basis": [
+    {
+     "section": "Art. 106 (6) GG",
+     "quote": "Das Aufkommen der Grundsteuer und Gewerbesteuer steht den Gemeinden",
+     "source": {
+      "source_id": "gesetze_im_internet",
+      "file": "gg_art_106.html",
+      "path": "research/raw/gesetze_im_internet/gg_art_106.html",
+      "url": "https://www.gesetze-im-internet.de/gg/art_106.html",
+      "retrieved": "2026-10-09T12:45:40Z",
+      "sha256": "d56ce0989da3d96ba488e15421eb306fe7dafb1f4c9b148c5a545f4b374a1665",
+      "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+      "coordinates": "text contains: Das Aufkommen der Grundsteuer und Gewerbesteuer steht den Gemeinden"
+     }
+    },
+    {
+     "section": "§ 6 (3) GemFinRefG",
+     "quote": "Der Bundesvervielfältiger beträgt 14,5 Prozent. Der Landesvervielfältiger beträgt 20,5 Prozent.",
+     "source": {
+      "source_id": "gesetze_im_internet",
+      "file": "gemfinrefg_6.html",
+      "path": "research/raw/gesetze_im_internet/gemfinrefg_6.html",
+      "url": "https://www.gesetze-im-internet.de/gemfinrefg/__6.html",
+      "retrieved": "2026-10-09T12:45:41Z",
+      "sha256": "827b7de0dd732288575b2f21bcbeca1a745389c3abc1c9012e8446df8ae70b5d",
+      "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+      "coordinates": "text contains: Der Bundesvervielfältiger beträgt 14,5 Prozent. Der Landesvervielfältiger beträgt 20,5 Prozent."
+     }
+    }
+   ],
+   "receipts_eur": {
+    "2024": 75293525000,
+    "2025": 76444382000
+   },
+   "statutory_split_eur": {
+    "2024": {
+     "municipalities": 75293525000
+    },
+    "2025": {
+     "municipalities": 76444382000
+    }
+   },
+   "note": {
+    "de": "Brutto. Die Gemeinden führen eine Umlage ab: (Istaufkommen ÷ Hebesatz) × 35 % (14,5 Bund + 20,5 Land). Berlin und Hamburg zahlen als Stadtstaaten nur den Bundesanteil (§ 7 GemFinRefG).",
+    "en": "Gross. Municipalities remit a levy: (receipts ÷ assessment rate) × 35 % (14.5 federal + 20.5 Land). Berlin and Hamburg pay only the federal part (§ 7 GemFinRefG)."
+   }
+  },
+  {
+   "id": "STEUERARTK10",
+   "label": {
+    "de": "Grundsteuer A",
+    "en": "Category A real property tax"
+   },
+   "group": "municipal",
+   "kind": "exclusive_assignment",
+   "shares": {
+    "municipalities": 1.0
+   },
+   "legal_basis": [
+    {
+     "section": "Art. 106 (6) GG",
+     "quote": "Das Aufkommen der Grundsteuer und Gewerbesteuer steht den Gemeinden",
+     "source": {
+      "source_id": "gesetze_im_internet",
+      "file": "gg_art_106.html",
+      "path": "research/raw/gesetze_im_internet/gg_art_106.html",
+      "url": "https://www.gesetze-im-internet.de/gg/art_106.html",
+      "retrieved": "2026-10-09T12:45:40Z",
+      "sha256": "d56ce0989da3d96ba488e15421eb306fe7dafb1f4c9b148c5a545f4b374a1665",
+      "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+      "coordinates": "text contains: Das Aufkommen der Grundsteuer und Gewerbesteuer steht den Gemeinden"
+     }
+    }
+   ],
+   "receipts_eur": {
+    "2024": 428278000,
+    "2025": 344369000
+   },
+   "statutory_split_eur": {
+    "2024": {
+     "municipalities": 428278000
+    },
+    "2025": {
+     "municipalities": 344369000
+    }
+   },
+   "note": null
+  },
+  {
+   "id": "STEUERARTK20",
+   "label": {
+    "de": "Grundsteuer B",
+    "en": "Category B real property tax"
+   },
+   "group": "municipal",
+   "kind": "exclusive_assignment",
+   "shares": {
+    "municipalities": 1.0
+   },
+   "legal_basis": [
+    {
+     "section": "Art. 106 (6) GG",
+     "quote": "Das Aufkommen der Grundsteuer und Gewerbesteuer steht den Gemeinden",
+     "source": {
+      "source_id": "gesetze_im_internet",
+      "file": "gg_art_106.html",
+      "path": "research/raw/gesetze_im_internet/gg_art_106.html",
+      "url": "https://www.gesetze-im-internet.de/gg/art_106.html",
+      "retrieved": "2026-10-09T12:45:40Z",
+      "sha256": "d56ce0989da3d96ba488e15421eb306fe7dafb1f4c9b148c5a545f4b374a1665",
+      "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+      "coordinates": "text contains: Das Aufkommen der Grundsteuer und Gewerbesteuer steht den Gemeinden"
+     }
+    }
+   ],
+   "receipts_eur": {
+    "2024": 15638200000,
+    "2025": 15741629000
+   },
+   "statutory_split_eur": {
+    "2024": {
+     "municipalities": 15638200000
+    },
+    "2025": {
+     "municipalities": 15741629000
+    }
+   },
+   "note": null
+  },
+  {
+   "id": "STEUERARTK21",
+   "label": {
+    "de": "Grundsteuer C",
+    "en": "Category C real property tax"
+   },
+   "group": "municipal",
+   "kind": "exclusive_assignment",
+   "shares": {
+    "municipalities": 1.0
+   },
+   "legal_basis": [
+    {
+     "section": "Art. 106 (6) GG",
+     "quote": "Das Aufkommen der Grundsteuer und Gewerbesteuer steht den Gemeinden",
+     "source": {
+      "source_id": "gesetze_im_internet",
+      "file": "gg_art_106.html",
+      "path": "research/raw/gesetze_im_internet/gg_art_106.html",
+      "url": "https://www.gesetze-im-internet.de/gg/art_106.html",
+      "retrieved": "2026-10-09T12:45:40Z",
+      "sha256": "d56ce0989da3d96ba488e15421eb306fe7dafb1f4c9b148c5a545f4b374a1665",
+      "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+      "coordinates": "text contains: Das Aufkommen der Grundsteuer und Gewerbesteuer steht den Gemeinden"
+     }
+    }
+   ],
+   "receipts_eur": {
+    "2024": null,
+    "2025": 4873000
+   },
+   "statutory_split_eur": {
+    "2024": null,
+    "2025": {
+     "municipalities": 4873000
+    }
+   },
+   "note": null
+  },
+  {
+   "id": "STEUERARTK41",
+   "label": {
+    "de": "Sonstige Vergnügungsteuer",
+    "en": "Other entertainment tax"
+   },
+   "group": "municipal",
+   "kind": "exclusive_assignment",
+   "shares": {
+    "municipalities": 1.0
+   },
+   "legal_basis": [
+    {
+     "section": "Art. 106 (6) GG",
+     "quote": "örtlichen Verbrauch- und Aufwandsteuern",
+     "source": {
+      "source_id": "gesetze_im_internet",
+      "file": "gg_art_106.html",
+      "path": "research/raw/gesetze_im_internet/gg_art_106.html",
+      "url": "https://www.gesetze-im-internet.de/gg/art_106.html",
+      "retrieved": "2026-10-09T12:45:40Z",
+      "sha256": "d56ce0989da3d96ba488e15421eb306fe7dafb1f4c9b148c5a545f4b374a1665",
+      "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+      "coordinates": "text contains: örtlichen Verbrauch- und Aufwandsteuern"
+     }
+    }
+   ],
+   "receipts_eur": {
+    "2024": 900331000,
+    "2025": 897043000
+   },
+   "statutory_split_eur": {
+    "2024": {
+     "municipalities": 900331000
+    },
+    "2025": {
+     "municipalities": 897043000
+    }
+   },
+   "note": null
+  },
+  {
+   "id": "STEUERARTK42",
+   "label": {
+    "de": "Hundesteuer",
+    "en": "Dog tax"
+   },
+   "group": "municipal",
+   "kind": "exclusive_assignment",
+   "shares": {
+    "municipalities": 1.0
+   },
+   "legal_basis": [
+    {
+     "section": "Art. 106 (6) GG",
+     "quote": "örtlichen Verbrauch- und Aufwandsteuern",
+     "source": {
+      "source_id": "gesetze_im_internet",
+      "file": "gg_art_106.html",
+      "path": "research/raw/gesetze_im_internet/gg_art_106.html",
+      "url": "https://www.gesetze-im-internet.de/gg/art_106.html",
+      "retrieved": "2026-10-09T12:45:40Z",
+      "sha256": "d56ce0989da3d96ba488e15421eb306fe7dafb1f4c9b148c5a545f4b374a1665",
+      "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+      "coordinates": "text contains: örtlichen Verbrauch- und Aufwandsteuern"
+     }
+    }
+   ],
+   "receipts_eur": {
+    "2024": 429941000,
+    "2025": 429674000
+   },
+   "statutory_split_eur": {
+    "2024": {
+     "municipalities": 429941000
+    },
+    "2025": {
+     "municipalities": 429674000
+    }
+   },
+   "note": null
+  },
+  {
+   "id": "STEUERARTK43",
+   "label": {
+    "de": "Jagd- und Fischereisteuer",
+    "en": "Hunting and fishing tax"
+   },
+   "group": "municipal",
+   "kind": "exclusive_assignment",
+   "shares": {
+    "municipalities": 1.0
+   },
+   "legal_basis": [
+    {
+     "section": "Art. 106 (6) GG",
+     "quote": "örtlichen Verbrauch- und Aufwandsteuern",
+     "source": {
+      "source_id": "gesetze_im_internet",
+      "file": "gg_art_106.html",
+      "path": "research/raw/gesetze_im_internet/gg_art_106.html",
+      "url": "https://www.gesetze-im-internet.de/gg/art_106.html",
+      "retrieved": "2026-10-09T12:45:40Z",
+      "sha256": "d56ce0989da3d96ba488e15421eb306fe7dafb1f4c9b148c5a545f4b374a1665",
+      "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+      "coordinates": "text contains: örtlichen Verbrauch- und Aufwandsteuern"
+     }
+    }
+   ],
+   "receipts_eur": {
+    "2024": 6906000,
+    "2025": 6371000
+   },
+   "statutory_split_eur": {
+    "2024": {
+     "municipalities": 6906000
+    },
+    "2025": {
+     "municipalities": 6371000
+    }
+   },
+   "note": null
+  },
+  {
+   "id": "STEUERARTK44",
+   "label": {
+    "de": "Zweitwohnungsteuer",
+    "en": "Second home tax"
+   },
+   "group": "municipal",
+   "kind": "exclusive_assignment",
+   "shares": {
+    "municipalities": 1.0
+   },
+   "legal_basis": [
+    {
+     "section": "Art. 106 (6) GG",
+     "quote": "örtlichen Verbrauch- und Aufwandsteuern",
+     "source": {
+      "source_id": "gesetze_im_internet",
+      "file": "gg_art_106.html",
+      "path": "research/raw/gesetze_im_internet/gg_art_106.html",
+      "url": "https://www.gesetze-im-internet.de/gg/art_106.html",
+      "retrieved": "2026-10-09T12:45:40Z",
+      "sha256": "d56ce0989da3d96ba488e15421eb306fe7dafb1f4c9b148c5a545f4b374a1665",
+      "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+      "coordinates": "text contains: örtlichen Verbrauch- und Aufwandsteuern"
+     }
+    }
+   ],
+   "receipts_eur": {
+    "2024": 281934000,
+    "2025": 283742000
+   },
+   "statutory_split_eur": {
+    "2024": {
+     "municipalities": 281934000
+    },
+    "2025": {
+     "municipalities": 283742000
+    }
+   },
+   "note": null
+  },
+  {
+   "id": "STEUERARTK45",
+   "label": {
+    "de": "Vergnügungsteuer f. d. Vorführung von Bildstreifen",
+    "en": "Entertainment tax on the projection of filmstrips"
+   },
+   "group": "municipal",
+   "kind": "exclusive_assignment",
+   "shares": {
+    "municipalities": 1.0
+   },
+   "legal_basis": [
+    {
+     "section": "Art. 106 (6) GG",
+     "quote": "örtlichen Verbrauch- und Aufwandsteuern",
+     "source": {
+      "source_id": "gesetze_im_internet",
+      "file": "gg_art_106.html",
+      "path": "research/raw/gesetze_im_internet/gg_art_106.html",
+      "url": "https://www.gesetze-im-internet.de/gg/art_106.html",
+      "retrieved": "2026-10-09T12:45:40Z",
+      "sha256": "d56ce0989da3d96ba488e15421eb306fe7dafb1f4c9b148c5a545f4b374a1665",
+      "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+      "coordinates": "text contains: örtlichen Verbrauch- und Aufwandsteuern"
+     }
+    }
+   ],
+   "receipts_eur": {
+    "2024": null,
+    "2025": null
+   },
+   "statutory_split_eur": {
+    "2024": null,
+    "2025": null
+   },
+   "note": null
+  },
+  {
+   "id": "STEUERARTK46",
+   "label": {
+    "de": "Getränkesteuer",
+    "en": "Beverage tax"
+   },
+   "group": "municipal",
+   "kind": "exclusive_assignment",
+   "shares": {
+    "municipalities": 1.0
+   },
+   "legal_basis": [
+    {
+     "section": "Art. 106 (6) GG",
+     "quote": "örtlichen Verbrauch- und Aufwandsteuern",
+     "source": {
+      "source_id": "gesetze_im_internet",
+      "file": "gg_art_106.html",
+      "path": "research/raw/gesetze_im_internet/gg_art_106.html",
+      "url": "https://www.gesetze-im-internet.de/gg/art_106.html",
+      "retrieved": "2026-10-09T12:45:40Z",
+      "sha256": "d56ce0989da3d96ba488e15421eb306fe7dafb1f4c9b148c5a545f4b374a1665",
+      "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+      "coordinates": "text contains: örtlichen Verbrauch- und Aufwandsteuern"
+     }
+    }
+   ],
+   "receipts_eur": {
+    "2024": null,
+    "2025": null
+   },
+   "statutory_split_eur": {
+    "2024": null,
+    "2025": null
+   },
+   "note": null
+  },
+  {
+   "id": "STEUERARTK47",
+   "label": {
+    "de": "Schankerlaubnissteuer",
+    "en": "Licensing tax"
+   },
+   "group": "municipal",
+   "kind": "exclusive_assignment",
+   "shares": {
+    "municipalities": 1.0
+   },
+   "legal_basis": [
+    {
+     "section": "Art. 106 (6) GG",
+     "quote": "örtlichen Verbrauch- und Aufwandsteuern",
+     "source": {
+      "source_id": "gesetze_im_internet",
+      "file": "gg_art_106.html",
+      "path": "research/raw/gesetze_im_internet/gg_art_106.html",
+      "url": "https://www.gesetze-im-internet.de/gg/art_106.html",
+      "retrieved": "2026-10-09T12:45:40Z",
+      "sha256": "d56ce0989da3d96ba488e15421eb306fe7dafb1f4c9b148c5a545f4b374a1665",
+      "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+      "coordinates": "text contains: örtlichen Verbrauch- und Aufwandsteuern"
+     }
+    }
+   ],
+   "receipts_eur": {
+    "2024": 157000,
+    "2025": 214000
+   },
+   "statutory_split_eur": {
+    "2024": {
+     "municipalities": 157000
+    },
+    "2025": {
+     "municipalities": 214000
+    }
+   },
+   "note": null
+  },
+  {
+   "id": "STEUERARTK48",
+   "label": {
+    "de": "Verpackungssteuer",
+    "en": "Packaging tax"
+   },
+   "group": "municipal",
+   "kind": "exclusive_assignment",
+   "shares": {
+    "municipalities": 1.0
+   },
+   "legal_basis": [
+    {
+     "section": "Art. 106 (6) GG",
+     "quote": "örtlichen Verbrauch- und Aufwandsteuern",
+     "source": {
+      "source_id": "gesetze_im_internet",
+      "file": "gg_art_106.html",
+      "path": "research/raw/gesetze_im_internet/gg_art_106.html",
+      "url": "https://www.gesetze-im-internet.de/gg/art_106.html",
+      "retrieved": "2026-10-09T12:45:40Z",
+      "sha256": "d56ce0989da3d96ba488e15421eb306fe7dafb1f4c9b148c5a545f4b374a1665",
+      "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+      "coordinates": "text contains: örtlichen Verbrauch- und Aufwandsteuern"
+     }
+    }
+   ],
+   "receipts_eur": {
+    "2024": null,
+    "2025": null
+   },
+   "statutory_split_eur": {
+    "2024": null,
+    "2025": null
+   },
+   "note": null
+  },
+  {
+   "id": "STEUERARTK50",
+   "label": {
+    "de": "Sonstige Steuern",
+    "en": "Other taxes"
+   },
+   "group": "municipal",
+   "kind": "exclusive_assignment",
+   "shares": {
+    "municipalities": 1.0
+   },
+   "legal_basis": [
+    {
+     "section": "Art. 106 (6) GG",
+     "quote": "steht den Gemeinden",
+     "source": {
+      "source_id": "gesetze_im_internet",
+      "file": "gg_art_106.html",
+      "path": "research/raw/gesetze_im_internet/gg_art_106.html",
+      "url": "https://www.gesetze-im-internet.de/gg/art_106.html",
+      "retrieved": "2026-10-09T12:45:40Z",
+      "sha256": "d56ce0989da3d96ba488e15421eb306fe7dafb1f4c9b148c5a545f4b374a1665",
+      "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+      "coordinates": "text contains: steht den Gemeinden"
+     }
+    }
+   ],
+   "receipts_eur": {
+    "2024": 271519000,
+    "2025": 378092000
+   },
+   "statutory_split_eur": {
+    "2024": {
+     "municipalities": 271519000
+    },
+    "2025": {
+     "municipalities": 378092000
+    }
+   },
+   "note": null
+  },
+  {
+   "id": "STEUERARTK40",
+   "label": {
+    "de": "Grunderwerbsteuer (Gemeindeanteil)",
+    "en": "Tax on acquisition of real estate (municip. share)"
+   },
+   "group": "municipal",
+   "kind": "state_law",
+   "shares": {
+    "municipalities": 1.0
+   },
+   "legal_basis": [
+    {
+     "section": "Art. 106 (7) GG",
+     "quote": "ob und inwieweit das Aufkommen der Landessteuern den Gemeinden",
+     "source": {
+      "source_id": "gesetze_im_internet",
+      "file": "gg_art_106.html",
+      "path": "research/raw/gesetze_im_internet/gg_art_106.html",
+      "url": "https://www.gesetze-im-internet.de/gg/art_106.html",
+      "retrieved": "2026-10-09T12:45:40Z",
+      "sha256": "d56ce0989da3d96ba488e15421eb306fe7dafb1f4c9b148c5a545f4b374a1665",
+      "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+      "coordinates": "text contains: ob und inwieweit das Aufkommen der Landessteuern den Gemeinden"
+     }
+    }
+   ],
+   "receipts_eur": {
+    "2024": null,
+    "2025": null
+   },
+   "statutory_split_eur": {
+    "2024": null,
+    "2025": null
+   },
+   "note": {
+    "de": "Gemeindeanteil an der Grunderwerbsteuer nach Landesrecht (nur in einigen Ländern).",
+    "en": "Municipal share of real-estate transfer tax under Land law (only some Länder)."
+   }
+  }
+ ]
+}

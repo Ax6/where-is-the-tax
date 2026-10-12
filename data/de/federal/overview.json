@@ -1,0 +1,852 @@
+{
+ "schema_version": 2,
+ "id": "de.federal.overview",
+ "title": {
+  "de": "Bundeshaushalt 2023–2025: Eckwerte des vorläufigen Abschlusses und Sondervermögen",
+  "en": "Federal budget 2023–2025: provisional closing headline figures and special funds"
+ },
+ "unit": "EUR",
+ "basis": "BMF Monatsbericht provisional closings (Jan 2025 for 2024 with Ist 2023 column; Jan 2026 for 2025). Figures in Mio EUR in the source, multiplied by 1,000,000; KTF/SVIK figures from the article text in Mrd EUR (one decimal).",
+ "generated": "2026-10-09",
+ "generated_by": "scripts/research/build_federal.py",
+ "years": [
+  "2023",
+  "2024",
+  "2025"
+ ],
+ "status": "provisional (vorläufiger Abschluss)",
+ "rows": [
+  {
+   "id": "ausgaben",
+   "label": {
+    "de": "Ausgaben (BMF-Abgrenzung)",
+    "en": "Expenditure (BMF definition)"
+   },
+   "unit": "EUR",
+   "values": {
+    "2023": {
+     "value_eur": 457129000000.0,
+     "status": "provisional (vorläufiger Abschluss)",
+     "source": {
+      "source_id": "bmf_monatsbericht",
+      "file": "2025-01-vorlaeufiger-abschluss-bundeshaushalt-2024.html",
+      "path": "research/cache/bmf_monatsbericht/2025-01-vorlaeufiger-abschluss-bundeshaushalt-2024.html",
+      "url": "https://www.bundesfinanzministerium.de/Monatsberichte/Ausgabe/2025/01/Inhalte/Kapitel-3-Analysen/3-1-vorlaeufiger-abschluss-bundeshaushalt-2024.html",
+      "retrieved": "2026-10-09T12:45:28Z",
+      "sha256": "2b0dc964501856829a941fa5a269444cf7749a438ab3c2d288acb341cdae517a",
+      "licence": "BMF web pages are copyright-protected; texts, tables and graphics may not be reproduced without permission (Impressum). Figures are facts and are cited with page coordinates; the pages themselves are not redistributed.",
+      "coordinates": "Tabelle 1 'Gesamtübersicht des Bundeshaushalts', row '1. Ausgaben¹', column 'Ist 2023'"
+     }
+    },
+    "2024": {
+     "value_eur": 465670000000.0,
+     "status": "provisional (vorläufiger Abschluss)",
+     "source": {
+      "source_id": "bmf_monatsbericht",
+      "file": "2025-01-vorlaeufiger-abschluss-bundeshaushalt-2024.html",
+      "path": "research/cache/bmf_monatsbericht/2025-01-vorlaeufiger-abschluss-bundeshaushalt-2024.html",
+      "url": "https://www.bundesfinanzministerium.de/Monatsberichte/Ausgabe/2025/01/Inhalte/Kapitel-3-Analysen/3-1-vorlaeufiger-abschluss-bundeshaushalt-2024.html",
+      "retrieved": "2026-10-09T12:45:28Z",
+      "sha256": "2b0dc964501856829a941fa5a269444cf7749a438ab3c2d288acb341cdae517a",
+      "licence": "BMF web pages are copyright-protected; texts, tables and graphics may not be reproduced without permission (Impressum). Figures are facts and are cited with page coordinates; the pages themselves are not redistributed.",
+      "coordinates": "Tabelle 1 'Gesamtübersicht des Bundeshaushalts', row '1. Ausgaben¹', column 'Ist 2024'"
+     }
+    },
+    "2025": {
+     "value_eur": 493278000000.0,
+     "status": "provisional (vorläufiger Abschluss)",
+     "source": {
+      "source_id": "bmf_monatsbericht",
+      "file": "2026-01-abschluss-bundeshaushalt-ktf-svik-2025.html",
+      "path": "research/cache/bmf_monatsbericht/2026-01-abschluss-bundeshaushalt-ktf-svik-2025.html",
+      "url": "https://www.bundesfinanzministerium.de/Monatsberichte/Ausgabe/2026/01/Inhalte/Kapitel-2-Analysen/2-1-abschluss-bundeshaushalt-ktf-svik-2025.html",
+      "retrieved": "2026-10-09T12:45:28Z",
+      "sha256": "becfec128823a8a4e2b459b8180002ec8c583588c9178489129354f752b23c76",
+      "licence": "BMF web pages are copyright-protected; texts, tables and graphics may not be reproduced without permission (Impressum). Figures are facts and are cited with page coordinates; the pages themselves are not redistributed.",
+      "coordinates": "Tabelle 1 'Gesamtübersicht des Bundeshaushalts', row '1. Ausgaben¹', column 'Ist 2025'"
+     }
+    }
+   }
+  },
+  {
+   "id": "einnahmen",
+   "label": {
+    "de": "Einnahmen (ohne Kredite, Rücklagen, Münzen)",
+    "en": "Revenue (excl. borrowing, reserves, coinage)"
+   },
+   "unit": "EUR",
+   "values": {
+    "2023": {
+     "value_eur": 392229000000.0,
+     "status": "provisional (vorläufiger Abschluss)",
+     "source": {
+      "source_id": "bmf_monatsbericht",
+      "file": "2025-01-vorlaeufiger-abschluss-bundeshaushalt-2024.html",
+      "path": "research/cache/bmf_monatsbericht/2025-01-vorlaeufiger-abschluss-bundeshaushalt-2024.html",
+      "url": "https://www.bundesfinanzministerium.de/Monatsberichte/Ausgabe/2025/01/Inhalte/Kapitel-3-Analysen/3-1-vorlaeufiger-abschluss-bundeshaushalt-2024.html",
+      "retrieved": "2026-10-09T12:45:28Z",
+      "sha256": "2b0dc964501856829a941fa5a269444cf7749a438ab3c2d288acb341cdae517a",
+      "licence": "BMF web pages are copyright-protected; texts, tables and graphics may not be reproduced without permission (Impressum). Figures are facts and are cited with page coordinates; the pages themselves are not redistributed.",
+      "coordinates": "Tabelle 1 'Gesamtübersicht des Bundeshaushalts', row '2. Einnahmen²', column 'Ist 2023'"
+     }
+    },
+    "2024": {
+     "value_eur": 440634000000.0,
+     "status": "provisional (vorläufiger Abschluss)",
+     "source": {
+      "source_id": "bmf_monatsbericht",
+      "file": "2025-01-vorlaeufiger-abschluss-bundeshaushalt-2024.html",
+      "path": "research/cache/bmf_monatsbericht/2025-01-vorlaeufiger-abschluss-bundeshaushalt-2024.html",
+      "url": "https://www.bundesfinanzministerium.de/Monatsberichte/Ausgabe/2025/01/Inhalte/Kapitel-3-Analysen/3-1-vorlaeufiger-abschluss-bundeshaushalt-2024.html",
+      "retrieved": "2026-10-09T12:45:28Z",
+      "sha256": "2b0dc964501856829a941fa5a269444cf7749a438ab3c2d288acb341cdae517a",
+      "licence": "BMF web pages are copyright-protected; texts, tables and graphics may not be reproduced without permission (Impressum). Figures are facts and are cited with page coordinates; the pages themselves are not redistributed.",
+      "coordinates": "Tabelle 1 'Gesamtübersicht des Bundeshaushalts', row '2. Einnahmen²', column 'Ist 2024'"
+     },
+     "revised_value_in_2025_article_eur": 440642000000.0,
+     "revision_note": "The January 2026 article restates the 2024 figure; the January 2025 article value is kept as primary."
+    },
+    "2025": {
+     "value_eur": 427923000000.0,
+     "status": "provisional (vorläufiger Abschluss)",
+     "source": {
+      "source_id": "bmf_monatsbericht",
+      "file": "2026-01-abschluss-bundeshaushalt-ktf-svik-2025.html",
+      "path": "research/cache/bmf_monatsbericht/2026-01-abschluss-bundeshaushalt-ktf-svik-2025.html",
+      "url": "https://www.bundesfinanzministerium.de/Monatsberichte/Ausgabe/2026/01/Inhalte/Kapitel-2-Analysen/2-1-abschluss-bundeshaushalt-ktf-svik-2025.html",
+      "retrieved": "2026-10-09T12:45:28Z",
+      "sha256": "becfec128823a8a4e2b459b8180002ec8c583588c9178489129354f752b23c76",
+      "licence": "BMF web pages are copyright-protected; texts, tables and graphics may not be reproduced without permission (Impressum). Figures are facts and are cited with page coordinates; the pages themselves are not redistributed.",
+      "coordinates": "Tabelle 1 'Gesamtübersicht des Bundeshaushalts', row '2. Einnahmen²', column 'Ist 2025'"
+     }
+    }
+   }
+  },
+  {
+   "id": "steuereinnahmen",
+   "label": {
+    "de": "Steuereinnahmen",
+    "en": "Tax revenue"
+   },
+   "unit": "EUR",
+   "values": {
+    "2023": {
+     "value_eur": 356082000000.0,
+     "status": "provisional (vorläufiger Abschluss)",
+     "source": {
+      "source_id": "bmf_monatsbericht",
+      "file": "2025-01-vorlaeufiger-abschluss-bundeshaushalt-2024.html",
+      "path": "research/cache/bmf_monatsbericht/2025-01-vorlaeufiger-abschluss-bundeshaushalt-2024.html",
+      "url": "https://www.bundesfinanzministerium.de/Monatsberichte/Ausgabe/2025/01/Inhalte/Kapitel-3-Analysen/3-1-vorlaeufiger-abschluss-bundeshaushalt-2024.html",
+      "retrieved": "2026-10-09T12:45:28Z",
+      "sha256": "2b0dc964501856829a941fa5a269444cf7749a438ab3c2d288acb341cdae517a",
+      "licence": "BMF web pages are copyright-protected; texts, tables and graphics may not be reproduced without permission (Impressum). Figures are facts and are cited with page coordinates; the pages themselves are not redistributed.",
+      "coordinates": "Tabelle 1 'Gesamtübersicht des Bundeshaushalts', row 'Steuereinnahmen³', column 'Ist 2023'"
+     }
+    },
+    "2024": {
+     "value_eur": 374981000000.0,
+     "status": "provisional (vorläufiger Abschluss)",
+     "source": {
+      "source_id": "bmf_monatsbericht",
+      "file": "2025-01-vorlaeufiger-abschluss-bundeshaushalt-2024.html",
+      "path": "research/cache/bmf_monatsbericht/2025-01-vorlaeufiger-abschluss-bundeshaushalt-2024.html",
+      "url": "https://www.bundesfinanzministerium.de/Monatsberichte/Ausgabe/2025/01/Inhalte/Kapitel-3-Analysen/3-1-vorlaeufiger-abschluss-bundeshaushalt-2024.html",
+      "retrieved": "2026-10-09T12:45:28Z",
+      "sha256": "2b0dc964501856829a941fa5a269444cf7749a438ab3c2d288acb341cdae517a",
+      "licence": "BMF web pages are copyright-protected; texts, tables and graphics may not be reproduced without permission (Impressum). Figures are facts and are cited with page coordinates; the pages themselves are not redistributed.",
+      "coordinates": "Tabelle 1 'Gesamtübersicht des Bundeshaushalts', row 'Steuereinnahmen³', column 'Ist 2024'"
+     },
+     "revised_value_in_2025_article_eur": 374989000000.0,
+     "revision_note": "The January 2026 article restates the 2024 figure; the January 2025 article value is kept as primary."
+    },
+    "2025": {
+     "value_eur": 388564000000.0,
+     "status": "provisional (vorläufiger Abschluss)",
+     "source": {
+      "source_id": "bmf_monatsbericht",
+      "file": "2026-01-abschluss-bundeshaushalt-ktf-svik-2025.html",
+      "path": "research/cache/bmf_monatsbericht/2026-01-abschluss-bundeshaushalt-ktf-svik-2025.html",
+      "url": "https://www.bundesfinanzministerium.de/Monatsberichte/Ausgabe/2026/01/Inhalte/Kapitel-2-Analysen/2-1-abschluss-bundeshaushalt-ktf-svik-2025.html",
+      "retrieved": "2026-10-09T12:45:28Z",
+      "sha256": "becfec128823a8a4e2b459b8180002ec8c583588c9178489129354f752b23c76",
+      "licence": "BMF web pages are copyright-protected; texts, tables and graphics may not be reproduced without permission (Impressum). Figures are facts and are cited with page coordinates; the pages themselves are not redistributed.",
+      "coordinates": "Tabelle 1 'Gesamtübersicht des Bundeshaushalts', row 'Steuereinnahmen³', column 'Ist 2025'"
+     }
+    }
+   }
+  },
+  {
+   "id": "sonstige_einnahmen",
+   "label": {
+    "de": "Sonstige Einnahmen (ohne Münzeinnahmen)",
+    "en": "Other revenue (excl. coinage)"
+   },
+   "unit": "EUR",
+   "values": {
+    "2023": {
+     "value_eur": 36147000000.0,
+     "status": "provisional (vorläufiger Abschluss)",
+     "source": {
+      "source_id": "bmf_monatsbericht",
+      "file": "2025-01-vorlaeufiger-abschluss-bundeshaushalt-2024.html",
+      "path": "research/cache/bmf_monatsbericht/2025-01-vorlaeufiger-abschluss-bundeshaushalt-2024.html",
+      "url": "https://www.bundesfinanzministerium.de/Monatsberichte/Ausgabe/2025/01/Inhalte/Kapitel-3-Analysen/3-1-vorlaeufiger-abschluss-bundeshaushalt-2024.html",
+      "retrieved": "2026-10-09T12:45:28Z",
+      "sha256": "2b0dc964501856829a941fa5a269444cf7749a438ab3c2d288acb341cdae517a",
+      "licence": "BMF web pages are copyright-protected; texts, tables and graphics may not be reproduced without permission (Impressum). Figures are facts and are cited with page coordinates; the pages themselves are not redistributed.",
+      "coordinates": "Tabelle 1 'Gesamtübersicht des Bundeshaushalts', row 'Sonstige Einnahmen (ohne Münzeinnahmen)', column 'Ist 2023'"
+     }
+    },
+    "2024": {
+     "value_eur": 65653000000.0,
+     "status": "provisional (vorläufiger Abschluss)",
+     "source": {
+      "source_id": "bmf_monatsbericht",
+      "file": "2025-01-vorlaeufiger-abschluss-bundeshaushalt-2024.html",
+      "path": "research/cache/bmf_monatsbericht/2025-01-vorlaeufiger-abschluss-bundeshaushalt-2024.html",
+      "url": "https://www.bundesfinanzministerium.de/Monatsberichte/Ausgabe/2025/01/Inhalte/Kapitel-3-Analysen/3-1-vorlaeufiger-abschluss-bundeshaushalt-2024.html",
+      "retrieved": "2026-10-09T12:45:28Z",
+      "sha256": "2b0dc964501856829a941fa5a269444cf7749a438ab3c2d288acb341cdae517a",
+      "licence": "BMF web pages are copyright-protected; texts, tables and graphics may not be reproduced without permission (Impressum). Figures are facts and are cited with page coordinates; the pages themselves are not redistributed.",
+      "coordinates": "Tabelle 1 'Gesamtübersicht des Bundeshaushalts', row 'Sonstige Einnahmen (ohne Münzeinnahmen)', column 'Ist 2024'"
+     }
+    },
+    "2025": {
+     "value_eur": 39359000000.0,
+     "status": "provisional (vorläufiger Abschluss)",
+     "source": {
+      "source_id": "bmf_monatsbericht",
+      "file": "2026-01-abschluss-bundeshaushalt-ktf-svik-2025.html",
+      "path": "research/cache/bmf_monatsbericht/2026-01-abschluss-bundeshaushalt-ktf-svik-2025.html",
+      "url": "https://www.bundesfinanzministerium.de/Monatsberichte/Ausgabe/2026/01/Inhalte/Kapitel-2-Analysen/2-1-abschluss-bundeshaushalt-ktf-svik-2025.html",
+      "retrieved": "2026-10-09T12:45:28Z",
+      "sha256": "becfec128823a8a4e2b459b8180002ec8c583588c9178489129354f752b23c76",
+      "licence": "BMF web pages are copyright-protected; texts, tables and graphics may not be reproduced without permission (Impressum). Figures are facts and are cited with page coordinates; the pages themselves are not redistributed.",
+      "coordinates": "Tabelle 1 'Gesamtübersicht des Bundeshaushalts', row 'Sonstige Einnahmen (ohne Münzeinnahmen)', column 'Ist 2025'"
+     }
+    }
+   }
+  },
+  {
+   "id": "finanzierungssaldo",
+   "label": {
+    "de": "Finanzierungssaldo",
+    "en": "Net balance (revenue minus expenditure)"
+   },
+   "unit": "EUR",
+   "values": {
+    "2023": {
+     "value_eur": -64900000000.0,
+     "status": "provisional (vorläufiger Abschluss)",
+     "source": {
+      "source_id": "bmf_monatsbericht",
+      "file": "2025-01-vorlaeufiger-abschluss-bundeshaushalt-2024.html",
+      "path": "research/cache/bmf_monatsbericht/2025-01-vorlaeufiger-abschluss-bundeshaushalt-2024.html",
+      "url": "https://www.bundesfinanzministerium.de/Monatsberichte/Ausgabe/2025/01/Inhalte/Kapitel-3-Analysen/3-1-vorlaeufiger-abschluss-bundeshaushalt-2024.html",
+      "retrieved": "2026-10-09T12:45:28Z",
+      "sha256": "2b0dc964501856829a941fa5a269444cf7749a438ab3c2d288acb341cdae517a",
+      "licence": "BMF web pages are copyright-protected; texts, tables and graphics may not be reproduced without permission (Impressum). Figures are facts and are cited with page coordinates; the pages themselves are not redistributed.",
+      "coordinates": "Tabelle 1 'Gesamtübersicht des Bundeshaushalts', row 'Einnahmen ./. Ausgaben + Saldo der durchlaufenden Mittel = Finanzierungssaldo', column 'Ist 2023'"
+     }
+    },
+    "2024": {
+     "value_eur": -25035000000.0,
+     "status": "provisional (vorläufiger Abschluss)",
+     "source": {
+      "source_id": "bmf_monatsbericht",
+      "file": "2025-01-vorlaeufiger-abschluss-bundeshaushalt-2024.html",
+      "path": "research/cache/bmf_monatsbericht/2025-01-vorlaeufiger-abschluss-bundeshaushalt-2024.html",
+      "url": "https://www.bundesfinanzministerium.de/Monatsberichte/Ausgabe/2025/01/Inhalte/Kapitel-3-Analysen/3-1-vorlaeufiger-abschluss-bundeshaushalt-2024.html",
+      "retrieved": "2026-10-09T12:45:28Z",
+      "sha256": "2b0dc964501856829a941fa5a269444cf7749a438ab3c2d288acb341cdae517a",
+      "licence": "BMF web pages are copyright-protected; texts, tables and graphics may not be reproduced without permission (Impressum). Figures are facts and are cited with page coordinates; the pages themselves are not redistributed.",
+      "coordinates": "Tabelle 1 'Gesamtübersicht des Bundeshaushalts', row 'Einnahmen ./. Ausgaben + Saldo der durchlaufenden Mittel = Finanzierungssaldo', column 'Ist 2024'"
+     },
+     "revised_value_in_2025_article_eur": -25028000000.0,
+     "revision_note": "The January 2026 article restates the 2024 figure; the January 2025 article value is kept as primary."
+    },
+    "2025": {
+     "value_eur": -65355000000.0,
+     "status": "provisional (vorläufiger Abschluss)",
+     "source": {
+      "source_id": "bmf_monatsbericht",
+      "file": "2026-01-abschluss-bundeshaushalt-ktf-svik-2025.html",
+      "path": "research/cache/bmf_monatsbericht/2026-01-abschluss-bundeshaushalt-ktf-svik-2025.html",
+      "url": "https://www.bundesfinanzministerium.de/Monatsberichte/Ausgabe/2026/01/Inhalte/Kapitel-2-Analysen/2-1-abschluss-bundeshaushalt-ktf-svik-2025.html",
+      "retrieved": "2026-10-09T12:45:28Z",
+      "sha256": "becfec128823a8a4e2b459b8180002ec8c583588c9178489129354f752b23c76",
+      "licence": "BMF web pages are copyright-protected; texts, tables and graphics may not be reproduced without permission (Impressum). Figures are facts and are cited with page coordinates; the pages themselves are not redistributed.",
+      "coordinates": "Tabelle 1 'Gesamtübersicht des Bundeshaushalts', row 'Einnahmen ./. Ausgaben + Saldo der durchlaufenden Mittel = Finanzierungssaldo', column 'Ist 2025'"
+     }
+    }
+   }
+  },
+  {
+   "id": "nettokreditaufnahme",
+   "label": {
+    "de": "Nettokreditaufnahme",
+    "en": "Net borrowing"
+   },
+   "unit": "EUR",
+   "values": {
+    "2023": {
+     "value_eur": 27177000000.0,
+     "status": "provisional (vorläufiger Abschluss)",
+     "source": {
+      "source_id": "bmf_monatsbericht",
+      "file": "2025-01-vorlaeufiger-abschluss-bundeshaushalt-2024.html",
+      "path": "research/cache/bmf_monatsbericht/2025-01-vorlaeufiger-abschluss-bundeshaushalt-2024.html",
+      "url": "https://www.bundesfinanzministerium.de/Monatsberichte/Ausgabe/2025/01/Inhalte/Kapitel-3-Analysen/3-1-vorlaeufiger-abschluss-bundeshaushalt-2024.html",
+      "retrieved": "2026-10-09T12:45:28Z",
+      "sha256": "2b0dc964501856829a941fa5a269444cf7749a438ab3c2d288acb341cdae517a",
+      "licence": "BMF web pages are copyright-protected; texts, tables and graphics may not be reproduced without permission (Impressum). Figures are facts and are cited with page coordinates; the pages themselves are not redistributed.",
+      "coordinates": "Tabelle 1 'Gesamtübersicht des Bundeshaushalts', row 'Nettokreditaufnahme', column 'Ist 2023'"
+     }
+    },
+    "2024": {
+     "value_eur": 33328000000.0,
+     "status": "provisional (vorläufiger Abschluss)",
+     "source": {
+      "source_id": "bmf_monatsbericht",
+      "file": "2025-01-vorlaeufiger-abschluss-bundeshaushalt-2024.html",
+      "path": "research/cache/bmf_monatsbericht/2025-01-vorlaeufiger-abschluss-bundeshaushalt-2024.html",
+      "url": "https://www.bundesfinanzministerium.de/Monatsberichte/Ausgabe/2025/01/Inhalte/Kapitel-3-Analysen/3-1-vorlaeufiger-abschluss-bundeshaushalt-2024.html",
+      "retrieved": "2026-10-09T12:45:28Z",
+      "sha256": "2b0dc964501856829a941fa5a269444cf7749a438ab3c2d288acb341cdae517a",
+      "licence": "BMF web pages are copyright-protected; texts, tables and graphics may not be reproduced without permission (Impressum). Figures are facts and are cited with page coordinates; the pages themselves are not redistributed.",
+      "coordinates": "Tabelle 1 'Gesamtübersicht des Bundeshaushalts', row 'Nettokreditaufnahme', column 'Ist 2024'"
+     },
+     "revised_value_in_2025_article_eur": 33320000000.0,
+     "revision_note": "The January 2026 article restates the 2024 figure; the January 2025 article value is kept as primary."
+    },
+    "2025": {
+     "value_eur": 66893000000.0,
+     "status": "provisional (vorläufiger Abschluss)",
+     "source": {
+      "source_id": "bmf_monatsbericht",
+      "file": "2026-01-abschluss-bundeshaushalt-ktf-svik-2025.html",
+      "path": "research/cache/bmf_monatsbericht/2026-01-abschluss-bundeshaushalt-ktf-svik-2025.html",
+      "url": "https://www.bundesfinanzministerium.de/Monatsberichte/Ausgabe/2026/01/Inhalte/Kapitel-2-Analysen/2-1-abschluss-bundeshaushalt-ktf-svik-2025.html",
+      "retrieved": "2026-10-09T12:45:28Z",
+      "sha256": "becfec128823a8a4e2b459b8180002ec8c583588c9178489129354f752b23c76",
+      "licence": "BMF web pages are copyright-protected; texts, tables and graphics may not be reproduced without permission (Impressum). Figures are facts and are cited with page coordinates; the pages themselves are not redistributed.",
+      "coordinates": "Tabelle 1 'Gesamtübersicht des Bundeshaushalts', row 'Nettokreditaufnahme', column 'Ist 2025'"
+     }
+    }
+   }
+  },
+  {
+   "id": "ruecklage",
+   "label": {
+    "de": "Zuführung(-)/Entnahme(+) Rücklage",
+    "en": "Transfer to (-) / withdrawal from (+) reserve"
+   },
+   "unit": "EUR",
+   "values": {
+    "2023": {
+     "value_eur": 37543000000.0,
+     "status": "provisional (vorläufiger Abschluss)",
+     "source": {
+      "source_id": "bmf_monatsbericht",
+      "file": "2025-01-vorlaeufiger-abschluss-bundeshaushalt-2024.html",
+      "path": "research/cache/bmf_monatsbericht/2025-01-vorlaeufiger-abschluss-bundeshaushalt-2024.html",
+      "url": "https://www.bundesfinanzministerium.de/Monatsberichte/Ausgabe/2025/01/Inhalte/Kapitel-3-Analysen/3-1-vorlaeufiger-abschluss-bundeshaushalt-2024.html",
+      "retrieved": "2026-10-09T12:45:28Z",
+      "sha256": "2b0dc964501856829a941fa5a269444cf7749a438ab3c2d288acb341cdae517a",
+      "licence": "BMF web pages are copyright-protected; texts, tables and graphics may not be reproduced without permission (Impressum). Figures are facts and are cited with page coordinates; the pages themselves are not redistributed.",
+      "coordinates": "Tabelle 1 'Gesamtübersicht des Bundeshaushalts', row 'Zuführung(-)/Entnahme(+) Rücklage', column 'Ist 2023'"
+     }
+    },
+    "2024": {
+     "value_eur": 0.0,
+     "status": "provisional (vorläufiger Abschluss)",
+     "source": {
+      "source_id": "bmf_monatsbericht",
+      "file": "2025-01-vorlaeufiger-abschluss-bundeshaushalt-2024.html",
+      "path": "research/cache/bmf_monatsbericht/2025-01-vorlaeufiger-abschluss-bundeshaushalt-2024.html",
+      "url": "https://www.bundesfinanzministerium.de/Monatsberichte/Ausgabe/2025/01/Inhalte/Kapitel-3-Analysen/3-1-vorlaeufiger-abschluss-bundeshaushalt-2024.html",
+      "retrieved": "2026-10-09T12:45:28Z",
+      "sha256": "2b0dc964501856829a941fa5a269444cf7749a438ab3c2d288acb341cdae517a",
+      "licence": "BMF web pages are copyright-protected; texts, tables and graphics may not be reproduced without permission (Impressum). Figures are facts and are cited with page coordinates; the pages themselves are not redistributed.",
+      "coordinates": "Tabelle 1 'Gesamtübersicht des Bundeshaushalts', row 'Zuführung(-)/Entnahme(+) Rücklage', column 'Ist 2024'"
+     }
+    },
+    "2025": {
+     "value_eur": 0.0,
+     "status": "provisional (vorläufiger Abschluss)",
+     "source": {
+      "source_id": "bmf_monatsbericht",
+      "file": "2026-01-abschluss-bundeshaushalt-ktf-svik-2025.html",
+      "path": "research/cache/bmf_monatsbericht/2026-01-abschluss-bundeshaushalt-ktf-svik-2025.html",
+      "url": "https://www.bundesfinanzministerium.de/Monatsberichte/Ausgabe/2026/01/Inhalte/Kapitel-2-Analysen/2-1-abschluss-bundeshaushalt-ktf-svik-2025.html",
+      "retrieved": "2026-10-09T12:45:28Z",
+      "sha256": "becfec128823a8a4e2b459b8180002ec8c583588c9178489129354f752b23c76",
+      "licence": "BMF web pages are copyright-protected; texts, tables and graphics may not be reproduced without permission (Impressum). Figures are facts and are cited with page coordinates; the pages themselves are not redistributed.",
+      "coordinates": "Tabelle 1 'Gesamtübersicht des Bundeshaushalts', row 'Zuführung(-)/Entnahme(+) Rücklage', column 'Ist 2025'"
+     }
+    }
+   }
+  },
+  {
+   "id": "tilgung_nichtstrukturelle_rueckfluesse",
+   "label": {
+    "de": "Tilgung aus nicht-strukturellen Rückflüssen von Notlagenkrediten (nicht in den Ausgaben)",
+    "en": "Repayment out of non-structural refunds of emergency credits (outside expenditure)"
+   },
+   "unit": "EUR",
+   "values": {
+    "2023": {
+     "value_eur": 0.0,
+     "status": "provisional (vorläufiger Abschluss)",
+     "source": {
+      "source_id": "bmf_monatsbericht",
+      "file": "2025-01-vorlaeufiger-abschluss-bundeshaushalt-2024.html",
+      "path": "research/cache/bmf_monatsbericht/2025-01-vorlaeufiger-abschluss-bundeshaushalt-2024.html",
+      "url": "https://www.bundesfinanzministerium.de/Monatsberichte/Ausgabe/2025/01/Inhalte/Kapitel-3-Analysen/3-1-vorlaeufiger-abschluss-bundeshaushalt-2024.html",
+      "retrieved": "2026-10-09T12:45:28Z",
+      "sha256": "2b0dc964501856829a941fa5a269444cf7749a438ab3c2d288acb341cdae517a",
+      "licence": "BMF web pages are copyright-protected; texts, tables and graphics may not be reproduced without permission (Impressum). Figures are facts and are cited with page coordinates; the pages themselves are not redistributed.",
+      "coordinates": "Tabelle 1 'Gesamtübersicht des Bundeshaushalts', row 'Tilgungsausgaben aufgrund nicht-struktureller Rückflüsse von notlagenkreditfinanzierten Ausgaben', column 'Ist 2023'"
+     }
+    },
+    "2024": {
+     "value_eur": -8494000000.0,
+     "status": "provisional (vorläufiger Abschluss)",
+     "source": {
+      "source_id": "bmf_monatsbericht",
+      "file": "2025-01-vorlaeufiger-abschluss-bundeshaushalt-2024.html",
+      "path": "research/cache/bmf_monatsbericht/2025-01-vorlaeufiger-abschluss-bundeshaushalt-2024.html",
+      "url": "https://www.bundesfinanzministerium.de/Monatsberichte/Ausgabe/2025/01/Inhalte/Kapitel-3-Analysen/3-1-vorlaeufiger-abschluss-bundeshaushalt-2024.html",
+      "retrieved": "2026-10-09T12:45:28Z",
+      "sha256": "2b0dc964501856829a941fa5a269444cf7749a438ab3c2d288acb341cdae517a",
+      "licence": "BMF web pages are copyright-protected; texts, tables and graphics may not be reproduced without permission (Impressum). Figures are facts and are cited with page coordinates; the pages themselves are not redistributed.",
+      "coordinates": "Tabelle 1 'Gesamtübersicht des Bundeshaushalts', row 'Tilgungsausgaben aufgrund nicht-struktureller Rückflüsse von notlagenkreditfinanzierten Ausgaben', column 'Ist 2024'"
+     }
+    },
+    "2025": {
+     "value_eur": -1657000000.0,
+     "status": "provisional (vorläufiger Abschluss)",
+     "source": {
+      "source_id": "bmf_monatsbericht",
+      "file": "2026-01-abschluss-bundeshaushalt-ktf-svik-2025.html",
+      "path": "research/cache/bmf_monatsbericht/2026-01-abschluss-bundeshaushalt-ktf-svik-2025.html",
+      "url": "https://www.bundesfinanzministerium.de/Monatsberichte/Ausgabe/2026/01/Inhalte/Kapitel-2-Analysen/2-1-abschluss-bundeshaushalt-ktf-svik-2025.html",
+      "retrieved": "2026-10-09T12:45:28Z",
+      "sha256": "becfec128823a8a4e2b459b8180002ec8c583588c9178489129354f752b23c76",
+      "licence": "BMF web pages are copyright-protected; texts, tables and graphics may not be reproduced without permission (Impressum). Figures are facts and are cited with page coordinates; the pages themselves are not redistributed.",
+      "coordinates": "Tabelle 1 'Gesamtübersicht des Bundeshaushalts', row 'Tilgung aufgrund nicht-struktureller Rückflüsse von notlagenkreditfinanzierten Ausgaben', column 'Ist 2025'"
+     }
+    }
+   }
+  },
+  {
+   "id": "investive_ausgaben",
+   "label": {
+    "de": "Investive Ausgaben (Hauptgruppen 7 und 8)",
+    "en": "Investment expenditure (Hauptgruppen 7 and 8)"
+   },
+   "unit": "EUR",
+   "values": {
+    "2023": {
+     "value_eur": 54961000000.0,
+     "status": "provisional (vorläufiger Abschluss)",
+     "source": {
+      "source_id": "bmf_monatsbericht",
+      "file": "2025-01-vorlaeufiger-abschluss-bundeshaushalt-2024.html",
+      "path": "research/cache/bmf_monatsbericht/2025-01-vorlaeufiger-abschluss-bundeshaushalt-2024.html",
+      "url": "https://www.bundesfinanzministerium.de/Monatsberichte/Ausgabe/2025/01/Inhalte/Kapitel-3-Analysen/3-1-vorlaeufiger-abschluss-bundeshaushalt-2024.html",
+      "retrieved": "2026-10-09T12:45:28Z",
+      "sha256": "2b0dc964501856829a941fa5a269444cf7749a438ab3c2d288acb341cdae517a",
+      "licence": "BMF web pages are copyright-protected; texts, tables and graphics may not be reproduced without permission (Impressum). Figures are facts and are cited with page coordinates; the pages themselves are not redistributed.",
+      "coordinates": "Tabelle 3 'Gesamtübersicht der Ausgaben des Bundeshaushalts nach ökonomischen Arten', row 'Investive Ausgaben', column 'Ist 2023'"
+     }
+    },
+    "2024": {
+     "value_eur": 56658000000.0,
+     "status": "provisional (vorläufiger Abschluss)",
+     "source": {
+      "source_id": "bmf_monatsbericht",
+      "file": "2025-01-vorlaeufiger-abschluss-bundeshaushalt-2024.html",
+      "path": "research/cache/bmf_monatsbericht/2025-01-vorlaeufiger-abschluss-bundeshaushalt-2024.html",
+      "url": "https://www.bundesfinanzministerium.de/Monatsberichte/Ausgabe/2025/01/Inhalte/Kapitel-3-Analysen/3-1-vorlaeufiger-abschluss-bundeshaushalt-2024.html",
+      "retrieved": "2026-10-09T12:45:28Z",
+      "sha256": "2b0dc964501856829a941fa5a269444cf7749a438ab3c2d288acb341cdae517a",
+      "licence": "BMF web pages are copyright-protected; texts, tables and graphics may not be reproduced without permission (Impressum). Figures are facts and are cited with page coordinates; the pages themselves are not redistributed.",
+      "coordinates": "Tabelle 3 'Gesamtübersicht der Ausgaben des Bundeshaushalts nach ökonomischen Arten', row 'Investive Ausgaben', column 'Ist 2024'"
+     }
+    },
+    "2025": {
+     "value_eur": 55424000000.0,
+     "status": "provisional (vorläufiger Abschluss)",
+     "source": {
+      "source_id": "bmf_monatsbericht",
+      "file": "2026-01-abschluss-bundeshaushalt-ktf-svik-2025.html",
+      "path": "research/cache/bmf_monatsbericht/2026-01-abschluss-bundeshaushalt-ktf-svik-2025.html",
+      "url": "https://www.bundesfinanzministerium.de/Monatsberichte/Ausgabe/2026/01/Inhalte/Kapitel-2-Analysen/2-1-abschluss-bundeshaushalt-ktf-svik-2025.html",
+      "retrieved": "2026-10-09T12:45:28Z",
+      "sha256": "becfec128823a8a4e2b459b8180002ec8c583588c9178489129354f752b23c76",
+      "licence": "BMF web pages are copyright-protected; texts, tables and graphics may not be reproduced without permission (Impressum). Figures are facts and are cited with page coordinates; the pages themselves are not redistributed.",
+      "coordinates": "Tabelle 4 'Gesamtübersicht der Ausgaben des Bundeshaushalts nach ökonomischen Arten', row 'Investive Ausgaben', column 'Ist 2025'"
+     }
+    }
+   }
+  },
+  {
+   "id": "konsumtive_ausgaben",
+   "label": {
+    "de": "Konsumtive Ausgaben",
+    "en": "Consumption expenditure"
+   },
+   "unit": "EUR",
+   "values": {
+    "2023": {
+     "value_eur": 402167000000.0,
+     "status": "provisional (vorläufiger Abschluss)",
+     "source": {
+      "source_id": "bmf_monatsbericht",
+      "file": "2025-01-vorlaeufiger-abschluss-bundeshaushalt-2024.html",
+      "path": "research/cache/bmf_monatsbericht/2025-01-vorlaeufiger-abschluss-bundeshaushalt-2024.html",
+      "url": "https://www.bundesfinanzministerium.de/Monatsberichte/Ausgabe/2025/01/Inhalte/Kapitel-3-Analysen/3-1-vorlaeufiger-abschluss-bundeshaushalt-2024.html",
+      "retrieved": "2026-10-09T12:45:28Z",
+      "sha256": "2b0dc964501856829a941fa5a269444cf7749a438ab3c2d288acb341cdae517a",
+      "licence": "BMF web pages are copyright-protected; texts, tables and graphics may not be reproduced without permission (Impressum). Figures are facts and are cited with page coordinates; the pages themselves are not redistributed.",
+      "coordinates": "Tabelle 3 'Gesamtübersicht der Ausgaben des Bundeshaushalts nach ökonomischen Arten', row 'Konsumtive Ausgaben', column 'Ist 2023'"
+     }
+    },
+    "2024": {
+     "value_eur": 409011000000.0,
+     "status": "provisional (vorläufiger Abschluss)",
+     "source": {
+      "source_id": "bmf_monatsbericht",
+      "file": "2025-01-vorlaeufiger-abschluss-bundeshaushalt-2024.html",
+      "path": "research/cache/bmf_monatsbericht/2025-01-vorlaeufiger-abschluss-bundeshaushalt-2024.html",
+      "url": "https://www.bundesfinanzministerium.de/Monatsberichte/Ausgabe/2025/01/Inhalte/Kapitel-3-Analysen/3-1-vorlaeufiger-abschluss-bundeshaushalt-2024.html",
+      "retrieved": "2026-10-09T12:45:28Z",
+      "sha256": "2b0dc964501856829a941fa5a269444cf7749a438ab3c2d288acb341cdae517a",
+      "licence": "BMF web pages are copyright-protected; texts, tables and graphics may not be reproduced without permission (Impressum). Figures are facts and are cited with page coordinates; the pages themselves are not redistributed.",
+      "coordinates": "Tabelle 3 'Gesamtübersicht der Ausgaben des Bundeshaushalts nach ökonomischen Arten', row 'Konsumtive Ausgaben', column 'Ist 2024'"
+     }
+    },
+    "2025": {
+     "value_eur": 437854000000.0,
+     "status": "provisional (vorläufiger Abschluss)",
+     "source": {
+      "source_id": "bmf_monatsbericht",
+      "file": "2026-01-abschluss-bundeshaushalt-ktf-svik-2025.html",
+      "path": "research/cache/bmf_monatsbericht/2026-01-abschluss-bundeshaushalt-ktf-svik-2025.html",
+      "url": "https://www.bundesfinanzministerium.de/Monatsberichte/Ausgabe/2026/01/Inhalte/Kapitel-2-Analysen/2-1-abschluss-bundeshaushalt-ktf-svik-2025.html",
+      "retrieved": "2026-10-09T12:45:28Z",
+      "sha256": "becfec128823a8a4e2b459b8180002ec8c583588c9178489129354f752b23c76",
+      "licence": "BMF web pages are copyright-protected; texts, tables and graphics may not be reproduced without permission (Impressum). Figures are facts and are cited with page coordinates; the pages themselves are not redistributed.",
+      "coordinates": "Tabelle 4 'Gesamtübersicht der Ausgaben des Bundeshaushalts nach ökonomischen Arten', row 'Konsumtive Ausgaben', column 'Ist 2025'"
+     }
+    }
+   }
+  },
+  {
+   "id": "zinsausgaben",
+   "label": {
+    "de": "Zinsausgaben",
+    "en": "Interest expenditure"
+   },
+   "unit": "EUR",
+   "values": {
+    "2023": {
+     "value_eur": 37648000000.0,
+     "status": "provisional (vorläufiger Abschluss)",
+     "source": {
+      "source_id": "bmf_monatsbericht",
+      "file": "2025-01-vorlaeufiger-abschluss-bundeshaushalt-2024.html",
+      "path": "research/cache/bmf_monatsbericht/2025-01-vorlaeufiger-abschluss-bundeshaushalt-2024.html",
+      "url": "https://www.bundesfinanzministerium.de/Monatsberichte/Ausgabe/2025/01/Inhalte/Kapitel-3-Analysen/3-1-vorlaeufiger-abschluss-bundeshaushalt-2024.html",
+      "retrieved": "2026-10-09T12:45:28Z",
+      "sha256": "2b0dc964501856829a941fa5a269444cf7749a438ab3c2d288acb341cdae517a",
+      "licence": "BMF web pages are copyright-protected; texts, tables and graphics may not be reproduced without permission (Impressum). Figures are facts and are cited with page coordinates; the pages themselves are not redistributed.",
+      "coordinates": "Tabelle 4 'Konsumtive Ausgaben des Bundeshaushalts', row 'Zinsausgaben', column 'Ist 2023'"
+     }
+    },
+    "2024": {
+     "value_eur": 34223000000.0,
+     "status": "provisional (vorläufiger Abschluss)",
+     "source": {
+      "source_id": "bmf_monatsbericht",
+      "file": "2025-01-vorlaeufiger-abschluss-bundeshaushalt-2024.html",
+      "path": "research/cache/bmf_monatsbericht/2025-01-vorlaeufiger-abschluss-bundeshaushalt-2024.html",
+      "url": "https://www.bundesfinanzministerium.de/Monatsberichte/Ausgabe/2025/01/Inhalte/Kapitel-3-Analysen/3-1-vorlaeufiger-abschluss-bundeshaushalt-2024.html",
+      "retrieved": "2026-10-09T12:45:28Z",
+      "sha256": "2b0dc964501856829a941fa5a269444cf7749a438ab3c2d288acb341cdae517a",
+      "licence": "BMF web pages are copyright-protected; texts, tables and graphics may not be reproduced without permission (Impressum). Figures are facts and are cited with page coordinates; the pages themselves are not redistributed.",
+      "coordinates": "Tabelle 4 'Konsumtive Ausgaben des Bundeshaushalts', row 'Zinsausgaben', column 'Ist 2024'"
+     }
+    },
+    "2025": {
+     "value_eur": 29873000000.0,
+     "status": "provisional (vorläufiger Abschluss)",
+     "source": {
+      "source_id": "bmf_monatsbericht",
+      "file": "2026-01-abschluss-bundeshaushalt-ktf-svik-2025.html",
+      "path": "research/cache/bmf_monatsbericht/2026-01-abschluss-bundeshaushalt-ktf-svik-2025.html",
+      "url": "https://www.bundesfinanzministerium.de/Monatsberichte/Ausgabe/2026/01/Inhalte/Kapitel-2-Analysen/2-1-abschluss-bundeshaushalt-ktf-svik-2025.html",
+      "retrieved": "2026-10-09T12:45:28Z",
+      "sha256": "becfec128823a8a4e2b459b8180002ec8c583588c9178489129354f752b23c76",
+      "licence": "BMF web pages are copyright-protected; texts, tables and graphics may not be reproduced without permission (Impressum). Figures are facts and are cited with page coordinates; the pages themselves are not redistributed.",
+      "coordinates": "Tabelle 5 'Konsumtive Ausgaben des Bundeshaushalts', row 'Zinsausgaben', column 'Ist 2025'"
+     }
+    }
+   }
+  },
+  {
+   "id": "personalausgaben",
+   "label": {
+    "de": "Personalausgaben",
+    "en": "Personnel expenditure"
+   },
+   "unit": "EUR",
+   "values": {
+    "2023": {
+     "value_eur": 40119000000.0,
+     "status": "provisional (vorläufiger Abschluss)",
+     "source": {
+      "source_id": "bmf_monatsbericht",
+      "file": "2025-01-vorlaeufiger-abschluss-bundeshaushalt-2024.html",
+      "path": "research/cache/bmf_monatsbericht/2025-01-vorlaeufiger-abschluss-bundeshaushalt-2024.html",
+      "url": "https://www.bundesfinanzministerium.de/Monatsberichte/Ausgabe/2025/01/Inhalte/Kapitel-3-Analysen/3-1-vorlaeufiger-abschluss-bundeshaushalt-2024.html",
+      "retrieved": "2026-10-09T12:45:28Z",
+      "sha256": "2b0dc964501856829a941fa5a269444cf7749a438ab3c2d288acb341cdae517a",
+      "licence": "BMF web pages are copyright-protected; texts, tables and graphics may not be reproduced without permission (Impressum). Figures are facts and are cited with page coordinates; the pages themselves are not redistributed.",
+      "coordinates": "Tabelle 4 'Konsumtive Ausgaben des Bundeshaushalts', row 'Personalausgaben', column 'Ist 2023'"
+     }
+    },
+    "2024": {
+     "value_eur": 42441000000.0,
+     "status": "provisional (vorläufiger Abschluss)",
+     "source": {
+      "source_id": "bmf_monatsbericht",
+      "file": "2025-01-vorlaeufiger-abschluss-bundeshaushalt-2024.html",
+      "path": "research/cache/bmf_monatsbericht/2025-01-vorlaeufiger-abschluss-bundeshaushalt-2024.html",
+      "url": "https://www.bundesfinanzministerium.de/Monatsberichte/Ausgabe/2025/01/Inhalte/Kapitel-3-Analysen/3-1-vorlaeufiger-abschluss-bundeshaushalt-2024.html",
+      "retrieved": "2026-10-09T12:45:28Z",
+      "sha256": "2b0dc964501856829a941fa5a269444cf7749a438ab3c2d288acb341cdae517a",
+      "licence": "BMF web pages are copyright-protected; texts, tables and graphics may not be reproduced without permission (Impressum). Figures are facts and are cited with page coordinates; the pages themselves are not redistributed.",
+      "coordinates": "Tabelle 4 'Konsumtive Ausgaben des Bundeshaushalts', row 'Personalausgaben', column 'Ist 2024'"
+     }
+    },
+    "2025": {
+     "value_eur": 44647000000.0,
+     "status": "provisional (vorläufiger Abschluss)",
+     "source": {
+      "source_id": "bmf_monatsbericht",
+      "file": "2026-01-abschluss-bundeshaushalt-ktf-svik-2025.html",
+      "path": "research/cache/bmf_monatsbericht/2026-01-abschluss-bundeshaushalt-ktf-svik-2025.html",
+      "url": "https://www.bundesfinanzministerium.de/Monatsberichte/Ausgabe/2026/01/Inhalte/Kapitel-2-Analysen/2-1-abschluss-bundeshaushalt-ktf-svik-2025.html",
+      "retrieved": "2026-10-09T12:45:28Z",
+      "sha256": "becfec128823a8a4e2b459b8180002ec8c583588c9178489129354f752b23c76",
+      "licence": "BMF web pages are copyright-protected; texts, tables and graphics may not be reproduced without permission (Impressum). Figures are facts and are cited with page coordinates; the pages themselves are not redistributed.",
+      "coordinates": "Tabelle 5 'Konsumtive Ausgaben des Bundeshaushalts', row 'Personalausgaben', column 'Ist 2025'"
+     }
+    }
+   }
+  },
+  {
+   "id": "ktf_investive_ausgaben",
+   "label": {
+    "de": "Klima- und Transformationsfonds: investive Ausgaben",
+    "en": "Climate and Transformation Fund: investment expenditure"
+   },
+   "unit": "EUR",
+   "values": {
+    "2023": {
+     "value_eur": 15200000000.0,
+     "status": "provisional (vorläufiger Abschluss)",
+     "note": "Derived in the build from the article's 2024 figure minus the stated change against 2023 (both to 0.1 Mrd EUR).",
+     "source": {
+      "source_id": "bmf_monatsbericht",
+      "file": "2025-01-vorlaeufiger-abschluss-bundeshaushalt-2024.html",
+      "path": "research/cache/bmf_monatsbericht/2025-01-vorlaeufiger-abschluss-bundeshaushalt-2024.html",
+      "url": "https://www.bundesfinanzministerium.de/Monatsberichte/Ausgabe/2025/01/Inhalte/Kapitel-3-Analysen/3-1-vorlaeufiger-abschluss-bundeshaushalt-2024.html",
+      "retrieved": "2026-10-09T12:45:28Z",
+      "sha256": "2b0dc964501856829a941fa5a269444cf7749a438ab3c2d288acb341cdae517a",
+      "licence": "BMF web pages are copyright-protected; texts, tables and graphics may not be reproduced without permission (Impressum). Figures are facts and are cited with page coordinates; the pages themselves are not redistributed.",
+      "coordinates": "article text, sentence: \"…ationsfonds (KTF) umfangreiche Investitionsausgaben in Höhe von 17,8 Mrd. Euro. Das waren um 2,6 Mrd. Euro höhere investive Ausgaben als im Jahr 2023. Zusammen mit den nicht investiven Ausg…\""
+     }
+    },
+    "2024": {
+     "value_eur": 17800000000.0,
+     "status": "provisional (vorläufiger Abschluss)",
+     "precision": "0.1 Mrd EUR as stated in the article text",
+     "source": {
+      "source_id": "bmf_monatsbericht",
+      "file": "2025-01-vorlaeufiger-abschluss-bundeshaushalt-2024.html",
+      "path": "research/cache/bmf_monatsbericht/2025-01-vorlaeufiger-abschluss-bundeshaushalt-2024.html",
+      "url": "https://www.bundesfinanzministerium.de/Monatsberichte/Ausgabe/2025/01/Inhalte/Kapitel-3-Analysen/3-1-vorlaeufiger-abschluss-bundeshaushalt-2024.html",
+      "retrieved": "2026-10-09T12:45:28Z",
+      "sha256": "2b0dc964501856829a941fa5a269444cf7749a438ab3c2d288acb341cdae517a",
+      "licence": "BMF web pages are copyright-protected; texts, tables and graphics may not be reproduced without permission (Impressum). Figures are facts and are cited with page coordinates; the pages themselves are not redistributed.",
+      "coordinates": "article text, sentence: \"…zurückzuführen. Über die investiven Ausgaben im Bundeshaushalt hinaus erfolgten im Klima- und Transformationsfonds (KTF) umfangreiche Investitionsausgaben in Höhe von 17,8 Mrd. Euro. Das waren um 2,6 Mrd. Euro höhere inve…\""
+     }
+    },
+    "2025": {
+     "value_eur": 17400000000.0,
+     "status": "provisional (vorläufiger Abschluss)",
+     "precision": "0.1 Mrd EUR as stated in the article text",
+     "source": {
+      "source_id": "bmf_monatsbericht",
+      "file": "2026-01-abschluss-bundeshaushalt-ktf-svik-2025.html",
+      "path": "research/cache/bmf_monatsbericht/2026-01-abschluss-bundeshaushalt-ktf-svik-2025.html",
+      "url": "https://www.bundesfinanzministerium.de/Monatsberichte/Ausgabe/2026/01/Inhalte/Kapitel-2-Analysen/2-1-abschluss-bundeshaushalt-ktf-svik-2025.html",
+      "retrieved": "2026-10-09T12:45:28Z",
+      "sha256": "becfec128823a8a4e2b459b8180002ec8c583588c9178489129354f752b23c76",
+      "licence": "BMF web pages are copyright-protected; texts, tables and graphics may not be reproduced without permission (Impressum). Figures are facts and are cited with page coordinates; the pages themselves are not redistributed.",
+      "coordinates": "article text, sentence: \"…DB InfraGO AG “ zugewiesen, mithin 10,4 Mrd. Euro (Sollansatz: 11,7 Mrd. Euro). Im KTF erfolgten im Jahr 2025 umfangreiche investive Ausgaben in Höhe von 17,4 Mrd. Euro. Sie fielen damit nahezu so hoch aus wi…\""
+     }
+    }
+   }
+  },
+  {
+   "id": "ktf_programmausgaben",
+   "label": {
+    "de": "Klima- und Transformationsfonds: Programmausgaben",
+    "en": "Climate and Transformation Fund: programme expenditure"
+   },
+   "unit": "EUR",
+   "values": {
+    "2023": {
+     "value_eur": 20200000000.0,
+     "status": "provisional (vorläufiger Abschluss)",
+     "note": "Derived in the build from the article's 2024 figure minus the stated change against 2023 (both to 0.1 Mrd EUR).",
+     "source": {
+      "source_id": "bmf_monatsbericht",
+      "file": "2025-01-vorlaeufiger-abschluss-bundeshaushalt-2024.html",
+      "path": "research/cache/bmf_monatsbericht/2025-01-vorlaeufiger-abschluss-bundeshaushalt-2024.html",
+      "url": "https://www.bundesfinanzministerium.de/Monatsberichte/Ausgabe/2025/01/Inhalte/Kapitel-3-Analysen/3-1-vorlaeufiger-abschluss-bundeshaushalt-2024.html",
+      "retrieved": "2026-10-09T12:45:28Z",
+      "sha256": "2b0dc964501856829a941fa5a269444cf7749a438ab3c2d288acb341cdae517a",
+      "licence": "BMF web pages are copyright-protected; texts, tables and graphics may not be reproduced without permission (Impressum). Figures are facts and are cited with page coordinates; the pages themselves are not redistributed.",
+      "coordinates": "article text, sentence: \"…die Programmausgaben im KTF im abgelaufenen Jahr auf insgesamt 41,6 Mrd. Euro. Das waren 21,4 Mrd. Euro höhere Programmausgaben als im Jahr 2023 (+106,5 Prozent). Dieser Anstieg der Pr…\""
+     }
+    },
+    "2024": {
+     "value_eur": 41600000000.0,
+     "status": "provisional (vorläufiger Abschluss)",
+     "precision": "0.1 Mrd EUR as stated in the article text",
+     "source": {
+      "source_id": "bmf_monatsbericht",
+      "file": "2025-01-vorlaeufiger-abschluss-bundeshaushalt-2024.html",
+      "path": "research/cache/bmf_monatsbericht/2025-01-vorlaeufiger-abschluss-bundeshaushalt-2024.html",
+      "url": "https://www.bundesfinanzministerium.de/Monatsberichte/Ausgabe/2025/01/Inhalte/Kapitel-3-Analysen/3-1-vorlaeufiger-abschluss-bundeshaushalt-2024.html",
+      "retrieved": "2026-10-09T12:45:28Z",
+      "sha256": "2b0dc964501856829a941fa5a269444cf7749a438ab3c2d288acb341cdae517a",
+      "licence": "BMF web pages are copyright-protected; texts, tables and graphics may not be reproduced without permission (Impressum). Figures are facts and are cited with page coordinates; the pages themselves are not redistributed.",
+      "coordinates": "article text, sentence: \"…als im Jahr 2023. Zusammen mit den nicht investiven Ausgaben beliefen sich die Programmausgaben im KTF im abgelaufenen Jahr auf insgesamt 41,6 Mrd. Euro. Das waren 21,4 Mrd. Euro höhere Progra…\""
+     }
+    },
+    "2025": {
+     "value_eur": 26600000000.0,
+     "status": "provisional (vorläufiger Abschluss)",
+     "precision": "0.1 Mrd EUR as stated in the article text",
+     "source": {
+      "source_id": "bmf_monatsbericht",
+      "file": "2026-01-abschluss-bundeshaushalt-ktf-svik-2025.html",
+      "path": "research/cache/bmf_monatsbericht/2026-01-abschluss-bundeshaushalt-ktf-svik-2025.html",
+      "url": "https://www.bundesfinanzministerium.de/Monatsberichte/Ausgabe/2026/01/Inhalte/Kapitel-2-Analysen/2-1-abschluss-bundeshaushalt-ktf-svik-2025.html",
+      "retrieved": "2026-10-09T12:45:28Z",
+      "sha256": "becfec128823a8a4e2b459b8180002ec8c583588c9178489129354f752b23c76",
+      "licence": "BMF web pages are copyright-protected; texts, tables and graphics may not be reproduced without permission (Impressum). Figures are facts and are cited with page coordinates; the pages themselves are not redistributed.",
+      "coordinates": "article text, sentence: \"…riger als geplant. Zusammen mit den nicht-investiven Ausgaben beliefen sich die Programmausgaben im KTF im abgelaufenen Jahr auf insgesamt 26,6 Mrd. Euro. Das sind um 15,0 Mrd. Euro geringere P…\""
+     },
+     "note": "Cross-check: rechnung_2025.xml Kapitel 6092 Ausgaben 37,416.5 Mio EUR minus Zuführung an Rücklage (Tit. 919 01) 10,806.3 = 26,610.2 Mio EUR."
+    }
+   }
+  },
+  {
+   "id": "svik_ausgaben",
+   "label": {
+    "de": "Sondervermögen Infrastruktur und Klimaneutralität: Ausgaben (einschl. 10 Mrd. Zuweisung an KTF)",
+    "en": "Infrastructure and Climate Neutrality Fund: expenditure (incl. 10 bn transferred to the KTF)"
+   },
+   "unit": "EUR",
+   "values": {
+    "2023": {
+     "value_eur": null,
+     "note": "The Sondervermögen Infrastruktur und Klimaneutralität was created in 2025 (Art. 143h GG, 25 March 2025)."
+    },
+    "2024": {
+     "value_eur": null,
+     "note": "The Sondervermögen Infrastruktur und Klimaneutralität was created in 2025 (Art. 143h GG, 25 March 2025)."
+    },
+    "2025": {
+     "value_eur": 24000000000.0,
+     "status": "provisional (vorläufiger Abschluss)",
+     "precision": "0.1 Mrd EUR as stated in the article text",
+     "source": {
+      "source_id": "bmf_monatsbericht",
+      "file": "2026-01-abschluss-bundeshaushalt-ktf-svik-2025.html",
+      "path": "research/cache/bmf_monatsbericht/2026-01-abschluss-bundeshaushalt-ktf-svik-2025.html",
+      "url": "https://www.bundesfinanzministerium.de/Monatsberichte/Ausgabe/2026/01/Inhalte/Kapitel-2-Analysen/2-1-abschluss-bundeshaushalt-ktf-svik-2025.html",
+      "retrieved": "2026-10-09T12:45:28Z",
+      "sha256": "becfec128823a8a4e2b459b8180002ec8c583588c9178489129354f752b23c76",
+      "licence": "BMF web pages are copyright-protected; texts, tables and graphics may not be reproduced without permission (Impressum). Figures are facts and are cited with page coordinates; the pages themselves are not redistributed.",
+      "coordinates": "article text, sentence: \"…Höhe von 37,2 Mrd. Euro etatisiert. Bei Betrachtung des Gesamtvolumens des SVIK wurden 64 Prozent (24,0 Mrd. Euro) aller geplanten Ausgaben abgerufen. Davon gingen 10 Mrd. Euro an den KTF .…\""
+     },
+     "note": "Of which 10,000 Mio EUR Zuweisung an den KTF and 14,000 Mio EUR 'Bundessäule' (article). Cross-check: rechnung_2025.xml Kapitel 6093 Ausgaben 23,992.1 Mio EUR."
+    }
+   }
+  },
+  {
+   "id": "sv_bundeswehr_ausgaben",
+   "label": {
+    "de": "Sondervermögen Bundeswehr: Ausgaben",
+    "en": "Bundeswehr special fund: expenditure"
+   },
+   "unit": "EUR",
+   "values": {
+    "2023": {
+     "value_eur": null,
+     "note": "Not stated in the cached BMF articles and not contained in the XML files."
+    },
+    "2024": {
+     "value_eur": null,
+     "note": "Not stated in the 2024 closing article; rechnung_2024.xml does not contain the fund's Wirtschaftsplan."
+    },
+    "2025": {
+     "value_eur": 19498442383.41,
+     "status": "Ist per Haushaltsrechnung XML (annexed Wirtschaftsplan)",
+     "note": "The 2025 closing article gives no Ist figure for the fund; the value is the sum of Kapitel 1491 (Wirtschaftsplan Sondervermögen Bundeswehr, annexed to Einzelplan 14) in rechnung_2025.xml.",
+     "source": {
+      "source_id": "bundeshaushalt_rechnung",
+      "file": "rechnung_2025.xml",
+      "path": "research/raw/bundeshaushalt_rechnung/rechnung_2025.xml",
+      "url": "https://www.bundeshaushalt.de/static/daten/2025/ist/rechnung_2025.xml",
+      "retrieved": "2026-10-09T12:45:27Z",
+      "sha256": "5e4a8e489e6a34e3ccbbe78467234caef0f44c2c17e0a72fd265b502ba9dbe88",
+      "licence": "Public data without copyright protection per the portal notice ('öffentliche Daten ohne urheberrechtlichen Schutz'; reproduction, distribution, processing and commercial use expressly permitted; users must be pointed to the official budget documents)",
+      "coordinates": "/haushalt/einzelplan/kapitel[@nr='1491']/ausgaben//titel/ist/@wert, summed"
+     }
+    }
+   }
+  }
+ ],
+ "sources": {
+  "2024_article": {
+   "source_id": "bmf_monatsbericht",
+   "file": "2025-01-vorlaeufiger-abschluss-bundeshaushalt-2024.html",
+   "path": "research/cache/bmf_monatsbericht/2025-01-vorlaeufiger-abschluss-bundeshaushalt-2024.html",
+   "url": "https://www.bundesfinanzministerium.de/Monatsberichte/Ausgabe/2025/01/Inhalte/Kapitel-3-Analysen/3-1-vorlaeufiger-abschluss-bundeshaushalt-2024.html",
+   "retrieved": "2026-10-09T12:45:28Z",
+   "sha256": "2b0dc964501856829a941fa5a269444cf7749a438ab3c2d288acb341cdae517a",
+   "licence": "BMF web pages are copyright-protected; texts, tables and graphics may not be reproduced without permission (Impressum). Figures are facts and are cited with page coordinates; the pages themselves are not redistributed.",
+   "coordinates": "Tabellen 1, 3, 4 and article text"
+  },
+  "2025_article": {
+   "source_id": "bmf_monatsbericht",
+   "file": "2026-01-abschluss-bundeshaushalt-ktf-svik-2025.html",
+   "path": "research/cache/bmf_monatsbericht/2026-01-abschluss-bundeshaushalt-ktf-svik-2025.html",
+   "url": "https://www.bundesfinanzministerium.de/Monatsberichte/Ausgabe/2026/01/Inhalte/Kapitel-2-Analysen/2-1-abschluss-bundeshaushalt-ktf-svik-2025.html",
+   "retrieved": "2026-10-09T12:45:28Z",
+   "sha256": "becfec128823a8a4e2b459b8180002ec8c583588c9178489129354f752b23c76",
+   "licence": "BMF web pages are copyright-protected; texts, tables and graphics may not be reproduced without permission (Impressum). Figures are facts and are cited with page coordinates; the pages themselves are not redistributed.",
+   "coordinates": "Tabellen 1, 4, 5 and article text"
+  }
+ }
+}

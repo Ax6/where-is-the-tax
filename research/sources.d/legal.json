@@ -1,0 +1,51 @@
+{
+  "sources": [
+    {
+      "id": "gesetze_im_internet_allocation",
+      "institution": "gesetze-im-internet.de",
+      "title": "Further allocation statutes: § 1 GemFinRefG (municipal share of income tax and withholding tax), § 7 ZerlG (wage-tax decomposition), § 1 GewStG/§ 16 (assessment), Art. 105 GG",
+      "licence": "Official works (§ 5 UrhG)",
+      "licence_evidence": "https://www.gesetze-im-internet.de/hinweise.html",
+      "redistribution": "allowed",
+      "store": "raw",
+      "basis": "Statute text in force at retrieval",
+      "files": [
+        {
+          "file": "gemfinrefg_1.html",
+          "url": "https://www.gesetze-im-internet.de/gemfinrefg/__1.html",
+          "description": "§ 1 GemFinRefG: municipalities receive 15 % of wage/assessed income tax and 12 % of the withholding tax"
+        },
+        {
+          "file": "zerlg_7.html",
+          "url": "https://www.gesetze-im-internet.de/zerlg_1998/__7.html",
+          "description": "§ 7 ZerlG: wage tax decomposed to the Land of residence"
+        },
+        {
+          "file": "gg_art_105.html",
+          "url": "https://www.gesetze-im-internet.de/gg/art_105.html",
+          "description": "Art. 105 GG: legislative competence incl. Länder rate-setting for real-estate transfer tax"
+        },
+        {
+          "file": "gewstg_16.html",
+          "url": "https://www.gesetze-im-internet.de/gewstg/__16.html",
+          "description": "§ 16 GewStG: municipal assessment rate (Hebesatz), minimum 200 %"
+        },
+        {
+          "file": "grstg_25.html",
+          "url": "https://www.gesetze-im-internet.de/grstg_1973/__25.html",
+          "description": "§ 25 GrStG: municipal property-tax assessment rate"
+        },
+        {
+          "file": "gemfinrefg_7.html",
+          "url": "https://www.gesetze-im-internet.de/gemfinrefg/__7.html",
+          "description": "§ 7 GemFinRefG: Berlin and Hamburg pay only the federal part of the trade-tax levy"
+        },
+        {
+          "file": "ao_3.html",
+          "url": "https://www.gesetze-im-internet.de/ao_1977/__3.html",
+          "description": "§ 3 AO: legal definition of taxes (levies without an individual consideration) — basis for 'contributions are not taxes'"
+        }
+      ]
+    }
+  ]
+}

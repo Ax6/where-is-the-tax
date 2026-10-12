@@ -5,9 +5,12 @@ named taxes through their legal recipients, geographical clearing and equalisati
 budget boundary before showing each recipient's spending context. Every number links to exact
 provenance and every accounting limit is explicit.
 
-> Current status: deep Germany research is complete but awaiting independent verification. The
-> interface is an internal D3 fiscal-graph prototype (statutory shares plus research figures,
-> bannered as pending verification). No official observations are approved for publication.
+> Current status (2026-10-09): the **data layer** is built from locally stored raw sources
+> (`research/`), rationalized into `data/` by reproducible scripts (`scripts/research/`) and
+> reconciled against official totals; see `ROADMAP.md` for the honest state and
+> `docs/research/RATIONALIZATION.md` for the constructs. The interface under `src/` still reads
+> the older hard-coded figures and must be rewired to `data/` (see `docs/FRONTEND_PLAN.md` if
+> present).
 
 Run `npm install`, then `npm run dev` to inspect the prototype. `npm test`,
 `npm run validate:fixture`, and `npm run build` verify the current synthetic implementation.

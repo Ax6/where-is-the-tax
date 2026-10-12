@@ -1,0 +1,2300 @@
+{
+ "schema_version": 2,
+ "id": "de.citizen.payslip_examples",
+ "title": {
+  "de": "Beispielrechnungen: Brutto → Netto 2024-2026",
+  "en": "Worked examples: gross → net 2024-2026"
+ },
+ "unit": "EUR per year",
+ "basis": "ANNUAL WAGE-TAX WITHHOLDING for Steuerklasse I (identical to IV without children), no church tax, no children, no Freibeträge, employee compulsorily insured in all four social-insurance branches (West ceilings, statutory average Zusatzbeitrag, outside Saxony). This is what the employer withholds over a year under the Programmablaufplan; the income-tax ASSESSMENT (Veranlagung) can differ (actual Werbungskosten, Sonderausgaben, the real Zusatzbeitrag of the Krankenkasse, other income). 'childless' = with the PV childless surcharge (age 23+, no children); 'with_child' = one child (surcharge off, no abatement).",
+ "generated": "2026-10-09",
+ "generated_by": "scripts/research/build_payslip.py",
+ "years_covered": [
+  2024,
+  2025,
+  2026
+ ],
+ "gross_wages": [
+  20000,
+  30000,
+  45000,
+  60000,
+  80000,
+  100000,
+  150000
+ ],
+ "fields": {
+  "deductions_employee": "amounts withheld from the gross wage",
+  "employer_contributions": "paid by the employer on top of the gross wage (same rates as the employee, except the PV childless surcharge)",
+  "effective_rates": "percent of gross",
+  "per_100_gross": "of every 100 EUR gross: how much goes where",
+  "intermediate": "PAP intermediate values (Vorsorgepauschale, zu versteuernder Jahresbetrag, contribution bases)"
+ },
+ "parameters": "data/de/citizen/payslip-parameters.json",
+ "validation": {
+  "2024": {
+   "rows_compared": 39,
+   "max_abs_diff_eur": 0,
+   "gross_range": [
+    5000,
+    100000
+   ],
+   "kvz_pct_assumed_by_pap": "1.70",
+   "pvz": 1,
+   "source": {
+    "source_id": "bmf_programmablaufplan",
+    "file": "2024-10-18-PAP-Dez-2024-anl-1.pdf",
+    "path": "research/cache/bmf_programmablaufplan/2024-10-18-PAP-Dez-2024-anl-1.pdf",
+    "url": "https://www.bundesfinanzministerium.de/Content/DE/Downloads/Steuern/Steuerarten/Lohnsteuer/Programmablaufplan/2024-10-18-PAP-Dez-2024-anl-1.pdf?__blob=publicationFile&v=2",
+    "retrieved": "2026-10-09T12:56:42Z",
+    "sha256": "424215d20f0b47c75b77aa614a807d44a5ffbd23fb98aa59b42af7acdb055a84",
+    "licence": "BMF-Schreiben are administrative instructions published by the ministry; BMF's Impressum claims copyright for its web content, so the PDFs are cached and cited by page/section, not redistributed.",
+    "coordinates": "page 44, Prüftabelle, column I"
+   }
+  },
+  "2025": {
+   "rows_compared": 39,
+   "max_abs_diff_eur": 0,
+   "gross_range": [
+    5000,
+    100000
+   ],
+   "kvz_pct_assumed_by_pap": "2.50",
+   "pvz": 1,
+   "source": {
+    "source_id": "bmf_programmablaufplan",
+    "file": "2025-01-22-geaenderte-PAP-2025-anlage-1.pdf",
+    "path": "research/cache/bmf_programmablaufplan/2025-01-22-geaenderte-PAP-2025-anlage-1.pdf",
+    "url": "https://www.bundesfinanzministerium.de/Content/DE/Downloads/Steuern/Steuerarten/Lohnsteuer/Programmablaufplan/2025-01-22-geaenderte-PAP-2025-anlage-1.pdf?__blob=publicationFile&v=2",
+    "retrieved": "2026-10-09T12:56:42Z",
+    "sha256": "092de325b1e3258cff16a617b1963f923a82e98952e53c345ba7403ddbd45a53",
+    "licence": "BMF-Schreiben are administrative instructions published by the ministry; BMF's Impressum claims copyright for its web content, so the PDFs are cached and cited by page/section, not redistributed.",
+    "coordinates": "page 39, Prüftabelle, column I"
+   }
+  },
+  "2026": {
+   "rows_compared": 43,
+   "max_abs_diff_eur": 0,
+   "gross_range": [
+    5000,
+    110000
+   ],
+   "kvz_pct_assumed_by_pap": "2.90",
+   "pvz": 1,
+   "source": {
+    "source_id": "bmf_programmablaufplan",
+    "file": "2025-11-12-PAP-2026-anlage-1.pdf",
+    "path": "research/cache/bmf_programmablaufplan/2025-11-12-PAP-2026-anlage-1.pdf",
+    "url": "https://www.bundesfinanzministerium.de/Content/DE/Downloads/Steuern/Steuerarten/Lohnsteuer/Programmablaufplan/2025-11-12-PAP-2026-anlage-1.pdf?__blob=publicationFile&v=2",
+    "retrieved": "2026-10-09T12:56:43Z",
+    "sha256": "5da38acd544868ddcb0bc7f43030bd7d6ee9aa455dff0f42ad59732634e33a48",
+    "licence": "BMF-Schreiben are administrative instructions published by the ministry; BMF's Impressum claims copyright for its web content, so the PDFs are cached and cited by page/section, not redistributed.",
+    "coordinates": "page 39, Prüftabelle, column I"
+   }
+  }
+ },
+ "years": {
+  "2024": {
+   "childless": [
+    {
+     "gross": 20000,
+     "deductions_employee": {
+      "lohnsteuer": 517.0,
+      "soli": 0.0,
+      "rv": 1860.0,
+      "alv": 260.0,
+      "kv": 1630.0,
+      "pv": 460.0
+     },
+     "employer_contributions": {
+      "rv": 1860.0,
+      "alv": 260.0,
+      "kv": 1630.0,
+      "pv": 340.0
+     },
+     "totals": {
+      "taxes": 517.0,
+      "social_employee": 4210.0,
+      "social_employer": 4090.0,
+      "net": 15273.0,
+      "employer_total_cost": 24090.0
+     },
+     "effective_rates": {
+      "lohnsteuer_pct": 2.58,
+      "soli_pct": 0.0,
+      "social_employee_pct": 21.05,
+      "deductions_total_pct": 23.64,
+      "net_pct": 76.37,
+      "social_employer_pct_of_gross": 20.45
+     },
+     "per_100_gross": {
+      "lohnsteuer": 2.58,
+      "soli": 0.0,
+      "rv": 9.3,
+      "alv": 1.3,
+      "kv": 8.15,
+      "pv": 2.3,
+      "net": 76.37
+     },
+     "intermediate": {
+      "arbeitnehmer_pauschbetrag": 1230.0,
+      "sonderausgaben_pauschbetrag": 36.0,
+      "vorsorgepauschale": 3890.0,
+      "vorsorgepauschale_rv": 1860.0,
+      "vorsorgepauschale_kv_pv": 2030.0,
+      "vorsorgepauschale_rule": "rv + max(kv+pv, min(12% wage, 1900))",
+      "zu_versteuernder_jahresbetrag": 14844.0,
+      "contribution_base_rv_alv": 20000.0,
+      "contribution_base_kv_pv": 20000.0
+     }
+    },
+    {
+     "gross": 30000,
+     "deductions_employee": {
+      "lohnsteuer": 2466.0,
+      "soli": 0.0,
+      "rv": 2790.0,
+      "alv": 390.0,
+      "kv": 2445.0,
+      "pv": 690.0
+     },
+     "employer_contributions": {
+      "rv": 2790.0,
+      "alv": 390.0,
+      "kv": 2445.0,
+      "pv": 510.0
+     },
+     "totals": {
+      "taxes": 2466.0,
+      "social_employee": 6315.0,
+      "social_employer": 6135.0,
+      "net": 21219.0,
+      "employer_total_cost": 36135.0
+     },
+     "effective_rates": {
+      "lohnsteuer_pct": 8.22,
+      "soli_pct": 0.0,
+      "social_employee_pct": 21.05,
+      "deductions_total_pct": 29.27,
+      "net_pct": 70.73,
+      "social_employer_pct_of_gross": 20.45
+     },
+     "per_100_gross": {
+      "lohnsteuer": 8.22,
+      "soli": 0.0,
+      "rv": 9.3,
+      "alv": 1.3,
+      "kv": 8.15,
+      "pv": 2.3,
+      "net": 70.73
+     },
+     "intermediate": {
+      "arbeitnehmer_pauschbetrag": 1230.0,
+      "sonderausgaben_pauschbetrag": 36.0,
+      "vorsorgepauschale": 5835.0,
+      "vorsorgepauschale_rv": 2790.0,
+      "vorsorgepauschale_kv_pv": 3045.0,
+      "vorsorgepauschale_rule": "rv + max(kv+pv, min(12% wage, 1900))",
+      "zu_versteuernder_jahresbetrag": 22899.0,
+      "contribution_base_rv_alv": 30000.0,
+      "contribution_base_kv_pv": 30000.0
+     }
+    },
+    {
+     "gross": 45000,
+     "deductions_employee": {
+      "lohnsteuer": 5885.0,
+      "soli": 0.0,
+      "rv": 4185.0,
+      "alv": 585.0,
+      "kv": 3667.5,
+      "pv": 1035.0
+     },
+     "employer_contributions": {
+      "rv": 4185.0,
+      "alv": 585.0,
+      "kv": 3667.5,
+      "pv": 765.0
+     },
+     "totals": {
+      "taxes": 5885.0,
+      "social_employee": 9472.5,
+      "social_employer": 9202.5,
+      "net": 29642.5,
+      "employer_total_cost": 54202.5
+     },
+     "effective_rates": {
+      "lohnsteuer_pct": 13.08,
+      "soli_pct": 0.0,
+      "social_employee_pct": 21.05,
+      "deductions_total_pct": 34.13,
+      "net_pct": 65.87,
+      "social_employer_pct_of_gross": 20.45
+     },
+     "per_100_gross": {
+      "lohnsteuer": 13.08,
+      "soli": 0.0,
+      "rv": 9.3,
+      "alv": 1.3,
+      "kv": 8.15,
+      "pv": 2.3,
+      "net": 65.87
+     },
+     "intermediate": {
+      "arbeitnehmer_pauschbetrag": 1230.0,
+      "sonderausgaben_pauschbetrag": 36.0,
+      "vorsorgepauschale": 8753.0,
+      "vorsorgepauschale_rv": 4185.0,
+      "vorsorgepauschale_kv_pv": 4567.5,
+      "vorsorgepauschale_rule": "rv + max(kv+pv, min(12% wage, 1900))",
+      "zu_versteuernder_jahresbetrag": 34981.0,
+      "contribution_base_rv_alv": 45000.0,
+      "contribution_base_kv_pv": 45000.0
+     }
+    },
+    {
+     "gross": 60000,
+     "deductions_employee": {
+      "lohnsteuer": 9833.0,
+      "soli": 0.0,
+      "rv": 5580.0,
+      "alv": 780.0,
+      "kv": 4890.0,
+      "pv": 1380.0
+     },
+     "employer_contributions": {
+      "rv": 5580.0,
+      "alv": 780.0,
+      "kv": 4890.0,
+      "pv": 1020.0
+     },
+     "totals": {
+      "taxes": 9833.0,
+      "social_employee": 12630.0,
+      "social_employer": 12270.0,
+      "net": 37537.0,
+      "employer_total_cost": 72270.0
+     },
+     "effective_rates": {
+      "lohnsteuer_pct": 16.39,
+      "soli_pct": 0.0,
+      "social_employee_pct": 21.05,
+      "deductions_total_pct": 37.44,
+      "net_pct": 62.56,
+      "social_employer_pct_of_gross": 20.45
+     },
+     "per_100_gross": {
+      "lohnsteuer": 16.39,
+      "soli": 0.0,
+      "rv": 9.3,
+      "alv": 1.3,
+      "kv": 8.15,
+      "pv": 2.3,
+      "net": 62.56
+     },
+     "intermediate": {
+      "arbeitnehmer_pauschbetrag": 1230.0,
+      "sonderausgaben_pauschbetrag": 36.0,
+      "vorsorgepauschale": 11670.0,
+      "vorsorgepauschale_rv": 5580.0,
+      "vorsorgepauschale_kv_pv": 6090.0,
+      "vorsorgepauschale_rule": "rv + max(kv+pv, min(12% wage, 1900))",
+      "zu_versteuernder_jahresbetrag": 47064.0,
+      "contribution_base_rv_alv": 60000.0,
+      "contribution_base_kv_pv": 60000.0
+     }
+    },
+    {
+     "gross": 80000,
+     "deductions_employee": {
+      "lohnsteuer": 16665.0,
+      "soli": 0.0,
+      "rv": 7440.0,
+      "alv": 1040.0,
+      "kv": 5061.15,
+      "pv": 1428.3
+     },
+     "employer_contributions": {
+      "rv": 7440.0,
+      "alv": 1040.0,
+      "kv": 5061.15,
+      "pv": 1055.7
+     },
+     "totals": {
+      "taxes": 16665.0,
+      "social_employee": 14969.45,
+      "social_employer": 14596.85,
+      "net": 48365.55,
+      "employer_total_cost": 94596.85
+     },
+     "effective_rates": {
+      "lohnsteuer_pct": 20.83,
+      "soli_pct": 0.0,
+      "social_employee_pct": 18.71,
+      "deductions_total_pct": 39.54,
+      "net_pct": 60.46,
+      "social_employer_pct_of_gross": 18.25
+     },
+     "per_100_gross": {
+      "lohnsteuer": 20.83,
+      "soli": 0.0,
+      "rv": 9.3,
+      "alv": 1.3,
+      "kv": 6.33,
+      "pv": 1.79,
+      "net": 60.46
+     },
+     "intermediate": {
+      "arbeitnehmer_pauschbetrag": 1230.0,
+      "sonderausgaben_pauschbetrag": 36.0,
+      "vorsorgepauschale": 13744.0,
+      "vorsorgepauschale_rv": 7440.0,
+      "vorsorgepauschale_kv_pv": 6303.15,
+      "vorsorgepauschale_rule": "rv + max(kv+pv, min(12% wage, 1900))",
+      "zu_versteuernder_jahresbetrag": 64990.0,
+      "contribution_base_rv_alv": 80000.0,
+      "contribution_base_kv_pv": 62100.0
+     }
+    },
+    {
+     "gross": 100000,
+     "deductions_employee": {
+      "lohnsteuer": 24645.0,
+      "soli": 775.28,
+      "rv": 8425.8,
+      "alv": 1177.8,
+      "kv": 5061.15,
+      "pv": 1428.3
+     },
+     "employer_contributions": {
+      "rv": 8425.8,
+      "alv": 1177.8,
+      "kv": 5061.15,
+      "pv": 1055.7
+     },
+     "totals": {
+      "taxes": 25420.28,
+      "social_employee": 16093.05,
+      "social_employer": 15720.45,
+      "net": 58486.67,
+      "employer_total_cost": 115720.45
+     },
+     "effective_rates": {
+      "lohnsteuer_pct": 24.64,
+      "soli_pct": 0.78,
+      "social_employee_pct": 16.09,
+      "deductions_total_pct": 41.51,
+      "net_pct": 58.49,
+      "social_employer_pct_of_gross": 15.72
+     },
+     "per_100_gross": {
+      "lohnsteuer": 24.64,
+      "soli": 0.78,
+      "rv": 8.43,
+      "alv": 1.18,
+      "kv": 5.06,
+      "pv": 1.43,
+      "net": 58.49
+     },
+     "intermediate": {
+      "arbeitnehmer_pauschbetrag": 1230.0,
+      "sonderausgaben_pauschbetrag": 36.0,
+      "vorsorgepauschale": 14729.0,
+      "vorsorgepauschale_rv": 8425.8,
+      "vorsorgepauschale_kv_pv": 6303.15,
+      "vorsorgepauschale_rule": "rv + max(kv+pv, min(12% wage, 1900))",
+      "zu_versteuernder_jahresbetrag": 84005.0,
+      "contribution_base_rv_alv": 90600.0,
+      "contribution_base_kv_pv": 62100.0
+     }
+    },
+    {
+     "gross": 150000,
+     "deductions_employee": {
+      "lohnsteuer": 45645.0,
+      "soli": 2510.47,
+      "rv": 8425.8,
+      "alv": 1177.8,
+      "kv": 5061.15,
+      "pv": 1428.3
+     },
+     "employer_contributions": {
+      "rv": 8425.8,
+      "alv": 1177.8,
+      "kv": 5061.15,
+      "pv": 1055.7
+     },
+     "totals": {
+      "taxes": 48155.47,
+      "social_employee": 16093.05,
+      "social_employer": 15720.45,
+      "net": 85751.48,
+      "employer_total_cost": 165720.45
+     },
+     "effective_rates": {
+      "lohnsteuer_pct": 30.43,
+      "soli_pct": 1.67,
+      "social_employee_pct": 10.73,
+      "deductions_total_pct": 42.83,
+      "net_pct": 57.17,
+      "social_employer_pct_of_gross": 10.48
+     },
+     "per_100_gross": {
+      "lohnsteuer": 30.43,
+      "soli": 1.67,
+      "rv": 5.62,
+      "alv": 0.79,
+      "kv": 3.37,
+      "pv": 0.95,
+      "net": 57.17
+     },
+     "intermediate": {
+      "arbeitnehmer_pauschbetrag": 1230.0,
+      "sonderausgaben_pauschbetrag": 36.0,
+      "vorsorgepauschale": 14729.0,
+      "vorsorgepauschale_rv": 8425.8,
+      "vorsorgepauschale_kv_pv": 6303.15,
+      "vorsorgepauschale_rule": "rv + max(kv+pv, min(12% wage, 1900))",
+      "zu_versteuernder_jahresbetrag": 134005.0,
+      "contribution_base_rv_alv": 90600.0,
+      "contribution_base_kv_pv": 62100.0
+     }
+    }
+   ],
+   "with_child": [
+    {
+     "gross": 20000,
+     "deductions_employee": {
+      "lohnsteuer": 541.0,
+      "soli": 0.0,
+      "rv": 1860.0,
+      "alv": 260.0,
+      "kv": 1630.0,
+      "pv": 340.0
+     },
+     "employer_contributions": {
+      "rv": 1860.0,
+      "alv": 260.0,
+      "kv": 1630.0,
+      "pv": 340.0
+     },
+     "totals": {
+      "taxes": 541.0,
+      "social_employee": 4090.0,
+      "social_employer": 4090.0,
+      "net": 15369.0,
+      "employer_total_cost": 24090.0
+     },
+     "effective_rates": {
+      "lohnsteuer_pct": 2.71,
+      "soli_pct": 0.0,
+      "social_employee_pct": 20.45,
+      "deductions_total_pct": 23.16,
+      "net_pct": 76.84,
+      "social_employer_pct_of_gross": 20.45
+     },
+     "per_100_gross": {
+      "lohnsteuer": 2.71,
+      "soli": 0.0,
+      "rv": 9.3,
+      "alv": 1.3,
+      "kv": 8.15,
+      "pv": 1.7,
+      "net": 76.84
+     },
+     "intermediate": {
+      "arbeitnehmer_pauschbetrag": 1230.0,
+      "sonderausgaben_pauschbetrag": 36.0,
+      "vorsorgepauschale": 3770.0,
+      "vorsorgepauschale_rv": 1860.0,
+      "vorsorgepauschale_kv_pv": 1910.0,
+      "vorsorgepauschale_rule": "rv + max(kv+pv, min(12% wage, 1900))",
+      "zu_versteuernder_jahresbetrag": 14964.0,
+      "contribution_base_rv_alv": 20000.0,
+      "contribution_base_kv_pv": 20000.0
+     }
+    },
+    {
+     "gross": 30000,
+     "deductions_employee": {
+      "lohnsteuer": 2513.0,
+      "soli": 0.0,
+      "rv": 2790.0,
+      "alv": 390.0,
+      "kv": 2445.0,
+      "pv": 510.0
+     },
+     "employer_contributions": {
+      "rv": 2790.0,
+      "alv": 390.0,
+      "kv": 2445.0,
+      "pv": 510.0
+     },
+     "totals": {
+      "taxes": 2513.0,
+      "social_employee": 6135.0,
+      "social_employer": 6135.0,
+      "net": 21352.0,
+      "employer_total_cost": 36135.0
+     },
+     "effective_rates": {
+      "lohnsteuer_pct": 8.38,
+      "soli_pct": 0.0,
+      "social_employee_pct": 20.45,
+      "deductions_total_pct": 28.83,
+      "net_pct": 71.17,
+      "social_employer_pct_of_gross": 20.45
+     },
+     "per_100_gross": {
+      "lohnsteuer": 8.38,
+      "soli": 0.0,
+      "rv": 9.3,
+      "alv": 1.3,
+      "kv": 8.15,
+      "pv": 1.7,
+      "net": 71.17
+     },
+     "intermediate": {
+      "arbeitnehmer_pauschbetrag": 1230.0,
+      "sonderausgaben_pauschbetrag": 36.0,
+      "vorsorgepauschale": 5655.0,
+      "vorsorgepauschale_rv": 2790.0,
+      "vorsorgepauschale_kv_pv": 2865.0,
+      "vorsorgepauschale_rule": "rv + max(kv+pv, min(12% wage, 1900))",
+      "zu_versteuernder_jahresbetrag": 23079.0,
+      "contribution_base_rv_alv": 30000.0,
+      "contribution_base_kv_pv": 30000.0
+     }
+    },
+    {
+     "gross": 45000,
+     "deductions_employee": {
+      "lohnsteuer": 5967.0,
+      "soli": 0.0,
+      "rv": 4185.0,
+      "alv": 585.0,
+      "kv": 3667.5,
+      "pv": 765.0
+     },
+     "employer_contributions": {
+      "rv": 4185.0,
+      "alv": 585.0,
+      "kv": 3667.5,
+      "pv": 765.0
+     },
+     "totals": {
+      "taxes": 5967.0,
+      "social_employee": 9202.5,
+      "social_employer": 9202.5,
+      "net": 29830.5,
+      "employer_total_cost": 54202.5
+     },
+     "effective_rates": {
+      "lohnsteuer_pct": 13.26,
+      "soli_pct": 0.0,
+      "social_employee_pct": 20.45,
+      "deductions_total_pct": 33.71,
+      "net_pct": 66.29,
+      "social_employer_pct_of_gross": 20.45
+     },
+     "per_100_gross": {
+      "lohnsteuer": 13.26,
+      "soli": 0.0,
+      "rv": 9.3,
+      "alv": 1.3,
+      "kv": 8.15,
+      "pv": 1.7,
+      "net": 66.29
+     },
+     "intermediate": {
+      "arbeitnehmer_pauschbetrag": 1230.0,
+      "sonderausgaben_pauschbetrag": 36.0,
+      "vorsorgepauschale": 8483.0,
+      "vorsorgepauschale_rv": 4185.0,
+      "vorsorgepauschale_kv_pv": 4297.5,
+      "vorsorgepauschale_rule": "rv + max(kv+pv, min(12% wage, 1900))",
+      "zu_versteuernder_jahresbetrag": 35251.0,
+      "contribution_base_rv_alv": 45000.0,
+      "contribution_base_kv_pv": 45000.0
+     }
+    },
+    {
+     "gross": 60000,
+     "deductions_employee": {
+      "lohnsteuer": 9959.0,
+      "soli": 0.0,
+      "rv": 5580.0,
+      "alv": 780.0,
+      "kv": 4890.0,
+      "pv": 1020.0
+     },
+     "employer_contributions": {
+      "rv": 5580.0,
+      "alv": 780.0,
+      "kv": 4890.0,
+      "pv": 1020.0
+     },
+     "totals": {
+      "taxes": 9959.0,
+      "social_employee": 12270.0,
+      "social_employer": 12270.0,
+      "net": 37771.0,
+      "employer_total_cost": 72270.0
+     },
+     "effective_rates": {
+      "lohnsteuer_pct": 16.6,
+      "soli_pct": 0.0,
+      "social_employee_pct": 20.45,
+      "deductions_total_pct": 37.05,
+      "net_pct": 62.95,
+      "social_employer_pct_of_gross": 20.45
+     },
+     "per_100_gross": {
+      "lohnsteuer": 16.6,
+      "soli": 0.0,
+      "rv": 9.3,
+      "alv": 1.3,
+      "kv": 8.15,
+      "pv": 1.7,
+      "net": 62.95
+     },
+     "intermediate": {
+      "arbeitnehmer_pauschbetrag": 1230.0,
+      "sonderausgaben_pauschbetrag": 36.0,
+      "vorsorgepauschale": 11310.0,
+      "vorsorgepauschale_rv": 5580.0,
+      "vorsorgepauschale_kv_pv": 5730.0,
+      "vorsorgepauschale_rule": "rv + max(kv+pv, min(12% wage, 1900))",
+      "zu_versteuernder_jahresbetrag": 47424.0,
+      "contribution_base_rv_alv": 60000.0,
+      "contribution_base_kv_pv": 60000.0
+     }
+    },
+    {
+     "gross": 80000,
+     "deductions_employee": {
+      "lohnsteuer": 16819.0,
+      "soli": 0.0,
+      "rv": 7440.0,
+      "alv": 1040.0,
+      "kv": 5061.15,
+      "pv": 1055.7
+     },
+     "employer_contributions": {
+      "rv": 7440.0,
+      "alv": 1040.0,
+      "kv": 5061.15,
+      "pv": 1055.7
+     },
+     "totals": {
+      "taxes": 16819.0,
+      "social_employee": 14596.85,
+      "social_employer": 14596.85,
+      "net": 48584.15,
+      "employer_total_cost": 94596.85
+     },
+     "effective_rates": {
+      "lohnsteuer_pct": 21.02,
+      "soli_pct": 0.0,
+      "social_employee_pct": 18.25,
+      "deductions_total_pct": 39.27,
+      "net_pct": 60.73,
+      "social_employer_pct_of_gross": 18.25
+     },
+     "per_100_gross": {
+      "lohnsteuer": 21.02,
+      "soli": 0.0,
+      "rv": 9.3,
+      "alv": 1.3,
+      "kv": 6.33,
+      "pv": 1.32,
+      "net": 60.73
+     },
+     "intermediate": {
+      "arbeitnehmer_pauschbetrag": 1230.0,
+      "sonderausgaben_pauschbetrag": 36.0,
+      "vorsorgepauschale": 13371.0,
+      "vorsorgepauschale_rv": 7440.0,
+      "vorsorgepauschale_kv_pv": 5930.55,
+      "vorsorgepauschale_rule": "rv + max(kv+pv, min(12% wage, 1900))",
+      "zu_versteuernder_jahresbetrag": 65363.0,
+      "contribution_base_rv_alv": 80000.0,
+      "contribution_base_kv_pv": 62100.0
+     }
+    },
+    {
+     "gross": 100000,
+     "deductions_employee": {
+      "lohnsteuer": 24802.0,
+      "soli": 793.96,
+      "rv": 8425.8,
+      "alv": 1177.8,
+      "kv": 5061.15,
+      "pv": 1055.7
+     },
+     "employer_contributions": {
+      "rv": 8425.8,
+      "alv": 1177.8,
+      "kv": 5061.15,
+      "pv": 1055.7
+     },
+     "totals": {
+      "taxes": 25595.96,
+      "social_employee": 15720.45,
+      "social_employer": 15720.45,
+      "net": 58683.59,
+      "employer_total_cost": 115720.45
+     },
+     "effective_rates": {
+      "lohnsteuer_pct": 24.8,
+      "soli_pct": 0.79,
+      "social_employee_pct": 15.72,
+      "deductions_total_pct": 41.32,
+      "net_pct": 58.68,
+      "social_employer_pct_of_gross": 15.72
+     },
+     "per_100_gross": {
+      "lohnsteuer": 24.8,
+      "soli": 0.79,
+      "rv": 8.43,
+      "alv": 1.18,
+      "kv": 5.06,
+      "pv": 1.06,
+      "net": 58.68
+     },
+     "intermediate": {
+      "arbeitnehmer_pauschbetrag": 1230.0,
+      "sonderausgaben_pauschbetrag": 36.0,
+      "vorsorgepauschale": 14357.0,
+      "vorsorgepauschale_rv": 8425.8,
+      "vorsorgepauschale_kv_pv": 5930.55,
+      "vorsorgepauschale_rule": "rv + max(kv+pv, min(12% wage, 1900))",
+      "zu_versteuernder_jahresbetrag": 84377.0,
+      "contribution_base_rv_alv": 90600.0,
+      "contribution_base_kv_pv": 62100.0
+     }
+    },
+    {
+     "gross": 150000,
+     "deductions_employee": {
+      "lohnsteuer": 45802.0,
+      "soli": 2519.11,
+      "rv": 8425.8,
+      "alv": 1177.8,
+      "kv": 5061.15,
+      "pv": 1055.7
+     },
+     "employer_contributions": {
+      "rv": 8425.8,
+      "alv": 1177.8,
+      "kv": 5061.15,
+      "pv": 1055.7
+     },
+     "totals": {
+      "taxes": 48321.11,
+      "social_employee": 15720.45,
+      "social_employer": 15720.45,
+      "net": 85958.44,
+      "employer_total_cost": 165720.45
+     },
+     "effective_rates": {
+      "lohnsteuer_pct": 30.53,
+      "soli_pct": 1.68,
+      "social_employee_pct": 10.48,
+      "deductions_total_pct": 42.69,
+      "net_pct": 57.31,
+      "social_employer_pct_of_gross": 10.48
+     },
+     "per_100_gross": {
+      "lohnsteuer": 30.53,
+      "soli": 1.68,
+      "rv": 5.62,
+      "alv": 0.79,
+      "kv": 3.37,
+      "pv": 0.7,
+      "net": 57.31
+     },
+     "intermediate": {
+      "arbeitnehmer_pauschbetrag": 1230.0,
+      "sonderausgaben_pauschbetrag": 36.0,
+      "vorsorgepauschale": 14357.0,
+      "vorsorgepauschale_rv": 8425.8,
+      "vorsorgepauschale_kv_pv": 5930.55,
+      "vorsorgepauschale_rule": "rv + max(kv+pv, min(12% wage, 1900))",
+      "zu_versteuernder_jahresbetrag": 134377.0,
+      "contribution_base_rv_alv": 90600.0,
+      "contribution_base_kv_pv": 62100.0
+     }
+    }
+   ]
+  },
+  "2025": {
+   "childless": [
+    {
+     "gross": 20000,
+     "deductions_employee": {
+      "lohnsteuer": 436.0,
+      "soli": 0.0,
+      "rv": 1860.0,
+      "alv": 260.0,
+      "kv": 1710.0,
+      "pv": 480.0
+     },
+     "employer_contributions": {
+      "rv": 1860.0,
+      "alv": 260.0,
+      "kv": 1710.0,
+      "pv": 360.0
+     },
+     "totals": {
+      "taxes": 436.0,
+      "social_employee": 4310.0,
+      "social_employer": 4190.0,
+      "net": 15254.0,
+      "employer_total_cost": 24190.0
+     },
+     "effective_rates": {
+      "lohnsteuer_pct": 2.18,
+      "soli_pct": 0.0,
+      "social_employee_pct": 21.55,
+      "deductions_total_pct": 23.73,
+      "net_pct": 76.27,
+      "social_employer_pct_of_gross": 20.95
+     },
+     "per_100_gross": {
+      "lohnsteuer": 2.18,
+      "soli": 0.0,
+      "rv": 9.3,
+      "alv": 1.3,
+      "kv": 8.55,
+      "pv": 2.4,
+      "net": 76.27
+     },
+     "intermediate": {
+      "arbeitnehmer_pauschbetrag": 1230.0,
+      "sonderausgaben_pauschbetrag": 36.0,
+      "vorsorgepauschale": 3990.0,
+      "vorsorgepauschale_rv": 1860.0,
+      "vorsorgepauschale_kv_pv": 2130.0,
+      "vorsorgepauschale_rule": "rv + max(kv+pv, min(12% wage, 1900))",
+      "zu_versteuernder_jahresbetrag": 14744.0,
+      "contribution_base_rv_alv": 20000.0,
+      "contribution_base_kv_pv": 20000.0
+     }
+    },
+    {
+     "gross": 30000,
+     "deductions_employee": {
+      "lohnsteuer": 2336.0,
+      "soli": 0.0,
+      "rv": 2790.0,
+      "alv": 390.0,
+      "kv": 2565.0,
+      "pv": 720.0
+     },
+     "employer_contributions": {
+      "rv": 2790.0,
+      "alv": 390.0,
+      "kv": 2565.0,
+      "pv": 540.0
+     },
+     "totals": {
+      "taxes": 2336.0,
+      "social_employee": 6465.0,
+      "social_employer": 6285.0,
+      "net": 21199.0,
+      "employer_total_cost": 36285.0
+     },
+     "effective_rates": {
+      "lohnsteuer_pct": 7.79,
+      "soli_pct": 0.0,
+      "social_employee_pct": 21.55,
+      "deductions_total_pct": 29.34,
+      "net_pct": 70.66,
+      "social_employer_pct_of_gross": 20.95
+     },
+     "per_100_gross": {
+      "lohnsteuer": 7.79,
+      "soli": 0.0,
+      "rv": 9.3,
+      "alv": 1.3,
+      "kv": 8.55,
+      "pv": 2.4,
+      "net": 70.66
+     },
+     "intermediate": {
+      "arbeitnehmer_pauschbetrag": 1230.0,
+      "sonderausgaben_pauschbetrag": 36.0,
+      "vorsorgepauschale": 5985.0,
+      "vorsorgepauschale_rv": 2790.0,
+      "vorsorgepauschale_kv_pv": 3195.0,
+      "vorsorgepauschale_rule": "rv + max(kv+pv, min(12% wage, 1900))",
+      "zu_versteuernder_jahresbetrag": 22749.0,
+      "contribution_base_rv_alv": 30000.0,
+      "contribution_base_kv_pv": 30000.0
+     }
+    },
+    {
+     "gross": 45000,
+     "deductions_employee": {
+      "lohnsteuer": 5694.0,
+      "soli": 0.0,
+      "rv": 4185.0,
+      "alv": 585.0,
+      "kv": 3847.5,
+      "pv": 1080.0
+     },
+     "employer_contributions": {
+      "rv": 4185.0,
+      "alv": 585.0,
+      "kv": 3847.5,
+      "pv": 810.0
+     },
+     "totals": {
+      "taxes": 5694.0,
+      "social_employee": 9697.5,
+      "social_employer": 9427.5,
+      "net": 29608.5,
+      "employer_total_cost": 54427.5
+     },
+     "effective_rates": {
+      "lohnsteuer_pct": 12.65,
+      "soli_pct": 0.0,
+      "social_employee_pct": 21.55,
+      "deductions_total_pct": 34.2,
+      "net_pct": 65.8,
+      "social_employer_pct_of_gross": 20.95
+     },
+     "per_100_gross": {
+      "lohnsteuer": 12.65,
+      "soli": 0.0,
+      "rv": 9.3,
+      "alv": 1.3,
+      "kv": 8.55,
+      "pv": 2.4,
+      "net": 65.8
+     },
+     "intermediate": {
+      "arbeitnehmer_pauschbetrag": 1230.0,
+      "sonderausgaben_pauschbetrag": 36.0,
+      "vorsorgepauschale": 8978.0,
+      "vorsorgepauschale_rv": 4185.0,
+      "vorsorgepauschale_kv_pv": 4792.5,
+      "vorsorgepauschale_rule": "rv + max(kv+pv, min(12% wage, 1900))",
+      "zu_versteuernder_jahresbetrag": 34756.0,
+      "contribution_base_rv_alv": 45000.0,
+      "contribution_base_kv_pv": 45000.0
+     }
+    },
+    {
+     "gross": 60000,
+     "deductions_employee": {
+      "lohnsteuer": 9561.0,
+      "soli": 0.0,
+      "rv": 5580.0,
+      "alv": 780.0,
+      "kv": 5130.0,
+      "pv": 1440.0
+     },
+     "employer_contributions": {
+      "rv": 5580.0,
+      "alv": 780.0,
+      "kv": 5130.0,
+      "pv": 1080.0
+     },
+     "totals": {
+      "taxes": 9561.0,
+      "social_employee": 12930.0,
+      "social_employer": 12570.0,
+      "net": 37509.0,
+      "employer_total_cost": 72570.0
+     },
+     "effective_rates": {
+      "lohnsteuer_pct": 15.93,
+      "soli_pct": 0.0,
+      "social_employee_pct": 21.55,
+      "deductions_total_pct": 37.48,
+      "net_pct": 62.52,
+      "social_employer_pct_of_gross": 20.95
+     },
+     "per_100_gross": {
+      "lohnsteuer": 15.93,
+      "soli": 0.0,
+      "rv": 9.3,
+      "alv": 1.3,
+      "kv": 8.55,
+      "pv": 2.4,
+      "net": 62.52
+     },
+     "intermediate": {
+      "arbeitnehmer_pauschbetrag": 1230.0,
+      "sonderausgaben_pauschbetrag": 36.0,
+      "vorsorgepauschale": 11970.0,
+      "vorsorgepauschale_rv": 5580.0,
+      "vorsorgepauschale_kv_pv": 6390.0,
+      "vorsorgepauschale_rule": "rv + max(kv+pv, min(12% wage, 1900))",
+      "zu_versteuernder_jahresbetrag": 46764.0,
+      "contribution_base_rv_alv": 60000.0,
+      "contribution_base_kv_pv": 60000.0
+     }
+    },
+    {
+     "gross": 80000,
+     "deductions_employee": {
+      "lohnsteuer": 16104.0,
+      "soli": 0.0,
+      "rv": 7440.0,
+      "alv": 1040.0,
+      "kv": 5655.83,
+      "pv": 1587.6
+     },
+     "employer_contributions": {
+      "rv": 7440.0,
+      "alv": 1040.0,
+      "kv": 5655.83,
+      "pv": 1190.7
+     },
+     "totals": {
+      "taxes": 16104.0,
+      "social_employee": 15723.43,
+      "social_employer": 15326.53,
+      "net": 48172.57,
+      "employer_total_cost": 95326.53
+     },
+     "effective_rates": {
+      "lohnsteuer_pct": 20.13,
+      "soli_pct": 0.0,
+      "social_employee_pct": 19.65,
+      "deductions_total_pct": 39.78,
+      "net_pct": 60.22,
+      "social_employer_pct_of_gross": 19.16
+     },
+     "per_100_gross": {
+      "lohnsteuer": 20.13,
+      "soli": 0.0,
+      "rv": 9.3,
+      "alv": 1.3,
+      "kv": 7.07,
+      "pv": 1.98,
+      "net": 60.22
+     },
+     "intermediate": {
+      "arbeitnehmer_pauschbetrag": 1230.0,
+      "sonderausgaben_pauschbetrag": 36.0,
+      "vorsorgepauschale": 14485.0,
+      "vorsorgepauschale_rv": 7440.0,
+      "vorsorgepauschale_kv_pv": 7044.97,
+      "vorsorgepauschale_rule": "rv + max(kv+pv, min(12% wage, 1900))",
+      "zu_versteuernder_jahresbetrag": 64249.0,
+      "contribution_base_rv_alv": 80000.0,
+      "contribution_base_kv_pv": 66150.0
+     }
+    },
+    {
+     "gross": 100000,
+     "deductions_employee": {
+      "lohnsteuer": 23824.0,
+      "soli": 461.0,
+      "rv": 8983.8,
+      "alv": 1255.8,
+      "kv": 5655.83,
+      "pv": 1587.6
+     },
+     "employer_contributions": {
+      "rv": 8983.8,
+      "alv": 1255.8,
+      "kv": 5655.83,
+      "pv": 1190.7
+     },
+     "totals": {
+      "taxes": 24285.0,
+      "social_employee": 17483.03,
+      "social_employer": 17086.13,
+      "net": 58231.97,
+      "employer_total_cost": 117086.13
+     },
+     "effective_rates": {
+      "lohnsteuer_pct": 23.82,
+      "soli_pct": 0.46,
+      "social_employee_pct": 17.48,
+      "deductions_total_pct": 41.77,
+      "net_pct": 58.23,
+      "social_employer_pct_of_gross": 17.09
+     },
+     "per_100_gross": {
+      "lohnsteuer": 23.82,
+      "soli": 0.46,
+      "rv": 8.98,
+      "alv": 1.26,
+      "kv": 5.66,
+      "pv": 1.59,
+      "net": 58.23
+     },
+     "intermediate": {
+      "arbeitnehmer_pauschbetrag": 1230.0,
+      "sonderausgaben_pauschbetrag": 36.0,
+      "vorsorgepauschale": 16029.0,
+      "vorsorgepauschale_rv": 8983.8,
+      "vorsorgepauschale_kv_pv": 7044.97,
+      "vorsorgepauschale_rule": "rv + max(kv+pv, min(12% wage, 1900))",
+      "zu_versteuernder_jahresbetrag": 82705.0,
+      "contribution_base_rv_alv": 96600.0,
+      "contribution_base_kv_pv": 66150.0
+     }
+    },
+    {
+     "gross": 150000,
+     "deductions_employee": {
+      "lohnsteuer": 44824.0,
+      "soli": 2465.32,
+      "rv": 8983.8,
+      "alv": 1255.8,
+      "kv": 5655.83,
+      "pv": 1587.6
+     },
+     "employer_contributions": {
+      "rv": 8983.8,
+      "alv": 1255.8,
+      "kv": 5655.83,
+      "pv": 1190.7
+     },
+     "totals": {
+      "taxes": 47289.32,
+      "social_employee": 17483.03,
+      "social_employer": 17086.13,
+      "net": 85227.65,
+      "employer_total_cost": 167086.13
+     },
+     "effective_rates": {
+      "lohnsteuer_pct": 29.88,
+      "soli_pct": 1.64,
+      "social_employee_pct": 11.66,
+      "deductions_total_pct": 43.18,
+      "net_pct": 56.82,
+      "social_employer_pct_of_gross": 11.39
+     },
+     "per_100_gross": {
+      "lohnsteuer": 29.88,
+      "soli": 1.64,
+      "rv": 5.99,
+      "alv": 0.84,
+      "kv": 3.77,
+      "pv": 1.06,
+      "net": 56.82
+     },
+     "intermediate": {
+      "arbeitnehmer_pauschbetrag": 1230.0,
+      "sonderausgaben_pauschbetrag": 36.0,
+      "vorsorgepauschale": 16029.0,
+      "vorsorgepauschale_rv": 8983.8,
+      "vorsorgepauschale_kv_pv": 7044.97,
+      "vorsorgepauschale_rule": "rv + max(kv+pv, min(12% wage, 1900))",
+      "zu_versteuernder_jahresbetrag": 132705.0,
+      "contribution_base_rv_alv": 96600.0,
+      "contribution_base_kv_pv": 66150.0
+     }
+    }
+   ],
+   "with_child": [
+    {
+     "gross": 20000,
+     "deductions_employee": {
+      "lohnsteuer": 458.0,
+      "soli": 0.0,
+      "rv": 1860.0,
+      "alv": 260.0,
+      "kv": 1710.0,
+      "pv": 360.0
+     },
+     "employer_contributions": {
+      "rv": 1860.0,
+      "alv": 260.0,
+      "kv": 1710.0,
+      "pv": 360.0
+     },
+     "totals": {
+      "taxes": 458.0,
+      "social_employee": 4190.0,
+      "social_employer": 4190.0,
+      "net": 15352.0,
+      "employer_total_cost": 24190.0
+     },
+     "effective_rates": {
+      "lohnsteuer_pct": 2.29,
+      "soli_pct": 0.0,
+      "social_employee_pct": 20.95,
+      "deductions_total_pct": 23.24,
+      "net_pct": 76.76,
+      "social_employer_pct_of_gross": 20.95
+     },
+     "per_100_gross": {
+      "lohnsteuer": 2.29,
+      "soli": 0.0,
+      "rv": 9.3,
+      "alv": 1.3,
+      "kv": 8.55,
+      "pv": 1.8,
+      "net": 76.76
+     },
+     "intermediate": {
+      "arbeitnehmer_pauschbetrag": 1230.0,
+      "sonderausgaben_pauschbetrag": 36.0,
+      "vorsorgepauschale": 3870.0,
+      "vorsorgepauschale_rv": 1860.0,
+      "vorsorgepauschale_kv_pv": 2010.0,
+      "vorsorgepauschale_rule": "rv + max(kv+pv, min(12% wage, 1900))",
+      "zu_versteuernder_jahresbetrag": 14864.0,
+      "contribution_base_rv_alv": 20000.0,
+      "contribution_base_kv_pv": 20000.0
+     }
+    },
+    {
+     "gross": 30000,
+     "deductions_employee": {
+      "lohnsteuer": 2383.0,
+      "soli": 0.0,
+      "rv": 2790.0,
+      "alv": 390.0,
+      "kv": 2565.0,
+      "pv": 540.0
+     },
+     "employer_contributions": {
+      "rv": 2790.0,
+      "alv": 390.0,
+      "kv": 2565.0,
+      "pv": 540.0
+     },
+     "totals": {
+      "taxes": 2383.0,
+      "social_employee": 6285.0,
+      "social_employer": 6285.0,
+      "net": 21332.0,
+      "employer_total_cost": 36285.0
+     },
+     "effective_rates": {
+      "lohnsteuer_pct": 7.94,
+      "soli_pct": 0.0,
+      "social_employee_pct": 20.95,
+      "deductions_total_pct": 28.89,
+      "net_pct": 71.11,
+      "social_employer_pct_of_gross": 20.95
+     },
+     "per_100_gross": {
+      "lohnsteuer": 7.94,
+      "soli": 0.0,
+      "rv": 9.3,
+      "alv": 1.3,
+      "kv": 8.55,
+      "pv": 1.8,
+      "net": 71.11
+     },
+     "intermediate": {
+      "arbeitnehmer_pauschbetrag": 1230.0,
+      "sonderausgaben_pauschbetrag": 36.0,
+      "vorsorgepauschale": 5805.0,
+      "vorsorgepauschale_rv": 2790.0,
+      "vorsorgepauschale_kv_pv": 3015.0,
+      "vorsorgepauschale_rule": "rv + max(kv+pv, min(12% wage, 1900))",
+      "zu_versteuernder_jahresbetrag": 22929.0,
+      "contribution_base_rv_alv": 30000.0,
+      "contribution_base_kv_pv": 30000.0
+     }
+    },
+    {
+     "gross": 45000,
+     "deductions_employee": {
+      "lohnsteuer": 5775.0,
+      "soli": 0.0,
+      "rv": 4185.0,
+      "alv": 585.0,
+      "kv": 3847.5,
+      "pv": 810.0
+     },
+     "employer_contributions": {
+      "rv": 4185.0,
+      "alv": 585.0,
+      "kv": 3847.5,
+      "pv": 810.0
+     },
+     "totals": {
+      "taxes": 5775.0,
+      "social_employee": 9427.5,
+      "social_employer": 9427.5,
+      "net": 29797.5,
+      "employer_total_cost": 54427.5
+     },
+     "effective_rates": {
+      "lohnsteuer_pct": 12.83,
+      "soli_pct": 0.0,
+      "social_employee_pct": 20.95,
+      "deductions_total_pct": 33.78,
+      "net_pct": 66.22,
+      "social_employer_pct_of_gross": 20.95
+     },
+     "per_100_gross": {
+      "lohnsteuer": 12.83,
+      "soli": 0.0,
+      "rv": 9.3,
+      "alv": 1.3,
+      "kv": 8.55,
+      "pv": 1.8,
+      "net": 66.22
+     },
+     "intermediate": {
+      "arbeitnehmer_pauschbetrag": 1230.0,
+      "sonderausgaben_pauschbetrag": 36.0,
+      "vorsorgepauschale": 8708.0,
+      "vorsorgepauschale_rv": 4185.0,
+      "vorsorgepauschale_kv_pv": 4522.5,
+      "vorsorgepauschale_rule": "rv + max(kv+pv, min(12% wage, 1900))",
+      "zu_versteuernder_jahresbetrag": 35026.0,
+      "contribution_base_rv_alv": 45000.0,
+      "contribution_base_kv_pv": 45000.0
+     }
+    },
+    {
+     "gross": 60000,
+     "deductions_employee": {
+      "lohnsteuer": 9685.0,
+      "soli": 0.0,
+      "rv": 5580.0,
+      "alv": 780.0,
+      "kv": 5130.0,
+      "pv": 1080.0
+     },
+     "employer_contributions": {
+      "rv": 5580.0,
+      "alv": 780.0,
+      "kv": 5130.0,
+      "pv": 1080.0
+     },
+     "totals": {
+      "taxes": 9685.0,
+      "social_employee": 12570.0,
+      "social_employer": 12570.0,
+      "net": 37745.0,
+      "employer_total_cost": 72570.0
+     },
+     "effective_rates": {
+      "lohnsteuer_pct": 16.14,
+      "soli_pct": 0.0,
+      "social_employee_pct": 20.95,
+      "deductions_total_pct": 37.09,
+      "net_pct": 62.91,
+      "social_employer_pct_of_gross": 20.95
+     },
+     "per_100_gross": {
+      "lohnsteuer": 16.14,
+      "soli": 0.0,
+      "rv": 9.3,
+      "alv": 1.3,
+      "kv": 8.55,
+      "pv": 1.8,
+      "net": 62.91
+     },
+     "intermediate": {
+      "arbeitnehmer_pauschbetrag": 1230.0,
+      "sonderausgaben_pauschbetrag": 36.0,
+      "vorsorgepauschale": 11610.0,
+      "vorsorgepauschale_rv": 5580.0,
+      "vorsorgepauschale_kv_pv": 6030.0,
+      "vorsorgepauschale_rule": "rv + max(kv+pv, min(12% wage, 1900))",
+      "zu_versteuernder_jahresbetrag": 47124.0,
+      "contribution_base_rv_alv": 60000.0,
+      "contribution_base_kv_pv": 60000.0
+     }
+    },
+    {
+     "gross": 80000,
+     "deductions_employee": {
+      "lohnsteuer": 16265.0,
+      "soli": 0.0,
+      "rv": 7440.0,
+      "alv": 1040.0,
+      "kv": 5655.83,
+      "pv": 1190.7
+     },
+     "employer_contributions": {
+      "rv": 7440.0,
+      "alv": 1040.0,
+      "kv": 5655.83,
+      "pv": 1190.7
+     },
+     "totals": {
+      "taxes": 16265.0,
+      "social_employee": 15326.53,
+      "social_employer": 15326.53,
+      "net": 48408.47,
+      "employer_total_cost": 95326.53
+     },
+     "effective_rates": {
+      "lohnsteuer_pct": 20.33,
+      "soli_pct": 0.0,
+      "social_employee_pct": 19.16,
+      "deductions_total_pct": 39.49,
+      "net_pct": 60.51,
+      "social_employer_pct_of_gross": 19.16
+     },
+     "per_100_gross": {
+      "lohnsteuer": 20.33,
+      "soli": 0.0,
+      "rv": 9.3,
+      "alv": 1.3,
+      "kv": 7.07,
+      "pv": 1.49,
+      "net": 60.51
+     },
+     "intermediate": {
+      "arbeitnehmer_pauschbetrag": 1230.0,
+      "sonderausgaben_pauschbetrag": 36.0,
+      "vorsorgepauschale": 14089.0,
+      "vorsorgepauschale_rv": 7440.0,
+      "vorsorgepauschale_kv_pv": 6648.07,
+      "vorsorgepauschale_rule": "rv + max(kv+pv, min(12% wage, 1900))",
+      "zu_versteuernder_jahresbetrag": 64645.0,
+      "contribution_base_rv_alv": 80000.0,
+      "contribution_base_kv_pv": 66150.0
+     }
+    },
+    {
+     "gross": 100000,
+     "deductions_employee": {
+      "lohnsteuer": 23990.0,
+      "soli": 480.76,
+      "rv": 8983.8,
+      "alv": 1255.8,
+      "kv": 5655.83,
+      "pv": 1190.7
+     },
+     "employer_contributions": {
+      "rv": 8983.8,
+      "alv": 1255.8,
+      "kv": 5655.83,
+      "pv": 1190.7
+     },
+     "totals": {
+      "taxes": 24470.76,
+      "social_employee": 17086.13,
+      "social_employer": 17086.13,
+      "net": 58443.11,
+      "employer_total_cost": 117086.13
+     },
+     "effective_rates": {
+      "lohnsteuer_pct": 23.99,
+      "soli_pct": 0.48,
+      "social_employee_pct": 17.09,
+      "deductions_total_pct": 41.56,
+      "net_pct": 58.44,
+      "social_employer_pct_of_gross": 17.09
+     },
+     "per_100_gross": {
+      "lohnsteuer": 23.99,
+      "soli": 0.48,
+      "rv": 8.98,
+      "alv": 1.26,
+      "kv": 5.66,
+      "pv": 1.19,
+      "net": 58.44
+     },
+     "intermediate": {
+      "arbeitnehmer_pauschbetrag": 1230.0,
+      "sonderausgaben_pauschbetrag": 36.0,
+      "vorsorgepauschale": 15632.0,
+      "vorsorgepauschale_rv": 8983.8,
+      "vorsorgepauschale_kv_pv": 6648.07,
+      "vorsorgepauschale_rule": "rv + max(kv+pv, min(12% wage, 1900))",
+      "zu_versteuernder_jahresbetrag": 83102.0,
+      "contribution_base_rv_alv": 96600.0,
+      "contribution_base_kv_pv": 66150.0
+     }
+    },
+    {
+     "gross": 150000,
+     "deductions_employee": {
+      "lohnsteuer": 44990.0,
+      "soli": 2474.45,
+      "rv": 8983.8,
+      "alv": 1255.8,
+      "kv": 5655.83,
+      "pv": 1190.7
+     },
+     "employer_contributions": {
+      "rv": 8983.8,
+      "alv": 1255.8,
+      "kv": 5655.83,
+      "pv": 1190.7
+     },
+     "totals": {
+      "taxes": 47464.45,
+      "social_employee": 17086.13,
+      "social_employer": 17086.13,
+      "net": 85449.42,
+      "employer_total_cost": 167086.13
+     },
+     "effective_rates": {
+      "lohnsteuer_pct": 29.99,
+      "soli_pct": 1.65,
+      "social_employee_pct": 11.39,
+      "deductions_total_pct": 43.03,
+      "net_pct": 56.97,
+      "social_employer_pct_of_gross": 11.39
+     },
+     "per_100_gross": {
+      "lohnsteuer": 29.99,
+      "soli": 1.65,
+      "rv": 5.99,
+      "alv": 0.84,
+      "kv": 3.77,
+      "pv": 0.79,
+      "net": 56.97
+     },
+     "intermediate": {
+      "arbeitnehmer_pauschbetrag": 1230.0,
+      "sonderausgaben_pauschbetrag": 36.0,
+      "vorsorgepauschale": 15632.0,
+      "vorsorgepauschale_rv": 8983.8,
+      "vorsorgepauschale_kv_pv": 6648.07,
+      "vorsorgepauschale_rule": "rv + max(kv+pv, min(12% wage, 1900))",
+      "zu_versteuernder_jahresbetrag": 133102.0,
+      "contribution_base_rv_alv": 96600.0,
+      "contribution_base_kv_pv": 66150.0
+     }
+    }
+   ]
+  },
+  "2026": {
+   "childless": [
+    {
+     "gross": 20000,
+     "deductions_employee": {
+      "lohnsteuer": 380.0,
+      "soli": 0.0,
+      "rv": 1860.0,
+      "alv": 260.0,
+      "kv": 1750.0,
+      "pv": 480.0
+     },
+     "employer_contributions": {
+      "rv": 1860.0,
+      "alv": 260.0,
+      "kv": 1750.0,
+      "pv": 360.0
+     },
+     "totals": {
+      "taxes": 380.0,
+      "social_employee": 4350.0,
+      "social_employer": 4230.0,
+      "net": 15270.0,
+      "employer_total_cost": 24230.0
+     },
+     "effective_rates": {
+      "lohnsteuer_pct": 1.9,
+      "soli_pct": 0.0,
+      "social_employee_pct": 21.75,
+      "deductions_total_pct": 23.65,
+      "net_pct": 76.35,
+      "social_employer_pct_of_gross": 21.15
+     },
+     "per_100_gross": {
+      "lohnsteuer": 1.9,
+      "soli": 0.0,
+      "rv": 9.3,
+      "alv": 1.3,
+      "kv": 8.75,
+      "pv": 2.4,
+      "net": 76.35
+     },
+     "intermediate": {
+      "arbeitnehmer_pauschbetrag": 1230.0,
+      "sonderausgaben_pauschbetrag": 36.0,
+      "vorsorgepauschale": 4030.0,
+      "vorsorgepauschale_rv": 1860.0,
+      "vorsorgepauschale_kv_pv": 2170.0,
+      "vorsorgepauschale_rule": "rv + max(kv+pv, min(kv+pv+alv, 1900))",
+      "zu_versteuernder_jahresbetrag": 14704.0,
+      "contribution_base_rv_alv": 20000.0,
+      "contribution_base_kv_pv": 20000.0
+     }
+    },
+    {
+     "gross": 30000,
+     "deductions_employee": {
+      "lohnsteuer": 2248.0,
+      "soli": 0.0,
+      "rv": 2790.0,
+      "alv": 390.0,
+      "kv": 2625.0,
+      "pv": 720.0
+     },
+     "employer_contributions": {
+      "rv": 2790.0,
+      "alv": 390.0,
+      "kv": 2625.0,
+      "pv": 540.0
+     },
+     "totals": {
+      "taxes": 2248.0,
+      "social_employee": 6525.0,
+      "social_employer": 6345.0,
+      "net": 21227.0,
+      "employer_total_cost": 36345.0
+     },
+     "effective_rates": {
+      "lohnsteuer_pct": 7.49,
+      "soli_pct": 0.0,
+      "social_employee_pct": 21.75,
+      "deductions_total_pct": 29.24,
+      "net_pct": 70.76,
+      "social_employer_pct_of_gross": 21.15
+     },
+     "per_100_gross": {
+      "lohnsteuer": 7.49,
+      "soli": 0.0,
+      "rv": 9.3,
+      "alv": 1.3,
+      "kv": 8.75,
+      "pv": 2.4,
+      "net": 70.76
+     },
+     "intermediate": {
+      "arbeitnehmer_pauschbetrag": 1230.0,
+      "sonderausgaben_pauschbetrag": 36.0,
+      "vorsorgepauschale": 6045.0,
+      "vorsorgepauschale_rv": 2790.0,
+      "vorsorgepauschale_kv_pv": 3255.0,
+      "vorsorgepauschale_rule": "rv + max(kv+pv, min(kv+pv+alv, 1900))",
+      "zu_versteuernder_jahresbetrag": 22689.0,
+      "contribution_base_rv_alv": 30000.0,
+      "contribution_base_kv_pv": 30000.0
+     }
+    },
+    {
+     "gross": 45000,
+     "deductions_employee": {
+      "lohnsteuer": 5570.0,
+      "soli": 0.0,
+      "rv": 4185.0,
+      "alv": 585.0,
+      "kv": 3937.5,
+      "pv": 1080.0
+     },
+     "employer_contributions": {
+      "rv": 4185.0,
+      "alv": 585.0,
+      "kv": 3937.5,
+      "pv": 810.0
+     },
+     "totals": {
+      "taxes": 5570.0,
+      "social_employee": 9787.5,
+      "social_employer": 9517.5,
+      "net": 29642.5,
+      "employer_total_cost": 54517.5
+     },
+     "effective_rates": {
+      "lohnsteuer_pct": 12.38,
+      "soli_pct": 0.0,
+      "social_employee_pct": 21.75,
+      "deductions_total_pct": 34.13,
+      "net_pct": 65.87,
+      "social_employer_pct_of_gross": 21.15
+     },
+     "per_100_gross": {
+      "lohnsteuer": 12.38,
+      "soli": 0.0,
+      "rv": 9.3,
+      "alv": 1.3,
+      "kv": 8.75,
+      "pv": 2.4,
+      "net": 65.87
+     },
+     "intermediate": {
+      "arbeitnehmer_pauschbetrag": 1230.0,
+      "sonderausgaben_pauschbetrag": 36.0,
+      "vorsorgepauschale": 9068.0,
+      "vorsorgepauschale_rv": 4185.0,
+      "vorsorgepauschale_kv_pv": 4882.5,
+      "vorsorgepauschale_rule": "rv + max(kv+pv, min(kv+pv+alv, 1900))",
+      "zu_versteuernder_jahresbetrag": 34666.0,
+      "contribution_base_rv_alv": 45000.0,
+      "contribution_base_kv_pv": 45000.0
+     }
+    },
+    {
+     "gross": 60000,
+     "deductions_employee": {
+      "lohnsteuer": 9389.0,
+      "soli": 0.0,
+      "rv": 5580.0,
+      "alv": 780.0,
+      "kv": 5250.0,
+      "pv": 1440.0
+     },
+     "employer_contributions": {
+      "rv": 5580.0,
+      "alv": 780.0,
+      "kv": 5250.0,
+      "pv": 1080.0
+     },
+     "totals": {
+      "taxes": 9389.0,
+      "social_employee": 13050.0,
+      "social_employer": 12690.0,
+      "net": 37561.0,
+      "employer_total_cost": 72690.0
+     },
+     "effective_rates": {
+      "lohnsteuer_pct": 15.65,
+      "soli_pct": 0.0,
+      "social_employee_pct": 21.75,
+      "deductions_total_pct": 37.4,
+      "net_pct": 62.6,
+      "social_employer_pct_of_gross": 21.15
+     },
+     "per_100_gross": {
+      "lohnsteuer": 15.65,
+      "soli": 0.0,
+      "rv": 9.3,
+      "alv": 1.3,
+      "kv": 8.75,
+      "pv": 2.4,
+      "net": 62.6
+     },
+     "intermediate": {
+      "arbeitnehmer_pauschbetrag": 1230.0,
+      "sonderausgaben_pauschbetrag": 36.0,
+      "vorsorgepauschale": 12090.0,
+      "vorsorgepauschale_rv": 5580.0,
+      "vorsorgepauschale_kv_pv": 6510.0,
+      "vorsorgepauschale_rule": "rv + max(kv+pv, min(kv+pv+alv, 1900))",
+      "zu_versteuernder_jahresbetrag": 46644.0,
+      "contribution_base_rv_alv": 60000.0,
+      "contribution_base_kv_pv": 60000.0
+     }
+    },
+    {
+     "gross": 80000,
+     "deductions_employee": {
+      "lohnsteuer": 15694.0,
+      "soli": 0.0,
+      "rv": 7440.0,
+      "alv": 1040.0,
+      "kv": 6103.13,
+      "pv": 1674.0
+     },
+     "employer_contributions": {
+      "rv": 7440.0,
+      "alv": 1040.0,
+      "kv": 6103.13,
+      "pv": 1255.5
+     },
+     "totals": {
+      "taxes": 15694.0,
+      "social_employee": 16257.13,
+      "social_employer": 15838.63,
+      "net": 48048.87,
+      "employer_total_cost": 95838.63
+     },
+     "effective_rates": {
+      "lohnsteuer_pct": 19.62,
+      "soli_pct": 0.0,
+      "social_employee_pct": 20.32,
+      "deductions_total_pct": 39.94,
+      "net_pct": 60.06,
+      "social_employer_pct_of_gross": 19.8
+     },
+     "per_100_gross": {
+      "lohnsteuer": 19.62,
+      "soli": 0.0,
+      "rv": 9.3,
+      "alv": 1.3,
+      "kv": 7.63,
+      "pv": 2.09,
+      "net": 60.06
+     },
+     "intermediate": {
+      "arbeitnehmer_pauschbetrag": 1230.0,
+      "sonderausgaben_pauschbetrag": 36.0,
+      "vorsorgepauschale": 15008.0,
+      "vorsorgepauschale_rv": 7440.0,
+      "vorsorgepauschale_kv_pv": 7567.87,
+      "vorsorgepauschale_rule": "rv + max(kv+pv, min(kv+pv+alv, 1900))",
+      "zu_versteuernder_jahresbetrag": 63726.0,
+      "contribution_base_rv_alv": 80000.0,
+      "contribution_base_kv_pv": 69750.0
+     }
+    },
+    {
+     "gross": 100000,
+     "deductions_employee": {
+      "lohnsteuer": 23248.0,
+      "soli": 344.86,
+      "rv": 9300.0,
+      "alv": 1300.0,
+      "kv": 6103.13,
+      "pv": 1674.0
+     },
+     "employer_contributions": {
+      "rv": 9300.0,
+      "alv": 1300.0,
+      "kv": 6103.13,
+      "pv": 1255.5
+     },
+     "totals": {
+      "taxes": 23592.86,
+      "social_employee": 18377.13,
+      "social_employer": 17958.63,
+      "net": 58030.01,
+      "employer_total_cost": 117958.63
+     },
+     "effective_rates": {
+      "lohnsteuer_pct": 23.25,
+      "soli_pct": 0.34,
+      "social_employee_pct": 18.38,
+      "deductions_total_pct": 41.97,
+      "net_pct": 58.03,
+      "social_employer_pct_of_gross": 17.96
+     },
+     "per_100_gross": {
+      "lohnsteuer": 23.25,
+      "soli": 0.34,
+      "rv": 9.3,
+      "alv": 1.3,
+      "kv": 6.1,
+      "pv": 1.67,
+      "net": 58.03
+     },
+     "intermediate": {
+      "arbeitnehmer_pauschbetrag": 1230.0,
+      "sonderausgaben_pauschbetrag": 36.0,
+      "vorsorgepauschale": 16868.0,
+      "vorsorgepauschale_rv": 9300.0,
+      "vorsorgepauschale_kv_pv": 7567.87,
+      "vorsorgepauschale_rule": "rv + max(kv+pv, min(kv+pv+alv, 1900))",
+      "zu_versteuernder_jahresbetrag": 81866.0,
+      "contribution_base_rv_alv": 100000.0,
+      "contribution_base_kv_pv": 69750.0
+     }
+    },
+    {
+     "gross": 150000,
+     "deductions_employee": {
+      "lohnsteuer": 44193.0,
+      "soli": 2430.61,
+      "rv": 9430.2,
+      "alv": 1318.2,
+      "kv": 6103.13,
+      "pv": 1674.0
+     },
+     "employer_contributions": {
+      "rv": 9430.2,
+      "alv": 1318.2,
+      "kv": 6103.13,
+      "pv": 1255.5
+     },
+     "totals": {
+      "taxes": 46623.61,
+      "social_employee": 18525.53,
+      "social_employer": 18107.03,
+      "net": 84850.86,
+      "employer_total_cost": 168107.03
+     },
+     "effective_rates": {
+      "lohnsteuer_pct": 29.46,
+      "soli_pct": 1.62,
+      "social_employee_pct": 12.35,
+      "deductions_total_pct": 43.43,
+      "net_pct": 56.57,
+      "social_employer_pct_of_gross": 12.07
+     },
+     "per_100_gross": {
+      "lohnsteuer": 29.46,
+      "soli": 1.62,
+      "rv": 6.29,
+      "alv": 0.88,
+      "kv": 4.07,
+      "pv": 1.12,
+      "net": 56.57
+     },
+     "intermediate": {
+      "arbeitnehmer_pauschbetrag": 1230.0,
+      "sonderausgaben_pauschbetrag": 36.0,
+      "vorsorgepauschale": 16999.0,
+      "vorsorgepauschale_rv": 9430.2,
+      "vorsorgepauschale_kv_pv": 7567.87,
+      "vorsorgepauschale_rule": "rv + max(kv+pv, min(kv+pv+alv, 1900))",
+      "zu_versteuernder_jahresbetrag": 131735.0,
+      "contribution_base_rv_alv": 101400.0,
+      "contribution_base_kv_pv": 69750.0
+     }
+    }
+   ],
+   "with_child": [
+    {
+     "gross": 20000,
+     "deductions_employee": {
+      "lohnsteuer": 402.0,
+      "soli": 0.0,
+      "rv": 1860.0,
+      "alv": 260.0,
+      "kv": 1750.0,
+      "pv": 360.0
+     },
+     "employer_contributions": {
+      "rv": 1860.0,
+      "alv": 260.0,
+      "kv": 1750.0,
+      "pv": 360.0
+     },
+     "totals": {
+      "taxes": 402.0,
+      "social_employee": 4230.0,
+      "social_employer": 4230.0,
+      "net": 15368.0,
+      "employer_total_cost": 24230.0
+     },
+     "effective_rates": {
+      "lohnsteuer_pct": 2.01,
+      "soli_pct": 0.0,
+      "social_employee_pct": 21.15,
+      "deductions_total_pct": 23.16,
+      "net_pct": 76.84,
+      "social_employer_pct_of_gross": 21.15
+     },
+     "per_100_gross": {
+      "lohnsteuer": 2.01,
+      "soli": 0.0,
+      "rv": 9.3,
+      "alv": 1.3,
+      "kv": 8.75,
+      "pv": 1.8,
+      "net": 76.84
+     },
+     "intermediate": {
+      "arbeitnehmer_pauschbetrag": 1230.0,
+      "sonderausgaben_pauschbetrag": 36.0,
+      "vorsorgepauschale": 3910.0,
+      "vorsorgepauschale_rv": 1860.0,
+      "vorsorgepauschale_kv_pv": 2050.0,
+      "vorsorgepauschale_rule": "rv + max(kv+pv, min(kv+pv+alv, 1900))",
+      "zu_versteuernder_jahresbetrag": 14824.0,
+      "contribution_base_rv_alv": 20000.0,
+      "contribution_base_kv_pv": 20000.0
+     }
+    },
+    {
+     "gross": 30000,
+     "deductions_employee": {
+      "lohnsteuer": 2294.0,
+      "soli": 0.0,
+      "rv": 2790.0,
+      "alv": 390.0,
+      "kv": 2625.0,
+      "pv": 540.0
+     },
+     "employer_contributions": {
+      "rv": 2790.0,
+      "alv": 390.0,
+      "kv": 2625.0,
+      "pv": 540.0
+     },
+     "totals": {
+      "taxes": 2294.0,
+      "social_employee": 6345.0,
+      "social_employer": 6345.0,
+      "net": 21361.0,
+      "employer_total_cost": 36345.0
+     },
+     "effective_rates": {
+      "lohnsteuer_pct": 7.65,
+      "soli_pct": 0.0,
+      "social_employee_pct": 21.15,
+      "deductions_total_pct": 28.8,
+      "net_pct": 71.2,
+      "social_employer_pct_of_gross": 21.15
+     },
+     "per_100_gross": {
+      "lohnsteuer": 7.65,
+      "soli": 0.0,
+      "rv": 9.3,
+      "alv": 1.3,
+      "kv": 8.75,
+      "pv": 1.8,
+      "net": 71.2
+     },
+     "intermediate": {
+      "arbeitnehmer_pauschbetrag": 1230.0,
+      "sonderausgaben_pauschbetrag": 36.0,
+      "vorsorgepauschale": 5865.0,
+      "vorsorgepauschale_rv": 2790.0,
+      "vorsorgepauschale_kv_pv": 3075.0,
+      "vorsorgepauschale_rule": "rv + max(kv+pv, min(kv+pv+alv, 1900))",
+      "zu_versteuernder_jahresbetrag": 22869.0,
+      "contribution_base_rv_alv": 30000.0,
+      "contribution_base_kv_pv": 30000.0
+     }
+    },
+    {
+     "gross": 45000,
+     "deductions_employee": {
+      "lohnsteuer": 5650.0,
+      "soli": 0.0,
+      "rv": 4185.0,
+      "alv": 585.0,
+      "kv": 3937.5,
+      "pv": 810.0
+     },
+     "employer_contributions": {
+      "rv": 4185.0,
+      "alv": 585.0,
+      "kv": 3937.5,
+      "pv": 810.0
+     },
+     "totals": {
+      "taxes": 5650.0,
+      "social_employee": 9517.5,
+      "social_employer": 9517.5,
+      "net": 29832.5,
+      "employer_total_cost": 54517.5
+     },
+     "effective_rates": {
+      "lohnsteuer_pct": 12.56,
+      "soli_pct": 0.0,
+      "social_employee_pct": 21.15,
+      "deductions_total_pct": 33.71,
+      "net_pct": 66.29,
+      "social_employer_pct_of_gross": 21.15
+     },
+     "per_100_gross": {
+      "lohnsteuer": 12.56,
+      "soli": 0.0,
+      "rv": 9.3,
+      "alv": 1.3,
+      "kv": 8.75,
+      "pv": 1.8,
+      "net": 66.29
+     },
+     "intermediate": {
+      "arbeitnehmer_pauschbetrag": 1230.0,
+      "sonderausgaben_pauschbetrag": 36.0,
+      "vorsorgepauschale": 8798.0,
+      "vorsorgepauschale_rv": 4185.0,
+      "vorsorgepauschale_kv_pv": 4612.5,
+      "vorsorgepauschale_rule": "rv + max(kv+pv, min(kv+pv+alv, 1900))",
+      "zu_versteuernder_jahresbetrag": 34936.0,
+      "contribution_base_rv_alv": 45000.0,
+      "contribution_base_kv_pv": 45000.0
+     }
+    },
+    {
+     "gross": 60000,
+     "deductions_employee": {
+      "lohnsteuer": 9511.0,
+      "soli": 0.0,
+      "rv": 5580.0,
+      "alv": 780.0,
+      "kv": 5250.0,
+      "pv": 1080.0
+     },
+     "employer_contributions": {
+      "rv": 5580.0,
+      "alv": 780.0,
+      "kv": 5250.0,
+      "pv": 1080.0
+     },
+     "totals": {
+      "taxes": 9511.0,
+      "social_employee": 12690.0,
+      "social_employer": 12690.0,
+      "net": 37799.0,
+      "employer_total_cost": 72690.0
+     },
+     "effective_rates": {
+      "lohnsteuer_pct": 15.85,
+      "soli_pct": 0.0,
+      "social_employee_pct": 21.15,
+      "deductions_total_pct": 37.0,
+      "net_pct": 63.0,
+      "social_employer_pct_of_gross": 21.15
+     },
+     "per_100_gross": {
+      "lohnsteuer": 15.85,
+      "soli": 0.0,
+      "rv": 9.3,
+      "alv": 1.3,
+      "kv": 8.75,
+      "pv": 1.8,
+      "net": 63.0
+     },
+     "intermediate": {
+      "arbeitnehmer_pauschbetrag": 1230.0,
+      "sonderausgaben_pauschbetrag": 36.0,
+      "vorsorgepauschale": 11730.0,
+      "vorsorgepauschale_rv": 5580.0,
+      "vorsorgepauschale_kv_pv": 6150.0,
+      "vorsorgepauschale_rule": "rv + max(kv+pv, min(kv+pv+alv, 1900))",
+      "zu_versteuernder_jahresbetrag": 47004.0,
+      "contribution_base_rv_alv": 60000.0,
+      "contribution_base_kv_pv": 60000.0
+     }
+    },
+    {
+     "gross": 80000,
+     "deductions_employee": {
+      "lohnsteuer": 15861.0,
+      "soli": 0.0,
+      "rv": 7440.0,
+      "alv": 1040.0,
+      "kv": 6103.13,
+      "pv": 1255.5
+     },
+     "employer_contributions": {
+      "rv": 7440.0,
+      "alv": 1040.0,
+      "kv": 6103.13,
+      "pv": 1255.5
+     },
+     "totals": {
+      "taxes": 15861.0,
+      "social_employee": 15838.63,
+      "social_employer": 15838.63,
+      "net": 48300.37,
+      "employer_total_cost": 95838.63
+     },
+     "effective_rates": {
+      "lohnsteuer_pct": 19.83,
+      "soli_pct": 0.0,
+      "social_employee_pct": 19.8,
+      "deductions_total_pct": 39.62,
+      "net_pct": 60.38,
+      "social_employer_pct_of_gross": 19.8
+     },
+     "per_100_gross": {
+      "lohnsteuer": 19.83,
+      "soli": 0.0,
+      "rv": 9.3,
+      "alv": 1.3,
+      "kv": 7.63,
+      "pv": 1.57,
+      "net": 60.38
+     },
+     "intermediate": {
+      "arbeitnehmer_pauschbetrag": 1230.0,
+      "sonderausgaben_pauschbetrag": 36.0,
+      "vorsorgepauschale": 14590.0,
+      "vorsorgepauschale_rv": 7440.0,
+      "vorsorgepauschale_kv_pv": 7149.37,
+      "vorsorgepauschale_rule": "rv + max(kv+pv, min(kv+pv+alv, 1900))",
+      "zu_versteuernder_jahresbetrag": 64144.0,
+      "contribution_base_rv_alv": 80000.0,
+      "contribution_base_kv_pv": 69750.0
+     }
+    },
+    {
+     "gross": 100000,
+     "deductions_employee": {
+      "lohnsteuer": 23423.0,
+      "soli": 365.68,
+      "rv": 9300.0,
+      "alv": 1300.0,
+      "kv": 6103.13,
+      "pv": 1255.5
+     },
+     "employer_contributions": {
+      "rv": 9300.0,
+      "alv": 1300.0,
+      "kv": 6103.13,
+      "pv": 1255.5
+     },
+     "totals": {
+      "taxes": 23788.68,
+      "social_employee": 17958.63,
+      "social_employer": 17958.63,
+      "net": 58252.69,
+      "employer_total_cost": 117958.63
+     },
+     "effective_rates": {
+      "lohnsteuer_pct": 23.42,
+      "soli_pct": 0.37,
+      "social_employee_pct": 17.96,
+      "deductions_total_pct": 41.75,
+      "net_pct": 58.25,
+      "social_employer_pct_of_gross": 17.96
+     },
+     "per_100_gross": {
+      "lohnsteuer": 23.42,
+      "soli": 0.37,
+      "rv": 9.3,
+      "alv": 1.3,
+      "kv": 6.1,
+      "pv": 1.26,
+      "net": 58.25
+     },
+     "intermediate": {
+      "arbeitnehmer_pauschbetrag": 1230.0,
+      "sonderausgaben_pauschbetrag": 36.0,
+      "vorsorgepauschale": 16450.0,
+      "vorsorgepauschale_rv": 9300.0,
+      "vorsorgepauschale_kv_pv": 7149.37,
+      "vorsorgepauschale_rule": "rv + max(kv+pv, min(kv+pv+alv, 1900))",
+      "zu_versteuernder_jahresbetrag": 82284.0,
+      "contribution_base_rv_alv": 100000.0,
+      "contribution_base_kv_pv": 69750.0
+     }
+    },
+    {
+     "gross": 150000,
+     "deductions_employee": {
+      "lohnsteuer": 44369.0,
+      "soli": 2440.29,
+      "rv": 9430.2,
+      "alv": 1318.2,
+      "kv": 6103.13,
+      "pv": 1255.5
+     },
+     "employer_contributions": {
+      "rv": 9430.2,
+      "alv": 1318.2,
+      "kv": 6103.13,
+      "pv": 1255.5
+     },
+     "totals": {
+      "taxes": 46809.29,
+      "social_employee": 18107.03,
+      "social_employer": 18107.03,
+      "net": 85083.68,
+      "employer_total_cost": 168107.03
+     },
+     "effective_rates": {
+      "lohnsteuer_pct": 29.58,
+      "soli_pct": 1.63,
+      "social_employee_pct": 12.07,
+      "deductions_total_pct": 43.28,
+      "net_pct": 56.72,
+      "social_employer_pct_of_gross": 12.07
+     },
+     "per_100_gross": {
+      "lohnsteuer": 29.58,
+      "soli": 1.63,
+      "rv": 6.29,
+      "alv": 0.88,
+      "kv": 4.07,
+      "pv": 0.84,
+      "net": 56.72
+     },
+     "intermediate": {
+      "arbeitnehmer_pauschbetrag": 1230.0,
+      "sonderausgaben_pauschbetrag": 36.0,
+      "vorsorgepauschale": 16580.0,
+      "vorsorgepauschale_rv": 9430.2,
+      "vorsorgepauschale_kv_pv": 7149.37,
+      "vorsorgepauschale_rule": "rv + max(kv+pv, min(kv+pv+alv, 1900))",
+      "zu_versteuernder_jahresbetrag": 132154.0,
+      "contribution_base_rv_alv": 101400.0,
+      "contribution_base_kv_pv": 69750.0
+     }
+    }
+   ]
+  }
+ }
+}

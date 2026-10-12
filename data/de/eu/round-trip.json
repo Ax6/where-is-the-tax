@@ -1,0 +1,303 @@
+{
+ "schema_version": 2,
+ "id": "de.eu.round_trip",
+ "title": {
+  "de": "Deutschland und der EU-Haushalt: Zahlungen und EU-Ausgaben in Deutschland",
+  "en": "Germany and the EU budget: payments and EU spending in Germany"
+ },
+ "unit": "MEUR",
+ "basis": "Commission budget implementation (accrual-free, by year of booking) for both sides; Destatis cash positions (EUR) added for comparison: the two sources differ in timing and in the treatment of the GNI reduction and balances. No net balance is computed (see file notes).",
+ "generated": "2026-10-09",
+ "generated_by": "scripts/research/build_eu.py",
+ "headings": {
+  "single_market": {
+   "de": "Binnenmarkt, Innovation und Digitales",
+   "en": "Single Market, Innovation and Digital"
+  },
+  "cohesion": {
+   "de": "Zusammenhalt, Resilienz und Werte",
+   "en": "Cohesion, Resilience and Values"
+  },
+  "natural_resources": {
+   "de": "Natürliche Ressourcen und Umwelt (v.a. Agrarzahlungen)",
+   "en": "Natural Resources and Environment (mostly agriculture)"
+  },
+  "migration": {
+   "de": "Migration und Grenzmanagement",
+   "en": "Migration and Border Management"
+  },
+  "security": {
+   "de": "Sicherheit und Verteidigung",
+   "en": "Security and Defence"
+  },
+  "neighbourhood": {
+   "de": "Nachbarschaft und die Welt",
+   "en": "Neighbourhood and the World"
+  },
+  "administration": {
+   "de": "Europäische öffentliche Verwaltung",
+   "en": "European Public Administration"
+  },
+  "outside_mff": {
+   "de": "Außerhalb des MFR",
+   "en": "Outside the MFF"
+  },
+  "solidarity": {
+   "de": "Solidaritätsmechanismen",
+   "en": "Solidarity mechanisms"
+  }
+ },
+ "revenue_items": {
+  "customs": {
+   "de": "Zölle",
+   "en": "Customs duties"
+  },
+  "vat_based": {
+   "de": "MwSt.-Eigenmittel",
+   "en": "VAT-based own resource"
+  },
+  "gni_based": {
+   "de": "BNE-Eigenmittel",
+   "en": "GNI-based own resource"
+  },
+  "gni_reduction": {
+   "de": "Pauschale Ermäßigung des BNE-Beitrags",
+   "en": "Lump-sum reduction of the GNI-based contribution"
+  },
+  "plastics": {
+   "de": "Kunststoff-Eigenmittel",
+   "en": "Plastics own resource"
+  },
+  "total_own_resources": {
+   "de": "Eigenmittel insgesamt",
+   "en": "Total own resources"
+  },
+  "balances_adjustments": {
+   "de": "Salden und Anpassungen",
+   "en": "Balances and adjustments"
+  },
+  "gni": {
+   "de": "Bruttonationaleinkommen",
+   "en": "Gross national income"
+  }
+ },
+ "source": {
+  "source_id": "eu_budget_spending_revenue",
+  "file": "eu_budget_spending_and_revenue_2000-2025.xlsx",
+  "path": "research/raw/eu_budget_spending_revenue/eu_budget_spending_and_revenue_2000-2025.xlsx",
+  "url": "https://commission.europa.eu/document/download/9f334bee-d097-4b68-8f93-2225eabeb631_en?filename=eu_budget_spending_and_revenue_2000-2025.xlsx",
+  "retrieved": "2026-10-09T12:45:39Z",
+  "sha256": "c885ac6d2ab968dd0ecdbbd354cf5b43cda1139898e7bbda8b3c9e431c6d9852",
+  "licence": "Commission reuse policy (Decision 2011/833/EU): reuse permitted with source acknowledgement (CC BY 4.0 for Commission documents)",
+  "coordinates": "sheets 2021-2025, column DE; rows in research/extracts/eu_budget_spending_revenue/germany-2021-2025.csv"
+ },
+ "destatis_cash_eu_own_resources_eur": {
+  "2021": {
+   "total": 38221814000,
+   "customs": 5122276000,
+   "vat_based": 4416280000,
+   "gni_based": 28683258000,
+   "plastics": null
+  },
+  "2022": {
+   "total": 38617120000,
+   "customs": 6828824000,
+   "vat_based": 4837575000,
+   "gni_based": 25573741000,
+   "plastics": 1376980000
+  },
+  "2023": {
+   "total": 35444106000,
+   "customs": 5733719000,
+   "vat_based": 5306250000,
+   "gni_based": 22980873000,
+   "plastics": 1423265000
+  },
+  "2024": {
+   "total": 32010995000,
+   "customs": 5463168000,
+   "vat_based": 5447808000,
+   "gni_based": 19722442000,
+   "plastics": 1377577000
+  },
+  "2025": {
+   "total": 34889434000,
+   "customs": 5859720000,
+   "vat_based": 5581591000,
+   "gni_based": 22199614000,
+   "plastics": 1248510000
+  }
+ },
+ "destatis_source": {
+  "source_id": "destatis_genesis_71211",
+  "file": "71211-0002.json",
+  "path": "research/raw/destatis_genesis_71211/71211-0002.json",
+  "url": "https://genesis.destatis.de/genesis/api/rest/tables/71211-0002/data",
+  "retrieved": "2026-10-09T12:45:22Z",
+  "sha256": "e4fd8e10714aa27884735e8830d14ae4dfacaec98cd65092858d725b7fab161f",
+  "licence": "DL-DE-BY-2.0 (Datenlizenz Deutschland – Namensnennung – 2.0); attribution: Statistisches Bundesamt (Destatis), GENESIS-Online, table code, retrieval date",
+  "coordinates": "dimension STAT10 × JAHR, content STEU01$QMU; labels from variables-STAT10.json"
+ },
+ "notes": [
+  "Own resources are paid from the federal budget share of tax revenue (Art. 106 GG does not assign them separately); Destatis books them as deductions from the Federation's tax revenue.",
+  "EU spending 'in Germany' is spending allocated to Germany as recipient; EU-wide spending (e.g. external action, administration abroad) is not allocatable and is not a German benefit or cost.",
+  "The Commission no longer publishes operating budgetary balances; any 'net contributor' figure is a derived construct and must be marked as such."
+ ],
+ "years": {
+  "2021": {
+   "eu_spending_in_germany_meur": {
+    "single_market": 2061.93708566,
+    "cohesion": 3160.56138838,
+    "natural_resources": 6013.92575467,
+    "migration": 185.0066273,
+    "security": 67.2269472,
+    "neighbourhood": 58.906505659999986,
+    "administration": 273.0659492792269,
+    "outside_mff": 0.0,
+    "solidarity": 13.648386,
+    "total": 11834.278644149226
+   },
+   "ngeu_in_germany_meur": {
+    "single_market": 0.03543917,
+    "cohesion": 2484.1925907000004,
+    "natural_resources": 0.0,
+    "total": 2484.2280298700002
+   },
+   "own_resources_paid_meur": {
+    "customs": 3819.5352853000004,
+    "vat_based": 4416.2799,
+    "gni_based": 29565.821045,
+    "gni_reduction": -1752.923636,
+    "plastics": 1357.30768,
+    "total_own_resources": 37406.557134480005,
+    "balances_adjustments": -428.6494309700001,
+    "gni": 3678522.0
+   },
+   "status": "final budget implementation"
+  },
+  "2022": {
+   "eu_spending_in_germany_meur": {
+    "single_market": 2830.6142862700003,
+    "cohesion": 3739.7892764999997,
+    "natural_resources": 6382.304592790009,
+    "migration": 332.64527380000004,
+    "security": 162.91146651,
+    "neighbourhood": 68.04940334,
+    "administration": 289.07583692313017,
+    "outside_mff": 0.0,
+    "solidarity": 354.22497,
+    "total": 14159.615106133138
+   },
+   "ngeu_in_germany_meur": {
+    "single_market": 251.39931314,
+    "cohesion": 340.94277242000004,
+    "natural_resources": 94.63393145,
+    "total": 686.97601701
+   },
+   "own_resources_paid_meur": {
+    "customs": 4893.98194995,
+    "vat_based": 4837.5753,
+    "gni_based": 26390.013893009997,
+    "gni_reduction": -1793.47079,
+    "plastics": 1376.97984,
+    "total_own_resources": 35704.25497114,
+    "balances_adjustments": 19.049211149999998,
+    "gni": 3998940.0
+   },
+   "status": "final budget implementation"
+  },
+  "2023": {
+   "eu_spending_in_germany_meur": {
+    "single_market": 3032.6454418100006,
+    "cohesion": 3270.44873724,
+    "natural_resources": 6267.87542791002,
+    "migration": 390.50481733000004,
+    "security": 176.65847823,
+    "neighbourhood": 23.079822470000003,
+    "administration": 290.6990225300001,
+    "outside_mff": 0.0,
+    "solidarity": 612.611256,
+    "total": 14064.52300352002
+   },
+   "ngeu_in_germany_meur": {
+    "single_market": 272.46120273,
+    "cohesion": 4858.9629461800005,
+    "natural_resources": 240.5933448,
+    "total": 5372.01749371
+   },
+   "own_resources_paid_meur": {
+    "customs": 4485.885280979999,
+    "vat_based": 5306.2497,
+    "gni_based": 24538.778597,
+    "gni_reduction": -1936.44775,
+    "plastics": 1423.26512,
+    "total_own_resources": 33817.73094798,
+    "balances_adjustments": 542.8912662299986,
+    "gni": 4286159.0
+   },
+   "status": "final budget implementation"
+  },
+  "2024": {
+   "eu_spending_in_germany_meur": {
+    "single_market": 2823.0576188900104,
+    "cohesion": 2493.3357811200003,
+    "natural_resources": 6102.80569770001,
+    "migration": 324.27740081,
+    "security": 205.8813137899999,
+    "neighbourhood": 68.82495200999999,
+    "administration": 319.15588589000004,
+    "outside_mff": 62.73438851,
+    "solidarity": 219.739187,
+    "total": 12619.812225720021
+   },
+   "ngeu_in_germany_meur": {
+    "single_market": 82.48372945999999,
+    "cohesion": 14217.54658371,
+    "natural_resources": 921.64385704,
+    "total": 15221.674170209999
+   },
+   "own_resources_paid_meur": {
+    "customs": 4021.78508963,
+    "vat_based": 5439.8988,
+    "gni_based": 22619.547677,
+    "gni_reduction": -2077.575653,
+    "plastics": 1377.57736,
+    "total_own_resources": 31381.233273629998,
+    "balances_adjustments": 33.37052590000003,
+    "gni": 4458995.0
+   },
+   "status": "final budget implementation"
+  },
+  "2025": {
+   "eu_spending_in_germany_meur": {
+    "single_market": 2737.6226689762548,
+    "cohesion": 2195.2479582695005,
+    "natural_resources": 6094.822571475706,
+    "migration": 454.64210977164123,
+    "security": 236.17688391521918,
+    "neighbourhood": 13.504834501575898,
+    "administration": 365.5257744322822,
+    "outside_mff": 0.2981867664355249,
+    "solidarity": 114.86338712,
+    "total": 12212.704375228615
+   },
+   "ngeu_in_germany_meur": {
+    "single_market": 48.07047652785748,
+    "cohesion": 35.82840344506398,
+    "natural_resources": 261.5149556791604,
+    "total": 345.41383565208184
+   },
+   "own_resources_paid_meur": {
+    "customs": 4418.20332762,
+    "vat_based": 5581.5906,
+    "gni_based": 24977.04675396,
+    "gni_reduction": -2174.8167549600003,
+    "plastics": 1248.50960004,
+    "total_own_resources": 34050.533526659994,
+    "balances_adjustments": -649.1524377999997,
+    "gni": 4631723.0
+   },
+   "status": "as published 2026 (check for later revisions)"
+  }
+ }
+}

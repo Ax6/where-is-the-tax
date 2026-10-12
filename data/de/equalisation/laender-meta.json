@@ -1,0 +1,175 @@
+{
+ "schema_version": 2,
+ "id": "de.equalisation.laender_meta",
+ "title": {
+  "de": "Länder: Kennung, Name, Stadtstaat",
+  "en": "Länder: code, name, city-state flag"
+ },
+ "unit": "n/a",
+ "basis": "Static attributes used to read the equalisation files",
+ "generated": "2026-10-09",
+ "generated_by": "scripts/research/build_equalisation.py",
+ "note": "municipal_shares_in_land_budget: in Berlin and Hamburg the Land budget also contains the municipal level (no separate municipalities), so municipal tax shares flow into the Land budget; Bremen is a city-state whose two municipalities (Bremen, Bremerhaven) keep separate budgets. Statutory basis: § 7 GemFinRefG (Stadtstaaten); that section is not among the retrieved statutes, so the flag is marked unverified_in_repo.",
+ "laender": [
+  {
+   "code": "BW",
+   "name": {
+    "de": "Baden-Württemberg",
+    "en": "Baden-Württemberg"
+   },
+   "city_state": false,
+   "municipal_shares_in_land_budget": false,
+   "flag_status": "n/a"
+  },
+  {
+   "code": "BY",
+   "name": {
+    "de": "Bayern",
+    "en": "Bavaria"
+   },
+   "city_state": false,
+   "municipal_shares_in_land_budget": false,
+   "flag_status": "n/a"
+  },
+  {
+   "code": "BE",
+   "name": {
+    "de": "Berlin",
+    "en": "Berlin"
+   },
+   "city_state": true,
+   "municipal_shares_in_land_budget": true,
+   "flag_status": "unverified_in_repo"
+  },
+  {
+   "code": "BB",
+   "name": {
+    "de": "Brandenburg",
+    "en": "Brandenburg"
+   },
+   "city_state": false,
+   "municipal_shares_in_land_budget": false,
+   "flag_status": "n/a"
+  },
+  {
+   "code": "HB",
+   "name": {
+    "de": "Bremen",
+    "en": "Bremen"
+   },
+   "city_state": true,
+   "municipal_shares_in_land_budget": false,
+   "flag_status": "unverified_in_repo"
+  },
+  {
+   "code": "HH",
+   "name": {
+    "de": "Hamburg",
+    "en": "Hamburg"
+   },
+   "city_state": true,
+   "municipal_shares_in_land_budget": true,
+   "flag_status": "unverified_in_repo"
+  },
+  {
+   "code": "HE",
+   "name": {
+    "de": "Hessen",
+    "en": "Hesse"
+   },
+   "city_state": false,
+   "municipal_shares_in_land_budget": false,
+   "flag_status": "n/a"
+  },
+  {
+   "code": "MV",
+   "name": {
+    "de": "Mecklenburg-Vorpommern",
+    "en": "Mecklenburg-Western Pomerania"
+   },
+   "city_state": false,
+   "municipal_shares_in_land_budget": false,
+   "flag_status": "n/a"
+  },
+  {
+   "code": "NI",
+   "name": {
+    "de": "Niedersachsen",
+    "en": "Lower Saxony"
+   },
+   "city_state": false,
+   "municipal_shares_in_land_budget": false,
+   "flag_status": "n/a"
+  },
+  {
+   "code": "NW",
+   "name": {
+    "de": "Nordrhein-Westfalen",
+    "en": "North Rhine-Westphalia"
+   },
+   "city_state": false,
+   "municipal_shares_in_land_budget": false,
+   "flag_status": "n/a"
+  },
+  {
+   "code": "RP",
+   "name": {
+    "de": "Rheinland-Pfalz",
+    "en": "Rhineland-Palatinate"
+   },
+   "city_state": false,
+   "municipal_shares_in_land_budget": false,
+   "flag_status": "n/a"
+  },
+  {
+   "code": "SL",
+   "name": {
+    "de": "Saarland",
+    "en": "Saarland"
+   },
+   "city_state": false,
+   "municipal_shares_in_land_budget": false,
+   "flag_status": "n/a"
+  },
+  {
+   "code": "SN",
+   "name": {
+    "de": "Sachsen",
+    "en": "Saxony"
+   },
+   "city_state": false,
+   "municipal_shares_in_land_budget": false,
+   "flag_status": "n/a"
+  },
+  {
+   "code": "ST",
+   "name": {
+    "de": "Sachsen-Anhalt",
+    "en": "Saxony-Anhalt"
+   },
+   "city_state": false,
+   "municipal_shares_in_land_budget": false,
+   "flag_status": "n/a"
+  },
+  {
+   "code": "SH",
+   "name": {
+    "de": "Schleswig-Holstein",
+    "en": "Schleswig-Holstein"
+   },
+   "city_state": false,
+   "municipal_shares_in_land_budget": false,
+   "flag_status": "n/a"
+  },
+  {
+   "code": "TH",
+   "name": {
+    "de": "Thüringen",
+    "en": "Thuringia"
+   },
+   "city_state": false,
+   "municipal_shares_in_land_budget": false,
+   "flag_status": "n/a"
+  }
+ ]
+}

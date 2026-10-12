@@ -9,7 +9,7 @@ permissions:
   contents: read
 
 jobs:
-  foundation:
+  check:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -17,9 +17,12 @@ jobs:
         with:
           node-version: 22
           cache: npm
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
       - run: npm ci
       - run: npm run typecheck
       - run: npm test
-      - run: npm run validate:data
-      - run: npm run validate:fixture
+      # v2 data envelope + front-end data paths, then the research cross-file reconciliation (stdlib only)
+      - run: npm run check:data
       - run: npm run build

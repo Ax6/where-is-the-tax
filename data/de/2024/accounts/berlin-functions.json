@@ -1,4 +1,6 @@
 {
+  "superseded_by": "data/de/berlin/functions-2024.json",
+  "superseded_on": "2026-10-09",
   "schema_version": 1,
   "account": "de_berlin_budget",
   "title": "Berlin budget — actual spending 2024",

@@ -1,0 +1,537 @@
+{
+ "schema_version": 2,
+ "id": "de.citizen.purchase_taxes",
+ "title": {
+  "de": "Steuern in Alltagskäufen",
+  "en": "Taxes inside everyday purchases"
+ },
+ "unit": "mixed (see each rate)",
+ "basis": "Statutory rates (exact); worked examples use illustrative prices marked as assumptions; recipients follow data/de/taxes/legal-allocation.json",
+ "generated": "2026-10-09",
+ "generated_by": "scripts/research/build_purchases.py",
+ "vat": {
+  "standard": {
+   "value": 0.19,
+   "unit": "share of net price",
+   "label": {
+    "de": "Umsatzsteuer, Regelsatz",
+    "en": "VAT, standard rate"
+   },
+   "recipient": "shared (Bund/Länder/Gemeinden, annual formula)",
+   "legal_basis": "§ 12 (1) UStG",
+   "quote": "19 Prozent der Bemessungsgrundlage",
+   "source": {
+    "source_id": "gesetze_im_internet",
+    "file": "ustg_12.html",
+    "path": "research/raw/gesetze_im_internet/ustg_12.html",
+    "url": "https://www.gesetze-im-internet.de/ustg_1980/__12.html",
+    "retrieved": "2026-10-09T12:45:40Z",
+    "sha256": "e8753b36595e445e776716ce43ec8d01633d9c548aec77d776105ae9484d09d0",
+    "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+    "coordinates": "text contains: 19 Prozent der Bemessungsgrundlage"
+   }
+  },
+  "reduced": {
+   "value": 0.07,
+   "unit": "share of net price",
+   "label": {
+    "de": "Umsatzsteuer, ermäßigter Satz (u.a. Lebensmittel, Bücher, ÖPNV)",
+    "en": "VAT, reduced rate (e.g. food, books, local transport)"
+   },
+   "recipient": "shared (Bund/Länder/Gemeinden, annual formula)",
+   "legal_basis": "§ 12 (2) UStG",
+   "quote": "ermäßigt sich auf sieben Prozent",
+   "source": {
+    "source_id": "gesetze_im_internet",
+    "file": "ustg_12.html",
+    "path": "research/raw/gesetze_im_internet/ustg_12.html",
+    "url": "https://www.gesetze-im-internet.de/ustg_1980/__12.html",
+    "retrieved": "2026-10-09T12:45:40Z",
+    "sha256": "e8753b36595e445e776716ce43ec8d01633d9c548aec77d776105ae9484d09d0",
+    "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+    "coordinates": "text contains: ermäßigt sich auf sieben Prozent"
+   }
+  }
+ },
+ "excises": {
+  "petrol": {
+   "value": 654.5,
+   "unit": "EUR per 1000 l",
+   "label": {
+    "de": "Energiesteuer auf Benzin (schwefelarm)",
+    "en": "Energy tax on petrol (low sulphur)"
+   },
+   "recipient": "federation",
+   "legal_basis": "§ 2 (1) Nr. 1 b EnergieStG",
+   "quote": "mit einem Schwefelgehalt von höchstens 10 mg/kg 654,50 EUR",
+   "source": {
+    "source_id": "gesetze_im_internet",
+    "file": "energiestg_2.html",
+    "path": "research/raw/gesetze_im_internet/energiestg_2.html",
+    "url": "https://www.gesetze-im-internet.de/energiestg/__2.html",
+    "retrieved": "2026-10-09T12:45:42Z",
+    "sha256": "dcf17244d110058502a7afbc0df0ea8812e5193f53b4ffa102b7bf93acdc3e1b",
+    "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+    "coordinates": "text contains: mit einem Schwefelgehalt von höchstens 10 mg/kg 654,50 EUR"
+   }
+  },
+  "diesel": {
+   "value": 470.4,
+   "unit": "EUR per 1000 l",
+   "label": {
+    "de": "Energiesteuer auf Diesel (schwefelarm)",
+    "en": "Energy tax on diesel (low sulphur)"
+   },
+   "recipient": "federation",
+   "legal_basis": "§ 2 (1) Nr. 4 b EnergieStG",
+   "quote": "mit einem Schwefelgehalt von höchstens 10 mg/kg 470,40 EUR",
+   "source": {
+    "source_id": "gesetze_im_internet",
+    "file": "energiestg_2.html",
+    "path": "research/raw/gesetze_im_internet/energiestg_2.html",
+    "url": "https://www.gesetze-im-internet.de/energiestg/__2.html",
+    "retrieved": "2026-10-09T12:45:42Z",
+    "sha256": "dcf17244d110058502a7afbc0df0ea8812e5193f53b4ffa102b7bf93acdc3e1b",
+    "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+    "coordinates": "text contains: mit einem Schwefelgehalt von höchstens 10 mg/kg 470,40 EUR"
+   }
+  },
+  "natural_gas_heating_2026": {
+   "value": 27.33,
+   "unit": "EUR per MWh",
+   "label": {
+    "de": "Energiesteuer auf Erdgas (Kraftstoff-Übergangssatz 2026; Heizgas: 5,50 EUR/MWh nach § 2 (3))",
+    "en": "Energy tax on natural gas (transitional motor-fuel rate 2026; heating gas 5.50 EUR/MWh under § 2 (3))"
+   },
+   "recipient": "federation",
+   "legal_basis": "§ 2 (3) EnergieStG / § 2 (2) Nr. 1 d",
+   "quote": "vom 1. Januar 2026 bis zum 31. Dezember 2026 27,33 EUR",
+   "source": {
+    "source_id": "gesetze_im_internet",
+    "file": "energiestg_2.html",
+    "path": "research/raw/gesetze_im_internet/energiestg_2.html",
+    "url": "https://www.gesetze-im-internet.de/energiestg/__2.html",
+    "retrieved": "2026-10-09T12:45:42Z",
+    "sha256": "dcf17244d110058502a7afbc0df0ea8812e5193f53b4ffa102b7bf93acdc3e1b",
+    "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+    "coordinates": "text contains: vom 1. Januar 2026 bis zum 31. Dezember 2026 27,33 EUR"
+   },
+   "valid": "2026"
+  },
+  "electricity": {
+   "value": 20.5,
+   "unit": "EUR per MWh",
+   "label": {
+    "de": "Stromsteuer",
+    "en": "Electricity tax"
+   },
+   "recipient": "federation",
+   "legal_basis": "§ 3 StromStG",
+   "quote": "20,50 Euro für eine Megawattstunde",
+   "source": {
+    "source_id": "gesetze_im_internet",
+    "file": "stromstg_3.html",
+    "path": "research/raw/gesetze_im_internet/stromstg_3.html",
+    "url": "https://www.gesetze-im-internet.de/stromstg/__3.html",
+    "retrieved": "2026-10-09T12:45:42Z",
+    "sha256": "d37e1ee24f3ea2922548fc3834a1e12aa73d11f162e1b5563e56b7a56485a67c",
+    "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+    "coordinates": "text contains: 20,50 Euro für eine Megawattstunde"
+   }
+  },
+  "cigarettes_2026": {
+   "value": 0.1228,
+   "unit": "EUR per cigarette + 19.84 % of retail price (minimum 0.25106 EUR per piece less VAT)",
+   "label": {
+    "de": "Tabaksteuer auf Zigaretten",
+    "en": "Tobacco tax on cigarettes"
+   },
+   "recipient": "federation",
+   "legal_basis": "§ 2 (1) Nr. 1 e TabStG",
+   "quote": "vom 1. Januar 2026 bis zum 14. Februar 2027 12,28 Cent je Stück und 19,84 Prozent des Kleinverkaufspreises, mindestens jedoch 25,106 Cent je Stück",
+   "source": {
+    "source_id": "gesetze_im_internet",
+    "file": "tabstg_2.html",
+    "path": "research/raw/gesetze_im_internet/tabstg_2.html",
+    "url": "https://www.gesetze-im-internet.de/tabstg_2009/__2.html",
+    "retrieved": "2026-10-09T12:45:42Z",
+    "sha256": "e47935d70b11e6c2b3f23dfa9d20702966b4477c0cd5ab08bec1f851cd4f55f6",
+    "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+    "coordinates": "text contains: vom 1. Januar 2026 bis zum 14. Februar 2027 12,28 Cent je Stück und 19,84 Prozent des Kleinverkaufspreises, mindestens jedoch 25,106 Cent je Stück"
+   },
+   "valid": "2026-01-01 to 2027-02-14"
+  },
+  "cigarettes_2025": {
+   "value": 0.1171,
+   "unit": "EUR per cigarette + 19.84 % of retail price",
+   "label": {
+    "de": "Tabaksteuer auf Zigaretten 2025",
+    "en": "Tobacco tax on cigarettes 2025"
+   },
+   "recipient": "federation",
+   "legal_basis": "§ 2 (1) Nr. 1 d TabStG",
+   "quote": "vom 1. Januar 2025 bis zum 31. Dezember 2025 11,71 Cent je Stück und 19,84 Prozent des Kleinverkaufspreises",
+   "source": {
+    "source_id": "gesetze_im_internet",
+    "file": "tabstg_2.html",
+    "path": "research/raw/gesetze_im_internet/tabstg_2.html",
+    "url": "https://www.gesetze-im-internet.de/tabstg_2009/__2.html",
+    "retrieved": "2026-10-09T12:45:42Z",
+    "sha256": "e47935d70b11e6c2b3f23dfa9d20702966b4477c0cd5ab08bec1f851cd4f55f6",
+    "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+    "coordinates": "text contains: vom 1. Januar 2025 bis zum 31. Dezember 2025 11,71 Cent je Stück und 19,84 Prozent des Kleinverkaufspreises"
+   },
+   "valid": "2025"
+  },
+  "beer": {
+   "value": 0.787,
+   "unit": "EUR per hl per degree Plato",
+   "label": {
+    "de": "Biersteuer",
+    "en": "Beer tax"
+   },
+   "recipient": "laender",
+   "legal_basis": "§ 2 (1) BierStG",
+   "quote": "Die Biersteuer beträgt für einen Hektoliter (hl) Bier 0,787 Euro je Grad Plato",
+   "source": {
+    "source_id": "gesetze_im_internet",
+    "file": "bierstg_2.html",
+    "path": "research/raw/gesetze_im_internet/bierstg_2.html",
+    "url": "https://www.gesetze-im-internet.de/bierstg_2009/__2.html",
+    "retrieved": "2026-10-09T12:45:42Z",
+    "sha256": "e10b5614ab1bdf573a76b891cbf0619fee237b18e0072d347dcfd38ee1a481fa",
+    "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+    "coordinates": "text contains: Die Biersteuer beträgt für einen Hektoliter (hl) Bier 0,787 Euro je Grad Plato"
+   }
+  },
+  "coffee": {
+   "value": 2.19,
+   "unit": "EUR per kg roasted coffee",
+   "label": {
+    "de": "Kaffeesteuer",
+    "en": "Coffee tax"
+   },
+   "recipient": "federation",
+   "legal_basis": "§ 2 (1) KaffeeStG",
+   "quote": "für Röstkaffee 2,19 Euro je Kilogramm",
+   "source": {
+    "source_id": "gesetze_im_internet",
+    "file": "kaffeestg_2.html",
+    "path": "research/raw/gesetze_im_internet/kaffeestg_2.html",
+    "url": "https://www.gesetze-im-internet.de/kaffeestg_2009/__2.html",
+    "retrieved": "2026-10-09T12:45:43Z",
+    "sha256": "90cb8829eb574c195728b724fa7f5fe4b303ce3a8821c2e26a94f7e70d0f727b",
+    "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+    "coordinates": "text contains: für Röstkaffee 2,19 Euro je Kilogramm"
+   }
+  },
+  "spirits": {
+   "value": 1303.0,
+   "unit": "EUR per hl pure alcohol",
+   "label": {
+    "de": "Alkoholsteuer",
+    "en": "Spirits tax"
+   },
+   "recipient": "federation",
+   "legal_basis": "§ 2 (1) AlkStG",
+   "quote": "als Regelsatz 1 303 Euro",
+   "source": {
+    "source_id": "gesetze_im_internet",
+    "file": "alkstg_2.html",
+    "path": "research/raw/gesetze_im_internet/alkstg_2.html",
+    "url": "https://www.gesetze-im-internet.de/alkstg/__2.html",
+    "retrieved": "2026-10-09T12:45:43Z",
+    "sha256": "c96abc5fa0020fb770c3c882ba5aabcbcc61d3602a43d176490cb45ca185d814",
+    "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+    "coordinates": "text contains: als Regelsatz 1 303 Euro"
+   }
+  },
+  "sparkling_wine": {
+   "value": 136.0,
+   "unit": "EUR per hl",
+   "label": {
+    "de": "Schaumweinsteuer",
+    "en": "Sparkling-wine tax"
+   },
+   "recipient": "federation",
+   "legal_basis": "§ 2 (1) SchaumwZwStG",
+   "quote": "136 Euro je Hektoliter",
+   "source": {
+    "source_id": "gesetze_im_internet",
+    "file": "schaumwzwstg_2.html",
+    "path": "research/raw/gesetze_im_internet/schaumwzwstg_2.html",
+    "url": "https://www.gesetze-im-internet.de/schaumwzwstg_2009/__2.html",
+    "retrieved": "2026-10-09T12:45:43Z",
+    "sha256": "c608f6b71d01d573a79b1023e287153f7cb462733f3b8956e5d55e76f85e862a",
+    "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+    "coordinates": "text contains: 136 Euro je Hektoliter"
+   }
+  },
+  "insurance": {
+   "value": 0.19,
+   "unit": "share of premium",
+   "label": {
+    "de": "Versicherungsteuer (keine Umsatzsteuer auf Versicherungen)",
+    "en": "Insurance tax (insurance is VAT-exempt)"
+   },
+   "recipient": "federation",
+   "legal_basis": "§ 6 (1) VersStG",
+   "quote": "19 Prozent des Versicherungsentgelts",
+   "source": {
+    "source_id": "gesetze_im_internet",
+    "file": "versstg_6.html",
+    "path": "research/raw/gesetze_im_internet/versstg_6.html",
+    "url": "https://www.gesetze-im-internet.de/versstg/__6.html",
+    "retrieved": "2026-10-09T12:45:43Z",
+    "sha256": "2ca740d0a7d78765f4ffad5d153c3238dc650b5423ba7db8b7f807b29d10541a",
+    "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+    "coordinates": "text contains: 19 Prozent des Versicherungsentgelts"
+   }
+  },
+  "real_estate_transfer_default": {
+   "value": 0.035,
+   "unit": "share of purchase price",
+   "label": {
+    "de": "Grunderwerbsteuer, Grundsatz (Länder setzen eigene Sätze von 3,5 % bis 6,5 %; Art. 105 (2a) GG)",
+    "en": "Real-estate transfer tax, default (Länder set their own rates, 3.5 % to 6.5 %; Art. 105 (2a) GG)"
+   },
+   "recipient": "laender",
+   "legal_basis": "§ 11 (1) GrEStG",
+   "quote": "Die Steuer beträgt 3,5 vom Hundert",
+   "source": {
+    "source_id": "gesetze_im_internet",
+    "file": "grestg_11.html",
+    "path": "research/raw/gesetze_im_internet/grestg_11.html",
+    "url": "https://www.gesetze-im-internet.de/grestg_1983/__11.html",
+    "retrieved": "2026-10-09T12:45:43Z",
+    "sha256": "7c558d0a7f70672041e3422f527c1bcacd3397960d08263aa1db0a972d98e4a2",
+    "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+    "coordinates": "text contains: Die Steuer beträgt 3,5 vom Hundert"
+   }
+  }
+ },
+ "examples": [
+  {
+   "id": "petrol_litre",
+   "label": {
+    "de": "1 Liter Benzin (E10) für 1,75 €",
+    "en": "1 litre of petrol (E10) at €1.75"
+   },
+   "assumption": "Pump price 1.75 EUR/l (assumption, not a source)",
+   "price_eur": 1.75,
+   "layers": [
+    {
+     "tax": "energy_tax",
+     "eur": 0.6545,
+     "basis": "654.50 EUR / 1000 l"
+    },
+    {
+     "tax": "vat",
+     "eur": 0.2794,
+     "basis": "19 % VAT inside the gross price (applies to the energy tax too)"
+    }
+   ],
+   "recipients": {
+    "federation": "energy tax entirely",
+    "shared": "VAT by the annual formula"
+   },
+   "tax_total_eur": 0.9339,
+   "tax_share_of_price": 0.5337
+  },
+  {
+   "id": "diesel_litre",
+   "label": {
+    "de": "1 Liter Diesel für 1,65 €",
+    "en": "1 litre of diesel at €1.65"
+   },
+   "assumption": "Pump price 1.65 EUR/l (assumption)",
+   "price_eur": 1.65,
+   "layers": [
+    {
+     "tax": "energy_tax",
+     "eur": 0.4704,
+     "basis": "470.40 EUR / 1000 l"
+    },
+    {
+     "tax": "vat",
+     "eur": 0.2634,
+     "basis": "19 % VAT inside the gross price"
+    }
+   ],
+   "tax_total_eur": 0.7338,
+   "tax_share_of_price": 0.4447
+  },
+  {
+   "id": "electricity_kwh",
+   "label": {
+    "de": "1 kWh Haushaltsstrom für 0,38 €",
+    "en": "1 kWh of household electricity at €0.38"
+   },
+   "assumption": "0.38 EUR/kWh (assumption)",
+   "price_eur": 0.38,
+   "layers": [
+    {
+     "tax": "electricity_tax",
+     "eur": 0.0205,
+     "basis": "20.50 EUR / MWh"
+    },
+    {
+     "tax": "vat",
+     "eur": 0.0607,
+     "basis": "19 % VAT inside the gross price"
+    }
+   ],
+   "note": "Network charges and levies (e.g. §19-Umlage) are not taxes and are not shown.",
+   "tax_total_eur": 0.0812,
+   "tax_share_of_price": 0.2137
+  },
+  {
+   "id": "cigarettes_pack",
+   "label": {
+    "de": "Schachtel mit 20 Zigaretten für 9,00 € (2026)",
+    "en": "Pack of 20 cigarettes at €9.00 (2026)"
+   },
+   "assumption": "Retail price 9.00 EUR (assumption)",
+   "price_eur": 9.0,
+   "layers": [
+    {
+     "tax": "tobacco_tax",
+     "eur": 4.2416,
+     "basis": "20 × 12.28 ct + 19.84 % × 9.00 (above the minimum of 20 × 25.106 ct less VAT)"
+    },
+    {
+     "tax": "vat",
+     "eur": 1.437,
+     "basis": "19 % VAT inside the gross price"
+    }
+   ],
+   "tax_total_eur": 5.6786,
+   "tax_share_of_price": 0.631
+  },
+  {
+   "id": "beer_half_litre",
+   "label": {
+    "de": "0,5 l Bier (12° Plato) für 4,00 € in der Kneipe",
+    "en": "0.5 l of beer (12° Plato) at €4.00 in a pub"
+   },
+   "assumption": "12° Plato, 4.00 EUR (assumptions)",
+   "price_eur": 4.0,
+   "layers": [
+    {
+     "tax": "beer_tax",
+     "eur": 0.0472,
+     "basis": "0.787 EUR × 12 ° × 0.5 l / 100 l"
+    },
+    {
+     "tax": "vat",
+     "eur": 0.6387,
+     "basis": "19 % VAT (restaurant drinks)"
+    }
+   ],
+   "tax_total_eur": 0.6859,
+   "tax_share_of_price": 0.1715
+  },
+  {
+   "id": "coffee_pack",
+   "label": {
+    "de": "500 g Röstkaffee für 7,00 €",
+    "en": "500 g of roasted coffee at €7.00"
+   },
+   "assumption": "7.00 EUR (assumption)",
+   "price_eur": 7.0,
+   "layers": [
+    {
+     "tax": "coffee_tax",
+     "eur": 1.095,
+     "basis": "2.19 EUR/kg × 0.5 kg"
+    },
+    {
+     "tax": "vat",
+     "eur": 0.4579,
+     "basis": "7 % VAT (food)"
+    }
+   ],
+   "tax_total_eur": 1.5529,
+   "tax_share_of_price": 0.2218
+  },
+  {
+   "id": "groceries",
+   "label": {
+    "de": "Lebensmitteleinkauf für 50 €",
+    "en": "Grocery shopping at €50"
+   },
+   "assumption": "All items at the 7 % rate (assumption; drinks, sweets and many ready meals carry 19 %)",
+   "price_eur": 50.0,
+   "layers": [
+    {
+     "tax": "vat",
+     "eur": 3.271,
+     "basis": "7 % VAT inside the gross price"
+    }
+   ],
+   "tax_total_eur": 3.271,
+   "tax_share_of_price": 0.0654
+  },
+  {
+   "id": "electronics",
+   "label": {
+    "de": "Smartphone für 800 €",
+    "en": "Smartphone at €800"
+   },
+   "assumption": "Standard rate",
+   "price_eur": 800.0,
+   "layers": [
+    {
+     "tax": "vat",
+     "eur": 127.73,
+     "basis": "19 % VAT inside the gross price"
+    }
+   ],
+   "tax_total_eur": 127.73,
+   "tax_share_of_price": 0.1597
+  },
+  {
+   "id": "car_insurance",
+   "label": {
+    "de": "Kfz-Versicherung, 600 € Jahresbeitrag",
+    "en": "Car insurance, €600 annual premium"
+   },
+   "assumption": "600 EUR incl. tax (assumption)",
+   "price_eur": 600.0,
+   "layers": [
+    {
+     "tax": "insurance_tax",
+     "eur": 95.8,
+     "basis": "19 % insurance tax inside the premium; no VAT on insurance"
+    }
+   ],
+   "tax_total_eur": 95.8,
+   "tax_share_of_price": 0.1597
+  },
+  {
+   "id": "flat_purchase_berlin",
+   "label": {
+    "de": "Wohnungskauf in Berlin für 400 000 €",
+    "en": "Buying a flat in Berlin at €400,000"
+   },
+   "assumption": "Berlin's rate is 6 % (Land law; the statute default is 3.5 %) — the Berlin rate is not in the fetched statutes and is marked secondary",
+   "price_eur": 400000.0,
+   "layers": [
+    {
+     "tax": "real_estate_transfer_tax",
+     "eur": 24000.0,
+     "basis": "6 % × 400,000 (Berlin rate, secondary*)",
+     "status": "secondary"
+    }
+   ],
+   "tax_total_eur": 24000.0,
+   "tax_share_of_price": 0.06
+  }
+ ],
+ "notes": [
+  "The tax per unit is exact law; the share of a price depends on the assumed price.",
+  "VAT is levied on the price including excise, so excises are taxed again.",
+  "Where a rate is time-limited (tobacco, natural gas), the validity window is given.",
+  "Berlin's 6 % real-estate transfer rate is Land law not included in the fetched statutes: marked secondary (*)."
+ ]
+}

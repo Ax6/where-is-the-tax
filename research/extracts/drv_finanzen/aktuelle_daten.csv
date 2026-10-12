@@ -1,0 +1,27 @@
+item_de,year,value,unit,page,row_or_table,note
+Einnahmen,2024,396602.0,Mio EUR,1,"Tabelle 'Einnahmen und Ausgaben, allg. RV (ohne KnV), in Mio. Euro'",Ist
+Einnahmen,2025,417250.0,Mio EUR,1,"Tabelle 'Einnahmen und Ausgaben, allg. RV (ohne KnV), in Mio. Euro'","geschätzt (Herbstfinanzschätzung 2025, Fußnote 1)"
+Beiträge,2024,305336.0,Mio EUR,1,"Tabelle 'Einnahmen und Ausgaben, allg. RV (ohne KnV), in Mio. Euro'",Ist
+Beiträge,2025,320985.0,Mio EUR,1,"Tabelle 'Einnahmen und Ausgaben, allg. RV (ohne KnV), in Mio. Euro'","geschätzt (Herbstfinanzschätzung 2025, Fußnote 1)"
+Bundeszuschuss (allgemeiner),2024,56938.0,Mio EUR,1,"Tabelle 'Einnahmen und Ausgaben, allg. RV (ohne KnV), in Mio. Euro'",Ist
+Bundeszuschuss (allgemeiner),2025,61072.0,Mio EUR,1,"Tabelle 'Einnahmen und Ausgaben, allg. RV (ohne KnV), in Mio. Euro'","geschätzt (Herbstfinanzschätzung 2025, Fußnote 1)"
+zusätzliche Bundeszuschüsse,2024,30835.0,Mio EUR,1,"Tabelle 'Einnahmen und Ausgaben, allg. RV (ohne KnV), in Mio. Euro'",Ist
+zusätzliche Bundeszuschüsse,2025,32104.0,Mio EUR,1,"Tabelle 'Einnahmen und Ausgaben, allg. RV (ohne KnV), in Mio. Euro'","geschätzt (Herbstfinanzschätzung 2025, Fußnote 1)"
+Ausgaben,2024,397377.0,Mio EUR,1,"Tabelle 'Einnahmen und Ausgaben, allg. RV (ohne KnV), in Mio. Euro'",Ist
+Ausgaben,2025,421295.0,Mio EUR,1,"Tabelle 'Einnahmen und Ausgaben, allg. RV (ohne KnV), in Mio. Euro'","geschätzt (Herbstfinanzschätzung 2025, Fußnote 1)"
+Rentenausgaben,2024,344351.0,Mio EUR,1,"Tabelle 'Einnahmen und Ausgaben, allg. RV (ohne KnV), in Mio. Euro'",Ist
+Rentenausgaben,2025,363373.0,Mio EUR,1,"Tabelle 'Einnahmen und Ausgaben, allg. RV (ohne KnV), in Mio. Euro'","geschätzt (Herbstfinanzschätzung 2025, Fußnote 1)"
+Beiträge und Zuschüsse zur KVdR,2024,27366.0,Mio EUR,1,"Tabelle 'Einnahmen und Ausgaben, allg. RV (ohne KnV), in Mio. Euro'",Ist
+Beiträge und Zuschüsse zur KVdR,2025,30571.0,Mio EUR,1,"Tabelle 'Einnahmen und Ausgaben, allg. RV (ohne KnV), in Mio. Euro'","geschätzt (Herbstfinanzschätzung 2025, Fußnote 1)"
+Leistungen zur Teilhabe,2024,8005.0,Mio EUR,1,"Tabelle 'Einnahmen und Ausgaben, allg. RV (ohne KnV), in Mio. Euro'",Ist
+Leistungen zur Teilhabe,2025,8571.0,Mio EUR,1,"Tabelle 'Einnahmen und Ausgaben, allg. RV (ohne KnV), in Mio. Euro'","geschätzt (Herbstfinanzschätzung 2025, Fußnote 1)"
+Verwaltungs- und Verfahrenskosten,2024,5204.0,Mio EUR,1,"Tabelle 'Einnahmen und Ausgaben, allg. RV (ohne KnV), in Mio. Euro'",Ist
+Verwaltungs- und Verfahrenskosten,2025,5600.0,Mio EUR,1,"Tabelle 'Einnahmen und Ausgaben, allg. RV (ohne KnV), in Mio. Euro'","geschätzt (Herbstfinanzschätzung 2025, Fußnote 1)"
+Einnahmeüberschuss,2024,-775.0,Mio EUR,1,"Tabelle 'Einnahmen und Ausgaben, allg. RV (ohne KnV), in Mio. Euro'",Ist
+Einnahmeüberschuss,2025,-4045.0,Mio EUR,1,"Tabelle 'Einnahmen und Ausgaben, allg. RV (ohne KnV), in Mio. Euro'","geschätzt (Herbstfinanzschätzung 2025, Fußnote 1)"
+Nachhaltigkeitsrücklage am Jahresende (absolut),2024,44409.0,Mio EUR,1,"Tabelle 'Nachhaltigkeitsrücklage, allg. RV, in Mio. Euro'",Ist
+Nachhaltigkeitsrücklage am Jahresende (absolut),2025,41473.0,Mio EUR,1,"Tabelle 'Nachhaltigkeitsrücklage, allg. RV, in Mio. Euro'","geschätzt (Herbstfinanzschätzung 2025, Fußnote 1)"
+Beitragssatz (allg. RV),2025,18.6,%,2,"Block 'Berechnungswerte, Deutschland', Zeile 'Beitragssatz (allg. RV) 2025'",
+Beitragssatz (allg. RV),2026,18.6,%,2,"Block 'Berechnungswerte, Deutschland', Zeile 'Beitragssatz (allg. RV) 2026'",Fußnote 1: Bekanntmachung der Beitragssätze 2026
+"Beitragsbemessungsgrenze (allg. RV), monatlich",2026,8450.0,EUR,2,"Block 'Berechnungswerte', Zeile 'Beitragsbemessungsgrenze (allg. RV) 2026'",Fußnote 2: SV-Rechengrößenverordnung 2026
+"Beitragsbemessungsgrenze (allg. RV), jährlich",2026,101400.0,EUR,2,"Block 'Berechnungswerte', Zeile 'Beitragsbemessungsgrenze (allg. RV) 2026'",Fußnote 2: SV-Rechengrößenverordnung 2026

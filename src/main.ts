@@ -1,373 +1,433 @@
 import "./styles.css";
 
-import { buildRoutes, defaultRouteId, type Route } from "./routes/data.ts";
-import { equalisationPerResident, getLandFigures, landFigures } from "./routes/equalisation.ts";
-import { BERLIN, GERMANY, getPlace, type Place } from "./routes/places.ts";
-import { getTaxEntry } from "./routes/taxonomy.ts";
-import { renderFiscalGraph } from "./viz/fiscal-graph.ts";
-import { mapAttribution, renderLandMap } from "./viz/land-map.ts";
+import { buildGermany, buildYou, defaultWage, equalisation, GERMANY_CODE, getPlace, payslipYears, purchases, timeSeries, type LayerId } from "./data/model.ts";
+import { eur, t, type Lang } from "./i18n.ts";
+import { drawerContent } from "./ui/drawer-content.ts";
+import { renderLayerChips, renderLegend, renderPage, renderWageTicks, WAGE_MAX, WAGE_MIN, type PageState } from "./ui/page.ts";
+import { renderGermany, renderYou, type DrawerTarget } from "./viz/hero.ts";
+import { renderLandBars, renderLandMap } from "./viz/land-map.ts";
+import { renderReceipts } from "./viz/receipts.ts";
+import { renderGermanyStages, renderYouStages } from "./viz/stages.ts";
+import { renderTimeStrip } from "./viz/timestrip.ts";
 import { hideTooltip } from "./viz/tooltip.ts";
-import { renderEdgeDetail, renderNodeDetail, renderTaxDetail } from "./ui/route-detail.ts";
-import {
-  renderSpendingPanel,
-  type RouteInflow,
-  type SpendingAccount,
-  type SpendingEntry,
-  type SpendingKey,
-} from "./ui/spending.ts";
-import { escapeHtml, renderRouteBrief } from "./ui/static-page.ts";
-import federalSpending from "../data/de/2024/accounts/federal-functions.json" with { type: "json" };
-import berlinSpending from "../data/de/2024/accounts/berlin-functions.json" with { type: "json" };
-import { getLandAccount, getLaenderAggregateAccount, getSocialAccount, socialSystemIds } from "./data/accounts.ts";
 
 document.documentElement.classList.add("enhanced");
 
-const mount = document.querySelector<HTMLElement>("#fiscal-graph-mount");
-const routeTitle = document.querySelector<HTMLElement>("#route-title");
-const routeBrief = document.querySelector<HTMLElement>("#route-brief");
-const boundaryPanel = document.querySelector<HTMLElement>("#boundary-panel");
-const placeNote = document.querySelector<HTMLElement>("#place-note");
-const landSelect = document.querySelector<HTMLSelectElement>("#land-select");
-const landMapMount = document.querySelector<HTMLElement>("#land-map");
-const attributionEl = document.querySelector<HTMLElement>("#map-attribution");
-const legendPlaceName = document.querySelector<HTMLElement>('[data-entity="berlin"] .legend-entity-name');
-const chips = [...document.querySelectorAll<HTMLButtonElement>("[data-route-chip]")];
-const dialog = document.querySelector<HTMLDialogElement>("#detail-dialog");
-const dialogContent = dialog?.querySelector<HTMLElement>("[data-dialog-content]");
+const app = document.querySelector<HTMLElement>("#app")!;
+const germany = buildGermany();
+const lands = equalisation();
+const series = timeSeries();
+const items = purchases();
 
-const placeStats = document.querySelector<HTMLElement>("#place-stats");
-
-let currentPlace: Place = GERMANY;
-let currentRoutes: Route[] = buildRoutes(currentPlace);
-let currentRoute: Route | undefined;
-let lastTrigger: Element | null = null;
-let comparisonKey: SpendingKey | null = null;
-let socialKey: SpendingKey = "pension";
-
-boundaryPanel?.addEventListener("change", (event) => {
-  if (!(event.target instanceof HTMLSelectElement) || !currentRoute) {
-    return;
-  }
-  const compare = event.target.closest<HTMLSelectElement>("[data-spend-compare]");
-  if (compare) {
-    comparisonKey = compare.value as SpendingKey;
-    renderBoundary(currentRoute);
-    return;
-  }
-  const system = event.target.closest<HTMLSelectElement>("[data-spend-system]");
-  if (system) {
-    socialKey = system.value as SpendingKey;
-    renderBoundary(currentRoute);
-  }
-});
-
-if (attributionEl) {
-  attributionEl.textContent = mapAttribution;
+interface State extends PageState {
+  open: string | null;
 }
 
-function findRoute(id: string): Route | undefined {
-  return currentRoutes.find((route) => route.id === id);
-}
+const LAYERS: LayerId[] = ["payday", "shopping", "fuel", "home"];
 
-function openDetail(kind: "node" | "edge", id: string): void {
-  if (!dialog || !dialogContent || !currentRoute) {
-    return;
-  }
-  lastTrigger = document.activeElement;
-  if (kind === "node") {
-    const node = currentRoute.nodes.find((candidate) => candidate.id === id);
-    if (!node) {
-      return;
-    }
-    dialogContent.innerHTML = renderNodeDetail(currentRoute, node);
-  } else {
-    const edge = currentRoute.edges.find((candidate) => candidate.id === id);
-    const from = edge && currentRoute.nodes.find((candidate) => candidate.id === edge.from);
-    const to = edge && currentRoute.nodes.find((candidate) => candidate.id === edge.to);
-    if (!edge || !from || !to) {
-      return;
-    }
-    dialogContent.innerHTML = renderEdgeDetail(currentRoute, edge, from, to);
-  }
-  hideTooltip();
-  dialog.showModal();
-}
-
-for (const taxButton of document.querySelectorAll<HTMLButtonElement>("[data-tax-id]")) {
-  taxButton.addEventListener("click", () => {
-    const taxId = taxButton.dataset.taxId;
-    const found = taxId ? getTaxEntry(taxId) : undefined;
-    if (!found || !dialog || !dialogContent) {
-      return;
-    }
-    lastTrigger = taxButton;
-    const routeTitleText = found.entry.routeId ? findRoute(found.entry.routeId)?.chipTitle : undefined;
-    dialogContent.innerHTML = renderTaxDetail(found.group, found.entry, routeTitleText);
-    dialog.showModal();
-  });
-}
-
-dialog?.addEventListener("close", () => {
-  if (lastTrigger instanceof HTMLElement || lastTrigger instanceof SVGElement) {
-    lastTrigger.focus();
-  }
-  lastTrigger = null;
-});
-
-function renderBoundary(route: Route): void {
-  if (!boundaryPanel) {
-    return;
-  }
-  const routeInflow = (nodeId: string): RouteInflow | undefined => {
-    const sum = route.edges.filter((edge) => edge.to === nodeId).reduce((total, edge) => total + edge.weight, 0);
-    if (sum <= 0) {
-      return undefined;
-    }
-    const eur =
-      route.unit === "million_eur" ? sum * 1e6 : route.routeTotalMeur ? sum * route.routeTotalMeur * 1e6 : undefined;
-    return eur === undefined ? undefined : { eur, routeLabel: route.chipNote };
+function parseHash(): State {
+  const params = new URLSearchParams(window.location.hash.replace(/^#/, ""));
+  const year = Number(params.get("year"));
+  const validYear = payslipYears.includes(year) ? year : 2024;
+  const wage = Number(params.get("wage"));
+  const lang = params.get("lang") === "de" || params.get("lang") === "en" ? (params.get("lang") as Lang) : navigator.language.toLowerCase().startsWith("de") ? "de" : "en";
+  const land = params.get("land")?.toUpperCase() ?? GERMANY_CODE;
+  const layer = params.get("layer") as LayerId | null;
+  return {
+    zoom: params.get("zoom") === "germany" ? "germany" : "you",
+    wage: Number.isFinite(wage) && wage > 0 && wage < 1e7 ? Math.round(wage) : defaultWage(validYear),
+    year: validYear,
+    land: land === GERMANY_CODE || getPlace(land) ? land : GERMANY_CODE,
+    lang,
+    pot: params.get("pot") ?? "pot-fed",
+    unit: params.get("unit") === "day" ? "day" : "bn",
+    layer: layer && LAYERS.includes(layer) ? layer : "all",
+    open: params.get("open"),
   };
-  // Loaded spending accounts. Adding another audited account here also makes
-  // it available to the comparison control below the bars.
-  const entries: SpendingEntry[] = [
-    {
-      key: "berlin",
-      shortName: "Berlin",
-      account: berlinSpending as SpendingAccount,
-      inflow: route.nodes.some((node) => node.id === "berlin_budget") ? routeInflow("berlin_budget") : undefined,
-    },
-    {
-      key: "federation",
-      shortName: "Federal",
-      account: federalSpending as SpendingAccount,
-      inflow: route.nodes.some((node) => node.id === "federal_budget") ? routeInflow("federal_budget") : undefined,
-    },
-  ];
-  if (!currentPlace.national && currentPlace.code !== "BE") {
-    const landAccount = getLandAccount(currentPlace.code, currentPlace.name);
-    if (landAccount) {
-      entries.push({ key: "land", shortName: currentPlace.name, account: landAccount });
-      entries.push({ key: "laender", shortName: "All Länder", account: getLaenderAggregateAccount() });
-    }
-  }
-  let systemPicker = "";
-  if (route.id === "social") {
-    for (const system of socialSystemIds) {
-      const account = getSocialAccount(system.id);
-      if (account) {
-        entries.push({ key: system.id as SpendingKey, shortName: system.name, account });
-      }
-    }
-    systemPicker = `<label class="spend-compare-control spend-system-control"><span>System</span><select data-spend-system aria-label="Choose a social-insurance system">${socialSystemIds
-      .map(
-        (system) =>
-          `<option value="${escapeHtml(system.id)}"${system.id === socialKey ? " selected" : ""}>${escapeHtml(system.name)}</option>`,
-      )
-      .join("")}</select></label>`;
-  }
-
-  // The place selected on the left decides which spending account is shown;
-  // the social route shows its own systems instead of a territorial budget.
-  const defaultKey: SpendingKey | null =
-    route.id === "social"
-      ? socialKey
-      : currentPlace.national
-        ? "federation"
-        : currentPlace.code === "BE"
-          ? "berlin"
-          : entries.some((entry) => entry.key === "land")
-            ? "land"
-            : "federation";
-  const active = entries.find((entry) => entry.key === defaultKey);
-
-  const fallback = `<ul class="boundary-examples" aria-label="What this budget funds as a whole">${route.boundary.examples
-    .map((example) => `<li>${escapeHtml(example)}</li>`)
-    .join("")}</ul>
-    <p class="boundary-footnote">This budget's audited function-level actuals are not loaded yet.</p>`;
-
-  // Comparisons only against same-vintage accounts — never across years.
-  const comparisons = active
-    ? entries.filter(
-        (entry) =>
-          entry.key !== active.key &&
-          entry.account.reference_year === active.account.reference_year &&
-          !socialSystemIds.some((system) => system.id === entry.key) &&
-          (active.key !== "land" || entry.key === "laender"),
-      )
-    : [];
-  const benchmark = comparisons.find((entry) => entry.key === comparisonKey) ?? comparisons[0];
-  comparisonKey = benchmark?.key ?? null;
-  const tail = active
-    ? `${systemPicker}
-       ${renderSpendingPanel(active, benchmark, comparisons)}
-       <p class="boundary-footnote">${escapeHtml(
-         active.account.reference_year === 2021
-           ? "Shown from the 2021 comparable series — the newest function data published for all Länder. Audited 2024 accounts exist for Berlin and the Federation so far."
-           : "More audited accounts load as they are collected and verified.",
-       )}</p>`
-    : fallback;
-  boundaryPanel.innerHTML = `
-    <p class="boundary-axis" aria-hidden="true">Tax joins the budget</p>
-    ${tail}`;
 }
 
-function updatePlaceNote(route: Route): void {
-  if (!placeNote) {
-    return;
+function hashOf(s: State): string {
+  const params = new URLSearchParams({
+    zoom: s.zoom,
+    wage: String(s.wage),
+    land: s.land,
+    year: String(s.year),
+    lang: s.lang,
+    pot: s.pot,
+  });
+  if (s.zoom === "germany") {
+    params.set("unit", s.unit);
   }
-  if (!route.placeAware && currentPlace.code !== BERLIN.code) {
-    placeNote.textContent = currentPlace.national
-      ? "This route uses Berlin as a concrete example; other places follow as the dataset grows."
-      : `This route still shows the Berlin example — ${currentPlace.name} figures follow as the dataset grows. The wage and VAT routes already adjust to ${currentPlace.name}.`;
-    placeNote.hidden = false;
-  } else {
-    placeNote.hidden = true;
+  if (s.layer !== "all") {
+    params.set("layer", s.layer);
   }
+  if (s.open) {
+    params.set("open", s.open);
+  }
+  return `#${params.toString()}`;
 }
 
-function updatePlaceStats(): void {
-  if (!placeStats) {
-    return;
-  }
-  if (currentPlace.national) {
-    const shifted = landFigures
-      .filter((entry) => entry.equalisationMeur > 0)
-      .reduce((sum, entry) => sum + entry.equalisationMeur, 0);
-    placeStats.innerHTML = `<strong>€${(shifted / 1000).toFixed(1)}bn rebalanced</strong><span>2024 · 4 Länder paid in · 12 received</span>`;
-    return;
-  }
-  const figures = getLandFigures(currentPlace.code);
-  if (!figures) {
-    placeStats.replaceChildren();
-    return;
-  }
-  const perResident = Math.round(equalisationPerResident(figures));
-  const direction = figures.equalisationMeur >= 0 ? "received" : "paid in";
-  const grants =
-    figures.supplementaryGrantsMeur > 0
-      ? ` · €${(figures.supplementaryGrantsMeur / 1000).toFixed(2)}bn federal grants`
-      : "";
-  placeStats.innerHTML = `<strong>${escapeHtml(direction)} €${(Math.abs(figures.equalisationMeur) / 1000).toFixed(2)}bn</strong><span>≈€${Math.abs(
-    perResident,
-  ).toLocaleString("en")} / resident · VAT slice €${((figures.vatBaseMeur + figures.equalisationMeur) / 1000).toFixed(2)}bn${escapeHtml(grants)}</span>`;
-}
+let state = parseHash();
+let you = buildYou(state.year, state.wage, state.land);
+let lastTrigger: HTMLElement | null = null;
+
+const isMobile = () => window.matchMedia("(max-width: 760px)").matches;
 
 function syncHash(): void {
-  const hash = `#route/${currentRoute?.id ?? defaultRouteId}/${currentPlace.code}`;
+  const hash = hashOf(state);
   if (window.location.hash !== hash) {
     history.replaceState(null, "", hash);
   }
 }
 
-function renderCurrentRoute(routeId: string): void {
-  const route = findRoute(routeId) ?? findRoute(defaultRouteId);
-  if (!route || !mount) {
+function update(next: Partial<State>, options: { animate?: boolean; full?: boolean } = {}): void {
+  const before = state;
+  state = { ...state, ...next };
+  if (state.year !== before.year || state.wage !== before.wage || state.land !== before.land) {
+    you = buildYou(state.year, state.wage, state.land);
+    if (!you.pots.some((pot) => pot.id === state.pot)) {
+      state.pot = "pot-fed";
+    }
+  }
+  syncHash();
+  if (options.full || state.lang !== before.lang) {
+    mountAll();
     return;
   }
-  if (dialog?.open) {
-    dialog.close();
+  if (state.zoom !== before.zoom) {
+    refreshChrome();
   }
-  currentRoute = route;
-
-  for (const chip of chips) {
-    chip.setAttribute("aria-pressed", String(chip.dataset.routeId === route.id));
+  if (state.year !== before.year) {
+    refreshControls();
   }
-  if (routeTitle) {
-    routeTitle.textContent = route.chipTitle;
+  renderHero(options.animate ?? false);
+  if (state.land !== before.land) {
+    renderMap();
   }
-  if (routeBrief) {
-    routeBrief.innerHTML = renderRouteBrief(route);
-  }
-  renderBoundary(route);
-  updatePlaceNote(route);
-
-  mount.classList.add("is-switching");
-  const draw = () => {
-    renderFiscalGraph(mount, route, { onSelect: openDetail });
-    mount.classList.remove("is-switching");
-  };
-  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-    draw();
-  } else {
-    window.setTimeout(draw, 120);
-  }
+  syncControls();
 }
 
-function selectPlace(place: Place, options: { updateHash: boolean }): void {
-  currentPlace = place;
-  currentRoutes = buildRoutes(place);
-  if (landSelect && landSelect.value !== place.code) {
-    landSelect.value = place.code;
-  }
-  if (legendPlaceName) {
-    legendPlaceName.textContent = place.national ? "Selected Land" : place.name;
-  }
-  if (landMapMount) {
-    renderLandMap(landMapMount, place, (next) => selectPlace(next, { updateHash: true }));
-  }
-  updatePlaceStats();
-  renderCurrentRoute(currentRoute?.id ?? defaultRouteId);
-  if (options.updateHash) {
-    syncHash();
-  }
-}
+// ---------------------------------------------------------------------------------------------
+// Rendering
+// ---------------------------------------------------------------------------------------------
 
-function selectRoute(routeId: string, options: { updateHash: boolean }): void {
-  renderCurrentRoute(routeId);
-  if (options.updateHash) {
-    syncHash();
-  }
-}
-
-function parseHash(): { routeId: string; place: Place } {
-  const match = /^#route\/([\w-]+)(?:\/([A-Za-z]{2}))?$/.exec(window.location.hash);
-  const routeId = match?.[1] ?? defaultRouteId;
-  const place = (match?.[2] && getPlace(match[2])) || GERMANY;
-  return { routeId, place };
-}
-
-for (const chip of chips) {
-  chip.addEventListener("click", () => {
-    const routeId = chip.dataset.routeId;
-    if (routeId) {
-      selectRoute(routeId, { updateHash: true });
+function mountAll(): void {
+  document.documentElement.lang = state.lang;
+  document.title = t("docTitle", state.lang);
+  document.querySelector('meta[name="description"]')?.setAttribute("content", t("description", state.lang));
+  app.innerHTML = renderPage(state, you, germany);
+  wireControls();
+  wireDrawer();
+  renderHero(false);
+  renderMap();
+  renderTimeStrip(document.querySelector<HTMLElement>("#time-strip")!, series, state.lang);
+  syncControls();
+  if (state.open) {
+    const target = decodeTarget(state.open);
+    if (target) {
+      openDrawer(target, null);
     }
+  }
+}
+
+function refreshChrome(): void {
+  const chips = document.querySelector(".layers");
+  if (chips) {
+    chips.outerHTML = renderLayerChips(state);
+    wireChips();
+  }
+  const legend = document.querySelector(".legend");
+  if (legend) {
+    legend.outerHTML = renderLegend(state);
+  }
+  const line = document.querySelector<HTMLElement>("#hero-line");
+  if (line) {
+    line.textContent = state.zoom === "you" ? t("assumptions", state.lang) : t("switchGermany", state.lang);
+  }
+  document.querySelector<HTMLElement>(".ctl-unit")?.toggleAttribute("hidden", state.zoom !== "germany");
+}
+
+function refreshControls(): void {
+  // tick positions depend on the year (average earnings, ceilings)
+  const ticks = document.querySelector("#wage-ticks");
+  if (ticks) {
+    ticks.outerHTML = renderWageTicks(state);
+    wireTicks();
+  }
+}
+
+function renderHero(animate: boolean): void {
+  const flow = document.querySelector<HTMLElement>("#flow")!;
+  const receipts = document.querySelector<HTMLElement>("#receipts")!;
+  hideTooltip();
+  const isolated = state.layer === "all" ? null : state.layer;
+  const dimmed = state.zoom === "you" && isolated !== null && isolated !== "payday";
+  flow.classList.toggle("is-mobile", isMobile());
+  flow.classList.toggle("is-collapsed", dimmed);
+  if (isMobile()) {
+    if (state.zoom === "you") {
+      renderYouStages(flow, you, { lang: state.lang, selectedPot: state.pot, onOpen: (target) => openDrawer(target, null), onSelectPot: (id) => update({ pot: id }) });
+    } else {
+      renderGermanyStages(flow, germany, { lang: state.lang, unit: state.unit, onOpen: (target) => openDrawer(target, null) });
+    }
+  } else {
+    const options = {
+      lang: state.lang,
+      selectedPot: state.pot,
+      dimmed,
+      unit: state.unit,
+      animate,
+      onSelectPot: (id: string) => update({ pot: id }),
+      onOpen: (target: DrawerTarget) => openDrawer(target, document.activeElement as HTMLElement),
+    };
+    if (state.zoom === "you") {
+      renderYou(flow, you, options);
+    } else {
+      renderGermany(flow, germany, options);
+    }
+  }
+  const layers = new Set<LayerId>(state.layer === "all" ? LAYERS : [state.layer]);
+  if (state.zoom === "you" && !(isolated === "payday")) {
+    receipts.hidden = false;
+    renderReceipts(receipts, items, { lang: state.lang, layers, isolated, onOpen: (id) => openDrawer({ kind: "purchase", id }, document.activeElement as HTMLElement) });
+  } else {
+    receipts.hidden = true;
+    receipts.replaceChildren();
+  }
+}
+
+function renderMap(): void {
+  const map = document.querySelector<HTMLElement>("#map");
+  const bars = document.querySelector<HTMLElement>("#land-bars");
+  const key = document.querySelector<HTMLElement>("#map-key");
+  if (!map || !bars || !key) {
+    return;
+  }
+  const onSelect = (code: string) => update({ land: code });
+  renderLandMap(map, lands, { lang: state.lang, selected: state.land, onSelect });
+  renderLandBars(bars, lands, { lang: state.lang, selected: state.land, onSelect });
+  const max = Math.max(...lands.map((land) => Math.abs(land.perResident)));
+  const money = (v: number) => (state.lang === "de" ? `${Math.round(v).toLocaleString("de-DE")} €` : `€${Math.round(v).toLocaleString("en-GB")}`);
+  key.innerHTML = `<span class="key-ramp" aria-hidden="true"></span><span class="key-labels"><span>${t("mapPays", state.lang)} −${money(max)}</span><span>0</span><span>${t("mapReceives", state.lang)} +${money(max)}</span></span>`;
+}
+
+// ---------------------------------------------------------------------------------------------
+// Controls
+// ---------------------------------------------------------------------------------------------
+
+function syncControls(): void {
+  const range = document.querySelector<HTMLInputElement>("#wage-range");
+  const number = document.querySelector<HTMLInputElement>("#wage-number");
+  if (range && document.activeElement !== range) {
+    range.value = String(Math.min(WAGE_MAX, Math.max(WAGE_MIN, state.wage)));
+  }
+  if (number && document.activeElement !== number) {
+    number.value = String(state.wage);
+  }
+  const land = document.querySelector<HTMLSelectElement>("#land-select");
+  if (land) {
+    land.value = state.land;
+  }
+  for (const fieldset of document.querySelectorAll<HTMLElement>("fieldset.seg")) {
+    const name = fieldset.dataset.control as keyof State;
+    for (const button of fieldset.querySelectorAll<HTMLButtonElement>("button")) {
+      button.setAttribute("aria-pressed", String(String(state[name]) === button.dataset.value));
+    }
+  }
+  for (const control of document.querySelectorAll<HTMLElement>(".ctl-wage, [data-control='year'], #land-select")) {
+    control.closest(".ctl")?.classList.toggle("is-inactive", state.zoom === "germany");
+  }
+  const toggle = document.querySelector<HTMLButtonElement>("#controls-toggle");
+  if (toggle) {
+    const place = state.land === GERMANY_CODE ? t("allLaender", state.lang) : (getPlace(state.land)?.name[state.lang] ?? state.land);
+    toggle.textContent = `${t("settings", state.lang)} · ${state.zoom === "you" ? `${eur(state.wage, state.lang)} · ${place} · ${state.year}` : t("zoomGermany", state.lang)}`;
+  }
+}
+
+let rangeFrame = 0;
+function wireTicks(): void {
+  for (const tick of document.querySelectorAll<HTMLButtonElement>(".tick-mark")) {
+    tick.addEventListener("click", () => update({ wage: Number(tick.dataset.wage) }, { animate: true }));
+  }
+}
+
+function wireChips(): void {
+  for (const chip of document.querySelectorAll<HTMLButtonElement>(".chip")) {
+    chip.addEventListener("click", () => {
+      const layer = chip.dataset.layer as LayerId;
+      const next = state.layer === layer ? "all" : layer;
+      update({ layer: next });
+      for (const other of document.querySelectorAll<HTMLButtonElement>(".chip")) {
+        other.setAttribute("aria-pressed", String(next === "all" || next === other.dataset.layer));
+      }
+    });
+  }
+}
+
+function wireControls(): void {
+  const range = document.querySelector<HTMLInputElement>("#wage-range")!;
+  const number = document.querySelector<HTMLInputElement>("#wage-number")!;
+  range.addEventListener("input", () => {
+    cancelAnimationFrame(rangeFrame);
+    rangeFrame = requestAnimationFrame(() => {
+      number.value = range.value;
+      update({ wage: Number(range.value) });
+    });
+  });
+  number.addEventListener("change", () => {
+    const value = Math.round(Number(number.value));
+    if (Number.isFinite(value) && value >= 0 && value < 1e7) {
+      update({ wage: value }, { animate: true });
+    }
+  });
+  document.querySelector<HTMLSelectElement>("#land-select")!.addEventListener("change", (event) => {
+    update({ land: (event.target as HTMLSelectElement).value }, { animate: true });
+  });
+  for (const fieldset of document.querySelectorAll<HTMLElement>("fieldset.seg")) {
+    const name = fieldset.dataset.control!;
+    for (const button of fieldset.querySelectorAll<HTMLButtonElement>("button")) {
+      button.addEventListener("click", () => {
+        const value = button.dataset.value!;
+        if (name === "year") {
+          update({ year: Number(value) }, { animate: true });
+        } else if (name === "zoom") {
+          update({ zoom: value as State["zoom"] });
+        } else if (name === "unit") {
+          update({ unit: value as State["unit"] });
+        } else if (name === "lang") {
+          update({ lang: value as Lang });
+        }
+      });
+    }
+  }
+  wireTicks();
+  wireChips();
+  const toggle = document.querySelector<HTMLButtonElement>("#controls-toggle")!;
+  toggle.addEventListener("click", () => {
+    const open = !document.body.classList.contains("controls-open");
+    document.body.classList.toggle("controls-open", open);
+    toggle.setAttribute("aria-expanded", String(open));
   });
 }
 
-landSelect?.addEventListener("change", () => {
-  const place = getPlace(landSelect.value);
-  if (place) {
-    selectPlace(place, { updateHash: true });
+// ---------------------------------------------------------------------------------------------
+// Drawer
+// ---------------------------------------------------------------------------------------------
+
+const encodeTarget = (target: DrawerTarget): string =>
+  target.kind === "cofog" ? `cofog:${target.code}` : `${target.kind}:${"id" in target ? target.id : ""}`;
+
+function decodeTarget(value: string): DrawerTarget | null {
+  const [kind, id] = value.split(":") as [string, string | undefined];
+  if (!id) {
+    return null;
+  }
+  if (kind === "cofog") {
+    return { kind, code: id };
+  }
+  if (kind === "node" || kind === "pot" || kind === "bridge" || kind === "purchase") {
+    return { kind, id };
+  }
+  return null;
+}
+
+function openDrawer(target: DrawerTarget, trigger: HTMLElement | null): void {
+  const drawer = document.querySelector<HTMLElement>("#drawer")!;
+  const backdrop = document.querySelector<HTMLElement>("#drawer-backdrop")!;
+  let content;
+  try {
+    content = drawerContent(target, { lang: state.lang, zoom: state.zoom, you, germany, unit: state.unit });
+  } catch (error) {
+    console.error(error);
+    return;
+  }
+  if (!content.html) {
+    return;
+  }
+  hideTooltip();
+  lastTrigger = trigger ?? lastTrigger;
+  document.querySelector("#drawer-title")!.textContent = content.title;
+  document.querySelector("#drawer-body")!.innerHTML = content.html;
+  drawer.hidden = false;
+  backdrop.hidden = false;
+  requestAnimationFrame(() => drawer.classList.add("is-open"));
+  document.querySelector<HTMLButtonElement>("#drawer-close")?.focus({ preventScroll: true });
+  if (state.open !== encodeTarget(target)) {
+    state = { ...state, open: encodeTarget(target) };
+    syncHash();
+  }
+}
+
+function closeDrawer(): void {
+  const drawer = document.querySelector<HTMLElement>("#drawer");
+  if (!drawer || drawer.hidden) {
+    return;
+  }
+  drawer.classList.remove("is-open");
+  drawer.hidden = true;
+  document.querySelector<HTMLElement>("#drawer-backdrop")!.hidden = true;
+  state = { ...state, open: null };
+  syncHash();
+  lastTrigger?.focus?.({ preventScroll: true });
+  lastTrigger = null;
+}
+
+function wireDrawer(): void {
+  document.querySelector("#drawer-close")!.addEventListener("click", closeDrawer);
+  document.querySelector("#drawer-backdrop")!.addEventListener("click", closeDrawer);
+}
+
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape") {
+    closeDrawer();
+    document.body.classList.remove("controls-open");
+  }
+  // keep focus inside the open drawer
+  const drawer = document.querySelector<HTMLElement>("#drawer");
+  if (event.key === "Tab" && drawer && !drawer.hidden) {
+    const focusable = [...drawer.querySelectorAll<HTMLElement>("a, button, summary, [tabindex='0']")].filter((el) => el.offsetParent !== null);
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    if (!first || !last) {
+      return;
+    }
+    if (event.shiftKey && document.activeElement === first) {
+      event.preventDefault();
+      last.focus();
+    } else if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault();
+      first.focus();
+    }
   }
 });
 
 window.addEventListener("hashchange", () => {
-  const { routeId, place } = parseHash();
-  if (place.code !== currentPlace.code) {
-    currentPlace = place;
-    currentRoutes = buildRoutes(place);
-    selectPlace(place, { updateHash: false });
-  }
-  if (routeId !== currentRoute?.id) {
-    selectRoute(routeId, { updateHash: false });
+  const next = parseHash();
+  const changed = (Object.keys(next) as (keyof State)[]).some((key) => next[key] !== state[key]);
+  if (changed) {
+    const open = next.open;
+    update({ ...next, open: null }, { full: next.lang !== state.lang });
+    if (open) {
+      const target = decodeTarget(open);
+      if (target) {
+        openDrawer(target, null);
+      }
+    } else {
+      closeDrawer();
+    }
   }
 });
 
-if (mount) {
-  const { routeId, place } = parseHash();
-  currentRoute = undefined;
-  currentPlace = place;
-  currentRoutes = buildRoutes(place);
-  if (landMapMount) {
-    renderLandMap(landMapMount, place, (next) => selectPlace(next, { updateHash: true }));
-  }
-  if (landSelect) {
-    landSelect.value = place.code;
-  }
-  if (legendPlaceName) {
-    legendPlaceName.textContent = place.national ? "Selected Land" : place.name;
-  }
-  updatePlaceStats();
-  selectRoute(routeId, { updateHash: false });
-}
+let resizeTimer = 0;
+let lastWidth = window.innerWidth;
+window.addEventListener("resize", () => {
+  window.clearTimeout(resizeTimer);
+  resizeTimer = window.setTimeout(() => {
+    if (window.innerWidth !== lastWidth) {
+      lastWidth = window.innerWidth;
+      renderHero(false);
+    }
+  }, 120);
+});
+
+mountAll();

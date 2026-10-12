@@ -1,0 +1,353 @@
+{
+ "schema_version": 2,
+ "id": "de.municipal.functions_2024",
+ "title": {
+  "de": "Bereinigte Ausgaben der Gemeinden und Gemeindeverbände nach Produktbereichen",
+  "en": "Adjusted expenditure of municipalities by product area"
+ },
+ "unit": "MEUR",
+ "basis": "Jahresrechnungsstatistik der kommunalen Kernhaushalte (core budgets only, no Extrahaushalte); Flächenländer only (Berlin, Hamburg, Bremen municipal tasks are inside the Land budgets)",
+ "generated": "2026-10-09",
+ "generated_by": "scripts/research/build_municipal.py",
+ "areas": {
+  "total": {
+   "de": "Insgesamt",
+   "en": "Total"
+  },
+  "central_admin": {
+   "de": "Zentrale Verwaltung",
+   "en": "Central administration"
+  },
+  "school_culture": {
+   "de": "Schule und Kultur",
+   "en": "Schools and culture"
+  },
+  "social_youth": {
+   "de": "Soziales und Jugend",
+   "en": "Social affairs and youth"
+  },
+  "health_sport": {
+   "de": "Gesundheit und Sport",
+   "en": "Health and sport"
+  },
+  "environment": {
+   "de": "Gestaltung der Umwelt (Bauen, Verkehr, Ver- und Entsorgung)",
+   "en": "Shaping the environment (building, transport, utilities)"
+  },
+  "central_finance": {
+   "de": "Zentrale Finanzleistungen",
+   "en": "Central financial services (interest, levies)"
+  }
+ },
+ "source": {
+  "source_id": "destatis_rechnungsergebnisse_gemeinden_2024",
+  "file": "rechnungsergebnisse-gemeinden-2024.xlsx",
+  "path": "research/cache/destatis_rechnungsergebnisse_gemeinden_2024/rechnungsergebnisse-gemeinden-2024.xlsx",
+  "url": "https://www.destatis.de/DE/Themen/Staat/Oeffentliche-Finanzen/Ausgaben-Einnahmen/Publikationen/Downloads-Ausgaben-und-Einnahmen/statistischer-bericht-rechnungsergebnis-kernhaushalt-gemeinden-2140331247005.xlsx?__blob=publicationFile",
+  "retrieved": "2026-10-09T12:45:26Z",
+  "sha256": "22eea367c56d18de93a04bda77b1f7b6de939c3a80daf06cfd64021938dbfdd8",
+  "licence": "DL-DE-BY-2.0 (workbook Impressum sheet); attribution: Statistisches Bundesamt (Destatis)",
+  "coordinates": "sheets csv-71717-b01 (Germany 2011-2024) and csv-71717-20 (by Land 2024); rows in research/extracts/destatis_rechnungsergebnisse_gemeinden_2024/produktoberbereiche-2011-2024.csv"
+ },
+ "germany_series": {
+  "2011": {
+   "total": 184878.0,
+   "central_admin": 34618.0,
+   "school_culture": 23614.0,
+   "social_youth": 69378.0,
+   "health_sport": 6308.0,
+   "environment": 42648.0,
+   "central_finance": 8313.0
+  },
+  "2012": {
+   "total": 187455.0,
+   "central_admin": 35134.0,
+   "school_culture": 22533.0,
+   "social_youth": 72819.0,
+   "health_sport": 6200.0,
+   "environment": 42322.0,
+   "central_finance": 8448.0
+  },
+  "2013": {
+   "total": 197537.0,
+   "central_admin": 37959.0,
+   "school_culture": 22922.0,
+   "social_youth": 78372.0,
+   "health_sport": 6765.0,
+   "environment": 42985.0,
+   "central_finance": 8535.0
+  },
+  "2014": {
+   "total": 205262.0,
+   "central_admin": 39956.0,
+   "school_culture": 23617.0,
+   "social_youth": 82322.0,
+   "health_sport": 6908.0,
+   "environment": 43487.0,
+   "central_finance": 8972.0
+  },
+  "2015": {
+   "total": 215596.0,
+   "central_admin": 41507.0,
+   "school_culture": 23876.0,
+   "social_youth": 89701.0,
+   "health_sport": 7040.0,
+   "environment": 43886.0,
+   "central_finance": 9586.0
+  },
+  "2016": {
+   "total": 229511.0,
+   "central_admin": 44418.0,
+   "school_culture": 24750.0,
+   "social_youth": 99959.0,
+   "health_sport": 7089.0,
+   "environment": 43934.0,
+   "central_finance": 9361.0
+  },
+  "2017": {
+   "total": 235730.0,
+   "central_admin": 45723.0,
+   "school_culture": 25691.0,
+   "social_youth": 101880.0,
+   "health_sport": 7366.0,
+   "environment": 45901.0,
+   "central_finance": 9168.0
+  },
+  "2018": {
+   "total": 246205.0,
+   "central_admin": 48345.0,
+   "school_culture": 27305.0,
+   "social_youth": 104239.0,
+   "health_sport": 8054.0,
+   "environment": 48608.0,
+   "central_finance": 9654.0
+  },
+  "2019": {
+   "total": 260745.0,
+   "central_admin": 52788.0,
+   "school_culture": 29500.0,
+   "social_youth": 108613.0,
+   "health_sport": 8521.0,
+   "environment": 51595.0,
+   "central_finance": 9729.0
+  },
+  "2020": {
+   "total": 275674.0,
+   "central_admin": 57262.0,
+   "school_culture": 31140.0,
+   "social_youth": 113552.0,
+   "health_sport": 9661.0,
+   "environment": 53682.0,
+   "central_finance": 10377.0
+  },
+  "2021": {
+   "total": 286710.0,
+   "central_admin": 59729.0,
+   "school_culture": 32714.0,
+   "social_youth": 118244.0,
+   "health_sport": 10539.0,
+   "environment": 54867.0,
+   "central_finance": 10616.0
+  },
+  "2022": {
+   "total": 304303.0,
+   "central_admin": 63331.0,
+   "school_culture": 35150.0,
+   "social_youth": 125753.0,
+   "health_sport": 10675.0,
+   "environment": 58459.0,
+   "central_finance": 10935.0
+  },
+  "2023": {
+   "total": 335268.0,
+   "central_admin": 69247.0,
+   "school_culture": 38053.0,
+   "social_youth": 141110.0,
+   "health_sport": 11259.0,
+   "environment": 63316.0,
+   "central_finance": 12283.0
+  },
+  "2024": {
+   "total": 365315.0,
+   "central_admin": 76399.0,
+   "school_culture": 40294.0,
+   "social_youth": 154718.0,
+   "health_sport": 12616.0,
+   "environment": 67678.0,
+   "central_finance": 13668.0
+  }
+ },
+ "germany_series_residual_meur": {
+  "2024": 58.0
+ },
+ "laender_2024": {
+  "BW": {
+   "name": "Baden-Württemberg",
+   "areas_meur": {
+    "total": 56505.2,
+    "central_admin": 11720.4,
+    "school_culture": 5442.9,
+    "social_youth": 20657.3,
+    "health_sport": 2206.8,
+    "environment": 9984.9,
+    "central_finance": 6493.0
+   }
+  },
+  "BY": {
+   "name": "Bayern",
+   "areas_meur": {
+    "total": 60838.1,
+    "central_admin": 9687.5,
+    "school_culture": 8621.4,
+    "social_youth": 22237.2,
+    "health_sport": 2922.9,
+    "environment": 16538.7,
+    "central_finance": 830.4
+   }
+  },
+  "BB": {
+   "name": "Brandenburg",
+   "areas_meur": {
+    "total": 12110.6,
+    "central_admin": 2378.7,
+    "school_culture": 1348.0,
+    "social_youth": 5559.5,
+    "health_sport": 300.8,
+    "environment": 2358.2,
+    "central_finance": 165.3
+   }
+  },
+  "HE": {
+   "name": "Hessen",
+   "areas_meur": {
+    "total": 31588.4,
+    "central_admin": 5484.4,
+    "school_culture": 3636.2,
+    "social_youth": 14622.6,
+    "health_sport": 1196.8,
+    "environment": 5473.5,
+    "central_finance": 1174.9
+   }
+  },
+  "MV": {
+   "name": "Mecklenburg-Vorpommern",
+   "areas_meur": {
+    "total": 7317.2,
+    "central_admin": 1439.4,
+    "school_culture": 869.7,
+    "social_youth": 3207.6,
+    "health_sport": 175.5,
+    "environment": 1579.7,
+    "central_finance": 45.2
+   }
+  },
+  "NI": {
+   "name": "Niedersachsen",
+   "areas_meur": {
+    "total": 36468.1,
+    "central_admin": 7078.8,
+    "school_culture": 4093.5,
+    "social_youth": 16841.0,
+    "health_sport": 1406.3,
+    "environment": 6605.8,
+    "central_finance": 442.6
+   }
+  },
+  "NW": {
+   "name": "Nordrhein-Westfalen",
+   "areas_meur": {
+    "total": 92954.3,
+    "central_admin": 24555.9,
+    "school_culture": 8959.8,
+    "social_youth": 40958.1,
+    "health_sport": 2498.0,
+    "environment": 12697.6,
+    "central_finance": 3284.9
+   }
+  },
+  "RP": {
+   "name": "Rheinland-Pfalz",
+   "areas_meur": {
+    "total": 16897.6,
+    "central_admin": 3684.4,
+    "school_culture": 1776.4,
+    "social_youth": 7956.0,
+    "health_sport": 351.4,
+    "environment": 2710.8,
+    "central_finance": 418.5
+   }
+  },
+  "SL": {
+   "name": "Saarland",
+   "areas_meur": {
+    "total": 3438.3,
+    "central_admin": 734.2,
+    "school_culture": 379.2,
+    "social_youth": 1503.7,
+    "health_sport": 107.7,
+    "environment": 643.5,
+    "central_finance": 70.0
+   }
+  },
+  "SN": {
+   "name": "Sachsen",
+   "areas_meur": {
+    "total": 16663.0,
+    "central_admin": 3517.3,
+    "school_culture": 1912.3,
+    "social_youth": 7318.2,
+    "health_sport": 505.6,
+    "environment": 3137.6,
+    "central_finance": 272.0
+   }
+  },
+  "ST": {
+   "name": "Sachsen-Anhalt",
+   "areas_meur": {
+    "total": 8170.4,
+    "central_admin": 1806.4,
+    "school_culture": 917.3,
+    "social_youth": 3469.2,
+    "health_sport": 222.6,
+    "environment": 1616.4,
+    "central_finance": 138.6
+   }
+  },
+  "SH": {
+   "name": "Schleswig-Holstein",
+   "areas_meur": {
+    "total": 14469.1,
+    "central_admin": 2888.8,
+    "school_culture": 1435.4,
+    "social_youth": 6866.9,
+    "health_sport": 431.9,
+    "environment": 2555.8,
+    "central_finance": 290.3
+   }
+  },
+  "TH": {
+   "name": "Thüringen",
+   "areas_meur": {
+    "total": 7894.6,
+    "central_admin": 1363.2,
+    "school_culture": 902.5,
+    "social_youth": 3520.7,
+    "health_sport": 289.8,
+    "environment": 1775.7,
+    "central_finance": 42.8
+   }
+  },
+  "FLAECHENLAENDER": {
+   "name": "Flächenländer zusammen",
+   "areas_meur": {
+    "total": 365314.9,
+    "central_admin": 76339.3,
+    "school_culture": 40294.6,
+    "social_youth": 154718.2,
+    "health_sport": 12616.0,
+    "environment": 67678.2,
+    "central_finance": 13668.5
+   }
+  }
+ }
+}

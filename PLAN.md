@@ -66,7 +66,7 @@ boundary* and must look different. This transition is the product's centre of gr
 
 - A personal tax-return questionnaire (event presets, not salary inputs).
 - Cross-country content or comparison.
-- German-language UI or i18n infrastructure.
+- ~~German-language UI or i18n infrastructure.~~ Superseded 2026-10-09: `CLAUDE.md` requires German and English; every data label now carries `de` and `en`.
 - Year-over-year comparison before two reconciled years exist.
 - Claiming individual-level allocation where only aggregate official data exists (e.g. one
   person's municipal income-tax split).

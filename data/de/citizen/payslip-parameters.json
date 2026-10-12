@@ -1,0 +1,1840 @@
+{
+ "schema_version": 2,
+ "id": "de.citizen.payslip_parameters",
+ "title": {
+  "de": "Gesetzliche Parameter der Lohnabrechnung 2024-2026",
+  "en": "Statutory payslip parameters 2024-2026"
+ },
+ "unit": "EUR / %",
+ "basis": "Statutory values for the annual wage-tax withholding (Steuerklasse I/IV, no children, no church tax) and the statutory social contributions of an employee insured in all branches. Values are the law of the year; 2024 tariff = after the retroactive Grundfreibetrag increase.",
+ "generated": "2026-10-09",
+ "generated_by": "scripts/research/build_payslip.py",
+ "years_covered": [
+  2024,
+  2025,
+  2026
+ ],
+ "years": {
+  "2024": {
+   "tariff": {
+    "grundfreibetrag": {
+     "value": 11784,
+     "unit": "EUR",
+     "label": {
+      "de": "Grundfreibetrag",
+      "en": "Basic allowance"
+     },
+     "legal_basis": "§ 32a Abs. 1 S. 2 Nr. 1 EStG",
+     "source_ref": {
+      "source_id": "bmf_steuerrechner",
+      "file": "tarifhistorie.pdf",
+      "path": "research/cache/bmf_steuerrechner/tarifhistorie.pdf",
+      "url": "https://www.bmf-steuerrechner.de/javax.faces.resource/2025_10_14_Tarifhistorie_Steuerrechner.pdf.xhtml",
+      "retrieved": "2026-10-09T12:56:43Z",
+      "sha256": "ac1f0fe259559233057e8d5a2eac2259d9af877522964c9583792e52cd85a8ad",
+      "licence": "Published by the BMF for software development; site is © Bundesministerium der Finanzen. Cached, cited by element/page, not redistributed. The external programming interface is for program tests only; not used for bulk calculation.",
+      "coordinates": "page 32, 'Einkommensteuertarif 2024'; corroborated by PAP Dez-2024 page 43 (UPTAB24N)"
+     },
+     "status": "statute"
+    },
+    "zones": [
+     {
+      "zone": 1,
+      "from": 0,
+      "to": 11784,
+      "formula": "0",
+      "label": {
+       "de": "Nullzone",
+       "en": "Zero zone"
+      }
+     },
+     {
+      "zone": 2,
+      "from": 11785,
+      "to": 17005,
+      "formula": "(954.80 * y + 1400) * y",
+      "y": "(x - 11784) / 10000",
+      "label": {
+       "de": "Erste Progressionszone (14 % → ~24 %)",
+       "en": "First progressive zone (14 % → ~24 %)"
+      }
+     },
+     {
+      "zone": 3,
+      "from": 17006,
+      "to": 66760,
+      "formula": "(181.19 * z + 2397) * z + 991.21",
+      "z": "(x - 17005) / 10000",
+      "label": {
+       "de": "Zweite Progressionszone (~24 % → 42 %)",
+       "en": "Second progressive zone (~24 % → 42 %)"
+      }
+     },
+     {
+      "zone": 4,
+      "from": 66761,
+      "to": 277825,
+      "formula": "0.42 * x - 10636.31",
+      "label": {
+       "de": "Proportionalzone 42 %",
+       "en": "Proportional zone 42 %"
+      }
+     },
+     {
+      "zone": 5,
+      "from": 277826,
+      "to": null,
+      "formula": "0.45 * x - 18971.06",
+      "label": {
+       "de": "Proportionalzone 45 % („Reichensteuer“)",
+       "en": "Proportional zone 45 %"
+      }
+     }
+    ],
+    "rounding": "x = taxable income floored to full euros; y, z = ten-thousandths of the part above the zone's lower bound; result floored to full euros (§ 32a Abs. 1 S. 1, 3-6 EStG)",
+    "legal_basis": "§ 32a Abs. 1 EStG i.d.F. des Gesetzes zur steuerlichen Freistellung des Existenzminimums 2024 (BGBl. 2024 I Nr. 386; applies to the whole year 2024, in payroll from December 2024)",
+    "source_ref": {
+     "source_id": "bmf_steuerrechner",
+     "file": "tarifhistorie.pdf",
+     "path": "research/cache/bmf_steuerrechner/tarifhistorie.pdf",
+     "url": "https://www.bmf-steuerrechner.de/javax.faces.resource/2025_10_14_Tarifhistorie_Steuerrechner.pdf.xhtml",
+     "retrieved": "2026-10-09T12:56:43Z",
+     "sha256": "ac1f0fe259559233057e8d5a2eac2259d9af877522964c9583792e52cd85a8ad",
+     "licence": "Published by the BMF for software development; site is © Bundesministerium der Finanzen. Cached, cited by element/page, not redistributed. The external programming interface is for program tests only; not used for bulk calculation.",
+     "coordinates": "page 32, 'Einkommensteuertarif 2024'; corroborated by PAP Dez-2024 page 43 (UPTAB24N)"
+    },
+    "status": "statute",
+    "note": "January-November 2024 payroll used the earlier 2024 tariff (Grundfreibetrag 11604, zone 2 coefficient 922.98, zone 3 constant 1025.38, zone 4 constant 10602.13, zone 5 constant 18936.88; PAP 2024 of 03.11.2023, page 39); the December 2024 PAP recomputes the year with the new tariff, which is what the assessment for 2024 applies."
+   },
+   "soli": {
+    "rate": {
+     "value": 5.5,
+     "unit": "% of wage tax",
+     "label": {
+      "de": "Solidaritätszuschlag",
+      "en": "Solidarity surcharge rate"
+     },
+     "legal_basis": "§ 4 S. 1 SolzG 1995",
+     "source_ref": {
+      "source_id": "gesetze_im_internet",
+      "file": "solzg_4.html",
+      "path": "research/raw/gesetze_im_internet/solzg_4.html",
+      "url": "https://www.gesetze-im-internet.de/solzg_1995/__4.html",
+      "retrieved": "2026-10-09T12:45:40Z",
+      "sha256": "dd28933ed36da19cae72de5a054f9edbea5c5919cb2aeac6efc257afe9fab058",
+      "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+      "coordinates": "S. 1: 5,5 Prozent"
+     },
+     "status": "statute"
+    },
+    "freigrenze": {
+     "value": 18130,
+     "unit": "EUR of annual wage tax",
+     "label": {
+      "de": "Freigrenze (Steuerklassen I, II, IV-VI)",
+      "en": "Exemption threshold (classes I, II, IV-VI)"
+     },
+     "legal_basis": "§ 3 Abs. 3 S. 1 Nr. 2, Abs. 5 SolzG 1995",
+     "source_ref": {
+      "source_id": "bmf_programmablaufplan",
+      "file": "2024-10-18-PAP-Dez-2024-anl-1.pdf",
+      "path": "research/cache/bmf_programmablaufplan/2024-10-18-PAP-Dez-2024-anl-1.pdf",
+      "url": "https://www.bundesfinanzministerium.de/Content/DE/Downloads/Steuern/Steuerarten/Lohnsteuer/Programmablaufplan/2024-10-18-PAP-Dez-2024-anl-1.pdf?__blob=publicationFile&v=2",
+      "retrieved": "2026-10-09T12:56:42Z",
+      "sha256": "424215d20f0b47c75b77aa614a807d44a5ffbd23fb98aa59b42af7acdb055a84",
+      "licence": "BMF-Schreiben are administrative instructions published by the ministry; BMF's Impressum claims copyright for its web content, so the PDFs are cached and cited by page/section, not redistributed.",
+      "coordinates": "page 15 (GFB = 11784, SOLZFREI = 18130 after the Existenzminimum 2024 law) and page 16, MPARA"
+     },
+     "status": "statute",
+     "note": "Value for 2024 taken from the PAP constant SOLZFREI; the statute page shows only the 2026 amount."
+    },
+    "milderungszone_factor": {
+     "value": 11.9,
+     "unit": "% of (wage tax - Freigrenze)",
+     "label": {
+      "de": "Milderungszone: Höchstsatz",
+      "en": "Phase-in cap"
+     },
+     "legal_basis": "§ 4 S. 2 SolzG 1995",
+     "source_ref": {
+      "source_id": "gesetze_im_internet",
+      "file": "solzg_4.html",
+      "path": "research/raw/gesetze_im_internet/solzg_4.html",
+      "url": "https://www.gesetze-im-internet.de/solzg_1995/__4.html",
+      "retrieved": "2026-10-09T12:45:40Z",
+      "sha256": "dd28933ed36da19cae72de5a054f9edbea5c5919cb2aeac6efc257afe9fab058",
+      "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+      "coordinates": "S. 2: nicht mehr als 11,9 Prozent des Unterschiedsbetrages"
+     },
+     "status": "statute"
+    },
+    "rounding": "cents are truncated (§ 4 S. 3 SolzG; PAP MSOLZ setScale(2, ROUND_DOWN))"
+   },
+   "wage_tax_allowances": {
+    "arbeitnehmer_pauschbetrag": {
+     "value": 1230,
+     "unit": "EUR",
+     "label": {
+      "de": "Arbeitnehmer-Pauschbetrag",
+      "en": "Employee lump-sum allowance"
+     },
+     "legal_basis": "§ 9a S. 1 Nr. 1 a EStG; § 39b Abs. 2 S. 5 Nr. 1 EStG",
+     "source_ref": {
+      "source_id": "gesetze_im_internet_payslip",
+      "file": "estg_9a.html",
+      "path": "research/raw/gesetze_im_internet_payslip/estg_9a.html",
+      "url": "https://www.gesetze-im-internet.de/estg/__9a.html",
+      "retrieved": "2026-10-09T12:56:39Z",
+      "sha256": "d345f5dfd44a9478955ec391c63f6fca4f731021153e9e2b9a49edb0c8f9ddeb",
+      "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+      "coordinates": "S. 1 Nr. 1 a: 1 230 Euro"
+     },
+     "status": "statute"
+    },
+    "sonderausgaben_pauschbetrag": {
+     "value": 36,
+     "unit": "EUR",
+     "label": {
+      "de": "Sonderausgaben-Pauschbetrag",
+      "en": "Special-expenses lump sum"
+     },
+     "legal_basis": "§ 10c S. 1 EStG; § 39b Abs. 2 S. 5 Nr. 2 EStG",
+     "source_ref": {
+      "source_id": "gesetze_im_internet_payslip",
+      "file": "estg_10c.html",
+      "path": "research/raw/gesetze_im_internet_payslip/estg_10c.html",
+      "url": "https://www.gesetze-im-internet.de/estg/__10c.html",
+      "retrieved": "2026-10-09T12:56:39Z",
+      "sha256": "4309f91a2ebb1b66ae0aef785c77d045069059514425b87f85b2f4671bd4734b",
+      "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+      "coordinates": "S. 1: 36 Euro"
+     },
+     "status": "statute"
+    },
+    "vorsorgepauschale": {
+     "rule": "RV part (employee share of the pension contribution, ceiling BBG RV) + the higher of (i) the employee share of KV (reduced-rate 7.0 % + half the Zusatzbeitrag) and PV (incl. childless surcharge) on the wage up to the KV ceiling and (ii) 12 % of the wage, at most 1 900 EUR (3 000 EUR in class III).",
+     "legal_basis": "§ 39b Abs. 2 S. 5 Nr. 3 EStG (version applicable to 2024/2025; see PAP UPEVP/MVSP)",
+     "source_ref": {
+      "source_id": "bmf_programmablaufplan",
+      "file": "2024-10-18-PAP-Dez-2024-anl-1.pdf",
+      "path": "research/cache/bmf_programmablaufplan/2024-10-18-PAP-Dez-2024-anl-1.pdf",
+      "url": "https://www.bundesfinanzministerium.de/Content/DE/Downloads/Steuern/Steuerarten/Lohnsteuer/Programmablaufplan/2024-10-18-PAP-Dez-2024-anl-1.pdf?__blob=publicationFile&v=2",
+      "retrieved": "2026-10-09T12:56:42Z",
+      "sha256": "424215d20f0b47c75b77aa614a807d44a5ffbd23fb98aa59b42af7acdb055a84",
+      "licence": "BMF-Schreiben are administrative instructions published by the ministry; BMF's Impressum claims copyright for its web content, so the PDFs are cached and cited by page/section, not redistributed.",
+      "coordinates": "pages 27-28 (UPEVP, MVSP): VSP2 = 0,12 * ZRE4VP, VHB = 1900/3000"
+     },
+     "kv_rate_used": {
+      "value": 7.0,
+      "unit": "% (employee half of the reduced rate)",
+      "label": {
+       "de": "KV-Satz in der Vorsorgepauschale",
+       "en": "Health rate used in the lump sum"
+      },
+      "legal_basis": "§ 39b Abs. 2 S. 5 Nr. 3 b EStG → § 243 SGB V (14,0 %)",
+      "source_ref": {
+       "source_id": "gesetze_im_internet_payslip",
+       "file": "sgb5_243.html",
+       "path": "research/raw/gesetze_im_internet_payslip/sgb5_243.html",
+       "url": "https://www.gesetze-im-internet.de/sgb_5/__243.html",
+       "retrieved": "2026-10-09T12:56:40Z",
+       "sha256": "daabd0c690b8f55481cc206e0d57a1de660b3da35e3030972cd68d15a0d7160c",
+       "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+       "coordinates": "S. 3: 14,0 Prozent"
+      },
+      "status": "statute"
+     },
+     "zusatzbeitrag_used": {
+      "value": 1.7,
+      "unit": "%",
+      "label": {
+       "de": "Zusatzbeitragssatz (angenommen: Durchschnitt nach § 242a SGB V)",
+       "en": "Additional contribution assumed (statutory average; the law uses the employee's own insurer's rate)"
+      },
+      "legal_basis": "§ 39b Abs. 2 S. 5 Nr. 3 b EStG uses the employee's own Krankenkasse rate (§ 242 SGB V); here the § 242a average is used, as the PAP Prüftabelle does (KVZ). With the 3.13 % actually levied on average (BMG, 1 April 2026) the 45,000 example shifts by −16 EUR wage tax and +52 EUR KV contribution.",
+      "source_ref": {
+       "source_id": "bundesanzeiger_zusatzbeitrag",
+       "file": "BAnz_AT_31.10.2023_B3.pdf",
+       "path": "research/cache/bundesanzeiger_zusatzbeitrag/BAnz_AT_31.10.2023_B3.pdf",
+       "url": "https://www.bundesanzeiger.de/pub/publication/lv5eHoYhOm7Elp1EaWa/content/lv5eHoYhOm7Elp1EaWa/BAnz%20AT%2031.10.2023%20B3.pdf",
+       "retrieved": "2026-10-09T12:56:44Z",
+       "sha256": "f955aa8630f0c800423e06e94c697edd6a2c513f525ffbe2e6ecf454af68577f",
+       "licence": "Official notices are official works (§ 5 UrhG); the Bundesanzeiger Verlag claims rights in the publication layout, so the PDFs are cached and cited, not redistributed.",
+       "coordinates": "page 1, Bekanntmachung vom 16.10.2023: 1,7 Prozent"
+      },
+      "status": "statute"
+     },
+     "rounding": "part amounts truncated to cents; total rounded up to full euros (PAP UPEVP/MVSP; § 39b Abs. 2 S. 5 Nr. 3 EStG via Programmablaufplan, § 39b Abs. 6 EStG)",
+     "status": "statute"
+    }
+   },
+   "social_insurance": {
+    "rv": {
+     "rate_total": {
+      "value": 18.6,
+      "unit": "% of wage up to ceiling",
+      "label": {
+       "de": "Rentenversicherung Beitragssatz",
+       "en": "Pension insurance rate"
+      },
+      "legal_basis": "§ 158 SGB VI; Beitragssatzverordnung 2018; RVBeitrSBek",
+      "source_ref": {
+       "source_id": "gesetze_im_internet_payslip",
+       "file": "bsv_2018_1.html",
+       "path": "research/raw/gesetze_im_internet_payslip/bsv_2018_1.html",
+       "url": "https://www.gesetze-im-internet.de/bsv_2018/__1.html",
+       "retrieved": "2026-10-09T12:56:40Z",
+       "sha256": "80c4ba931e3860708f0eb0b0e733ed3e3c32619f63f7bc420e4fbb2f010b5674",
+       "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+       "coordinates": "§ 1: 18,6 Prozent (set for 2018; continued by annual Bekanntmachung under § 158 Abs. 4 SGB VI)"
+      },
+      "status": "statute"
+     },
+     "employee_share": 9.3,
+     "employer_share": 9.3,
+     "split_basis": "§ 168 Abs. 1 Nr. 1 SGB VI (je zur Hälfte)",
+     "split_ref": {
+      "source_id": "gesetze_im_internet_payslip",
+      "file": "sgb6_168.html",
+      "path": "research/raw/gesetze_im_internet_payslip/sgb6_168.html",
+      "url": "https://www.gesetze-im-internet.de/sgb_6/__168.html",
+      "retrieved": "2026-10-09T12:56:40Z",
+      "sha256": "0046c1be59b1cf96269f6427ebd46c9736d4520bb629af9b69ffa28f5c14cf98",
+      "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+      "coordinates": "Abs. 1 Nr. 1"
+     },
+     "ceiling_annual": {
+      "value": 90600,
+      "unit": "EUR",
+      "label": {
+       "de": "Beitragsbemessungsgrenze RV (West)",
+       "en": "Contribution ceiling, pension"
+      },
+      "legal_basis": "§ 159 SGB VI, Anlage 2 SGB VI; SVBezGrV",
+      "source_ref": {
+       "source_id": "gesetze_im_internet_payslip",
+       "file": "sgb6_anlage_2.html",
+       "path": "research/raw/gesetze_im_internet_payslip/sgb6_anlage_2.html",
+       "url": "https://www.gesetze-im-internet.de/sgb_6/anlage_2.html",
+       "retrieved": "2026-10-09T12:56:40Z",
+       "sha256": "61f85281e4a5d6c9421510b29b306d0a9dbbdfd196639071de3a19ba9f4dd69c",
+       "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+       "coordinates": "table rows 1.1.2024-31.12.2024 (90 600), 1.1.2025-31.12.2025 (96 600), 1.1.2026-31.12.2026 (101 400), column 'Allgemeine Rentenversicherung'"
+      },
+      "status": "statute"
+     },
+     "ceiling_monthly": 7550.0,
+     "ceiling_annual_east": {
+      "value": 89400,
+      "unit": "EUR",
+      "label": {
+       "de": "Beitragsbemessungsgrenze RV (Ost)",
+       "en": "Contribution ceiling, pension (East)"
+      },
+      "legal_basis": "Anlage 2a SGB VI (2024, last year of the East/West distinction)",
+      "source_ref": {
+       "source_id": "bmf_programmablaufplan",
+       "file": "2024-10-18-PAP-Dez-2024-anl-1.pdf",
+       "path": "research/cache/bmf_programmablaufplan/2024-10-18-PAP-Dez-2024-anl-1.pdf",
+       "url": "https://www.bundesfinanzministerium.de/Content/DE/Downloads/Steuern/Steuerarten/Lohnsteuer/Programmablaufplan/2024-10-18-PAP-Dez-2024-anl-1.pdf?__blob=publicationFile&v=2",
+       "retrieved": "2026-10-09T12:56:42Z",
+       "sha256": "424215d20f0b47c75b77aa614a807d44a5ffbd23fb98aa59b42af7acdb055a84",
+       "licence": "BMF-Schreiben are administrative instructions published by the ministry; BMF's Impressum claims copyright for its web content, so the PDFs are cached and cited by page/section, not redistributed.",
+       "coordinates": "page 16, MPARA: BBGRV = 89400 (KRV < 2 / East)"
+      },
+      "status": "statute",
+      "note": "Examples use the West ceiling, as the PAP Prüftabelle does."
+     }
+    },
+    "alv": {
+     "rate_total": {
+      "value": 2.6,
+      "unit": "% of wage up to ceiling",
+      "label": {
+       "de": "Arbeitslosenversicherung Beitragssatz",
+       "en": "Unemployment insurance rate"
+      },
+      "legal_basis": "§ 341 Abs. 2 SGB III",
+      "source_ref": {
+       "source_id": "gesetze_im_internet",
+       "file": "sgb3_341.html",
+       "path": "research/raw/gesetze_im_internet/sgb3_341.html",
+       "url": "https://www.gesetze-im-internet.de/sgb_3/__341.html",
+       "retrieved": "2026-10-09T12:45:41Z",
+       "sha256": "eaf446ba529d56b7e3bf1e04a5c2dbbd6adf3519132347d57b947dd72f62baa4",
+       "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+       "coordinates": "Abs. 2: 2,6 Prozent"
+      },
+      "status": "statute"
+     },
+     "employee_share": 1.3,
+     "employer_share": 1.3,
+     "split_basis": "§ 346 Abs. 1 SGB III (je zur Hälfte)",
+     "split_ref": {
+      "source_id": "gesetze_im_internet_payslip",
+      "file": "sgb3_346.html",
+      "path": "research/raw/gesetze_im_internet_payslip/sgb3_346.html",
+      "url": "https://www.gesetze-im-internet.de/sgb_3/__346.html",
+      "retrieved": "2026-10-09T12:56:40Z",
+      "sha256": "63656d2f1f4d70c3887927ce9dfdda5b806545123b5371cdd14daaf6701f7826",
+      "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+      "coordinates": "Abs. 1 S. 1"
+     },
+     "ceiling": "same as pension insurance (§ 341 Abs. 4 SGB III)"
+    },
+    "kv": {
+     "rate_general": {
+      "value": 14.6,
+      "unit": "% of wage up to ceiling",
+      "label": {
+       "de": "Allgemeiner Beitragssatz GKV",
+       "en": "General health insurance rate"
+      },
+      "legal_basis": "§ 241 SGB V",
+      "source_ref": {
+       "source_id": "gesetze_im_internet",
+       "file": "sgb5_241.html",
+       "path": "research/raw/gesetze_im_internet/sgb5_241.html",
+       "url": "https://www.gesetze-im-internet.de/sgb_5/__241.html",
+       "retrieved": "2026-10-09T12:45:41Z",
+       "sha256": "fc3425fe626214608d19ae99bfee6acc7243f27b67c9c159a3232293072197ed",
+       "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+       "coordinates": "14,6 Prozent"
+      },
+      "status": "statute"
+     },
+     "zusatzbeitrag_average": {
+      "value": 1.7,
+      "unit": "%",
+      "label": {
+       "de": "Durchschnittlicher Zusatzbeitragssatz (§ 242a SGB V)",
+       "en": "Statutory average additional contribution"
+      },
+      "legal_basis": "§ 242a Abs. 2 SGB V, Bekanntmachung des BMG im Bundesanzeiger",
+      "source_ref": {
+       "source_id": "bundesanzeiger_zusatzbeitrag",
+       "file": "BAnz_AT_31.10.2023_B3.pdf",
+       "path": "research/cache/bundesanzeiger_zusatzbeitrag/BAnz_AT_31.10.2023_B3.pdf",
+       "url": "https://www.bundesanzeiger.de/pub/publication/lv5eHoYhOm7Elp1EaWa/content/lv5eHoYhOm7Elp1EaWa/BAnz%20AT%2031.10.2023%20B3.pdf",
+       "retrieved": "2026-10-09T12:56:44Z",
+       "sha256": "f955aa8630f0c800423e06e94c697edd6a2c513f525ffbe2e6ecf454af68577f",
+       "licence": "Official notices are official works (§ 5 UrhG); the Bundesanzeiger Verlag claims rights in the publication layout, so the PDFs are cached and cited, not redistributed.",
+       "coordinates": "page 1, Bekanntmachung vom 16.10.2023: 1,7 Prozent"
+      },
+      "status": "statute",
+      "note": "The actual Zusatzbeitrag depends on the Krankenkasse (§ 242 SGB V); the average actually levied is higher (BMG: 3.13 % as of 1 April 2026). "
+     },
+     "employee_share": 8.15,
+     "employer_share": 8.15,
+     "split_basis": "§ 249 Abs. 1 SGB V (je zur Hälfte, incl. Zusatzbeitrag)",
+     "split_ref": {
+      "source_id": "gesetze_im_internet_payslip",
+      "file": "sgb5_249.html",
+      "path": "research/raw/gesetze_im_internet_payslip/sgb5_249.html",
+      "url": "https://www.gesetze-im-internet.de/sgb_5/__249.html",
+      "retrieved": "2026-10-09T12:56:40Z",
+      "sha256": "fb9d6df036588f6de628148883bbb72d806ba8c8d73f8862d42f9afa12df66fd",
+      "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+      "coordinates": "Abs. 1 S. 1"
+     },
+     "ceiling_annual": {
+      "value": 62100,
+      "unit": "EUR",
+      "label": {
+       "de": "Beitragsbemessungsgrenze KV/PV",
+       "en": "Contribution ceiling, health/care"
+      },
+      "legal_basis": "§ 6 Abs. 7 SGB V (Jahresarbeitsentgeltgrenze), SVBezGrV § 2 Abs. 2",
+      "source_ref": {
+       "source_id": "gesetze_im_internet_payslip",
+       "file": "svbezgrv_2024_2.html",
+       "path": "research/raw/gesetze_im_internet_payslip/svbezgrv_2024_2.html",
+       "url": "https://www.gesetze-im-internet.de/svbezgrv_2024/__2.html",
+       "retrieved": "2026-10-09T12:56:41Z",
+       "sha256": "fffe832ca08d15c244e206985f11ab728da03f15b609af437b0a0b18361b14a1",
+       "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+       "coordinates": "§ 2 Abs. 2: 62 100 Euro / 5 175 Euro"
+      },
+      "status": "statute"
+     },
+     "ceiling_monthly": 5175.0
+    },
+    "pv": {
+     "rate_total": {
+      "value": 3.4,
+      "unit": "% of wage up to KV ceiling",
+      "label": {
+       "de": "Pflegeversicherung Beitragssatz",
+       "en": "Long-term care insurance rate"
+      },
+      "legal_basis": "§ 55 Abs. 1 S. 1 SGB XI",
+      "source_ref": {
+       "source_id": "gesetze_im_internet",
+       "file": "sgb11_55.html",
+       "path": "research/raw/gesetze_im_internet/sgb11_55.html",
+       "url": "https://www.gesetze-im-internet.de/sgb_11/__55.html",
+       "retrieved": "2026-10-09T12:45:41Z",
+       "sha256": "b8fc98b7a5d2724871a37d7a9e69e922b02907b4405cb8176c8c9c63aa4330d2",
+       "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+       "coordinates": "§ 55 Abs. 1 S. 1: 3,4 Prozent (statutory base rate; in force unchanged during 2024)"
+      },
+      "status": "statute"
+     },
+     "childless_surcharge": {
+      "value": 0.6,
+      "unit": "percentage points, employee only, from age 23",
+      "label": {
+       "de": "Beitragszuschlag für Kinderlose",
+       "en": "Childless surcharge"
+      },
+      "legal_basis": "§ 55 Abs. 3 S. 1 SGB XI; § 58 Abs. 1 S. 3 SGB XI (borne by the employee)",
+      "source_ref": {
+       "source_id": "gesetze_im_internet",
+       "file": "sgb11_55.html",
+       "path": "research/raw/gesetze_im_internet/sgb11_55.html",
+       "url": "https://www.gesetze-im-internet.de/sgb_11/__55.html",
+       "retrieved": "2026-10-09T12:45:41Z",
+       "sha256": "b8fc98b7a5d2724871a37d7a9e69e922b02907b4405cb8176c8c9c63aa4330d2",
+       "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+       "coordinates": "Abs. 3 S. 1: 0,6 Beitragssatzpunkte"
+      },
+      "status": "statute"
+     },
+     "child_abatement": {
+      "value": 0.25,
+      "unit": "percentage points per child from the 2nd to the 5th (under 25), employee only",
+      "label": {
+       "de": "Abschlag je Kind ab dem zweiten Kind",
+       "en": "Abatement per child (2nd-5th)"
+      },
+      "legal_basis": "§ 55 Abs. 3 S. 4 SGB XI",
+      "source_ref": {
+       "source_id": "gesetze_im_internet",
+       "file": "sgb11_55.html",
+       "path": "research/raw/gesetze_im_internet/sgb11_55.html",
+       "url": "https://www.gesetze-im-internet.de/sgb_11/__55.html",
+       "retrieved": "2026-10-09T12:45:41Z",
+       "sha256": "b8fc98b7a5d2724871a37d7a9e69e922b02907b4405cb8176c8c9c63aa4330d2",
+       "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+       "coordinates": "Abs. 3 S. 4: 0,25 Beitragssatzpunkte je Kind ab dem zweiten bis zum fünften Kind"
+      },
+      "status": "statute"
+     },
+     "employee_share": 1.7,
+     "employer_share": 1.7,
+     "split_basis": "§ 58 Abs. 1 S. 1 SGB XI (je zur Hälfte); surcharge: employee alone (S. 3)",
+     "split_ref": {
+      "source_id": "gesetze_im_internet_payslip",
+      "file": "sgb11_58.html",
+      "path": "research/raw/gesetze_im_internet_payslip/sgb11_58.html",
+      "url": "https://www.gesetze-im-internet.de/sgb_11/__58.html",
+      "retrieved": "2026-10-09T12:56:41Z",
+      "sha256": "408a6e8f91d0299ebd08aef25a633874c276905c73358b44d7373d195d3551ad",
+      "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+      "coordinates": "Abs. 1 S. 1 and S. 3"
+     },
+     "saxony": {
+      "employee_share": 2.2,
+      "employer_share": 1.2,
+      "legal_basis": "§ 58 Abs. 3 SGB XI (no public holiday abolished: employee bears 1 percentage point more)",
+      "source_ref": {
+       "source_id": "gesetze_im_internet_payslip",
+       "file": "sgb11_58.html",
+       "path": "research/raw/gesetze_im_internet_payslip/sgb11_58.html",
+       "url": "https://www.gesetze-im-internet.de/sgb_11/__58.html",
+       "retrieved": "2026-10-09T12:56:41Z",
+       "sha256": "408a6e8f91d0299ebd08aef25a633874c276905c73358b44d7373d195d3551ad",
+       "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+       "coordinates": "Abs. 3 S. 1, Abs. 5"
+      },
+      "pap_ref": {
+       "source_id": "bmf_programmablaufplan",
+       "file": "2024-10-18-PAP-Dez-2024-anl-1.pdf",
+       "path": "research/cache/bmf_programmablaufplan/2024-10-18-PAP-Dez-2024-anl-1.pdf",
+       "url": "https://www.bundesfinanzministerium.de/Content/DE/Downloads/Steuern/Steuerarten/Lohnsteuer/Programmablaufplan/2024-10-18-PAP-Dez-2024-anl-1.pdf?__blob=publicationFile&v=2",
+       "retrieved": "2026-10-09T12:56:42Z",
+       "sha256": "424215d20f0b47c75b77aa614a807d44a5ffbd23fb98aa59b42af7acdb055a84",
+       "licence": "BMF-Schreiben are administrative instructions published by the ministry; BMF's Impressum claims copyright for its web content, so the PDFs are cached and cited by page/section, not redistributed.",
+       "coordinates": "page 16, MPARA: PVS = 1 → PVSATZAN/PVSATZAG"
+      }
+     },
+     "ceiling": "same as health insurance (§ 55 Abs. 2 SGB XI)"
+    },
+    "bezugsgroesse": {
+     "value": 42420,
+     "unit": "EUR per year",
+     "label": {
+      "de": "Bezugsgröße (West)",
+      "en": "Reference value (§ 18 SGB IV)"
+     },
+     "legal_basis": "§ 18 SGB IV; SVBezGrV § 1",
+     "source_ref": {
+      "source_id": "gesetze_im_internet_payslip",
+      "file": "svbezgrv_2024_1.html",
+      "path": "research/raw/gesetze_im_internet_payslip/svbezgrv_2024_1.html",
+      "url": "https://www.gesetze-im-internet.de/svbezgrv_2024/__1.html",
+      "retrieved": "2026-10-09T12:56:41Z",
+      "sha256": "400d2c7fda932371f45f6e190477c14f4614375c04d5c5de7118ee4b08c5907a",
+      "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+      "coordinates": "§ 1 Abs. 1: 42 420 Euro (West), Abs. 2: 41 580 Euro (Ost)"
+     },
+     "status": "statute",
+     "note": "East: 41580 EUR (§ 1 Abs. 2 SVBezGrV 2024)"
+    },
+    "cross_check": {
+     "bmas_table_2026": null,
+     "pap_constants": {
+      "source_id": "bmf_programmablaufplan",
+      "file": "2024-10-18-PAP-Dez-2024-anl-1.pdf",
+      "path": "research/cache/bmf_programmablaufplan/2024-10-18-PAP-Dez-2024-anl-1.pdf",
+      "url": "https://www.bundesfinanzministerium.de/Content/DE/Downloads/Steuern/Steuerarten/Lohnsteuer/Programmablaufplan/2024-10-18-PAP-Dez-2024-anl-1.pdf?__blob=publicationFile&v=2",
+      "retrieved": "2026-10-09T12:56:42Z",
+      "sha256": "424215d20f0b47c75b77aa614a807d44a5ffbd23fb98aa59b42af7acdb055a84",
+      "licence": "BMF-Schreiben are administrative instructions published by the ministry; BMF's Impressum claims copyright for its web content, so the PDFs are cached and cited by page/section, not redistributed.",
+      "coordinates": "page 15 (GFB = 11784, SOLZFREI = 18130 after the Existenzminimum 2024 law) and page 16, MPARA"
+     }
+    }
+   },
+   "tariff_checks": {
+    "grundfreibetrag_gives_zero": true,
+    "boundary_floor_effect_eur": {
+     "z2_top": 0.21,
+     "z3_top": 0.89,
+     "z4_top": 0.19
+    },
+    "boundary_floor_effect_note": "next-zone formula minus the floored current-zone value at each boundary (shows the 1-EUR flooring, not formula continuity; formula-vs-formula gaps are 0.002 / 0.067 / 0.000 EUR per review B)",
+    "marginal_rate_top_zone3": 0.42,
+    "marginal_rate_top_zone4": 0.45
+   }
+  },
+  "2025": {
+   "tariff": {
+    "grundfreibetrag": {
+     "value": 12096,
+     "unit": "EUR",
+     "label": {
+      "de": "Grundfreibetrag",
+      "en": "Basic allowance"
+     },
+     "legal_basis": "§ 32a Abs. 1 S. 2 Nr. 1 EStG",
+     "source_ref": {
+      "source_id": "bmf_steuerrechner",
+      "file": "tarifhistorie.pdf",
+      "path": "research/cache/bmf_steuerrechner/tarifhistorie.pdf",
+      "url": "https://www.bmf-steuerrechner.de/javax.faces.resource/2025_10_14_Tarifhistorie_Steuerrechner.pdf.xhtml",
+      "retrieved": "2026-10-09T12:56:43Z",
+      "sha256": "ac1f0fe259559233057e8d5a2eac2259d9af877522964c9583792e52cd85a8ad",
+      "licence": "Published by the BMF for software development; site is © Bundesministerium der Finanzen. Cached, cited by element/page, not redistributed. The external programming interface is for program tests only; not used for bulk calculation.",
+      "coordinates": "page 33, 'Einkommensteuertarif 2025'; corroborated by PAP 2025 page 38 (UPTAB25) and Lohnsteuer2025.xml method UPTAB25"
+     },
+     "status": "statute"
+    },
+    "zones": [
+     {
+      "zone": 1,
+      "from": 0,
+      "to": 12096,
+      "formula": "0",
+      "label": {
+       "de": "Nullzone",
+       "en": "Zero zone"
+      }
+     },
+     {
+      "zone": 2,
+      "from": 12097,
+      "to": 17443,
+      "formula": "(932.30 * y + 1400) * y",
+      "y": "(x - 12096) / 10000",
+      "label": {
+       "de": "Erste Progressionszone (14 % → ~24 %)",
+       "en": "First progressive zone (14 % → ~24 %)"
+      }
+     },
+     {
+      "zone": 3,
+      "from": 17444,
+      "to": 68480,
+      "formula": "(176.64 * z + 2397) * z + 1015.13",
+      "z": "(x - 17443) / 10000",
+      "label": {
+       "de": "Zweite Progressionszone (~24 % → 42 %)",
+       "en": "Second progressive zone (~24 % → 42 %)"
+      }
+     },
+     {
+      "zone": 4,
+      "from": 68481,
+      "to": 277825,
+      "formula": "0.42 * x - 10911.92",
+      "label": {
+       "de": "Proportionalzone 42 %",
+       "en": "Proportional zone 42 %"
+      }
+     },
+     {
+      "zone": 5,
+      "from": 277826,
+      "to": null,
+      "formula": "0.45 * x - 19246.67",
+      "label": {
+       "de": "Proportionalzone 45 % („Reichensteuer“)",
+       "en": "Proportional zone 45 %"
+      }
+     }
+    ],
+    "rounding": "x = taxable income floored to full euros; y, z = ten-thousandths of the part above the zone's lower bound; result floored to full euros (§ 32a Abs. 1 S. 1, 3-6 EStG)",
+    "legal_basis": "§ 32a Abs. 1 EStG i.d.F. des Steuerfortentwicklungsgesetzes (BGBl. 2024 I Nr. 449)",
+    "source_ref": {
+     "source_id": "bmf_steuerrechner",
+     "file": "tarifhistorie.pdf",
+     "path": "research/cache/bmf_steuerrechner/tarifhistorie.pdf",
+     "url": "https://www.bmf-steuerrechner.de/javax.faces.resource/2025_10_14_Tarifhistorie_Steuerrechner.pdf.xhtml",
+     "retrieved": "2026-10-09T12:56:43Z",
+     "sha256": "ac1f0fe259559233057e8d5a2eac2259d9af877522964c9583792e52cd85a8ad",
+     "licence": "Published by the BMF for software development; site is © Bundesministerium der Finanzen. Cached, cited by element/page, not redistributed. The external programming interface is for program tests only; not used for bulk calculation.",
+     "coordinates": "page 33, 'Einkommensteuertarif 2025'; corroborated by PAP 2025 page 38 (UPTAB25) and Lohnsteuer2025.xml method UPTAB25"
+    },
+    "status": "statute"
+   },
+   "soli": {
+    "rate": {
+     "value": 5.5,
+     "unit": "% of wage tax",
+     "label": {
+      "de": "Solidaritätszuschlag",
+      "en": "Solidarity surcharge rate"
+     },
+     "legal_basis": "§ 4 S. 1 SolzG 1995",
+     "source_ref": {
+      "source_id": "gesetze_im_internet",
+      "file": "solzg_4.html",
+      "path": "research/raw/gesetze_im_internet/solzg_4.html",
+      "url": "https://www.gesetze-im-internet.de/solzg_1995/__4.html",
+      "retrieved": "2026-10-09T12:45:40Z",
+      "sha256": "dd28933ed36da19cae72de5a054f9edbea5c5919cb2aeac6efc257afe9fab058",
+      "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+      "coordinates": "S. 1: 5,5 Prozent"
+     },
+     "status": "statute"
+    },
+    "freigrenze": {
+     "value": 19950,
+     "unit": "EUR of annual wage tax",
+     "label": {
+      "de": "Freigrenze (Steuerklassen I, II, IV-VI)",
+      "en": "Exemption threshold (classes I, II, IV-VI)"
+     },
+     "legal_basis": "§ 3 Abs. 3 S. 1 Nr. 2, Abs. 5 SolzG 1995",
+     "source_ref": {
+      "source_id": "bmf_programmablaufplan",
+      "file": "2025-01-22-geaenderte-PAP-2025-anlage-1.pdf",
+      "path": "research/cache/bmf_programmablaufplan/2025-01-22-geaenderte-PAP-2025-anlage-1.pdf",
+      "url": "https://www.bundesfinanzministerium.de/Content/DE/Downloads/Steuern/Steuerarten/Lohnsteuer/Programmablaufplan/2025-01-22-geaenderte-PAP-2025-anlage-1.pdf?__blob=publicationFile&v=2",
+      "retrieved": "2026-10-09T12:56:42Z",
+      "sha256": "092de325b1e3258cff16a617b1963f923a82e98952e53c345ba7403ddbd45a53",
+      "licence": "BMF-Schreiben are administrative instructions published by the ministry; BMF's Impressum claims copyright for its web content, so the PDFs are cached and cited by page/section, not redistributed.",
+      "coordinates": "page 14, MPARA"
+     },
+     "status": "statute",
+     "note": "Value for 2025 taken from the PAP constant SOLZFREI; the statute page shows only the 2026 amount."
+    },
+    "milderungszone_factor": {
+     "value": 11.9,
+     "unit": "% of (wage tax - Freigrenze)",
+     "label": {
+      "de": "Milderungszone: Höchstsatz",
+      "en": "Phase-in cap"
+     },
+     "legal_basis": "§ 4 S. 2 SolzG 1995",
+     "source_ref": {
+      "source_id": "gesetze_im_internet",
+      "file": "solzg_4.html",
+      "path": "research/raw/gesetze_im_internet/solzg_4.html",
+      "url": "https://www.gesetze-im-internet.de/solzg_1995/__4.html",
+      "retrieved": "2026-10-09T12:45:40Z",
+      "sha256": "dd28933ed36da19cae72de5a054f9edbea5c5919cb2aeac6efc257afe9fab058",
+      "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+      "coordinates": "S. 2: nicht mehr als 11,9 Prozent des Unterschiedsbetrages"
+     },
+     "status": "statute"
+    },
+    "rounding": "cents are truncated (§ 4 S. 3 SolzG; PAP MSOLZ setScale(2, ROUND_DOWN))"
+   },
+   "wage_tax_allowances": {
+    "arbeitnehmer_pauschbetrag": {
+     "value": 1230,
+     "unit": "EUR",
+     "label": {
+      "de": "Arbeitnehmer-Pauschbetrag",
+      "en": "Employee lump-sum allowance"
+     },
+     "legal_basis": "§ 9a S. 1 Nr. 1 a EStG; § 39b Abs. 2 S. 5 Nr. 1 EStG",
+     "source_ref": {
+      "source_id": "gesetze_im_internet_payslip",
+      "file": "estg_9a.html",
+      "path": "research/raw/gesetze_im_internet_payslip/estg_9a.html",
+      "url": "https://www.gesetze-im-internet.de/estg/__9a.html",
+      "retrieved": "2026-10-09T12:56:39Z",
+      "sha256": "d345f5dfd44a9478955ec391c63f6fca4f731021153e9e2b9a49edb0c8f9ddeb",
+      "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+      "coordinates": "S. 1 Nr. 1 a: 1 230 Euro"
+     },
+     "status": "statute"
+    },
+    "sonderausgaben_pauschbetrag": {
+     "value": 36,
+     "unit": "EUR",
+     "label": {
+      "de": "Sonderausgaben-Pauschbetrag",
+      "en": "Special-expenses lump sum"
+     },
+     "legal_basis": "§ 10c S. 1 EStG; § 39b Abs. 2 S. 5 Nr. 2 EStG",
+     "source_ref": {
+      "source_id": "gesetze_im_internet_payslip",
+      "file": "estg_10c.html",
+      "path": "research/raw/gesetze_im_internet_payslip/estg_10c.html",
+      "url": "https://www.gesetze-im-internet.de/estg/__10c.html",
+      "retrieved": "2026-10-09T12:56:39Z",
+      "sha256": "4309f91a2ebb1b66ae0aef785c77d045069059514425b87f85b2f4671bd4734b",
+      "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+      "coordinates": "S. 1: 36 Euro"
+     },
+     "status": "statute"
+    },
+    "vorsorgepauschale": {
+     "rule": "RV part (employee share of the pension contribution, ceiling BBG RV) + the higher of (i) the employee share of KV (reduced-rate 7.0 % + half the Zusatzbeitrag) and PV (incl. childless surcharge) on the wage up to the KV ceiling and (ii) 12 % of the wage, at most 1 900 EUR (3 000 EUR in class III).",
+     "legal_basis": "§ 39b Abs. 2 S. 5 Nr. 3 EStG (version applicable to 2024/2025; see PAP UPEVP/MVSP)",
+     "source_ref": {
+      "source_id": "bmf_programmablaufplan",
+      "file": "2025-01-22-geaenderte-PAP-2025-anlage-1.pdf",
+      "path": "research/cache/bmf_programmablaufplan/2025-01-22-geaenderte-PAP-2025-anlage-1.pdf",
+      "url": "https://www.bundesfinanzministerium.de/Content/DE/Downloads/Steuern/Steuerarten/Lohnsteuer/Programmablaufplan/2025-01-22-geaenderte-PAP-2025-anlage-1.pdf?__blob=publicationFile&v=2",
+      "retrieved": "2026-10-09T12:56:42Z",
+      "sha256": "092de325b1e3258cff16a617b1963f923a82e98952e53c345ba7403ddbd45a53",
+      "licence": "BMF-Schreiben are administrative instructions published by the ministry; BMF's Impressum claims copyright for its web content, so the PDFs are cached and cited by page/section, not redistributed.",
+      "coordinates": "pages 27-28 (UPEVP, MVSP): VSP2 = 0,12 * ZRE4VP, VHB = 1900/3000"
+     },
+     "kv_rate_used": {
+      "value": 7.0,
+      "unit": "% (employee half of the reduced rate)",
+      "label": {
+       "de": "KV-Satz in der Vorsorgepauschale",
+       "en": "Health rate used in the lump sum"
+      },
+      "legal_basis": "§ 39b Abs. 2 S. 5 Nr. 3 b EStG → § 243 SGB V (14,0 %)",
+      "source_ref": {
+       "source_id": "gesetze_im_internet_payslip",
+       "file": "sgb5_243.html",
+       "path": "research/raw/gesetze_im_internet_payslip/sgb5_243.html",
+       "url": "https://www.gesetze-im-internet.de/sgb_5/__243.html",
+       "retrieved": "2026-10-09T12:56:40Z",
+       "sha256": "daabd0c690b8f55481cc206e0d57a1de660b3da35e3030972cd68d15a0d7160c",
+       "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+       "coordinates": "S. 3: 14,0 Prozent"
+      },
+      "status": "statute"
+     },
+     "zusatzbeitrag_used": {
+      "value": 2.5,
+      "unit": "%",
+      "label": {
+       "de": "Zusatzbeitragssatz (angenommen: Durchschnitt nach § 242a SGB V)",
+       "en": "Additional contribution assumed (statutory average; the law uses the employee's own insurer's rate)"
+      },
+      "legal_basis": "§ 39b Abs. 2 S. 5 Nr. 3 b EStG uses the employee's own Krankenkasse rate (§ 242 SGB V); here the § 242a average is used, as the PAP Prüftabelle does (KVZ). With the 3.13 % actually levied on average (BMG, 1 April 2026) the 45,000 example shifts by −16 EUR wage tax and +52 EUR KV contribution.",
+      "source_ref": {
+       "source_id": "gkv_spitzenverband_zusatzbeitrag",
+       "file": "zusatzbeitragssatz.html",
+       "path": "research/cache/gkv_spitzenverband_zusatzbeitrag/zusatzbeitragssatz.html",
+       "url": "https://www.gkv-spitzenverband.de/krankenversicherung/kv_grundprinzipien/finanzierung/zusatzbeitragssatz/zusatzbeitragssatz.jsp",
+       "retrieved": "2026-10-09T12:56:45Z",
+       "sha256": "1f1228b12fe63e3c0cb1a11ba05c16794cb0c4c8fa909434f5f8de0ced5adb8f",
+       "licence": "Association web page; facts only, cached and cited",
+       "coordinates": "paragraph 'Das Bundesgesundheitsministerium legt ... fest': 2,5 Prozent im Jahr 2025"
+      },
+      "status": "secondary"
+     },
+     "rounding": "part amounts truncated to cents; total rounded up to full euros (PAP UPEVP/MVSP; § 39b Abs. 2 S. 5 Nr. 3 EStG via Programmablaufplan, § 39b Abs. 6 EStG)",
+     "status": "statute"
+    }
+   },
+   "social_insurance": {
+    "rv": {
+     "rate_total": {
+      "value": 18.6,
+      "unit": "% of wage up to ceiling",
+      "label": {
+       "de": "Rentenversicherung Beitragssatz",
+       "en": "Pension insurance rate"
+      },
+      "legal_basis": "§ 158 SGB VI; Beitragssatzverordnung 2018; RVBeitrSBek",
+      "source_ref": {
+       "source_id": "drv_finanzen",
+       "file": "aktuelle_daten.pdf",
+       "path": "research/cache/drv_finanzen/aktuelle_daten.pdf",
+       "url": "https://www.deutsche-rentenversicherung.de/SharedDocs/Downloads/DE/Statistiken-und-Berichte/statistikpublikationen/aktuelle_daten.pdf?__blob=publicationFile",
+       "retrieved": "2026-10-09T12:45:36Z",
+       "sha256": "abe6fc0bc5996e6937d145c651aeae1e919e21c91157aae3cdf490689350306f",
+       "licence": "unverified (DRV publications; no explicit reuse licence found). Figures cited with page coordinates; PDFs not redistributed.",
+       "coordinates": "page 2, 'Beitragssatz (allg. RV) 2025 18,6'"
+      },
+      "status": "secondary",
+      "note": "2025 continuation taken from the DRV 'Aktuelle Daten' table (secondary); the Bekanntmachung for 2025 (BGBl.) was not fetched."
+     },
+     "employee_share": 9.3,
+     "employer_share": 9.3,
+     "split_basis": "§ 168 Abs. 1 Nr. 1 SGB VI (je zur Hälfte)",
+     "split_ref": {
+      "source_id": "gesetze_im_internet_payslip",
+      "file": "sgb6_168.html",
+      "path": "research/raw/gesetze_im_internet_payslip/sgb6_168.html",
+      "url": "https://www.gesetze-im-internet.de/sgb_6/__168.html",
+      "retrieved": "2026-10-09T12:56:40Z",
+      "sha256": "0046c1be59b1cf96269f6427ebd46c9736d4520bb629af9b69ffa28f5c14cf98",
+      "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+      "coordinates": "Abs. 1 Nr. 1"
+     },
+     "ceiling_annual": {
+      "value": 96600,
+      "unit": "EUR",
+      "label": {
+       "de": "Beitragsbemessungsgrenze RV",
+       "en": "Contribution ceiling, pension"
+      },
+      "legal_basis": "§ 159 SGB VI, Anlage 2 SGB VI; SVBezGrV",
+      "source_ref": {
+       "source_id": "gesetze_im_internet_payslip",
+       "file": "sgb6_anlage_2.html",
+       "path": "research/raw/gesetze_im_internet_payslip/sgb6_anlage_2.html",
+       "url": "https://www.gesetze-im-internet.de/sgb_6/anlage_2.html",
+       "retrieved": "2026-10-09T12:56:40Z",
+       "sha256": "61f85281e4a5d6c9421510b29b306d0a9dbbdfd196639071de3a19ba9f4dd69c",
+       "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+       "coordinates": "table rows 1.1.2024-31.12.2024 (90 600), 1.1.2025-31.12.2025 (96 600), 1.1.2026-31.12.2026 (101 400), column 'Allgemeine Rentenversicherung'"
+      },
+      "status": "statute"
+     },
+     "ceiling_monthly": 8050.0
+    },
+    "alv": {
+     "rate_total": {
+      "value": 2.6,
+      "unit": "% of wage up to ceiling",
+      "label": {
+       "de": "Arbeitslosenversicherung Beitragssatz",
+       "en": "Unemployment insurance rate"
+      },
+      "legal_basis": "§ 341 Abs. 2 SGB III",
+      "source_ref": {
+       "source_id": "gesetze_im_internet",
+       "file": "sgb3_341.html",
+       "path": "research/raw/gesetze_im_internet/sgb3_341.html",
+       "url": "https://www.gesetze-im-internet.de/sgb_3/__341.html",
+       "retrieved": "2026-10-09T12:45:41Z",
+       "sha256": "eaf446ba529d56b7e3bf1e04a5c2dbbd6adf3519132347d57b947dd72f62baa4",
+       "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+       "coordinates": "Abs. 2: 2,6 Prozent"
+      },
+      "status": "statute"
+     },
+     "employee_share": 1.3,
+     "employer_share": 1.3,
+     "split_basis": "§ 346 Abs. 1 SGB III (je zur Hälfte)",
+     "split_ref": {
+      "source_id": "gesetze_im_internet_payslip",
+      "file": "sgb3_346.html",
+      "path": "research/raw/gesetze_im_internet_payslip/sgb3_346.html",
+      "url": "https://www.gesetze-im-internet.de/sgb_3/__346.html",
+      "retrieved": "2026-10-09T12:56:40Z",
+      "sha256": "63656d2f1f4d70c3887927ce9dfdda5b806545123b5371cdd14daaf6701f7826",
+      "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+      "coordinates": "Abs. 1 S. 1"
+     },
+     "ceiling": "same as pension insurance (§ 341 Abs. 4 SGB III)"
+    },
+    "kv": {
+     "rate_general": {
+      "value": 14.6,
+      "unit": "% of wage up to ceiling",
+      "label": {
+       "de": "Allgemeiner Beitragssatz GKV",
+       "en": "General health insurance rate"
+      },
+      "legal_basis": "§ 241 SGB V",
+      "source_ref": {
+       "source_id": "gesetze_im_internet",
+       "file": "sgb5_241.html",
+       "path": "research/raw/gesetze_im_internet/sgb5_241.html",
+       "url": "https://www.gesetze-im-internet.de/sgb_5/__241.html",
+       "retrieved": "2026-10-09T12:45:41Z",
+       "sha256": "fc3425fe626214608d19ae99bfee6acc7243f27b67c9c159a3232293072197ed",
+       "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+       "coordinates": "14,6 Prozent"
+      },
+      "status": "statute"
+     },
+     "zusatzbeitrag_average": {
+      "value": 2.5,
+      "unit": "%",
+      "label": {
+       "de": "Durchschnittlicher Zusatzbeitragssatz (§ 242a SGB V)",
+       "en": "Statutory average additional contribution"
+      },
+      "legal_basis": "§ 242a Abs. 2 SGB V, Bekanntmachung des BMG im Bundesanzeiger",
+      "source_ref": {
+       "source_id": "gkv_spitzenverband_zusatzbeitrag",
+       "file": "zusatzbeitragssatz.html",
+       "path": "research/cache/gkv_spitzenverband_zusatzbeitrag/zusatzbeitragssatz.html",
+       "url": "https://www.gkv-spitzenverband.de/krankenversicherung/kv_grundprinzipien/finanzierung/zusatzbeitragssatz/zusatzbeitragssatz.jsp",
+       "retrieved": "2026-10-09T12:56:45Z",
+       "sha256": "1f1228b12fe63e3c0cb1a11ba05c16794cb0c4c8fa909434f5f8de0ced5adb8f",
+       "licence": "Association web page; facts only, cached and cited",
+       "coordinates": "paragraph 'Das Bundesgesundheitsministerium legt ... fest': 2,5 Prozent im Jahr 2025"
+      },
+      "status": "secondary",
+      "note": "The actual Zusatzbeitrag depends on the Krankenkasse (§ 242 SGB V); the average actually levied is higher (BMG: 3.13 % as of 1 April 2026). The 2025 Bundesanzeiger notice could not be located by URL; the value is confirmed by the GKV-Spitzenverband page and by the PAP 2025 Prüftabelle (KVZ = 2,50)."
+     },
+     "employee_share": 8.55,
+     "employer_share": 8.55,
+     "split_basis": "§ 249 Abs. 1 SGB V (je zur Hälfte, incl. Zusatzbeitrag)",
+     "split_ref": {
+      "source_id": "gesetze_im_internet_payslip",
+      "file": "sgb5_249.html",
+      "path": "research/raw/gesetze_im_internet_payslip/sgb5_249.html",
+      "url": "https://www.gesetze-im-internet.de/sgb_5/__249.html",
+      "retrieved": "2026-10-09T12:56:40Z",
+      "sha256": "fb9d6df036588f6de628148883bbb72d806ba8c8d73f8862d42f9afa12df66fd",
+      "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+      "coordinates": "Abs. 1 S. 1"
+     },
+     "ceiling_annual": {
+      "value": 66150,
+      "unit": "EUR",
+      "label": {
+       "de": "Beitragsbemessungsgrenze KV/PV",
+       "en": "Contribution ceiling, health/care"
+      },
+      "legal_basis": "§ 6 Abs. 7 SGB V (Jahresarbeitsentgeltgrenze), SVBezGrV § 2 Abs. 2",
+      "source_ref": {
+       "source_id": "gesetze_im_internet_payslip",
+       "file": "svbezgrv_2025_2.html",
+       "path": "research/raw/gesetze_im_internet_payslip/svbezgrv_2025_2.html",
+       "url": "https://www.gesetze-im-internet.de/svbezgrv_2025/__2.html",
+       "retrieved": "2026-10-09T12:56:41Z",
+       "sha256": "5ea710980a08cb39a4a8b8ef1001f74fdfc6be59610982d10f27ccd0daf884f5",
+       "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+       "coordinates": "§ 2 Abs. 2: 66 150 Euro / 5 512,50 Euro"
+      },
+      "status": "statute"
+     },
+     "ceiling_monthly": 5512.5
+    },
+    "pv": {
+     "rate_total": {
+      "value": 3.6,
+      "unit": "% of wage up to KV ceiling",
+      "label": {
+       "de": "Pflegeversicherung Beitragssatz",
+       "en": "Long-term care insurance rate"
+      },
+      "legal_basis": "§ 55 Abs. 1 S. 1 SGB XI; § 1 Abs. 1 PBAV 2025",
+      "source_ref": {
+       "source_id": "gesetze_im_internet_payslip",
+       "file": "pbav_2025_1.html",
+       "path": "research/raw/gesetze_im_internet_payslip/pbav_2025_1.html",
+       "url": "https://www.gesetze-im-internet.de/pbav_2025/__1.html",
+       "retrieved": "2026-10-09T12:56:41Z",
+       "sha256": "2925d4e8caf1f67d264a172f0b2f731b42dfac838e934679c96dccee660fac09",
+       "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+       "coordinates": "§ 1 Abs. 1: 3,6 Prozent zum 1. Januar 2025"
+      },
+      "status": "statute"
+     },
+     "childless_surcharge": {
+      "value": 0.6,
+      "unit": "percentage points, employee only, from age 23",
+      "label": {
+       "de": "Beitragszuschlag für Kinderlose",
+       "en": "Childless surcharge"
+      },
+      "legal_basis": "§ 55 Abs. 3 S. 1 SGB XI; § 58 Abs. 1 S. 3 SGB XI (borne by the employee)",
+      "source_ref": {
+       "source_id": "gesetze_im_internet",
+       "file": "sgb11_55.html",
+       "path": "research/raw/gesetze_im_internet/sgb11_55.html",
+       "url": "https://www.gesetze-im-internet.de/sgb_11/__55.html",
+       "retrieved": "2026-10-09T12:45:41Z",
+       "sha256": "b8fc98b7a5d2724871a37d7a9e69e922b02907b4405cb8176c8c9c63aa4330d2",
+       "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+       "coordinates": "Abs. 3 S. 1: 0,6 Beitragssatzpunkte"
+      },
+      "status": "statute"
+     },
+     "child_abatement": {
+      "value": 0.25,
+      "unit": "percentage points per child from the 2nd to the 5th (under 25), employee only",
+      "label": {
+       "de": "Abschlag je Kind ab dem zweiten Kind",
+       "en": "Abatement per child (2nd-5th)"
+      },
+      "legal_basis": "§ 55 Abs. 3 S. 4 SGB XI",
+      "source_ref": {
+       "source_id": "gesetze_im_internet",
+       "file": "sgb11_55.html",
+       "path": "research/raw/gesetze_im_internet/sgb11_55.html",
+       "url": "https://www.gesetze-im-internet.de/sgb_11/__55.html",
+       "retrieved": "2026-10-09T12:45:41Z",
+       "sha256": "b8fc98b7a5d2724871a37d7a9e69e922b02907b4405cb8176c8c9c63aa4330d2",
+       "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+       "coordinates": "Abs. 3 S. 4: 0,25 Beitragssatzpunkte je Kind ab dem zweiten bis zum fünften Kind"
+      },
+      "status": "statute"
+     },
+     "employee_share": 1.8,
+     "employer_share": 1.8,
+     "split_basis": "§ 58 Abs. 1 S. 1 SGB XI (je zur Hälfte); surcharge: employee alone (S. 3)",
+     "split_ref": {
+      "source_id": "gesetze_im_internet_payslip",
+      "file": "sgb11_58.html",
+      "path": "research/raw/gesetze_im_internet_payslip/sgb11_58.html",
+      "url": "https://www.gesetze-im-internet.de/sgb_11/__58.html",
+      "retrieved": "2026-10-09T12:56:41Z",
+      "sha256": "408a6e8f91d0299ebd08aef25a633874c276905c73358b44d7373d195d3551ad",
+      "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+      "coordinates": "Abs. 1 S. 1 and S. 3"
+     },
+     "saxony": {
+      "employee_share": 2.3,
+      "employer_share": 1.3,
+      "legal_basis": "§ 58 Abs. 3 SGB XI (no public holiday abolished: employee bears 1 percentage point more)",
+      "source_ref": {
+       "source_id": "gesetze_im_internet_payslip",
+       "file": "sgb11_58.html",
+       "path": "research/raw/gesetze_im_internet_payslip/sgb11_58.html",
+       "url": "https://www.gesetze-im-internet.de/sgb_11/__58.html",
+       "retrieved": "2026-10-09T12:56:41Z",
+       "sha256": "408a6e8f91d0299ebd08aef25a633874c276905c73358b44d7373d195d3551ad",
+       "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+       "coordinates": "Abs. 3 S. 1, Abs. 5"
+      },
+      "pap_ref": {
+       "source_id": "bmf_programmablaufplan",
+       "file": "2025-01-22-geaenderte-PAP-2025-anlage-1.pdf",
+       "path": "research/cache/bmf_programmablaufplan/2025-01-22-geaenderte-PAP-2025-anlage-1.pdf",
+       "url": "https://www.bundesfinanzministerium.de/Content/DE/Downloads/Steuern/Steuerarten/Lohnsteuer/Programmablaufplan/2025-01-22-geaenderte-PAP-2025-anlage-1.pdf?__blob=publicationFile&v=2",
+       "retrieved": "2026-10-09T12:56:42Z",
+       "sha256": "092de325b1e3258cff16a617b1963f923a82e98952e53c345ba7403ddbd45a53",
+       "licence": "BMF-Schreiben are administrative instructions published by the ministry; BMF's Impressum claims copyright for its web content, so the PDFs are cached and cited by page/section, not redistributed.",
+       "coordinates": "page 14, MPARA: PVS = 1 → PVSATZAN/PVSATZAG"
+      }
+     },
+     "ceiling": "same as health insurance (§ 55 Abs. 2 SGB XI)"
+    },
+    "bezugsgroesse": {
+     "value": 44940,
+     "unit": "EUR per year",
+     "label": {
+      "de": "Bezugsgröße",
+      "en": "Reference value (§ 18 SGB IV)"
+     },
+     "legal_basis": "§ 18 SGB IV; SVBezGrV § 1",
+     "source_ref": {
+      "source_id": "gesetze_im_internet_payslip",
+      "file": "svbezgrv_2025_1.html",
+      "path": "research/raw/gesetze_im_internet_payslip/svbezgrv_2025_1.html",
+      "url": "https://www.gesetze-im-internet.de/svbezgrv_2025/__1.html",
+      "retrieved": "2026-10-09T12:56:41Z",
+      "sha256": "7ed5b5d0f9013fd42c7e983c8dda55126245131079f1430ca63e54cd5a914066",
+      "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+      "coordinates": "§ 1: 44 940 Euro"
+     },
+     "status": "statute"
+    },
+    "cross_check": {
+     "bmas_table_2026": null,
+     "pap_constants": {
+      "source_id": "bmf_programmablaufplan",
+      "file": "2025-01-22-geaenderte-PAP-2025-anlage-1.pdf",
+      "path": "research/cache/bmf_programmablaufplan/2025-01-22-geaenderte-PAP-2025-anlage-1.pdf",
+      "url": "https://www.bundesfinanzministerium.de/Content/DE/Downloads/Steuern/Steuerarten/Lohnsteuer/Programmablaufplan/2025-01-22-geaenderte-PAP-2025-anlage-1.pdf?__blob=publicationFile&v=2",
+      "retrieved": "2026-10-09T12:56:42Z",
+      "sha256": "092de325b1e3258cff16a617b1963f923a82e98952e53c345ba7403ddbd45a53",
+      "licence": "BMF-Schreiben are administrative instructions published by the ministry; BMF's Impressum claims copyright for its web content, so the PDFs are cached and cited by page/section, not redistributed.",
+      "coordinates": "page 14, MPARA"
+     }
+    }
+   },
+   "tariff_checks": {
+    "grundfreibetrag_gives_zero": true,
+    "boundary_floor_effect_eur": {
+     "z2_top": 0.13,
+     "z3_top": 0.68,
+     "z4_top": 0.58
+    },
+    "boundary_floor_effect_note": "next-zone formula minus the floored current-zone value at each boundary (shows the 1-EUR flooring, not formula continuity; formula-vs-formula gaps are 0.002 / 0.067 / 0.000 EUR per review B)",
+    "marginal_rate_top_zone3": 0.42,
+    "marginal_rate_top_zone4": 0.45
+   }
+  },
+  "2026": {
+   "tariff": {
+    "grundfreibetrag": {
+     "value": 12348,
+     "unit": "EUR",
+     "label": {
+      "de": "Grundfreibetrag",
+      "en": "Basic allowance"
+     },
+     "legal_basis": "§ 32a Abs. 1 S. 2 Nr. 1 EStG",
+     "source_ref": {
+      "source_id": "gesetze_im_internet",
+      "file": "estg_32a.html",
+      "path": "research/raw/gesetze_im_internet/estg_32a.html",
+      "url": "https://www.gesetze-im-internet.de/estg/__32a.html",
+      "retrieved": "2026-10-09T12:45:40Z",
+      "sha256": "053bfcfc2ba961a3013eb631921957ce8a50ec3e4347bb6f0c2befaf765e0f50",
+      "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+      "coordinates": "§ 32a Abs. 1 S. 2 Nr. 1-5 (version in force, 'ab dem Veranlagungszeitraum 2026')"
+     },
+     "status": "statute"
+    },
+    "zones": [
+     {
+      "zone": 1,
+      "from": 0,
+      "to": 12348,
+      "formula": "0",
+      "label": {
+       "de": "Nullzone",
+       "en": "Zero zone"
+      }
+     },
+     {
+      "zone": 2,
+      "from": 12349,
+      "to": 17799,
+      "formula": "(914.51 * y + 1400) * y",
+      "y": "(x - 12348) / 10000",
+      "label": {
+       "de": "Erste Progressionszone (14 % → ~24 %)",
+       "en": "First progressive zone (14 % → ~24 %)"
+      }
+     },
+     {
+      "zone": 3,
+      "from": 17800,
+      "to": 69878,
+      "formula": "(173.10 * z + 2397) * z + 1034.87",
+      "z": "(x - 17799) / 10000",
+      "label": {
+       "de": "Zweite Progressionszone (~24 % → 42 %)",
+       "en": "Second progressive zone (~24 % → 42 %)"
+      }
+     },
+     {
+      "zone": 4,
+      "from": 69879,
+      "to": 277825,
+      "formula": "0.42 * x - 11135.63",
+      "label": {
+       "de": "Proportionalzone 42 %",
+       "en": "Proportional zone 42 %"
+      }
+     },
+     {
+      "zone": 5,
+      "from": 277826,
+      "to": null,
+      "formula": "0.45 * x - 19470.38",
+      "label": {
+       "de": "Proportionalzone 45 % („Reichensteuer“)",
+       "en": "Proportional zone 45 %"
+      }
+     }
+    ],
+    "rounding": "x = taxable income floored to full euros; y, z = ten-thousandths of the part above the zone's lower bound; result floored to full euros (§ 32a Abs. 1 S. 1, 3-6 EStG)",
+    "legal_basis": "§ 32a Abs. 1 EStG (version in force at retrieval)",
+    "source_ref": {
+     "source_id": "gesetze_im_internet",
+     "file": "estg_32a.html",
+     "path": "research/raw/gesetze_im_internet/estg_32a.html",
+     "url": "https://www.gesetze-im-internet.de/estg/__32a.html",
+     "retrieved": "2026-10-09T12:45:40Z",
+     "sha256": "053bfcfc2ba961a3013eb631921957ce8a50ec3e4347bb6f0c2befaf765e0f50",
+     "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+     "coordinates": "§ 32a Abs. 1 S. 2 Nr. 1-5 (version in force, 'ab dem Veranlagungszeitraum 2026')"
+    },
+    "status": "statute"
+   },
+   "soli": {
+    "rate": {
+     "value": 5.5,
+     "unit": "% of wage tax",
+     "label": {
+      "de": "Solidaritätszuschlag",
+      "en": "Solidarity surcharge rate"
+     },
+     "legal_basis": "§ 4 S. 1 SolzG 1995",
+     "source_ref": {
+      "source_id": "gesetze_im_internet",
+      "file": "solzg_4.html",
+      "path": "research/raw/gesetze_im_internet/solzg_4.html",
+      "url": "https://www.gesetze-im-internet.de/solzg_1995/__4.html",
+      "retrieved": "2026-10-09T12:45:40Z",
+      "sha256": "dd28933ed36da19cae72de5a054f9edbea5c5919cb2aeac6efc257afe9fab058",
+      "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+      "coordinates": "S. 1: 5,5 Prozent"
+     },
+     "status": "statute"
+    },
+    "freigrenze": {
+     "value": 20350,
+     "unit": "EUR of annual wage tax",
+     "label": {
+      "de": "Freigrenze (Steuerklassen I, II, IV-VI)",
+      "en": "Exemption threshold (classes I, II, IV-VI)"
+     },
+     "legal_basis": "§ 3 Abs. 3 S. 1 Nr. 2, Abs. 5 SolzG 1995",
+     "source_ref": {
+      "source_id": "gesetze_im_internet",
+      "file": "solzg_3.html",
+      "path": "research/raw/gesetze_im_internet/solzg_3.html",
+      "url": "https://www.gesetze-im-internet.de/solzg_1995/__3.html",
+      "retrieved": "2026-10-09T12:45:40Z",
+      "sha256": "259b2be21d91f243556ad6059a7d0d88011408d3d0c63204b06148b12929f1b6",
+      "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+      "coordinates": "Abs. 3 Nr. 2: 20 350 Euro (version in force 2026)"
+     },
+     "status": "statute"
+    },
+    "milderungszone_factor": {
+     "value": 11.9,
+     "unit": "% of (wage tax - Freigrenze)",
+     "label": {
+      "de": "Milderungszone: Höchstsatz",
+      "en": "Phase-in cap"
+     },
+     "legal_basis": "§ 4 S. 2 SolzG 1995",
+     "source_ref": {
+      "source_id": "gesetze_im_internet",
+      "file": "solzg_4.html",
+      "path": "research/raw/gesetze_im_internet/solzg_4.html",
+      "url": "https://www.gesetze-im-internet.de/solzg_1995/__4.html",
+      "retrieved": "2026-10-09T12:45:40Z",
+      "sha256": "dd28933ed36da19cae72de5a054f9edbea5c5919cb2aeac6efc257afe9fab058",
+      "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+      "coordinates": "S. 2: nicht mehr als 11,9 Prozent des Unterschiedsbetrages"
+     },
+     "status": "statute"
+    },
+    "rounding": "cents are truncated (§ 4 S. 3 SolzG; PAP MSOLZ setScale(2, ROUND_DOWN))"
+   },
+   "wage_tax_allowances": {
+    "arbeitnehmer_pauschbetrag": {
+     "value": 1230,
+     "unit": "EUR",
+     "label": {
+      "de": "Arbeitnehmer-Pauschbetrag",
+      "en": "Employee lump-sum allowance"
+     },
+     "legal_basis": "§ 9a S. 1 Nr. 1 a EStG; § 39b Abs. 2 S. 5 Nr. 1 EStG",
+     "source_ref": {
+      "source_id": "gesetze_im_internet_payslip",
+      "file": "estg_9a.html",
+      "path": "research/raw/gesetze_im_internet_payslip/estg_9a.html",
+      "url": "https://www.gesetze-im-internet.de/estg/__9a.html",
+      "retrieved": "2026-10-09T12:56:39Z",
+      "sha256": "d345f5dfd44a9478955ec391c63f6fca4f731021153e9e2b9a49edb0c8f9ddeb",
+      "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+      "coordinates": "S. 1 Nr. 1 a: 1 230 Euro"
+     },
+     "status": "statute"
+    },
+    "sonderausgaben_pauschbetrag": {
+     "value": 36,
+     "unit": "EUR",
+     "label": {
+      "de": "Sonderausgaben-Pauschbetrag",
+      "en": "Special-expenses lump sum"
+     },
+     "legal_basis": "§ 10c S. 1 EStG; § 39b Abs. 2 S. 5 Nr. 2 EStG",
+     "source_ref": {
+      "source_id": "gesetze_im_internet_payslip",
+      "file": "estg_10c.html",
+      "path": "research/raw/gesetze_im_internet_payslip/estg_10c.html",
+      "url": "https://www.gesetze-im-internet.de/estg/__10c.html",
+      "retrieved": "2026-10-09T12:56:39Z",
+      "sha256": "4309f91a2ebb1b66ae0aef785c77d045069059514425b87f85b2f4671bd4734b",
+      "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+      "coordinates": "S. 1: 36 Euro"
+     },
+     "status": "statute"
+    },
+    "vorsorgepauschale": {
+     "rule": "RV part (employee share, ceiling BBG RV/ALV) + the higher of (i) the employee share of KV (7.0 % + half the Zusatzbeitrag) and PV (incl. childless surcharge) on the wage up to the KV ceiling and (ii) that KV/PV share plus the employee share of the unemployment contribution (1.3 % up to BBG RV/ALV), together capped at 1 900 EUR. The 12 % minimum check no longer exists.",
+     "legal_basis": "§ 39b Abs. 2 S. 5 Nr. 3 EStG lit. a-c, e (version in force; PAP UPEVP/MVSPKVPV/MVSPHB)",
+     "source_ref": {
+      "source_id": "gesetze_im_internet",
+      "file": "estg_39b.html",
+      "path": "research/raw/gesetze_im_internet/estg_39b.html",
+      "url": "https://www.gesetze-im-internet.de/estg/__39b.html",
+      "retrieved": "2026-10-09T12:45:40Z",
+      "sha256": "cbc9fd1bcceae68668abf399bd908e778b998713df9e904453801ba96b92bcf4",
+      "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+      "coordinates": "Abs. 2 S. 5 Nr. 3 (version in force 2026)"
+     },
+     "kv_rate_used": {
+      "value": 7.0,
+      "unit": "% (employee half of the reduced rate)",
+      "label": {
+       "de": "KV-Satz in der Vorsorgepauschale",
+       "en": "Health rate used in the lump sum"
+      },
+      "legal_basis": "§ 39b Abs. 2 S. 5 Nr. 3 b EStG → § 243 SGB V (14,0 %)",
+      "source_ref": {
+       "source_id": "gesetze_im_internet_payslip",
+       "file": "sgb5_243.html",
+       "path": "research/raw/gesetze_im_internet_payslip/sgb5_243.html",
+       "url": "https://www.gesetze-im-internet.de/sgb_5/__243.html",
+       "retrieved": "2026-10-09T12:56:40Z",
+       "sha256": "daabd0c690b8f55481cc206e0d57a1de660b3da35e3030972cd68d15a0d7160c",
+       "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+       "coordinates": "S. 3: 14,0 Prozent"
+      },
+      "status": "statute"
+     },
+     "zusatzbeitrag_used": {
+      "value": 2.9,
+      "unit": "%",
+      "label": {
+       "de": "Zusatzbeitragssatz (angenommen: Durchschnitt nach § 242a SGB V)",
+       "en": "Additional contribution assumed (statutory average; the law uses the employee's own insurer's rate)"
+      },
+      "legal_basis": "§ 39b Abs. 2 S. 5 Nr. 3 b EStG uses the employee's own Krankenkasse rate (§ 242 SGB V); here the § 242a average is used, as the PAP Prüftabelle does (KVZ). With the 3.13 % actually levied on average (BMG, 1 April 2026) the 45,000 example shifts by −16 EUR wage tax and +52 EUR KV contribution.",
+      "source_ref": {
+       "source_id": "bundesanzeiger_zusatzbeitrag",
+       "file": "BAnz_AT_10.11.2025_B7.pdf",
+       "path": "research/cache/bundesanzeiger_zusatzbeitrag/BAnz_AT_10.11.2025_B7.pdf",
+       "url": "https://www.bundesanzeiger.de/pub/publication/oUJYVk8GYRXybnb9Y4h/content/oUJYVk8GYRXybnb9Y4h/BAnz%20AT%2010.11.2025%20B7.pdf",
+       "retrieved": "2026-10-09T12:56:45Z",
+       "sha256": "7f0833321c32c766a3068cd685621ebff7982467a0e392299222b062c82adbc7",
+       "licence": "Official notices are official works (§ 5 UrhG); the Bundesanzeiger Verlag claims rights in the publication layout, so the PDFs are cached and cited, not redistributed.",
+       "coordinates": "page 1, Bekanntmachung vom 07.11.2025: 2,9 Prozent"
+      },
+      "status": "statute"
+     },
+     "rounding": "part amounts truncated to cents; total rounded up to full euros (PAP UPEVP/MVSP; § 39b Abs. 2 S. 5 Nr. 3 EStG via Programmablaufplan, § 39b Abs. 6 EStG)",
+     "status": "statute"
+    }
+   },
+   "social_insurance": {
+    "rv": {
+     "rate_total": {
+      "value": 18.6,
+      "unit": "% of wage up to ceiling",
+      "label": {
+       "de": "Rentenversicherung Beitragssatz",
+       "en": "Pension insurance rate"
+      },
+      "legal_basis": "§ 158 SGB VI; Beitragssatzverordnung 2018; RVBeitrSBek",
+      "source_ref": {
+       "source_id": "gesetze_im_internet_payslip",
+       "file": "rvbeitrsbek_2026.html",
+       "path": "research/raw/gesetze_im_internet_payslip/rvbeitrsbek_2026.html",
+       "url": "https://www.gesetze-im-internet.de/rvbeitrsbek_2026/BJNR1230A0025.html",
+       "retrieved": "2026-10-09T12:56:40Z",
+       "sha256": "6105e8394e2a859705f933e3d4f0639f0f6ce56e918f898970ed63775937d75e",
+       "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+       "coordinates": "'Der Beitragssatz für das Jahr 2026 beträgt weiterhin in der allgemeinen Rentenversicherung 18,6 Prozent' (BGBl. 2025 I Nr. 291)"
+      },
+      "status": "statute"
+     },
+     "employee_share": 9.3,
+     "employer_share": 9.3,
+     "split_basis": "§ 168 Abs. 1 Nr. 1 SGB VI (je zur Hälfte)",
+     "split_ref": {
+      "source_id": "gesetze_im_internet_payslip",
+      "file": "sgb6_168.html",
+      "path": "research/raw/gesetze_im_internet_payslip/sgb6_168.html",
+      "url": "https://www.gesetze-im-internet.de/sgb_6/__168.html",
+      "retrieved": "2026-10-09T12:56:40Z",
+      "sha256": "0046c1be59b1cf96269f6427ebd46c9736d4520bb629af9b69ffa28f5c14cf98",
+      "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+      "coordinates": "Abs. 1 Nr. 1"
+     },
+     "ceiling_annual": {
+      "value": 101400,
+      "unit": "EUR",
+      "label": {
+       "de": "Beitragsbemessungsgrenze RV",
+       "en": "Contribution ceiling, pension"
+      },
+      "legal_basis": "§ 159 SGB VI, Anlage 2 SGB VI; SVBezGrV",
+      "source_ref": {
+       "source_id": "gesetze_im_internet_payslip",
+       "file": "sgb6_anlage_2.html",
+       "path": "research/raw/gesetze_im_internet_payslip/sgb6_anlage_2.html",
+       "url": "https://www.gesetze-im-internet.de/sgb_6/anlage_2.html",
+       "retrieved": "2026-10-09T12:56:40Z",
+       "sha256": "61f85281e4a5d6c9421510b29b306d0a9dbbdfd196639071de3a19ba9f4dd69c",
+       "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+       "coordinates": "table rows 1.1.2024-31.12.2024 (90 600), 1.1.2025-31.12.2025 (96 600), 1.1.2026-31.12.2026 (101 400), column 'Allgemeine Rentenversicherung'"
+      },
+      "status": "statute"
+     },
+     "ceiling_monthly": 8450.0
+    },
+    "alv": {
+     "rate_total": {
+      "value": 2.6,
+      "unit": "% of wage up to ceiling",
+      "label": {
+       "de": "Arbeitslosenversicherung Beitragssatz",
+       "en": "Unemployment insurance rate"
+      },
+      "legal_basis": "§ 341 Abs. 2 SGB III",
+      "source_ref": {
+       "source_id": "gesetze_im_internet",
+       "file": "sgb3_341.html",
+       "path": "research/raw/gesetze_im_internet/sgb3_341.html",
+       "url": "https://www.gesetze-im-internet.de/sgb_3/__341.html",
+       "retrieved": "2026-10-09T12:45:41Z",
+       "sha256": "eaf446ba529d56b7e3bf1e04a5c2dbbd6adf3519132347d57b947dd72f62baa4",
+       "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+       "coordinates": "Abs. 2: 2,6 Prozent"
+      },
+      "status": "statute"
+     },
+     "employee_share": 1.3,
+     "employer_share": 1.3,
+     "split_basis": "§ 346 Abs. 1 SGB III (je zur Hälfte)",
+     "split_ref": {
+      "source_id": "gesetze_im_internet_payslip",
+      "file": "sgb3_346.html",
+      "path": "research/raw/gesetze_im_internet_payslip/sgb3_346.html",
+      "url": "https://www.gesetze-im-internet.de/sgb_3/__346.html",
+      "retrieved": "2026-10-09T12:56:40Z",
+      "sha256": "63656d2f1f4d70c3887927ce9dfdda5b806545123b5371cdd14daaf6701f7826",
+      "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+      "coordinates": "Abs. 1 S. 1"
+     },
+     "ceiling": "same as pension insurance (§ 341 Abs. 4 SGB III)"
+    },
+    "kv": {
+     "rate_general": {
+      "value": 14.6,
+      "unit": "% of wage up to ceiling",
+      "label": {
+       "de": "Allgemeiner Beitragssatz GKV",
+       "en": "General health insurance rate"
+      },
+      "legal_basis": "§ 241 SGB V",
+      "source_ref": {
+       "source_id": "gesetze_im_internet",
+       "file": "sgb5_241.html",
+       "path": "research/raw/gesetze_im_internet/sgb5_241.html",
+       "url": "https://www.gesetze-im-internet.de/sgb_5/__241.html",
+       "retrieved": "2026-10-09T12:45:41Z",
+       "sha256": "fc3425fe626214608d19ae99bfee6acc7243f27b67c9c159a3232293072197ed",
+       "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+       "coordinates": "14,6 Prozent"
+      },
+      "status": "statute"
+     },
+     "zusatzbeitrag_average": {
+      "value": 2.9,
+      "unit": "%",
+      "label": {
+       "de": "Durchschnittlicher Zusatzbeitragssatz (§ 242a SGB V)",
+       "en": "Statutory average additional contribution"
+      },
+      "legal_basis": "§ 242a Abs. 2 SGB V, Bekanntmachung des BMG im Bundesanzeiger",
+      "source_ref": {
+       "source_id": "bundesanzeiger_zusatzbeitrag",
+       "file": "BAnz_AT_10.11.2025_B7.pdf",
+       "path": "research/cache/bundesanzeiger_zusatzbeitrag/BAnz_AT_10.11.2025_B7.pdf",
+       "url": "https://www.bundesanzeiger.de/pub/publication/oUJYVk8GYRXybnb9Y4h/content/oUJYVk8GYRXybnb9Y4h/BAnz%20AT%2010.11.2025%20B7.pdf",
+       "retrieved": "2026-10-09T12:56:45Z",
+       "sha256": "7f0833321c32c766a3068cd685621ebff7982467a0e392299222b062c82adbc7",
+       "licence": "Official notices are official works (§ 5 UrhG); the Bundesanzeiger Verlag claims rights in the publication layout, so the PDFs are cached and cited, not redistributed.",
+       "coordinates": "page 1, Bekanntmachung vom 07.11.2025: 2,9 Prozent"
+      },
+      "status": "statute",
+      "note": "The actual Zusatzbeitrag depends on the Krankenkasse (§ 242 SGB V); the average actually levied is higher (BMG: 3.13 % as of 1 April 2026). "
+     },
+     "employee_share": 8.75,
+     "employer_share": 8.75,
+     "split_basis": "§ 249 Abs. 1 SGB V (je zur Hälfte, incl. Zusatzbeitrag)",
+     "split_ref": {
+      "source_id": "gesetze_im_internet_payslip",
+      "file": "sgb5_249.html",
+      "path": "research/raw/gesetze_im_internet_payslip/sgb5_249.html",
+      "url": "https://www.gesetze-im-internet.de/sgb_5/__249.html",
+      "retrieved": "2026-10-09T12:56:40Z",
+      "sha256": "fb9d6df036588f6de628148883bbb72d806ba8c8d73f8862d42f9afa12df66fd",
+      "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+      "coordinates": "Abs. 1 S. 1"
+     },
+     "ceiling_annual": {
+      "value": 69750,
+      "unit": "EUR",
+      "label": {
+       "de": "Beitragsbemessungsgrenze KV/PV",
+       "en": "Contribution ceiling, health/care"
+      },
+      "legal_basis": "§ 6 Abs. 7 SGB V (Jahresarbeitsentgeltgrenze), SVBezGrV § 2 Abs. 2",
+      "source_ref": {
+       "source_id": "gesetze_im_internet",
+       "file": "svbezgrv_2026_2.html",
+       "path": "research/raw/gesetze_im_internet/svbezgrv_2026_2.html",
+       "url": "https://www.gesetze-im-internet.de/svbezgrv_2026/__2.html",
+       "retrieved": "2026-10-09T12:45:42Z",
+       "sha256": "e92edebd8a2a9df10c1f49f4d303a8ad162bc0c12fad233b1dc58626e47fea37",
+       "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+       "coordinates": "§ 2 Abs. 2: 69 750 Euro / 5 812,50 Euro"
+      },
+      "status": "statute"
+     },
+     "ceiling_monthly": 5812.5
+    },
+    "pv": {
+     "rate_total": {
+      "value": 3.6,
+      "unit": "% of wage up to KV ceiling",
+      "label": {
+       "de": "Pflegeversicherung Beitragssatz",
+       "en": "Long-term care insurance rate"
+      },
+      "legal_basis": "§ 55 Abs. 1 S. 1 SGB XI; § 1 Abs. 1 PBAV 2025",
+      "source_ref": {
+       "source_id": "gesetze_im_internet_payslip",
+       "file": "pbav_2025_1.html",
+       "path": "research/raw/gesetze_im_internet_payslip/pbav_2025_1.html",
+       "url": "https://www.gesetze-im-internet.de/pbav_2025/__1.html",
+       "retrieved": "2026-10-09T12:56:41Z",
+       "sha256": "2925d4e8caf1f67d264a172f0b2f731b42dfac838e934679c96dccee660fac09",
+       "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+       "coordinates": "§ 1 Abs. 1: 3,6 Prozent (continues; no later adjustment at retrieval)"
+      },
+      "status": "statute"
+     },
+     "childless_surcharge": {
+      "value": 0.6,
+      "unit": "percentage points, employee only, from age 23",
+      "label": {
+       "de": "Beitragszuschlag für Kinderlose",
+       "en": "Childless surcharge"
+      },
+      "legal_basis": "§ 55 Abs. 3 S. 1 SGB XI; § 58 Abs. 1 S. 3 SGB XI (borne by the employee)",
+      "source_ref": {
+       "source_id": "gesetze_im_internet",
+       "file": "sgb11_55.html",
+       "path": "research/raw/gesetze_im_internet/sgb11_55.html",
+       "url": "https://www.gesetze-im-internet.de/sgb_11/__55.html",
+       "retrieved": "2026-10-09T12:45:41Z",
+       "sha256": "b8fc98b7a5d2724871a37d7a9e69e922b02907b4405cb8176c8c9c63aa4330d2",
+       "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+       "coordinates": "Abs. 3 S. 1: 0,6 Beitragssatzpunkte"
+      },
+      "status": "statute"
+     },
+     "child_abatement": {
+      "value": 0.25,
+      "unit": "percentage points per child from the 2nd to the 5th (under 25), employee only",
+      "label": {
+       "de": "Abschlag je Kind ab dem zweiten Kind",
+       "en": "Abatement per child (2nd-5th)"
+      },
+      "legal_basis": "§ 55 Abs. 3 S. 4 SGB XI",
+      "source_ref": {
+       "source_id": "gesetze_im_internet",
+       "file": "sgb11_55.html",
+       "path": "research/raw/gesetze_im_internet/sgb11_55.html",
+       "url": "https://www.gesetze-im-internet.de/sgb_11/__55.html",
+       "retrieved": "2026-10-09T12:45:41Z",
+       "sha256": "b8fc98b7a5d2724871a37d7a9e69e922b02907b4405cb8176c8c9c63aa4330d2",
+       "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+       "coordinates": "Abs. 3 S. 4: 0,25 Beitragssatzpunkte je Kind ab dem zweiten bis zum fünften Kind"
+      },
+      "status": "statute"
+     },
+     "employee_share": 1.8,
+     "employer_share": 1.8,
+     "split_basis": "§ 58 Abs. 1 S. 1 SGB XI (je zur Hälfte); surcharge: employee alone (S. 3)",
+     "split_ref": {
+      "source_id": "gesetze_im_internet_payslip",
+      "file": "sgb11_58.html",
+      "path": "research/raw/gesetze_im_internet_payslip/sgb11_58.html",
+      "url": "https://www.gesetze-im-internet.de/sgb_11/__58.html",
+      "retrieved": "2026-10-09T12:56:41Z",
+      "sha256": "408a6e8f91d0299ebd08aef25a633874c276905c73358b44d7373d195d3551ad",
+      "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+      "coordinates": "Abs. 1 S. 1 and S. 3"
+     },
+     "saxony": {
+      "employee_share": 2.3,
+      "employer_share": 1.3,
+      "legal_basis": "§ 58 Abs. 3 SGB XI (no public holiday abolished: employee bears 1 percentage point more)",
+      "source_ref": {
+       "source_id": "gesetze_im_internet_payslip",
+       "file": "sgb11_58.html",
+       "path": "research/raw/gesetze_im_internet_payslip/sgb11_58.html",
+       "url": "https://www.gesetze-im-internet.de/sgb_11/__58.html",
+       "retrieved": "2026-10-09T12:56:41Z",
+       "sha256": "408a6e8f91d0299ebd08aef25a633874c276905c73358b44d7373d195d3551ad",
+       "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+       "coordinates": "Abs. 3 S. 1, Abs. 5"
+      },
+      "pap_ref": {
+       "source_id": "bmf_programmablaufplan",
+       "file": "2025-11-12-PAP-2026-anlage-1.pdf",
+       "path": "research/cache/bmf_programmablaufplan/2025-11-12-PAP-2026-anlage-1.pdf",
+       "url": "https://www.bundesfinanzministerium.de/Content/DE/Downloads/Steuern/Steuerarten/Lohnsteuer/Programmablaufplan/2025-11-12-PAP-2026-anlage-1.pdf?__blob=publicationFile&v=2",
+       "retrieved": "2026-10-09T12:56:43Z",
+       "sha256": "5da38acd544868ddcb0bc7f43030bd7d6ee9aa455dff0f42ad59732634e33a48",
+       "licence": "BMF-Schreiben are administrative instructions published by the ministry; BMF's Impressum claims copyright for its web content, so the PDFs are cached and cited by page/section, not redistributed.",
+       "coordinates": "page 14, MPARA: PVS = 1 → PVSATZAN/PVSATZAG"
+      }
+     },
+     "ceiling": "same as health insurance (§ 55 Abs. 2 SGB XI)"
+    },
+    "bezugsgroesse": {
+     "value": 47460,
+     "unit": "EUR per year",
+     "label": {
+      "de": "Bezugsgröße",
+      "en": "Reference value (§ 18 SGB IV)"
+     },
+     "legal_basis": "§ 18 SGB IV; SVBezGrV § 1",
+     "source_ref": {
+      "source_id": "gesetze_im_internet",
+      "file": "svbezgrv_2026_1.html",
+      "path": "research/raw/gesetze_im_internet/svbezgrv_2026_1.html",
+      "url": "https://www.gesetze-im-internet.de/svbezgrv_2026/__1.html",
+      "retrieved": "2026-10-09T12:45:41Z",
+      "sha256": "99cfa83ca2328a4f88df83c5bbd734e8a4a2678180dddcdc0114c031962c0b96",
+      "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+      "coordinates": "§ 1: 47 460 Euro"
+     },
+     "status": "statute"
+    },
+    "cross_check": {
+     "bmas_table_2026": {
+      "source_id": "bmas_rechengroessen",
+      "file": "sv-rechengroessenverordnung-2026.html",
+      "path": "research/cache/bmas_rechengroessen/sv-rechengroessenverordnung-2026.html",
+      "url": "https://www.bmas.de/DE/Service/Gesetze-und-Gesetzesvorhaben/sozialversicherungs-rechengroessenverordnung-2026.html",
+      "retrieved": "2026-10-09T12:45:39Z",
+      "sha256": "20298df5802d5c2824fcba63af7609f2051cc39f9b8c37882821807ff453dd6b",
+      "licence": "Federal ministry web page; facts only (the values are law, see svbezgrv statutes below)",
+      "coordinates": "table rows 'Beitragsbemessungsgrenze in der Kranken- und Pflegeversicherung 5.812,50 / 69.750', 'allgemeine Rentenversicherung 8.450 / 101.400', 'Bezugsgröße 3.955 / 47.460'"
+     },
+     "pap_constants": {
+      "source_id": "bmf_programmablaufplan",
+      "file": "2025-11-12-PAP-2026-anlage-1.pdf",
+      "path": "research/cache/bmf_programmablaufplan/2025-11-12-PAP-2026-anlage-1.pdf",
+      "url": "https://www.bundesfinanzministerium.de/Content/DE/Downloads/Steuern/Steuerarten/Lohnsteuer/Programmablaufplan/2025-11-12-PAP-2026-anlage-1.pdf?__blob=publicationFile&v=2",
+      "retrieved": "2026-10-09T12:56:43Z",
+      "sha256": "5da38acd544868ddcb0bc7f43030bd7d6ee9aa455dff0f42ad59732634e33a48",
+      "licence": "BMF-Schreiben are administrative instructions published by the ministry; BMF's Impressum claims copyright for its web content, so the PDFs are cached and cited by page/section, not redistributed.",
+      "coordinates": "page 14, MPARA"
+     }
+    }
+   },
+   "tariff_checks": {
+    "grundfreibetrag_gives_zero": true,
+    "boundary_floor_effect_eur": {
+     "z2_top": 0.87,
+     "z3_top": 0.13,
+     "z4_top": 0.87
+    },
+    "boundary_floor_effect_note": "next-zone formula minus the floored current-zone value at each boundary (shows the 1-EUR flooring, not formula continuity; formula-vs-formula gaps are 0.002 / 0.067 / 0.000 EUR per review B)",
+    "marginal_rate_top_zone3": 0.42,
+    "marginal_rate_top_zone4": 0.45
+   }
+  }
+ },
+ "validation": {
+  "method": "Every row of the class-I column of the BMF Prüftabelle ('Allgemeine maschinelle Jahreslohnsteuer', printed in each PAP) was recomputed with this engine; the build fails on any difference. The PAP tables assume an employee insured in all branches, PVZ = 1 (childless surcharge), contribution ceilings West, KVZ = the statutory average Zusatzbeitrag of the year. In addition the § 32a tariff was checked for 0 EUR at the Grundfreibetrag, continuity (< 1 EUR) at the three zone boundaries and marginal rates of 42 %/45 % at the top of zones 3/4. The BMF online calculator's programming interface could not be used (access code only shown behind an interactive consent dialog).",
+  "prueftabelle": {
+   "2024": {
+    "rows_compared": 39,
+    "max_abs_diff_eur": 0,
+    "gross_range": [
+     5000,
+     100000
+    ],
+    "kvz_pct_assumed_by_pap": "1.70",
+    "pvz": 1,
+    "source": {
+     "source_id": "bmf_programmablaufplan",
+     "file": "2024-10-18-PAP-Dez-2024-anl-1.pdf",
+     "path": "research/cache/bmf_programmablaufplan/2024-10-18-PAP-Dez-2024-anl-1.pdf",
+     "url": "https://www.bundesfinanzministerium.de/Content/DE/Downloads/Steuern/Steuerarten/Lohnsteuer/Programmablaufplan/2024-10-18-PAP-Dez-2024-anl-1.pdf?__blob=publicationFile&v=2",
+     "retrieved": "2026-10-09T12:56:42Z",
+     "sha256": "424215d20f0b47c75b77aa614a807d44a5ffbd23fb98aa59b42af7acdb055a84",
+     "licence": "BMF-Schreiben are administrative instructions published by the ministry; BMF's Impressum claims copyright for its web content, so the PDFs are cached and cited by page/section, not redistributed.",
+     "coordinates": "page 44, Prüftabelle, column I"
+    }
+   },
+   "2025": {
+    "rows_compared": 39,
+    "max_abs_diff_eur": 0,
+    "gross_range": [
+     5000,
+     100000
+    ],
+    "kvz_pct_assumed_by_pap": "2.50",
+    "pvz": 1,
+    "source": {
+     "source_id": "bmf_programmablaufplan",
+     "file": "2025-01-22-geaenderte-PAP-2025-anlage-1.pdf",
+     "path": "research/cache/bmf_programmablaufplan/2025-01-22-geaenderte-PAP-2025-anlage-1.pdf",
+     "url": "https://www.bundesfinanzministerium.de/Content/DE/Downloads/Steuern/Steuerarten/Lohnsteuer/Programmablaufplan/2025-01-22-geaenderte-PAP-2025-anlage-1.pdf?__blob=publicationFile&v=2",
+     "retrieved": "2026-10-09T12:56:42Z",
+     "sha256": "092de325b1e3258cff16a617b1963f923a82e98952e53c345ba7403ddbd45a53",
+     "licence": "BMF-Schreiben are administrative instructions published by the ministry; BMF's Impressum claims copyright for its web content, so the PDFs are cached and cited by page/section, not redistributed.",
+     "coordinates": "page 39, Prüftabelle, column I"
+    }
+   },
+   "2026": {
+    "rows_compared": 43,
+    "max_abs_diff_eur": 0,
+    "gross_range": [
+     5000,
+     110000
+    ],
+    "kvz_pct_assumed_by_pap": "2.90",
+    "pvz": 1,
+    "source": {
+     "source_id": "bmf_programmablaufplan",
+     "file": "2025-11-12-PAP-2026-anlage-1.pdf",
+     "path": "research/cache/bmf_programmablaufplan/2025-11-12-PAP-2026-anlage-1.pdf",
+     "url": "https://www.bundesfinanzministerium.de/Content/DE/Downloads/Steuern/Steuerarten/Lohnsteuer/Programmablaufplan/2025-11-12-PAP-2026-anlage-1.pdf?__blob=publicationFile&v=2",
+     "retrieved": "2026-10-09T12:56:43Z",
+     "sha256": "5da38acd544868ddcb0bc7f43030bd7d6ee9aa455dff0f42ad59732634e33a48",
+     "licence": "BMF-Schreiben are administrative instructions published by the ministry; BMF's Impressum claims copyright for its web content, so the PDFs are cached and cited by page/section, not redistributed.",
+     "coordinates": "page 39, Prüftabelle, column I"
+    }
+   }
+  },
+  "extract": "research/extracts/bmf_programmablaufplan/prueftabelle_stkl1.csv",
+  "not_validated": [
+   "Solidaritätszuschlag amounts (no official table found; formula follows § 4 SolzG and PAP MSOLZ exactly)",
+   "Social-contribution cent rounding (payroll rounds per month; here annual base × rate rounded to the cent)",
+   "Saxony PV split (implemented, not in the Prüftabelle)"
+  ]
+ },
+ "status_legend": {
+  "statute": "taken from the statute/regulation text or an official notice (BGBl., Bundesanzeiger, BMF Programmablaufplan)",
+  "secondary": "official value quoted by a non-statutory page; the primary notice was not fetched",
+  "assumption": "a modelling choice of this project, not prescribed by law (e.g. using the statutory average Zusatzbeitrag instead of an insurer's own rate)"
+ },
+ "review_notes": [
+  "2024/2025 § 32a constants and Soli Freigrenzen are taken from the BMF Programmablaufplan/Tarifhistorie (official BMF documents), not from the BGBl. text (review B).",
+  "PV 3.6 % for 2026 rests on PBAV 2025 ('zum 1. Januar 2025') and the PAP 2026 constant; no 2026-specific notice (review B).",
+  "First Soli euro for a single childless employee in 2026 at gross 92,396 EUR (review B).",
+  "2024 rows use the whole-year December-2024 tariff (GFB 11,784); January-November payroll used 11,604."
+ ]
+}
