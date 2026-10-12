@@ -1,3 +1,5 @@
+> **Superseded (2026-10-09):** the live methodology is `research/README.md` (raw → extracts → `data/`, reference years, conventions) and `docs/research/RATIONALIZATION.md`. The consolidated ESA S.13 view *is* now part of the data layer (`data/de/government/cofog.json`), next to the cash and statutory layers.
+
 # Methodology
 
 > **Superseded direction (2026-08-05):** Germany has now been researched. Consolidated ESA S.13

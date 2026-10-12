@@ -1,0 +1,33 @@
+code,name_de,amount_eur,pdf_pages,extraction_note
+2,"Soziale Sicherung, Familie und Jugend, Arbeitsmarktpolitik",12237400330.87,79-88,"Hauptfunktion row, geometric word-level extraction 2026-08-06, cent-exact child sums"
+21,Verwaltung für soziale Angelegenheiten,576623426.07,79-88,Oberfunktion row
+22,Sozialversicherung einschließlich Arbeitslosenversicherung,264391724.86,79-88,Oberfunktion row
+23,"Familienhilfe, Wohlfahrtspflege und Ähnliches",1048619411.59,79-88,Oberfunktion row
+24,Soziale Leistungen für Folgen von Krieg und politischen Ereignissen,82693584.52,79-88,Oberfunktion row
+25,Arbeitsmarktpolitik,2113931568.29,79-88,Oberfunktion row
+26,Kinder- und Jugendhilfe nach dem SGB VIII,1313682878.17,79-88,Oberfunktion row
+27,Kindertagesbetreuung nach dem SGB VIII,2753866848.23,79-88,Oberfunktion row
+28,"Soziale Leistungen nach dem SGB XII und dem AsylbLG, Eingliederungshilfe",3507108567.35,79-88,Oberfunktion row
+29,Sonstige soziale Angelegenheiten,576482321.79,79-88,Oberfunktion row
+1,"Bildungswesen, Wissenschaft, Forschung, kulturelle Angelegenheiten",11486353907.68,79-88,"Hauptfunktion row, geometric word-level extraction 2026-08-06, cent-exact child sums"
+11,Allgemeinbildende und berufliche Schulen (öffentlich),5060308838.36,79-88,Oberfunktion row
+12,"Allgemeinbildende und berufliche Schulen (Sonder-, Privat-, Berufsschulen)",2121601166.64,79-88,Oberfunktion row
+13,Hochschulen,2235130739.59,79-88,Oberfunktion row
+14,"Förderung für Schülerinnen und Schüler, Studierende",341526221.06,79-88,Oberfunktion row
+15,Sonstiges Bildungswesen,100732274.93,79-88,Oberfunktion row
+16,"Wissenschaft, Forschung außerhalb der Hochschulen",430727119.63,79-88,Oberfunktion row
+18,Kultur und Religion (Kultureinrichtungen),1018429084.99,79-88,Oberfunktion row
+19,"Kultur und Religion (Denkmalschutz, kirchliche Angelegenheiten)",177898462.48,79-88,Oberfunktion row
+0,Allgemeine Dienste,8184947117.33,79-88,"Hauptfunktion row, geometric word-level extraction 2026-08-06, cent-exact child sums"
+01,Politische Führung und zentrale Verwaltung,2633556168.81,79-88,Oberfunktion row
+02,Auswärtige Angelegenheiten,8476394.4,79-88,Oberfunktion row
+04,Öffentliche Sicherheit und Ordnung,3431223283.6,79-88,Oberfunktion row
+05,Rechtsschutz,1433347657.67,79-88,Oberfunktion row
+06,Finanzverwaltung,678343612.85,79-88,Oberfunktion row
+7,Verkehrs- und Nachrichtenwesen,2366087450.5,79-88,"Hauptfunktion row, geometric word-level extraction 2026-08-06, cent-exact child sums"
+6,"Energie- und Wasserwirtschaft, Gewerbe, Dienstleistungen",2298456893.9,79-88,"Hauptfunktion row, geometric word-level extraction 2026-08-06, cent-exact child sums"
+8,Finanzwirtschaft,1817608671.9,79-88,"Hauptfunktion row, geometric word-level extraction 2026-08-06, cent-exact child sums"
+3,"Gesundheit, Umwelt, Sport und Erholung",1317065860.72,79-88,"Hauptfunktion row, geometric word-level extraction 2026-08-06, cent-exact child sums"
+4,"Wohnungswesen, Städtebau, Raumordnung und kommunale Gemeinschaftsdienste",726239037.23,79-88,"Hauptfunktion row, geometric word-level extraction 2026-08-06, cent-exact child sums"
+5,"Ernährung, Landwirtschaft und Forsten",29482800.38,79-88,"Hauptfunktion row, geometric word-level extraction 2026-08-06, cent-exact child sums"
+total,Gesamtausgaben,40463642070.51,79-88,table total

@@ -4,3 +4,7 @@ dist/
 .DS_Store
 coverage/
 *.log
+# research: non-redistributable or oversized raw downloads live in the cache (re-fetch with scripts/research/fetch.py)
+research/cache/
+.venv/
+__pycache__/

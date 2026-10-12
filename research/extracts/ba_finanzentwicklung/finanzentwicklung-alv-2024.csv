@@ -1,0 +1,92 @@
+item_de,year,value,unit,page,row_or_table,note
+Einnahmen,2024,44.61,Mrd EUR,3,Fließtext,"Narrative figure, 2 decimals"
+Ausgaben,2024,45.21,Mrd EUR,3,Fließtext,"Narrative figure, 2 decimals"
+Beitragseinnahmen,2024,38.09,Mrd EUR,3,Fließtext,"Narrative figure, 2 decimals"
+Verwaltungskostenerstattungen SGB II (Bund),2024,4.03,Mrd EUR,3,Fließtext,"Narrative figure, 2 decimals"
+Erstattungen und Verwaltungseinnahmen,2024,1.18,Mrd EUR,3,Fließtext,"Narrative figure, 2 decimals"
+Einnahmen aus der Insolvenzgeldumlage,2024,0.78,Mrd EUR,4,Fließtext,"Narrative figure, 2 decimals"
+Einnahmen aus der Winterbeschäftigungsumlage,2024,0.52,Mrd EUR,4,Fließtext,"Narrative figure, 2 decimals"
+Arbeitslosengeld bei Arbeitslosigkeit,2024,22.16,Mrd EUR,4,Fließtext,"Narrative figure, 2 decimals"
+Insolvenzgeld,2024,1.61,Mrd EUR,4,Fließtext,"Narrative figure, 2 decimals"
+Aktive Arbeitsförderung,2024,10.36,Mrd EUR,5,Fließtext,"Narrative figure, 2 decimals"
+Personal- und Verwaltungsausgaben,2024,10.9,Mrd EUR,5,Fließtext,"Narrative figure, 2 decimals"
+Finanzierungssaldo (Defizit),2024,0.61,Mrd EUR,3,Fließtext,"Narrative figure, 2 decimals"
+"Zuführung zur Rücklage der BA (einschl. Eingliederungsrücklage), saldiert",2024,0.14,Mrd EUR,3,Fließtext,"Narrative figure, 2 decimals"
+Einnahmen,2024,-44608.9,Mio EUR,6,"Tabelle 'Finanzentwicklung im Beitragshaushalt der BA (FEBA SGB III)', Spalte 'Ist seit Jahresbeginn 2024'",Einnahmen und Überschüsse werden mit negativem Vorzeichen dargestellt
+Einnahmen,2023,-42245.0,Mio EUR,6,"Tabelle 'FEBA SGB III', Spalte 'Vorjahr (2023)'",previous-year column of the same table
+Ausgaben,2024,45214.4,Mio EUR,6,"Tabelle 'Finanzentwicklung im Beitragshaushalt der BA (FEBA SGB III)', Spalte 'Ist seit Jahresbeginn 2024'",Einnahmen und Überschüsse werden mit negativem Vorzeichen dargestellt
+Ausgaben,2023,39232.7,Mio EUR,6,"Tabelle 'FEBA SGB III', Spalte 'Vorjahr (2023)'",previous-year column of the same table
+Aktive Arbeitsförderung,2024,10358.0,Mio EUR,6,"Tabelle 'Finanzentwicklung im Beitragshaushalt der BA (FEBA SGB III)', Spalte 'Ist seit Jahresbeginn 2024'",Einnahmen und Überschüsse werden mit negativem Vorzeichen dargestellt
+Aktive Arbeitsförderung,2023,9033.3,Mio EUR,6,"Tabelle 'FEBA SGB III', Spalte 'Vorjahr (2023)'",previous-year column of the same table
+Kapitel 2 - Eingliederungstitel,2024,3232.6,Mio EUR,6,"Tabelle 'Finanzentwicklung im Beitragshaushalt der BA (FEBA SGB III)', Spalte 'Ist seit Jahresbeginn 2024'",Einnahmen und Überschüsse werden mit negativem Vorzeichen dargestellt
+Kapitel 2 - Eingliederungstitel,2023,2772.3,Mio EUR,6,"Tabelle 'FEBA SGB III', Spalte 'Vorjahr (2023)'",previous-year column of the same table
+Dezentral geplantes Budget,2024,3230.5,Mio EUR,6,"Tabelle 'Finanzentwicklung im Beitragshaushalt der BA (FEBA SGB III)', Spalte 'Ist seit Jahresbeginn 2024'",Einnahmen und Überschüsse werden mit negativem Vorzeichen dargestellt
+Dezentral geplantes Budget,2023,2769.7,Mio EUR,6,"Tabelle 'FEBA SGB III', Spalte 'Vorjahr (2023)'",previous-year column of the same table
+Integrationsorientierte Instrumente,2024,2559.7,Mio EUR,6,"Tabelle 'Finanzentwicklung im Beitragshaushalt der BA (FEBA SGB III)', Spalte 'Ist seit Jahresbeginn 2024'",Einnahmen und Überschüsse werden mit negativem Vorzeichen dargestellt
+Integrationsorientierte Instrumente,2023,2137.7,Mio EUR,6,"Tabelle 'FEBA SGB III', Spalte 'Vorjahr (2023)'",previous-year column of the same table
+Vermittlungsbudget nach § 44 SGB III,2024,30.6,Mio EUR,6,"Tabelle 'Finanzentwicklung im Beitragshaushalt der BA (FEBA SGB III)', Spalte 'Ist seit Jahresbeginn 2024'",Einnahmen und Überschüsse werden mit negativem Vorzeichen dargestellt
+Vermittlungsbudget nach § 44 SGB III,2023,30.9,Mio EUR,6,"Tabelle 'FEBA SGB III', Spalte 'Vorjahr (2023)'",previous-year column of the same table
+Aktivierung und berufliche Eingliederung,2024,379.5,Mio EUR,6,"Tabelle 'Finanzentwicklung im Beitragshaushalt der BA (FEBA SGB III)', Spalte 'Ist seit Jahresbeginn 2024'",Einnahmen und Überschüsse werden mit negativem Vorzeichen dargestellt
+Aktivierung und berufliche Eingliederung,2023,363.2,Mio EUR,6,"Tabelle 'FEBA SGB III', Spalte 'Vorjahr (2023)'",previous-year column of the same table
+Reisekosten nach § 309 SGB III,2024,0.7,Mio EUR,6,"Tabelle 'Finanzentwicklung im Beitragshaushalt der BA (FEBA SGB III)', Spalte 'Ist seit Jahresbeginn 2024'",Einnahmen und Überschüsse werden mit negativem Vorzeichen dargestellt
+Reisekosten nach § 309 SGB III,2023,0.8,Mio EUR,6,"Tabelle 'FEBA SGB III', Spalte 'Vorjahr (2023)'",previous-year column of the same table
+Eingliederungszuschüsse (Egz),2024,246.8,Mio EUR,6,"Tabelle 'Finanzentwicklung im Beitragshaushalt der BA (FEBA SGB III)', Spalte 'Ist seit Jahresbeginn 2024'",Einnahmen und Überschüsse werden mit negativem Vorzeichen dargestellt
+Eingliederungszuschüsse (Egz),2023,241.7,Mio EUR,6,"Tabelle 'FEBA SGB III', Spalte 'Vorjahr (2023)'",previous-year column of the same table
+Förderung der beruflichen Weiterbildung (FbW),2024,1902.07,Mio EUR,6,"Tabelle 'Finanzentwicklung im Beitragshaushalt der BA (FEBA SGB III)', Spalte 'Ist seit Jahresbeginn 2024'",Einnahmen und Überschüsse werden mit negativem Vorzeichen dargestellt
+Förderung der beruflichen Weiterbildung (FbW),2023,1501.1,Mio EUR,6,"Tabelle 'FEBA SGB III', Spalte 'Vorjahr (2023)'",previous-year column of the same table
+Freie Förderung (Restabwicklung),2024,-0.0,Mio EUR,6,"Tabelle 'Finanzentwicklung im Beitragshaushalt der BA (FEBA SGB III)', Spalte 'Ist seit Jahresbeginn 2024'",Einnahmen und Überschüsse werden mit negativem Vorzeichen dargestellt
+Freie Förderung (Restabwicklung),2023,-0.0,Mio EUR,6,"Tabelle 'FEBA SGB III', Spalte 'Vorjahr (2023)'",previous-year column of the same table
+Spezielle Maßnahmen für Jüngere,2024,285.18,Mio EUR,6,"Tabelle 'Finanzentwicklung im Beitragshaushalt der BA (FEBA SGB III)', Spalte 'Ist seit Jahresbeginn 2024'",Einnahmen und Überschüsse werden mit negativem Vorzeichen dargestellt
+Spezielle Maßnahmen für Jüngere,2023,302.6,Mio EUR,6,"Tabelle 'FEBA SGB III', Spalte 'Vorjahr (2023)'",previous-year column of the same table
+Berufseinstiegsbegleitung,2024,65.1,Mio EUR,6,"Tabelle 'Finanzentwicklung im Beitragshaushalt der BA (FEBA SGB III)', Spalte 'Ist seit Jahresbeginn 2024'",Einnahmen und Überschüsse werden mit negativem Vorzeichen dargestellt
+Berufseinstiegsbegleitung,2023,58.7,Mio EUR,6,"Tabelle 'FEBA SGB III', Spalte 'Vorjahr (2023)'",previous-year column of the same table
+Gründungszuschuss (GZ),2024,320.6,Mio EUR,6,"Tabelle 'Finanzentwicklung im Beitragshaushalt der BA (FEBA SGB III)', Spalte 'Ist seit Jahresbeginn 2024'",Einnahmen und Überschüsse werden mit negativem Vorzeichen dargestellt
+Gründungszuschuss (GZ),2023,270.76,Mio EUR,6,"Tabelle 'FEBA SGB III', Spalte 'Vorjahr (2023)'",previous-year column of the same table
+"Einst.kurse, SodEG)",2024,2.0,Mio EUR,6,"Tabelle 'Finanzentwicklung im Beitragshaushalt der BA (FEBA SGB III)', Spalte 'Ist seit Jahresbeginn 2024'",Einnahmen und Überschüsse werden mit negativem Vorzeichen dargestellt
+"Einst.kurse, SodEG)",2023,2.6,Mio EUR,6,"Tabelle 'FEBA SGB III', Spalte 'Vorjahr (2023)'",previous-year column of the same table
+Kapitel 3,2024,7125.4,Mio EUR,6,"Tabelle 'Finanzentwicklung im Beitragshaushalt der BA (FEBA SGB III)', Spalte 'Ist seit Jahresbeginn 2024'",Einnahmen und Überschüsse werden mit negativem Vorzeichen dargestellt
+Kapitel 3,2023,6261.0,Mio EUR,6,"Tabelle 'FEBA SGB III', Spalte 'Vorjahr (2023)'",previous-year column of the same table
+Förderung der Berufsausbildung,2024,413.3,Mio EUR,6,"Tabelle 'Finanzentwicklung im Beitragshaushalt der BA (FEBA SGB III)', Spalte 'Ist seit Jahresbeginn 2024'",Einnahmen und Überschüsse werden mit negativem Vorzeichen dargestellt
+Förderung der Berufsausbildung,2023,402.1,Mio EUR,6,"Tabelle 'FEBA SGB III', Spalte 'Vorjahr (2023)'",previous-year column of the same table
+Teilhabe behinderter Menschen am Arbeitsleben,2024,2862.7,Mio EUR,6,"Tabelle 'Finanzentwicklung im Beitragshaushalt der BA (FEBA SGB III)', Spalte 'Ist seit Jahresbeginn 2024'",Einnahmen und Überschüsse werden mit negativem Vorzeichen dargestellt
+Teilhabe behinderter Menschen am Arbeitsleben,2023,2676.3,Mio EUR,6,"Tabelle 'FEBA SGB III', Spalte 'Vorjahr (2023)'",previous-year column of the same table
+Arbeitslosengeld bei beruflicher Weiterbildung (AlgW),2024,1445.2,Mio EUR,6,"Tabelle 'Finanzentwicklung im Beitragshaushalt der BA (FEBA SGB III)', Spalte 'Ist seit Jahresbeginn 2024'",Einnahmen und Überschüsse werden mit negativem Vorzeichen dargestellt
+Arbeitslosengeld bei beruflicher Weiterbildung (AlgW),2023,1221.66,Mio EUR,6,"Tabelle 'FEBA SGB III', Spalte 'Vorjahr (2023)'",previous-year column of the same table
+Erwerb eines Berufsabschlusses,2024,573.3,Mio EUR,6,"Tabelle 'Finanzentwicklung im Beitragshaushalt der BA (FEBA SGB III)', Spalte 'Ist seit Jahresbeginn 2024'",Einnahmen und Überschüsse werden mit negativem Vorzeichen dargestellt
+Erwerb eines Berufsabschlusses,2023,435.1,Mio EUR,6,"Tabelle 'FEBA SGB III', Spalte 'Vorjahr (2023)'",previous-year column of the same table
+Leistungen bei konjunkturellem Kurzarbeitergeld,2024,704.5,Mio EUR,6,"Tabelle 'Finanzentwicklung im Beitragshaushalt der BA (FEBA SGB III)', Spalte 'Ist seit Jahresbeginn 2024'",Einnahmen und Überschüsse werden mit negativem Vorzeichen dargestellt
+Leistungen bei konjunkturellem Kurzarbeitergeld,2023,477.6,Mio EUR,6,"Tabelle 'FEBA SGB III', Spalte 'Vorjahr (2023)'",previous-year column of the same table
+Erstattung Lehrgangskosten an AG bei Quali Kug,2024,0.7,Mio EUR,6,"Tabelle 'Finanzentwicklung im Beitragshaushalt der BA (FEBA SGB III)', Spalte 'Ist seit Jahresbeginn 2024'",Einnahmen und Überschüsse werden mit negativem Vorzeichen dargestellt
+Erstattung Lehrgangskosten an AG bei Quali Kug,2023,1.1,Mio EUR,6,"Tabelle 'FEBA SGB III', Spalte 'Vorjahr (2023)'",previous-year column of the same table
+Saison-Kurzarbeitergeld (Saison-Kug),2024,401.6,Mio EUR,6,"Tabelle 'Finanzentwicklung im Beitragshaushalt der BA (FEBA SGB III)', Spalte 'Ist seit Jahresbeginn 2024'",Einnahmen und Überschüsse werden mit negativem Vorzeichen dargestellt
+Saison-Kurzarbeitergeld (Saison-Kug),2023,373.4,Mio EUR,6,"Tabelle 'FEBA SGB III', Spalte 'Vorjahr (2023)'",previous-year column of the same table
+Transferleistungen,2024,163.3,Mio EUR,6,"Tabelle 'Finanzentwicklung im Beitragshaushalt der BA (FEBA SGB III)', Spalte 'Ist seit Jahresbeginn 2024'",Einnahmen und Überschüsse werden mit negativem Vorzeichen dargestellt
+Transferleistungen,2023,129.4,Mio EUR,6,"Tabelle 'FEBA SGB III', Spalte 'Vorjahr (2023)'",previous-year column of the same table
+Transferkurzarbeitergeld,2024,159.5,Mio EUR,6,"Tabelle 'Finanzentwicklung im Beitragshaushalt der BA (FEBA SGB III)', Spalte 'Ist seit Jahresbeginn 2024'",Einnahmen und Überschüsse werden mit negativem Vorzeichen dargestellt
+Transferkurzarbeitergeld,2023,124.4,Mio EUR,6,"Tabelle 'FEBA SGB III', Spalte 'Vorjahr (2023)'",previous-year column of the same table
+Transfermaßnahmen,2024,3.8,Mio EUR,6,"Tabelle 'Finanzentwicklung im Beitragshaushalt der BA (FEBA SGB III)', Spalte 'Ist seit Jahresbeginn 2024'",Einnahmen und Überschüsse werden mit negativem Vorzeichen dargestellt
+Transfermaßnahmen,2023,5.0,Mio EUR,6,"Tabelle 'FEBA SGB III', Spalte 'Vorjahr (2023)'",previous-year column of the same table
+Aktivierungs- und Vermittlungsgutscheine,2024,1.8,Mio EUR,6,"Tabelle 'Finanzentwicklung im Beitragshaushalt der BA (FEBA SGB III)', Spalte 'Ist seit Jahresbeginn 2024'",Einnahmen und Überschüsse werden mit negativem Vorzeichen dargestellt
+Aktivierungs- und Vermittlungsgutscheine,2023,2.4,Mio EUR,6,"Tabelle 'FEBA SGB III', Spalte 'Vorjahr (2023)'",previous-year column of the same table
+Sonstige Leistungen im Kapitel 3,2024,1.9,Mio EUR,6,"Tabelle 'Finanzentwicklung im Beitragshaushalt der BA (FEBA SGB III)', Spalte 'Ist seit Jahresbeginn 2024'",Einnahmen und Überschüsse werden mit negativem Vorzeichen dargestellt
+Sonstige Leistungen im Kapitel 3,2023,1.7,Mio EUR,6,"Tabelle 'FEBA SGB III', Spalte 'Vorjahr (2023)'",previous-year column of the same table
+Kapitel 4,2024,23958.8,Mio EUR,6,"Tabelle 'Finanzentwicklung im Beitragshaushalt der BA (FEBA SGB III)', Spalte 'Ist seit Jahresbeginn 2024'",Einnahmen und Überschüsse werden mit negativem Vorzeichen dargestellt
+Kapitel 4,2023,20188.2,Mio EUR,6,"Tabelle 'FEBA SGB III', Spalte 'Vorjahr (2023)'",previous-year column of the same table
+Erst. an Renten- und Pflegeversicherung,2024,148.7,Mio EUR,6,"Tabelle 'Finanzentwicklung im Beitragshaushalt der BA (FEBA SGB III)', Spalte 'Ist seit Jahresbeginn 2024'",Einnahmen und Überschüsse werden mit negativem Vorzeichen dargestellt
+Erst. an Renten- und Pflegeversicherung,2023,153.2,Mio EUR,6,"Tabelle 'FEBA SGB III', Spalte 'Vorjahr (2023)'",previous-year column of the same table
+Arbeitslosengeld / Erstattung an ausl. Versicherungsträger,2024,22197.4,Mio EUR,6,"Tabelle 'Finanzentwicklung im Beitragshaushalt der BA (FEBA SGB III)', Spalte 'Ist seit Jahresbeginn 2024'",Einnahmen und Überschüsse werden mit negativem Vorzeichen dargestellt
+Arbeitslosengeld / Erstattung an ausl. Versicherungsträger,2023,18798.6,Mio EUR,6,"Tabelle 'FEBA SGB III', Spalte 'Vorjahr (2023)'",previous-year column of the same table
+Erstattung an ausländische Versicherungsträger,2024,41.4,Mio EUR,6,"Tabelle 'Finanzentwicklung im Beitragshaushalt der BA (FEBA SGB III)', Spalte 'Ist seit Jahresbeginn 2024'",Einnahmen und Überschüsse werden mit negativem Vorzeichen dargestellt
+Erstattung an ausländische Versicherungsträger,2023,36.8,Mio EUR,6,"Tabelle 'FEBA SGB III', Spalte 'Vorjahr (2023)'",previous-year column of the same table
+Arbeitslosengeld (Alg I),2024,22155.9,Mio EUR,6,"Tabelle 'Finanzentwicklung im Beitragshaushalt der BA (FEBA SGB III)', Spalte 'Ist seit Jahresbeginn 2024'",Einnahmen und Überschüsse werden mit negativem Vorzeichen dargestellt
+Arbeitslosengeld (Alg I),2023,18761.8,Mio EUR,6,"Tabelle 'FEBA SGB III', Spalte 'Vorjahr (2023)'",previous-year column of the same table
+Insolvenzgeld,2024,1612.8,Mio EUR,6,"Tabelle 'Finanzentwicklung im Beitragshaushalt der BA (FEBA SGB III)', Spalte 'Ist seit Jahresbeginn 2024'",Einnahmen und Überschüsse werden mit negativem Vorzeichen dargestellt
+Insolvenzgeld,2023,1236.3,Mio EUR,6,"Tabelle 'FEBA SGB III', Spalte 'Vorjahr (2023)'",previous-year column of the same table
+Verwaltungsausgaben (Kapitel 5 und 6),2024,10897.6,Mio EUR,6,"Tabelle 'Finanzentwicklung im Beitragshaushalt der BA (FEBA SGB III)', Spalte 'Ist seit Jahresbeginn 2024'",Einnahmen und Überschüsse werden mit negativem Vorzeichen dargestellt
+Verwaltungsausgaben (Kapitel 5 und 6),2023,10011.3,Mio EUR,6,"Tabelle 'FEBA SGB III', Spalte 'Vorjahr (2023)'",previous-year column of the same table
+Kapitel 5,2024,7714.9,Mio EUR,6,"Tabelle 'Finanzentwicklung im Beitragshaushalt der BA (FEBA SGB III)', Spalte 'Ist seit Jahresbeginn 2024'",Einnahmen und Überschüsse werden mit negativem Vorzeichen dargestellt
+Kapitel 5,2023,7006.4,Mio EUR,6,"Tabelle 'FEBA SGB III', Spalte 'Vorjahr (2023)'",previous-year column of the same table
+Kapitel 6,2024,3182.7,Mio EUR,6,"Tabelle 'Finanzentwicklung im Beitragshaushalt der BA (FEBA SGB III)', Spalte 'Ist seit Jahresbeginn 2024'",Einnahmen und Überschüsse werden mit negativem Vorzeichen dargestellt
+Kapitel 6,2023,3004.9,Mio EUR,6,"Tabelle 'FEBA SGB III', Spalte 'Vorjahr (2023)'",previous-year column of the same table
+Finanzierungssaldo (Überschuss (-) / Defizit (+),2024,605.5,Mio EUR,6,"Tabelle 'Finanzentwicklung im Beitragshaushalt der BA (FEBA SGB III)', Spalte 'Ist seit Jahresbeginn 2024'",Einnahmen und Überschüsse werden mit negativem Vorzeichen dargestellt
+Finanzierungssaldo (Überschuss (-) / Defizit (+),2023,-3012.3,Mio EUR,6,"Tabelle 'FEBA SGB III', Spalte 'Vorjahr (2023)'",previous-year column of the same table

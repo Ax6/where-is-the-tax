@@ -1,0 +1,3095 @@
+{
+ "schema_version": 2,
+ "id": "de.federal.budget_2024",
+ "title": {
+  "de": "Bundeshaushalt 2024: Ist-Ausgaben nach Funktionen, Einzelplänen und Titeln, abgestimmt auf den vorläufigen Abschluss des BMF",
+  "en": "Federal budget 2024: actual expenditure by function, Einzelplan and Titel, reconciled to the BMF provisional closing"
+ },
+ "unit": "EUR",
+ "basis": "Kernhaushalt des Bundes, kassenmäßiges Ist je Titel (Haushaltsrechnung XML). 'Official basis' = BMF definition of Ausgaben: without Obergruppen 59 (Tilgung), 91 (Zuführung an Rücklagen), 96 (kassenmäßiger Fehlbetrag) and 98 (haushaltstechnische Verrechnungen)",
+ "generated": "2026-10-12",
+ "generated_by": "scripts/research/build_federal.py",
+ "year": 2024,
+ "status": "provisional (vorläufiger Abschluss)",
+ "official_total_eur": 465670000000.0,
+ "official_total_meur": 465670.0,
+ "xml_gross_total_eur": 474753727609.58,
+ "xml_core_gross_total_eur": 474753727609.58,
+ "annexed_kapitel": [],
+ "annexed_note": "No annexed Kapitel in this file.",
+ "bridge": [
+  {
+   "gruppierung": "59",
+   "label": {
+    "de": "Tilgungsausgaben am Kreditmarkt (Obergruppe 59; 2024/2025 nur Tit. 595 01 Kap. 3201: Tilgung aus nicht-strukturellen Rückflüssen von Notlagenkrediten)",
+    "en": "Debt repayment on the credit market (Obergruppe 59; in 2024/2025 only Titel 595 01 in Kapitel 3201: repayment out of non-structural refunds of emergency-credit funds)"
+   },
+   "amount_eur": 8493773869.71,
+   "titel_count": 1,
+   "titel_nonzero": [
+    {
+     "epl": "32",
+     "kapitel": "3201",
+     "titel": "59501",
+     "fkt": "830",
+     "text": "Tilgungsausgaben aufgrund nicht-struktureller Rückflüsse von notlagenkreditfinanzierten Ausgaben",
+     "ist_eur": 8493773869.71
+    }
+   ]
+  },
+  {
+   "gruppierung": "91",
+   "label": {
+    "de": "Zuführungen an Rücklagen (Obergruppe 91)",
+    "en": "Transfers to reserves (Obergruppe 91)"
+   },
+   "amount_eur": 0.0,
+   "titel_count": 1,
+   "titel_nonzero": []
+  },
+  {
+   "gruppierung": "96",
+   "label": {
+    "de": "Ausgaben zur Deckung eines kassenmäßigen Fehlbetrags (Obergruppe 96)",
+    "en": "Expenditure covering a cash shortfall (Obergruppe 96)"
+   },
+   "amount_eur": 0.0,
+   "titel_count": 0,
+   "titel_nonzero": []
+  },
+  {
+   "gruppierung": "98",
+   "label": {
+    "de": "Haushaltstechnische Verrechnungen (Obergruppe 98: Tit. 981 Verrechnungsausgaben § 61 BHO, 982 durchlaufende Posten)",
+    "en": "Budget-technical clearing items (Obergruppe 98: Titel 981 internal settlements under § 61 BHO, 982 pass-through items)"
+   },
+   "amount_eur": 590296563.85,
+   "titel_count": 248,
+   "titel_nonzero": [
+    {
+     "epl": "12",
+     "kapitel": "1218",
+     "titel": "98207",
+     "fkt": "890",
+     "text": "Durchleitung von Fremdgeldern",
+     "ist_eur": 190015441.59
+    },
+    {
+     "epl": "23",
+     "kapitel": "2312",
+     "titel": "98101",
+     "fkt": "890",
+     "text": "Leistungen an Bundesbehörden zur Durchführung von Aufträgen",
+     "ist_eur": 43719675.69
+    },
+    {
+     "epl": "30",
+     "kapitel": "3011",
+     "titel": "98101",
+     "fkt": "890",
+     "text": "Leistungen an Bundesbehörden zur Durchführung von Aufträgen",
+     "ist_eur": 38899801.9
+    },
+    {
+     "epl": "11",
+     "kapitel": "1111",
+     "titel": "98107",
+     "fkt": "890",
+     "text": "Leistungen an Bundesbehörden zur Durchführung von ressortübergreifenden Aufgaben",
+     "ist_eur": 34957906.14
+    },
+    {
+     "epl": "09",
+     "kapitel": "0911",
+     "titel": "98107",
+     "fkt": "890",
+     "text": "Leistungen an Bundesbehörden zur Durchführung von ressortübergreifenden Aufgaben",
+     "ist_eur": 31140074.81
+    }
+   ]
+  }
+ ],
+ "bridge_result": {
+  "reconciled_eur": 465669657176.02,
+  "official_total_eur": 465670000000.0,
+  "residual_eur": -342824,
+  "tolerance_eur": 500000.0,
+  "ok": true
+ },
+ "hauptfunktionen": [
+  {
+   "code": "0",
+   "label": {
+    "de": "Allgemeine Dienste",
+    "en": "General public services"
+   },
+   "label_source": "BMF Tabelle 6 row '0. Allgemeine Dienste'",
+   "amount_eur": 113647037531.07,
+   "bmf_table_amount_meur": 113647.0,
+   "bmf_table_soll_meur": 113938.0,
+   "match": true,
+   "funktionen": [
+    {
+     "code": "01",
+     "label": {
+      "de": "Politische Führung und zentrale Verwaltung",
+      "en": "Political leadership and central administration"
+     },
+     "label_source": "BMF Tabelle 6 row 'Politische Führung und zentrale Verwaltung' (XML sum for code 01 equals the row within 1 Mio EUR)",
+     "amount_eur": 23308214664.88,
+     "funktionen": [
+      {
+       "code": "011",
+       "label": {
+        "de": "Politische Führung",
+        "en": "Political leadership"
+       },
+       "label_source": "BMF Tabelle 6 row 'Politische Führung' (XML sum for code 011 equals the row within 1 Mio EUR)",
+       "amount_eur": 8008459209.49
+      },
+      {
+       "code": "012",
+       "label": {
+        "de": "Innere Verwaltung",
+        "en": "Internal administration"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+       "amount_eur": 630754719.64
+      },
+      {
+       "code": "013",
+       "label": {
+        "de": "Informationswesen",
+        "en": "Information services"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+       "amount_eur": 47259652.07
+      },
+      {
+       "code": "014",
+       "label": {
+        "de": "Statistischer Dienst",
+        "en": "Statistical service"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+       "amount_eur": 350287476.98
+      },
+      {
+       "code": "015",
+       "label": {
+        "de": "Zivildienst",
+        "en": "Civilian service"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+       "amount_eur": -576.2
+      },
+      {
+       "code": "016",
+       "label": {
+        "de": "Hochbauverwaltung",
+        "en": "Building administration"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+       "amount_eur": 321915417.05
+      },
+      {
+       "code": "018",
+       "label": {
+        "de": "Versorgung einschließlich Beihilfen",
+        "en": "Civil-service pensions including Beihilfe health allowances"
+       },
+       "label_source": "BMF Tabelle 6 row 'Versorgung einschließlich Beihilfen' (XML sum for code 018 equals the row within 1 Mio EUR)",
+       "amount_eur": 12466020643.55
+      },
+      {
+       "code": "019",
+       "label": {
+        "de": "Sonstige allgemeine Staatsaufgaben",
+        "en": "Other general state tasks"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+       "amount_eur": 1483518122.3
+      }
+     ]
+    },
+    {
+     "code": "02",
+     "label": {
+      "de": "Auswärtige Angelegenheiten",
+      "en": "Foreign affairs"
+     },
+     "label_source": "BMF Tabelle 6 row 'Auswärtige Angelegenheiten' (XML sum for code 02 equals the row within 1 Mio EUR)",
+     "amount_eur": 17133964081.04,
+     "funktionen": [
+      {
+       "code": "021",
+       "label": {
+        "de": "Auslandsvertretungen",
+        "en": "Missions abroad"
+       },
+       "label_source": "BMF Tabelle 6 row 'Auslandsvertretungen' (XML sum for code 021 equals the row within 1 Mio EUR)",
+       "amount_eur": 1145597590.0
+      },
+      {
+       "code": "022",
+       "label": {
+        "de": "Beiträge an Internationale Organisationen",
+        "en": "Contributions to international organisations"
+       },
+       "label_source": "BMF Tabelle 6 row 'Beiträge an Internationale Organisationen' (XML sum for code 022 equals the row within 1 Mio EUR)",
+       "amount_eur": 886715653.85
+      },
+      {
+       "code": "023",
+       "label": {
+        "de": "Wirtschaftliche Zusammenarbeit und Entwicklung",
+        "en": "Economic cooperation and development"
+       },
+       "label_source": "BMF Tabelle 6 row 'Wirtschaftliche Zusammenarbeit und Entwicklung' (XML sum for code 023 equals the row within 1 Mio EUR)",
+       "amount_eur": 10943006171.91
+      },
+      {
+       "code": "024",
+       "label": {
+        "de": "Auslandsschulwesen und kulturelle Angelegenheiten im Ausland",
+        "en": "German schools abroad and cultural affairs"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+       "amount_eur": 925512972.52
+      },
+      {
+       "code": "029",
+       "label": {
+        "de": "Sonstige auswärtige Angelegenheiten",
+        "en": "Other foreign affairs"
+       },
+       "label_source": "BMF Tabelle 6 row 'Sonstige auswärtige Angelegenheiten' (XML sum for code 029 equals the row within 1 Mio EUR)",
+       "amount_eur": 3233131692.76
+      }
+     ]
+    },
+    {
+     "code": "03",
+     "label": {
+      "de": "Verteidigung",
+      "en": "Defence"
+     },
+     "label_source": "BMF Tabelle 6 row 'Verteidigung' (XML sum for code 03 equals the row within 1 Mio EUR)",
+     "amount_eur": 57065006328.1,
+     "funktionen": [
+      {
+       "code": "031",
+       "label": {
+        "de": "Bundeswehrverwaltung",
+        "en": "Bundeswehr administration"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+       "amount_eur": 7526323663.41
+      },
+      {
+       "code": "032",
+       "label": {
+        "de": "Deutsche Verteidigungsstreitkräfte",
+        "en": "German armed forces"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+       "amount_eur": 41370980912.21
+      },
+      {
+       "code": "033",
+       "label": {
+        "de": "Verteidigungslasten im Zusammenhang mit dem Aufenthalt ausländischer Streitkräfte",
+        "en": "Defence burdens linked to the stationing of foreign forces"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+       "amount_eur": 21582649.6
+      },
+      {
+       "code": "036",
+       "label": {
+        "de": "Wehrforschung und wehrtechnische Entwicklung",
+        "en": "Defence research and development"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+       "amount_eur": 878421012.6
+      },
+      {
+       "code": "037",
+       "label": {
+        "de": "Unterhaltssicherung",
+        "en": "Income support for conscripts"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+       "amount_eur": 204202760.25
+      },
+      {
+       "code": "038",
+       "label": {
+        "de": "Versorgung einschließlich Beihilfen für Versorgungsempfängerinnen und Versorgungsempfänger im Bereich der Bundeswehrverwaltung",
+        "en": "Pensions incl. allowances for civil servants of the defence administration"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+       "amount_eur": 1252996708.35
+      },
+      {
+       "code": "039",
+       "label": {
+        "de": "Versorgung einschließlich Beihilfen der Soldatinnen und Soldaten der Bundeswehr",
+        "en": "Pensions incl. allowances for soldiers"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+       "amount_eur": 5810498621.68
+      }
+     ]
+    },
+    {
+     "code": "04",
+     "label": {
+      "de": "Öffentliche Sicherheit und Ordnung",
+      "en": "Public security and order"
+     },
+     "label_source": "BMF Tabelle 6 row 'Öffentliche Sicherheit und Ordnung' (XML sum for code 04 equals the row within 1 Mio EUR)",
+     "amount_eur": 8134487486.66,
+     "funktionen": [
+      {
+       "code": "042",
+       "label": {
+        "de": "Polizei",
+        "en": "Police"
+       },
+       "label_source": "BMF Tabelle 6 row 'Polizei' (XML sum for code 042 equals the row within 1 Mio EUR)",
+       "amount_eur": 5979520422.69
+      },
+      {
+       "code": "043",
+       "label": {
+        "de": "Öffentliche Ordnung",
+        "en": "Public order"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+       "amount_eur": 379144379.84
+      },
+      {
+       "code": "045",
+       "label": {
+        "de": "Bevölkerungs- und Katastrophenschutz",
+        "en": "Civil protection and disaster control"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+       "amount_eur": 879922714.31
+      },
+      {
+       "code": "046",
+       "label": {
+        "de": "Wetterdienst",
+        "en": "Meteorological service"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+       "amount_eur": 391560281.78
+      },
+      {
+       "code": "047",
+       "label": {
+        "de": "Schutz der Verfassung",
+        "en": "Protection of the constitution"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+       "amount_eur": 504339688.04
+      }
+     ]
+    },
+    {
+     "code": "05",
+     "label": {
+      "de": "Rechtsschutz",
+      "en": "Legal protection (courts)"
+     },
+     "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+     "amount_eur": 726094594.72,
+     "funktionen": [
+      {
+       "code": "051",
+       "label": {
+        "de": "Gerichte und Staatsanwaltschaften",
+        "en": "Courts and public prosecutors"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+       "amount_eur": 260604850.28
+      },
+      {
+       "code": "059",
+       "label": {
+        "de": "Sonstige Rechtsschutzaufgaben",
+        "en": "Other legal protection tasks"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+       "amount_eur": 465489744.44
+      }
+     ]
+    },
+    {
+     "code": "06",
+     "label": {
+      "de": "Finanzverwaltung",
+      "en": "Financial administration"
+     },
+     "label_source": "BMF Tabelle 6 row 'Finanzverwaltung' (XML sum for code 06 equals the row within 1 Mio EUR)",
+     "amount_eur": 7279270375.67,
+     "funktionen": [
+      {
+       "code": "061",
+       "label": {
+        "de": "Steuer- und Zollverwaltung",
+        "en": "Tax and customs administration"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+       "amount_eur": 5974556104.11
+      },
+      {
+       "code": "062",
+       "label": {
+        "de": "Schulden-, Vermögens- und sonstige Finanzverwaltung",
+        "en": "Debt, asset and other financial administration"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+       "amount_eur": 48415515.95
+      },
+      {
+       "code": "068",
+       "label": {
+        "de": "Versorgung einschließlich Beihilfen für Versorgungsempfängerinnen und Versorgungsempfänger im Bereich der Finanzverwaltung",
+        "en": "Pensions incl. allowances for civil servants of the financial administration"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+       "amount_eur": 1256298755.61
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "code": "1",
+   "label": {
+    "de": "Bildungswesen, Wissenschaft, Forschung, kulturelle Angelegenheiten",
+    "en": "Education, science, research, cultural affairs"
+   },
+   "label_source": "BMF Tabelle 6 row '1. Bildungswesen, Wissenschaft, Forschung, kulturelle Angelegenheiten'",
+   "amount_eur": 29842152018.39,
+   "bmf_table_amount_meur": 29842.0,
+   "bmf_table_soll_meur": 30680.0,
+   "match": true,
+   "funktionen": [
+    {
+     "code": "11",
+     "label": {
+      "de": "Allgemeinbildende und berufliche Schulen",
+      "en": "General and vocational schools (joint heading 11/12)"
+     },
+     "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+     "amount_eur": 23549893.97,
+     "funktionen": [
+      {
+       "code": "114",
+       "label": {
+        "de": "Öffentliche weiterführende allgemeinbildende Schulen (ohne Sonderschulen/Förderschulen)",
+        "en": "Public secondary general schools"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+       "amount_eur": 23549893.97
+      }
+     ]
+    },
+    {
+     "code": "12",
+     "label": {
+      "de": "Allgemeinbildende und berufliche Schulen",
+      "en": "General and vocational schools (joint heading 11/12)"
+     },
+     "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+     "amount_eur": 1464806925.4,
+     "funktionen": [
+      {
+       "code": "129",
+       "label": {
+        "de": "Sonstige schulische Aufgaben",
+        "en": "Other school tasks"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+       "amount_eur": 1464806925.4
+      }
+     ]
+    },
+    {
+     "code": "13",
+     "label": {
+      "de": "Hochschulen",
+      "en": "Higher-education institutions"
+     },
+     "label_source": "BMF Tabelle 6 row 'Hochschulen' (XML sum for code 13 equals the row within 1 Mio EUR)",
+     "amount_eur": 5235226254.63,
+     "funktionen": [
+      {
+       "code": "133",
+       "label": {
+        "de": "Öffentliche Hochschulen und Berufsakademien",
+        "en": "Public universities and universities of cooperative education"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+       "amount_eur": 114761334.33
+      },
+      {
+       "code": "134",
+       "label": {
+        "de": "Private Hochschulen und Berufsakademien",
+        "en": "Private universities"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+       "amount_eur": 480000.0
+      },
+      {
+       "code": "137",
+       "label": {
+        "de": "Deutsche Forschungsgemeinschaft",
+        "en": "German Research Foundation (DFG)"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+       "amount_eur": 2476406279.71
+      },
+      {
+       "code": "139",
+       "label": {
+        "de": "Sonstige Hochschulaufgaben",
+        "en": "Other higher-education tasks"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+       "amount_eur": 2643578640.59
+      }
+     ]
+    },
+    {
+     "code": "14",
+     "label": {
+      "de": "Förderung für Schüler, Studierende, Weiterbildungsteilnehmende",
+      "en": "Support for pupils, students and continuing-education participants"
+     },
+     "label_source": "BMF Tabelle 6 row 'Förderung für Schüler, Studierende, Weiterbildungsteilnehmende' (XML sum for code 14 equals the row within 1 Mio EUR)",
+     "amount_eur": 3865616462.12,
+     "funktionen": [
+      {
+       "code": "141",
+       "label": {
+        "de": "Förderung für Schülerinnen und Schüler",
+        "en": "Support for pupils"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+       "amount_eur": 508474941.16
+      },
+      {
+       "code": "142",
+       "label": {
+        "de": "Förderung für Studierende und wissenschaftlichen Nachwuchs",
+        "en": "Support for students and young researchers"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+       "amount_eur": 2104595793.22
+      },
+      {
+       "code": "144",
+       "label": {
+        "de": "Förderung für Weiterbildungsteilnehmende",
+        "en": "Support for continuing-education participants"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+       "amount_eur": 1252545727.74
+      }
+     ]
+    },
+    {
+     "code": "15",
+     "label": {
+      "de": "Sonstiges Bildungswesen",
+      "en": "Other education"
+     },
+     "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+     "amount_eur": 546730994.94,
+     "funktionen": [
+      {
+       "code": "153",
+       "label": {
+        "de": "Sonstige Weiterbildung (ohne Förderung für Teilnehmende)",
+        "en": "Other continuing education"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+       "amount_eur": 496501200.7
+      },
+      {
+       "code": "154",
+       "label": {
+        "de": "Ausbildung der Lehrkräfte",
+        "en": "Teacher training"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+       "amount_eur": 50229794.24
+      }
+     ]
+    },
+    {
+     "code": "16",
+     "label": {
+      "de": "Wissenschaft, Forschung, Entwicklung außerhalb der Hochschulen",
+      "en": "Science, research and development outside higher education"
+     },
+     "label_source": "BMF Tabelle 6 row 'Wissenschaft, Forschung, Entwicklung außerhalb der Hochschulen' (XML sum for code 16 equals the row within 1 Mio EUR)",
+     "amount_eur": 17099446861.81,
+     "funktionen": [
+      {
+       "code": "162",
+       "label": {
+        "de": "Wissenschaftliche Bibliotheken, Archive, Fachinformationszentren",
+        "en": "Scientific libraries, archives, documentation"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+       "amount_eur": 293306278.15
+      },
+      {
+       "code": "164",
+       "label": {
+        "de": "Gemeinsame Forschungsförderung von Bund und Ländern",
+        "en": "Joint federal–Länder research funding"
+       },
+       "label_source": "BMF Tabelle 6 row 'Gemeinsame Forschungsförderung von Bund und Ländern' (XML sum for code 164 equals the row within 1 Mio EUR)",
+       "amount_eur": 6646550747.47
+      },
+      {
+       "code": "165",
+       "label": {
+        "de": "Forschung und experimentelle Entwicklung",
+        "en": "Research and experimental development"
+       },
+       "label_source": "BMF Tabelle 6 row 'Forschung und experimentelle Entwicklung' (XML sum for code 165 equals the row within 1 Mio EUR)",
+       "amount_eur": 9580958456.26
+      },
+      {
+       "code": "167",
+       "label": {
+        "de": "Zuschüsse an internationale wissenschaftliche Organisationen und zwischenstaatliche Forschungseinrichtungen",
+        "en": "Grants to international scientific organisations"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+       "amount_eur": 578631379.93
+      }
+     ]
+    },
+    {
+     "code": "18",
+     "label": {
+      "de": "Kultur und Religion",
+      "en": "Culture and religion (joint heading 18/19)"
+     },
+     "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+     "amount_eur": 1459001329.26,
+     "funktionen": [
+      {
+       "code": "181",
+       "label": {
+        "de": "Theater",
+        "en": "Theatres"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+       "amount_eur": 0.0
+      },
+      {
+       "code": "182",
+       "label": {
+        "de": "Musikpflege",
+        "en": "Music"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+       "amount_eur": 106490590.72
+      },
+      {
+       "code": "183",
+       "label": {
+        "de": "Museen, Sammlungen, Ausstellungen",
+        "en": "Museums, collections, exhibitions"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+       "amount_eur": 817910583.17
+      },
+      {
+       "code": "186",
+       "label": {
+        "de": "Nichtwissenschaftliche Bibliotheken",
+        "en": "Non-scientific libraries"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+       "amount_eur": 0.0
+      },
+      {
+       "code": "187",
+       "label": {
+        "de": "Sonstige Kulturpflege",
+        "en": "Other cultural promotion"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+       "amount_eur": 534600155.37
+      }
+     ]
+    },
+    {
+     "code": "19",
+     "label": {
+      "de": "Kultur und Religion",
+      "en": "Culture and religion (joint heading 18/19)"
+     },
+     "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+     "amount_eur": 147773296.26,
+     "funktionen": [
+      {
+       "code": "195",
+       "label": {
+        "de": "Denkmalschutz und -pflege",
+        "en": "Heritage protection and preservation"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+       "amount_eur": 146760171.26
+      },
+      {
+       "code": "199",
+       "label": {
+        "de": "Kirchliche Angelegenheiten",
+        "en": "Church affairs"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+       "amount_eur": 1013125.0
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "code": "2",
+   "label": {
+    "de": "Soziale Sicherung, Familie und Jugend, Arbeitsmarktpolitik",
+    "en": "Social security, family and youth, labour-market policy"
+   },
+   "label_source": "BMF Tabelle 6 row '2. Soziale Sicherung, Familie und Jugend, Arbeitsmarktpolitik'",
+   "amount_eur": 222749456034.04,
+   "bmf_table_amount_meur": 222749.0,
+   "bmf_table_soll_meur": 218310.0,
+   "match": true,
+   "funktionen": [
+    {
+     "code": "21",
+     "label": {
+      "de": "Verwaltung für soziale Angelegenheiten",
+      "en": "Social administration"
+     },
+     "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+     "amount_eur": 3522430815.94,
+     "funktionen": [
+      {
+       "code": "219",
+       "label": {
+        "de": "Sonstige Verwaltung für soziale Angelegenheiten",
+        "en": "Other social administration"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+       "amount_eur": 3522430815.94
+      }
+     ]
+    },
+    {
+     "code": "22",
+     "label": {
+      "de": "Sozialversicherung einschließlich Arbeitslosenversicherung",
+      "en": "Social insurance including unemployment insurance"
+     },
+     "label_source": "BMF Tabelle 6 row 'Sozialversicherung einschließlich Arbeitslosenversicherung' (XML sum for code 22 equals the row within 1 Mio EUR)",
+     "amount_eur": 137446187677.18,
+     "funktionen": [
+      {
+       "code": "221",
+       "label": {
+        "de": "Allgemeine Rentenversicherung (nur Bundesträger)",
+        "en": "General statutory pension insurance (federal carriers only)"
+       },
+       "label_source": "BMF Tabelle 6 row 'Allgemeine Rentenversicherung (nur Bundesträger)' (XML sum for code 221 equals the row within 1 Mio EUR)",
+       "amount_eur": 107518682013.28
+      },
+      {
+       "code": "222",
+       "label": {
+        "de": "Knappschaftliche Rentenversicherung (nur Bundesträger)",
+        "en": "Miners' pension insurance (federal carriers only)"
+       },
+       "label_source": "BMF Tabelle 6 row 'Knappschaftliche Rentenversicherung (nur Bundesträger)' (XML sum for code 222 equals the row within 1 Mio EUR)",
+       "amount_eur": 4944600071.59
+      },
+      {
+       "code": "223",
+       "label": {
+        "de": "Unfallversicherung",
+        "en": "Accident insurance"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+       "amount_eur": 273100510.18
+      },
+      {
+       "code": "224",
+       "label": {
+        "de": "Krankenversicherung",
+        "en": "Health insurance"
+       },
+       "label_source": "BMF Tabelle 6 row 'Krankenversicherung' (XML sum for code 224 equals the row within 1 Mio EUR)",
+       "amount_eur": 16018092000.0
+      },
+      {
+       "code": "225",
+       "label": {
+        "de": "Arbeitslosenversicherung (nur Bund)",
+        "en": "Unemployment insurance (federal only)"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+       "amount_eur": 0.0
+      },
+      {
+       "code": "226",
+       "label": {
+        "de": "Alterssicherung der Landwirte (einschließlich Landabgabenrente)",
+        "en": "Farmers' old-age security (including land-transfer pension)"
+       },
+       "label_source": "BMF Tabelle 6 row 'Alterssicherung der Landwirte (einschließlich Landabgabenrente)' (XML sum for code 226 equals the row within 1 Mio EUR)",
+       "amount_eur": 2276878720.42
+      },
+      {
+       "code": "227",
+       "label": {
+        "de": "Pflegeversicherung",
+        "en": "Long-term care insurance"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+       "amount_eur": 0.0
+      },
+      {
+       "code": "229",
+       "label": {
+        "de": "Sonstige Sozialversicherungen",
+        "en": "Other social insurance"
+       },
+       "label_source": "BMF Tabelle 6 row 'Sonstige Sozialversicherungen' (XML sum for code 229 equals the row within 1 Mio EUR)",
+       "amount_eur": 6414834361.71
+      }
+     ]
+    },
+    {
+     "code": "23",
+     "label": {
+      "de": "Familienhilfe, Wohlfahrtspflege",
+      "en": "Family assistance, welfare"
+     },
+     "label_source": "BMF Tabelle 6 row 'Familienhilfe, Wohlfahrtspflege' (XML sum for code 23 equals the row within 1 Mio EUR)",
+     "amount_eur": 14423201862.47,
+     "funktionen": [
+      {
+       "code": "231",
+       "label": {
+        "de": "Kindergeld, Kinderzuschlag",
+        "en": "Child benefit, child supplement"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+       "amount_eur": 3179337138.16
+      },
+      {
+       "code": "232",
+       "label": {
+        "de": "Elterngeld, Erziehungsgeld, Mutterschutz",
+        "en": "Parental allowance, child-raising allowance, maternity protection"
+       },
+       "label_source": "BMF Tabelle 6 row 'Elterngeld, Erziehungsgeld, Mutterschutz' (XML sum for code 232 equals the row within 1 Mio EUR)",
+       "amount_eur": 7173901593.99
+      },
+      {
+       "code": "233",
+       "label": {
+        "de": "Wohngeld",
+        "en": "Housing benefit"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+       "amount_eur": 2347166633.31
+      },
+      {
+       "code": "235",
+       "label": {
+        "de": "Soziale Einrichtungen",
+        "en": "Social institutions"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+       "amount_eur": 224592546.51
+      },
+      {
+       "code": "236",
+       "label": {
+        "de": "Förderung der Wohlfahrtspflege",
+        "en": "Promotion of welfare organisations"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+       "amount_eur": 203156804.05
+      },
+      {
+       "code": "237",
+       "label": {
+        "de": "Leistungen nach dem Unterhaltsvorschussgesetz",
+        "en": "Maintenance-advance benefits"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+       "amount_eur": 1295047146.45
+      }
+     ]
+    },
+    {
+     "code": "24",
+     "label": {
+      "de": "Soziale Leistungen für Folgen von Krieg und politischen Ereignissen",
+      "en": "Social benefits for consequences of war and political events"
+     },
+     "label_source": "BMF Tabelle 6 row 'Soziale Leistungen für Folgen von Krieg und politischen Ereignissen' (XML sum for code 24 equals the row within 1 Mio EUR)",
+     "amount_eur": 2260821706.33,
+     "funktionen": [
+      {
+       "code": "241",
+       "label": {
+        "de": "Leistungen der Sozialen Entschädigung",
+        "en": "Social compensation benefits (SGB XIV)"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+       "amount_eur": 436481105.34
+      },
+      {
+       "code": "243",
+       "label": {
+        "de": "Lastenausgleich",
+        "en": "Burden equalisation"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+       "amount_eur": 3281465.21
+      },
+      {
+       "code": "244",
+       "label": {
+        "de": "Wiedergutmachung",
+        "en": "Restitution"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+       "amount_eur": 214512869.16
+      },
+      {
+       "code": "246",
+       "label": {
+        "de": "Vertriebene und Spätaussiedlerinnen und Spätaussiedler",
+        "en": "Expellees and ethnic German resettlers"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+       "amount_eur": 26467599.48
+      },
+      {
+       "code": "249",
+       "label": {
+        "de": "Sonstige Leistungen für Folgen von Krieg und politischen Ereignissen",
+        "en": "Other benefits for consequences of war and political events"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+       "amount_eur": 1580078667.14
+      }
+     ]
+    },
+    {
+     "code": "25",
+     "label": {
+      "de": "Arbeitsmarktpolitik",
+      "en": "Labour-market policy"
+     },
+     "label_source": "BMF Tabelle 6 row 'Arbeitsmarktpolitik' (XML sum for code 25 equals the row within 1 Mio EUR)",
+     "amount_eur": 52271070610.12,
+     "funktionen": [
+      {
+       "code": "251",
+       "label": {
+        "de": "Bürgergeld nach dem SGB II",
+        "en": "Bürgergeld (basic income support) under SGB II"
+       },
+       "label_source": "BMF Tabelle 6 row 'Bürgergeld nach dem SGB II' (XML sum for code 251 equals the row within 1 Mio EUR)",
+       "amount_eur": 29150930475.76
+      },
+      {
+       "code": "252",
+       "label": {
+        "de": "Leistungen für Unterkunft und Heizung nach dem SGB II",
+        "en": "Housing and heating benefits under SGB II"
+       },
+       "label_source": "BMF Tabelle 6 row 'Leistungen für Unterkunft und Heizung nach dem SGB II' (XML sum for code 252 equals the row within 1 Mio EUR)",
+       "amount_eur": 12359619802.71
+      },
+      {
+       "code": "253",
+       "label": {
+        "de": "Aktive Arbeitsmarktpolitik",
+        "en": "Active labour-market policy"
+       },
+       "label_source": "BMF Tabelle 6 row 'Aktive Arbeitsmarktpolitik' (XML sum for code 253 equals the row within 1 Mio EUR)",
+       "amount_eur": 4225473734.89
+      },
+      {
+       "code": "259",
+       "label": {
+        "de": "Sonstige Leistungen der Grundsicherung für Arbeitsuchende nach dem SGB II",
+        "en": "Other basic-support benefits for job seekers under SGB II"
+       },
+       "label_source": "BMF Tabelle 6 row 'Sonstige Leistungen der Grundsicherung für Arbeitsuchende nach dem SGB II' (XML sum for code 259 equals the row within 1 Mio EUR)",
+       "amount_eur": 6535046596.76
+      }
+     ]
+    },
+    {
+     "code": "26",
+     "label": {
+      "de": "Kinder- und Jugendhilfe nach dem SGB VIII (ohne Kindertagesbetreuung)",
+      "en": "Child and youth welfare (SGB VIII)"
+     },
+     "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+     "amount_eur": 396395793.7,
+     "funktionen": [
+      {
+       "code": "261",
+       "label": {
+        "de": "Jugendarbeit und Jugendverbandsarbeit",
+        "en": "Youth work and youth associations"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+       "amount_eur": 343193005.9
+      },
+      {
+       "code": "265",
+       "label": {
+        "de": "Hilfen zur Erziehung und Eingliederungshilfen",
+        "en": "Educational and integration assistance"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+       "amount_eur": 53202787.8
+      }
+     ]
+    },
+    {
+     "code": "28",
+     "label": {
+      "de": "Soziale Leistungen nach dem SGB XII und dem Asylbewerberleistungsgesetz, Eingliederungshilfe für Menschen mit Behinderungen nach dem SGB IX",
+      "en": "Social assistance (SGB XII), asylum-seeker benefits, integration assistance"
+     },
+     "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+     "amount_eur": 11106865594.77,
+     "funktionen": [
+      {
+       "code": "281",
+       "label": {
+        "de": "Hilfe zum Lebensunterhalt nach dem SGB XII",
+        "en": "Subsistence assistance (SGB XII)"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+       "amount_eur": 37203492.78
+      },
+      {
+       "code": "282",
+       "label": {
+        "de": "Grundsicherung im Alter und bei Erwerbsminderung nach dem SGB XII",
+        "en": "Basic old-age and reduced-earning-capacity support under SGB XII"
+       },
+       "label_source": "BMF Tabelle 6 row 'Grundsicherung im Alter und bei Erwerbsminderung nach dem SGB XII' (XML sum for code 282 equals the row within 1 Mio EUR)",
+       "amount_eur": 11059942857.03
+      },
+      {
+       "code": "287",
+       "label": {
+        "de": "Leistungen nach dem Asylbewerberleistungsgesetz",
+        "en": "Asylum-seeker benefits"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+       "amount_eur": 9719244.96
+      }
+     ]
+    },
+    {
+     "code": "29",
+     "label": {
+      "de": "Sonstige soziale Angelegenheiten",
+      "en": "Other social affairs"
+     },
+     "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+     "amount_eur": 1322481973.53,
+     "funktionen": [
+      {
+       "code": "290",
+       "label": {
+        "de": "Sonstige soziale Angelegenheiten",
+        "en": "Other social affairs (total)"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+       "amount_eur": 1322481973.53
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "code": "3",
+   "label": {
+    "de": "Gesundheit, Umwelt, Sport und Erholung",
+    "en": "Health, environment, sport and recreation"
+   },
+   "label_source": "BMF Tabelle 6 row '3. Gesundheit, Umwelt, Sport und Erholung'",
+   "amount_eur": 6120700296.25,
+   "bmf_table_amount_meur": 6121.0,
+   "bmf_table_soll_meur": 5486.0,
+   "match": true,
+   "funktionen": [
+    {
+     "code": "31",
+     "label": {
+      "de": "Gesundheitswesen",
+      "en": "Health"
+     },
+     "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+     "amount_eur": 2279498966.64,
+     "funktionen": [
+      {
+       "code": "313",
+       "label": {
+        "de": "Arbeitsschutz",
+        "en": "Occupational safety"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+       "amount_eur": 227264732.94
+      },
+      {
+       "code": "314",
+       "label": {
+        "de": "Gesundheitsschutz",
+        "en": "Health protection"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+       "amount_eur": 2052234233.7
+      }
+     ]
+    },
+    {
+     "code": "32",
+     "label": {
+      "de": "Sport und Erholung",
+      "en": "Sport and recreation"
+     },
+     "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+     "amount_eur": 263475256.55,
+     "funktionen": [
+      {
+       "code": "322",
+       "label": {
+        "de": "Sport",
+        "en": "Sport"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+       "amount_eur": 263475256.55
+      }
+     ]
+    },
+    {
+     "code": "33",
+     "label": {
+      "de": "Umwelt- und Naturschutz",
+      "en": "Environmental and nature protection"
+     },
+     "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+     "amount_eur": 1903077808.7,
+     "funktionen": [
+      {
+       "code": "331",
+       "label": {
+        "de": "Umwelt- und Naturschutzverwaltung",
+        "en": "Environmental administration"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+       "amount_eur": 282701536.48
+      },
+      {
+       "code": "332",
+       "label": {
+        "de": "Maßnahmen des Umwelt- und Naturschutzes",
+        "en": "Environmental and nature-protection measures"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+       "amount_eur": 1620376272.22
+      }
+     ]
+    },
+    {
+     "code": "34",
+     "label": {
+      "de": "Nukleare Sicherheit und Strahlenschutz",
+      "en": "Nuclear safety and radiation protection"
+     },
+     "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+     "amount_eur": 1674648264.36,
+     "funktionen": [
+      {
+       "code": "341",
+       "label": {
+        "de": "Verwaltung für nukleare Sicherheit und Strahlenschutz",
+        "en": "Administration for nuclear safety and radiation protection"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+       "amount_eur": 133166085.1
+      },
+      {
+       "code": "342",
+       "label": {
+        "de": "Maßnahmen der nuklearen Sicherheit und des Strahlenschutzes",
+        "en": "Nuclear safety and radiation-protection measures"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+       "amount_eur": 1541482179.26
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "code": "4",
+   "label": {
+    "de": "Wohnungswesen, Städtebau, Raumordnung und kommunale Gemeinschaftsdienste",
+    "en": "Housing, urban development, spatial planning and municipal community services"
+   },
+   "label_source": "BMF Tabelle 6 row '4. Wohnungswesen, Städtebau, Raumordnung und kommunale Gemeinschaftsdienste'",
+   "amount_eur": 4084051797.98,
+   "bmf_table_amount_meur": 4084.0,
+   "bmf_table_soll_meur": 4041.0,
+   "match": true,
+   "funktionen": [
+    {
+     "code": "41",
+     "label": {
+      "de": "Wohnungswesen, Wohnungsbauprämie",
+      "en": "Housing, housing-construction premium"
+     },
+     "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+     "amount_eur": 2759186126.38,
+     "funktionen": [
+      {
+       "code": "411",
+       "label": {
+        "de": "Förderung des Wohnungsbaues",
+        "en": "Housing-construction promotion"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+       "amount_eur": 2445621699.98
+      },
+      {
+       "code": "412",
+       "label": {
+        "de": "Wohnungsbauprämie/Vermögensbildung (nur Bund)",
+        "en": "Housing-construction premium / wealth formation (federal only)"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+       "amount_eur": 218040968.2
+      },
+      {
+       "code": "419",
+       "label": {
+        "de": "Sonstiges Wohnungswesen",
+        "en": "Other housing"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+       "amount_eur": 95523458.2
+      }
+     ]
+    },
+    {
+     "code": "42",
+     "label": {
+      "de": "Geoinformation, Raumordnung und Landesplanung, Städtebauförderung",
+      "en": "Geo-information, regional and state planning, urban development funding"
+     },
+     "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+     "amount_eur": 1324865671.6,
+     "funktionen": [
+      {
+       "code": "422",
+       "label": {
+        "de": "Raumordnung und Landesplanung",
+        "en": "Regional and state planning"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+       "amount_eur": 1427009.39
+      },
+      {
+       "code": "423",
+       "label": {
+        "de": "Städtebauförderung",
+        "en": "Urban development funding"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+       "amount_eur": 1323438662.21
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "code": "5",
+   "label": {
+    "de": "Ernährung, Landwirtschaft und Forsten",
+    "en": "Food, agriculture and forestry"
+   },
+   "label_source": "BMF Tabelle 6 row '5. Ernährung, Landwirtschaft und Forsten'",
+   "amount_eur": 1447301399.65,
+   "bmf_table_amount_meur": 1447.0,
+   "bmf_table_soll_meur": 1756.0,
+   "match": true,
+   "funktionen": [
+    {
+     "code": "51",
+     "label": {
+      "de": "Verwaltung für Ernährung, Landwirtschaft und Forsten (ohne Betriebsverwaltung)",
+      "en": "Administration for food, agriculture and forestry"
+     },
+     "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+     "amount_eur": 28896810.4,
+     "funktionen": [
+      {
+       "code": "511",
+       "label": {
+        "de": "Verwaltung für Ernährung und Landwirtschaft",
+        "en": "Administration for food and agriculture"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+       "amount_eur": 28896810.4
+      }
+     ]
+    },
+    {
+     "code": "52",
+     "label": {
+      "de": "Landwirtschaft und Ernährung",
+      "en": "Agriculture and food"
+     },
+     "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+     "amount_eur": 1411432585.72,
+     "funktionen": [
+      {
+       "code": "521",
+       "label": {
+        "de": "Agrarstruktur und ländlicher Raum",
+        "en": "Agricultural structure and rural areas"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+       "amount_eur": 645777776.05
+      },
+      {
+       "code": "522",
+       "label": {
+        "de": "Einkommenstabilisierende Maßnahmen",
+        "en": "Income-stabilising measures"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+       "amount_eur": 206489388.51
+      },
+      {
+       "code": "523",
+       "label": {
+        "de": "Landwirtschaftliche Produktion, Tiergesundheit und Ernährung",
+        "en": "Agricultural production, animal health and food"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+       "amount_eur": 559165421.16
+      }
+     ]
+    },
+    {
+     "code": "53",
+     "label": {
+      "de": "Forstwirtschaft und Jagd, Fischerei",
+      "en": "Forestry, fishing and hunting"
+     },
+     "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+     "amount_eur": 6972003.53,
+     "funktionen": [
+      {
+       "code": "532",
+       "label": {
+        "de": "Fischerei",
+        "en": "Fisheries"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+       "amount_eur": 6972003.53
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "code": "6",
+   "label": {
+    "de": "Energie- und Wasserwirtschaft, Gewerbe, Dienstleistungen",
+    "en": "Energy and water management, trade, services"
+   },
+   "label_source": "BMF Tabelle 6 row '6. Energie- und Wasserwirtschaft, Gewerbe, Dienstleistungen'",
+   "amount_eur": 8446989876.28,
+   "bmf_table_amount_meur": 8447.0,
+   "bmf_table_soll_meur": 13652.0,
+   "match": true,
+   "funktionen": [
+    {
+     "code": "61",
+     "label": {
+      "de": "Verwaltung für Energie- und Wasserwirtschaft, Gewerbe und Dienstleistungen",
+      "en": "Administration for energy, water, trade and services"
+     },
+     "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+     "amount_eur": 189802507.76,
+     "funktionen": [
+      {
+       "code": "610",
+       "label": {
+        "de": "Verwaltung für Energie- und Wasserwirtschaft, Gewerbe und Dienstleistungen",
+        "en": "Administration for energy, water, trade and services (total)"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+       "amount_eur": 189802507.76
+      }
+     ]
+    },
+    {
+     "code": "62",
+     "label": {
+      "de": "Wasserwirtschaft, Hochwasser- und Küstenschutz",
+      "en": "Water management, flood and coastal protection"
+     },
+     "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+     "amount_eur": 192155268.53,
+     "funktionen": [
+      {
+       "code": "623",
+       "label": {
+        "de": "Wasserwirtschaft und Kulturbau",
+        "en": "Water management and land improvement"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+       "amount_eur": 65016230.92
+      },
+      {
+       "code": "625",
+       "label": {
+        "de": "Küstenschutz",
+        "en": "Coastal protection"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+       "amount_eur": 127139037.61
+      }
+     ]
+    },
+    {
+     "code": "63",
+     "label": {
+      "de": "Bergbau, verarbeitendes Gewerbe und Baugewerbe",
+      "en": "Mining, manufacturing and construction"
+     },
+     "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+     "amount_eur": 871786315.84,
+     "funktionen": [
+      {
+       "code": "631",
+       "label": {
+        "de": "Kohlenbergbau",
+        "en": "Coal mining"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+       "amount_eur": 195114862.15
+      },
+      {
+       "code": "632",
+       "label": {
+        "de": "Sonstiger Bergbau",
+        "en": "Other mining"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+       "amount_eur": 138121336.81
+      },
+      {
+       "code": "634",
+       "label": {
+        "de": "Verarbeitende Industrie",
+        "en": "Manufacturing industry"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+       "amount_eur": 538550116.88
+      }
+     ]
+    },
+    {
+     "code": "64",
+     "label": {
+      "de": "Energie- und Wasserversorgung, Entsorgung",
+      "en": "Energy and water supply, waste disposal"
+     },
+     "label_source": "BMF Tabelle 6 row 'Energie- und Wasserversorgung, Entsorgung' (XML sum for code 64 equals the row within 1 Mio EUR)",
+     "amount_eur": 1324397331.35,
+     "funktionen": [
+      {
+       "code": "641",
+       "label": {
+        "de": "Kernenergie",
+        "en": "Nuclear energy"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+       "amount_eur": 285487946.93
+      },
+      {
+       "code": "642",
+       "label": {
+        "de": "Erneuerbare Energieformen",
+        "en": "Renewable energy"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+       "amount_eur": 156380549.81
+      },
+      {
+       "code": "643",
+       "label": {
+        "de": "Elektrizitätsversorgung",
+        "en": "Electricity supply"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+       "amount_eur": 234754279.11
+      },
+      {
+       "code": "649",
+       "label": {
+        "de": "Sonstige Energie- und Wasserversorgung",
+        "en": "Other energy and water supply"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+       "amount_eur": 647774555.5
+      }
+     ]
+    },
+    {
+     "code": "65",
+     "label": {
+      "de": "Handel und Tourismus",
+      "en": "Trade and tourism"
+     },
+     "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+     "amount_eur": 163539483.42,
+     "funktionen": [
+      {
+       "code": "651",
+       "label": {
+        "de": "Handel",
+        "en": "Trade"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+       "amount_eur": 122941483.42
+      },
+      {
+       "code": "652",
+       "label": {
+        "de": "Tourismus",
+        "en": "Tourism"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+       "amount_eur": 40598000.0
+      }
+     ]
+    },
+    {
+     "code": "66",
+     "label": {
+      "de": "Geld- und Versicherungswesen",
+      "en": "Banking and insurance"
+     },
+     "label_source": "BMF Tabelle 6 row 'Geld- und Versicherungswesen' (XML sum for code 66 equals the row within 1 Mio EUR)",
+     "amount_eur": 758553513.2,
+     "funktionen": [
+      {
+       "code": "661",
+       "label": {
+        "de": "Banken und Kreditinstitute",
+        "en": "Banks and credit institutions"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+       "amount_eur": 748476213.2
+      },
+      {
+       "code": "669",
+       "label": {
+        "de": "Sonstiges Geld- und Versicherungswesen",
+        "en": "Other banking and insurance"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+       "amount_eur": 10077300.0
+      }
+     ]
+    },
+    {
+     "code": "68",
+     "label": {
+      "de": "Sonstiges im Bereich Gewerbe und Dienstleistungen",
+      "en": "Other trade and services"
+     },
+     "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+     "amount_eur": 2170531987.33,
+     "funktionen": [
+      {
+       "code": "680",
+       "label": {
+        "de": "Sonstiges im Bereich Gewerbe und Dienstleistungen",
+        "en": "Other trade and services (total)"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+       "amount_eur": 2170531987.33
+      }
+     ]
+    },
+    {
+     "code": "69",
+     "label": {
+      "de": "Regionale Fördermaßnahmen",
+      "en": "Regional development measures"
+     },
+     "label_source": "BMF Tabelle 6 row 'Regionale Fördermaßnahmen' (XML sum for code 69 equals the row within 1 Mio EUR)",
+     "amount_eur": 2776223468.85,
+     "funktionen": [
+      {
+       "code": "691",
+       "label": {
+        "de": "Betriebliche Investitionen",
+        "en": "Business investment"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+       "amount_eur": 732678246.6
+      },
+      {
+       "code": "692",
+       "label": {
+        "de": "Verbesserung der Wirtschafts- und Infrastruktur",
+        "en": "Improvement of economic and infrastructure conditions"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+       "amount_eur": 2043545222.25
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "code": "7",
+   "label": {
+    "de": "Verkehrs- und Nachrichtenwesen",
+    "en": "Transport and communications"
+   },
+   "label_source": "BMF Tabelle 6 row '7. Verkehrs- und Nachrichtenwesen'",
+   "amount_eur": 36379923545.24,
+   "bmf_table_amount_meur": 36380.0,
+   "bmf_table_soll_meur": 35556.0,
+   "match": true,
+   "funktionen": [
+    {
+     "code": "71",
+     "label": {
+      "de": "Verwaltung des Verkehrs- und Nachrichtenwesens",
+      "en": "Administration of transport and communications"
+     },
+     "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+     "amount_eur": 1536319871.24,
+     "funktionen": [
+      {
+       "code": "712",
+       "label": {
+        "de": "Verwaltung für Wasserstraßen und Häfen",
+        "en": "Waterways and ports administration"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+       "amount_eur": 897894801.2
+      },
+      {
+       "code": "719",
+       "label": {
+        "de": "Sonstige Verkehrs- und Nachrichtenverwaltung",
+        "en": "Other transport and communications administration"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+       "amount_eur": 638425070.04
+      }
+     ]
+    },
+    {
+     "code": "72",
+     "label": {
+      "de": "Straßen",
+      "en": "Roads"
+     },
+     "label_source": "BMF Tabelle 6 row 'Straßen' (XML sum for code 72 equals the row within 1 Mio EUR)",
+     "amount_eur": 10722134145.48,
+     "funktionen": [
+      {
+       "code": "721",
+       "label": {
+        "de": "Bundesautobahnen",
+        "en": "Federal motorways"
+       },
+       "label_source": "BMF Tabelle 6 row 'Bundesautobahnen' (XML sum for code 721 equals the row within 1 Mio EUR)",
+       "amount_eur": 6704717297.89
+      },
+      {
+       "code": "722",
+       "label": {
+        "de": "Bundesstraßen",
+        "en": "Federal trunk roads"
+       },
+       "label_source": "BMF Tabelle 6 row 'Bundesstraßen' (XML sum for code 722 equals the row within 1 Mio EUR)",
+       "amount_eur": 3794976699.62
+      },
+      {
+       "code": "723",
+       "label": {
+        "de": "Landesstraßen",
+        "en": "State roads"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+       "amount_eur": 15719620.41
+      },
+      {
+       "code": "725",
+       "label": {
+        "de": "Gemeindestraßen",
+        "en": "Municipal roads"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+       "amount_eur": 142418990.6
+      },
+      {
+       "code": "729",
+       "label": {
+        "de": "Sonstiger Straßenverkehr",
+        "en": "Other road transport"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+       "amount_eur": 64301536.96
+      }
+     ]
+    },
+    {
+     "code": "73",
+     "label": {
+      "de": "Wasserstraßen und Häfen, Förderung der Schifffahrt",
+      "en": "Waterways and ports, shipping support"
+     },
+     "label_source": "BMF Tabelle 6 row 'Wasserstraßen und Häfen, Förderung der Schifffahrt' (XML sum for code 73 equals the row within 1 Mio EUR)",
+     "amount_eur": 2165131895.9,
+     "funktionen": [
+      {
+       "code": "731",
+       "label": {
+        "de": "Wasserstraßen und Häfen",
+        "en": "Waterways and ports"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+       "amount_eur": 2092714461.26
+      },
+      {
+       "code": "732",
+       "label": {
+        "de": "Förderung der Schifffahrt",
+        "en": "Shipping support"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+       "amount_eur": 72417434.64
+      }
+     ]
+    },
+    {
+     "code": "74",
+     "label": {
+      "de": "Eisenbahnen und öffentlicher Personennahverkehr",
+      "en": "Railways and local public transport"
+     },
+     "label_source": "BMF Tabelle 6 row 'Eisenbahnen und öffentlicher Personennahverkehr' (XML sum for code 74 equals the row within 1 Mio EUR)",
+     "amount_eur": 17640261723.35,
+     "funktionen": [
+      {
+       "code": "741",
+       "label": {
+        "de": "Öffentlicher Personennahverkehr",
+        "en": "Local public transport"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+       "amount_eur": 992681022.06
+      },
+      {
+       "code": "742",
+       "label": {
+        "de": "Eisenbahnen",
+        "en": "Railways"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+       "amount_eur": 16647580701.29
+      }
+     ]
+    },
+    {
+     "code": "75",
+     "label": {
+      "de": "Luftfahrt",
+      "en": "Aviation"
+     },
+     "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+     "amount_eur": 342255771.3,
+     "funktionen": [
+      {
+       "code": "750",
+       "label": {
+        "de": "Luftfahrt",
+        "en": "Aviation (total)"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+       "amount_eur": 342255771.3
+      }
+     ]
+    },
+    {
+     "code": "77",
+     "label": {
+      "de": "Nachrichtenwesen",
+      "en": "Communications"
+     },
+     "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+     "amount_eur": 418007465.66,
+     "funktionen": [
+      {
+       "code": "772",
+       "label": {
+        "de": "Rundfunk und Fernsehen",
+        "en": "Broadcasting and television"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+       "amount_eur": 418007465.66
+      }
+     ]
+    },
+    {
+     "code": "79",
+     "label": {
+      "de": "Sonstiges Verkehrswesen",
+      "en": "Other transport"
+     },
+     "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+     "amount_eur": 3555812672.31,
+     "funktionen": [
+      {
+       "code": "790",
+       "label": {
+        "de": "Sonstiges Verkehrswesen",
+        "en": "Other transport (total)"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+       "amount_eur": 3555812672.31
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "code": "8",
+   "label": {
+    "de": "Finanzwirtschaft",
+    "en": "General financial management"
+   },
+   "label_source": "BMF Tabelle 6 row '8. Finanzwirtschaft'",
+   "amount_eur": 42952044677.12,
+   "bmf_table_amount_meur": 42952.0,
+   "bmf_table_soll_meur": 53390.0,
+   "match": true,
+   "funktionen": [
+    {
+     "code": "81",
+     "label": {
+      "de": "Grund- und Kapitalvermögen, Sondervermögen",
+      "en": "Real and financial assets, special funds"
+     },
+     "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+     "amount_eur": 7472349623.79,
+     "funktionen": [
+      {
+       "code": "811",
+       "label": {
+        "de": "Grundvermögen",
+        "en": "Real estate"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+       "amount_eur": 0.0
+      },
+      {
+       "code": "812",
+       "label": {
+        "de": "Kapitalvermögen",
+        "en": "Financial assets"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+       "amount_eur": 0.0
+      },
+      {
+       "code": "813",
+       "label": {
+        "de": "Sondervermögen",
+        "en": "Special funds"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+       "amount_eur": 7472349623.79
+      }
+     ]
+    },
+    {
+     "code": "82",
+     "label": {
+      "de": "Steuern und Finanzzuweisungen",
+      "en": "Taxes and financial allocations"
+     },
+     "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+     "amount_eur": 42850815.78,
+     "funktionen": [
+      {
+       "code": "820",
+       "label": {
+        "de": "Steuern und Finanzzuweisungen",
+        "en": "Taxes and financial allocations (total)"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+       "amount_eur": 42850815.78
+      }
+     ]
+    },
+    {
+     "code": "83",
+     "label": {
+      "de": "Zinsausgaben und Ausgaben im Zusammenhang mit der Schuldenaufnahme",
+      "en": "Interest and other borrowing-related expenditure"
+     },
+     "label_source": "BMF Tabelle 6 row 'Zinsausgaben und Ausgaben im Zusammenhang mit der Schuldenaufnahme' (XML sum for code 83 equals the row within 1 Mio EUR)",
+     "amount_eur": 34260887126.89,
+     "funktionen": [
+      {
+       "code": "830",
+       "label": {
+        "de": "Schulden",
+        "en": "Debt (total)"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+       "amount_eur": 34260887126.89
+      }
+     ]
+    },
+    {
+     "code": "84",
+     "label": {
+      "de": "Beihilfen, Unterstützungen u. Ä.",
+      "en": "Allowances and support"
+     },
+     "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+     "amount_eur": 959008140.78,
+     "funktionen": [
+      {
+       "code": "840",
+       "label": {
+        "de": "Beihilfen, Unterstützungen u. Ä.",
+        "en": "Allowances and support (total)"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+       "amount_eur": 959008140.78
+      }
+     ]
+    },
+    {
+     "code": "86",
+     "label": {
+      "de": "Sonstiges",
+      "en": "Other"
+     },
+     "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+     "amount_eur": 216948969.88,
+     "funktionen": [
+      {
+       "code": "860",
+       "label": {
+        "de": "Sonstiges",
+        "en": "Other (total)"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+       "amount_eur": 216948969.88
+      }
+     ]
+    },
+    {
+     "code": "88",
+     "label": {
+      "de": "Globalposten",
+      "en": "Global items"
+     },
+     "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+     "amount_eur": 0.0,
+     "funktionen": [
+      {
+       "code": "880",
+       "label": {
+        "de": "Globalposten",
+        "en": "Global items (total)"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
+       "amount_eur": 0.0
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "hauptfunktionen_note": "The federal Funktionenplan has Hauptfunktionen 0–8 only (no 9). Sub-function labels come from BMF's closing-table rows where a row corresponds to exactly one code and the XML sum matches it (label_source says so); all other codes are labelled from the BMF Funktionenplan (data/de/federal/funktionenplan.json, German verbatim, English editorial); label null only if a code is in neither.",
+ "bmf_combined_rows_checked": {
+  "Luftfahrt, Nachrichtenwesen, sonstiges Verkehrswesen": {
+   "codes": [
+    "75",
+    "77",
+    "79"
+   ],
+   "amount_eur": 4316075909.27,
+   "bmf_table_amount_meur": 4316.0
+  },
+  "Grund- und Kapitalvermögen, Sondervermögen und Finanzzuweisungen": {
+   "codes": [
+    "81",
+    "82"
+   ],
+   "amount_eur": 7515200439.57,
+   "bmf_table_amount_meur": 7515.0
+  }
+ },
+ "einzelplaene": [
+  {
+   "nr": "01",
+   "label": {
+    "de": "Bundespräsident und Bundespräsidialamt",
+    "en": "Federal President and Office of the Federal President"
+   },
+   "amount_eur": 47261043.85,
+   "core_gross_eur": 47286513.68
+  },
+  {
+   "nr": "02",
+   "label": {
+    "de": "Deutscher Bundestag",
+    "en": "German Bundestag"
+   },
+   "amount_eur": 1150239540.69,
+   "core_gross_eur": 1150395849.88
+  },
+  {
+   "nr": "03",
+   "label": {
+    "de": "Bundesrat",
+    "en": "Bundesrat"
+   },
+   "amount_eur": 32878144.95,
+   "core_gross_eur": 32987137.0
+  },
+  {
+   "nr": "04",
+   "label": {
+    "de": "Bundeskanzler und Bundeskanzleramt",
+    "en": "Federal Chancellor and Federal Chancellery"
+   },
+   "amount_eur": 3811741491.38,
+   "core_gross_eur": 3814466485.49
+  },
+  {
+   "nr": "05",
+   "label": {
+    "de": "Auswärtiges Amt",
+    "en": "Federal Foreign Office"
+   },
+   "amount_eur": 6974334518.05,
+   "core_gross_eur": 6996562750.02
+  },
+  {
+   "nr": "06",
+   "label": {
+    "de": "Bundesministerium des Innern und für Heimat",
+    "en": "Federal Ministry of the Interior and Community"
+   },
+   "amount_eur": 15144371280.51,
+   "core_gross_eur": 15186647907.84
+  },
+  {
+   "nr": "07",
+   "label": {
+    "de": "Bundesministerium der Justiz",
+    "en": "Federal Ministry of Justice"
+   },
+   "amount_eur": 1031997694.48,
+   "core_gross_eur": 1035318281.28
+  },
+  {
+   "nr": "08",
+   "label": {
+    "de": "Bundesministerium der Finanzen",
+    "en": "Federal Ministry of Finance"
+   },
+   "amount_eur": 10248302827.95,
+   "core_gross_eur": 10252100914.75
+  },
+  {
+   "nr": "09",
+   "label": {
+    "de": "Bundesministerium für Wirtschaft und Klimaschutz",
+    "en": "Federal Ministry for Economic Affairs and Climate Action"
+   },
+   "amount_eur": 10739768361.71,
+   "core_gross_eur": 10781330303.48
+  },
+  {
+   "nr": "10",
+   "label": {
+    "de": "Bundesministerium für Ernährung und Landwirtschaft",
+    "en": "Federal Ministry of Food and Agriculture"
+   },
+   "amount_eur": 6596280930.22,
+   "core_gross_eur": 6608982880.55
+  },
+  {
+   "nr": "11",
+   "label": {
+    "de": "Bundesministerium für Arbeit und Soziales",
+    "en": "Federal Ministry of Labour and Social Affairs"
+   },
+   "amount_eur": 181532661492.91,
+   "core_gross_eur": 181573418713.62
+  },
+  {
+   "nr": "12",
+   "label": {
+    "de": "Bundesministerium für Digitales und Verkehr",
+    "en": "Federal Ministry for Digital and Transport"
+   },
+   "amount_eur": 45046071611.02,
+   "core_gross_eur": 45259478281.89
+  },
+  {
+   "nr": "14",
+   "label": {
+    "de": "Bundesministerium der Verteidigung",
+    "en": "Federal Ministry of Defence"
+   },
+   "amount_eur": 50215841825.34,
+   "core_gross_eur": 50287144857.59
+  },
+  {
+   "nr": "15",
+   "label": {
+    "de": "Bundesministerium für Gesundheit",
+    "en": "Federal Ministry of Health"
+   },
+   "amount_eur": 16698533733.0,
+   "core_gross_eur": 16707714249.08
+  },
+  {
+   "nr": "16",
+   "label": {
+    "de": "Bundesministerium für Umwelt, Naturschutz, nukleare Sicherheit und Verbraucherschutz",
+    "en": "Federal Ministry for the Environment, Nature Conservation, Nuclear Safety and Consumer Protection"
+   },
+   "amount_eur": 2959207978.0,
+   "core_gross_eur": 2972828599.55
+  },
+  {
+   "nr": "17",
+   "label": {
+    "de": "Bundesministerium für Familie, Senioren, Frauen und Jugend",
+    "en": "Federal Ministry for Family Affairs, Senior Citizens, Women and Youth"
+   },
+   "amount_eur": 13594628354.94,
+   "core_gross_eur": 13617347100.31
+  },
+  {
+   "nr": "19",
+   "label": {
+    "de": "Bundesverfassungsgericht",
+    "en": "Federal Constitutional Court"
+   },
+   "amount_eur": 44498489.03,
+   "core_gross_eur": 44504825.96
+  },
+  {
+   "nr": "20",
+   "label": {
+    "de": "Bundesrechnungshof",
+    "en": "Federal Court of Audit"
+   },
+   "amount_eur": 193164294.92,
+   "core_gross_eur": 193232951.95
+  },
+  {
+   "nr": "21",
+   "label": {
+    "de": "Der Bundesbeauftragte für den Datenschutz und die Informationsfreiheit",
+    "en": "Federal Commissioner for Data Protection and Freedom of Information"
+   },
+   "amount_eur": 47677769.24,
+   "core_gross_eur": 47767919.23
+  },
+  {
+   "nr": "22",
+   "label": {
+    "de": "Unabhängiger Kontrollrat",
+    "en": "Independent Control Council"
+   },
+   "amount_eur": 7319381.17,
+   "core_gross_eur": 7710403.32
+  },
+  {
+   "nr": "23",
+   "label": {
+    "de": "Bundesministerium für wirtschaftliche Zusammenarbeit und Entwicklung",
+    "en": "Federal Ministry for Economic Cooperation and Development"
+   },
+   "amount_eur": 11153201329.7,
+   "core_gross_eur": 11198585316.67
+  },
+  {
+   "nr": "25",
+   "label": {
+    "de": "Bundesministerium für Wohnen, Stadtentwicklung und Bauwesen",
+    "en": "Federal Ministry for Housing, Urban Development and Building"
+   },
+   "amount_eur": 6960343083.53,
+   "core_gross_eur": 6965594261.71
+  },
+  {
+   "nr": "30",
+   "label": {
+    "de": "Bundesministerium für Bildung und Forschung",
+    "en": "Federal Ministry of Education and Research"
+   },
+   "amount_eur": 21733600003.08,
+   "core_gross_eur": 21772499804.98
+  },
+  {
+   "nr": "32",
+   "label": {
+    "de": "Bundesschuld",
+    "en": "Federal debt"
+   },
+   "amount_eur": 35788952950.63,
+   "core_gross_eur": 44282726820.34
+  },
+  {
+   "nr": "60",
+   "label": {
+    "de": "Allgemeine Finanzverwaltung",
+    "en": "General financial administration"
+   },
+   "amount_eur": 23916779045.72,
+   "core_gross_eur": 23917094479.41
+  }
+ ],
+ "top_titel": [
+  {
+   "rank": 1,
+   "einzelplan": "11",
+   "kapitel": "1102",
+   "titel": "63681",
+   "text": "Zuschuss des Bundes an die allgemeine Rentenversicherung",
+   "fkt": "221",
+   "grp": "636",
+   "flexibilisiert": "nein",
+   "ist_eur": 44849311805.59,
+   "soll_eur": 44849312000.0,
+   "xpath": "/haushalt/einzelplan[@nr='11']/kapitel[@nr='1102']//titel[@nr='63681']/ist/@wert"
+  },
+  {
+   "rank": 2,
+   "einzelplan": "11",
+   "kapitel": "1102",
+   "titel": "63683",
+   "text": "Zusätzlicher Zuschuss des Bundes an die allgemeine Rentenversicherung",
+   "fkt": "221",
+   "grp": "636",
+   "flexibilisiert": "nein",
+   "ist_eur": 30835405046.97,
+   "soll_eur": 30835406000.0,
+   "xpath": "/haushalt/einzelplan[@nr='11']/kapitel[@nr='1102']//titel[@nr='63683']/ist/@wert"
+  },
+  {
+   "rank": 3,
+   "einzelplan": "11",
+   "kapitel": "1101",
+   "titel": "68112",
+   "text": "Bürgergeld",
+   "fkt": "251",
+   "grp": "681",
+   "flexibilisiert": "nein",
+   "ist_eur": 29150930475.76,
+   "soll_eur": 26500000000.0,
+   "xpath": "/haushalt/einzelplan[@nr='11']/kapitel[@nr='1101']//titel[@nr='68112']/ist/@wert"
+  },
+  {
+   "rank": 4,
+   "einzelplan": "11",
+   "kapitel": "1102",
+   "titel": "63684",
+   "text": "Beitragszahlungen für Kindererziehungszeiten an die allgemeine Rentenversicherung",
+   "fkt": "221",
+   "grp": "636",
+   "flexibilisiert": "nein",
+   "ist_eur": 18143397759.5,
+   "soll_eur": 18143398000.0,
+   "xpath": "/haushalt/einzelplan[@nr='11']/kapitel[@nr='1102']//titel[@nr='63684']/ist/@wert"
+  },
+  {
+   "rank": 5,
+   "einzelplan": "32",
+   "kapitel": "3205",
+   "titel": "57501",
+   "text": "Zinsen für Bundesanleihen",
+   "fkt": "830",
+   "grp": "575",
+   "flexibilisiert": "nein",
+   "ist_eur": 15585106539.96,
+   "soll_eur": 15446455000.0,
+   "xpath": "/haushalt/einzelplan[@nr='32']/kapitel[@nr='3205']//titel[@nr='57501']/ist/@wert"
+  },
+  {
+   "rank": 6,
+   "einzelplan": "15",
+   "kapitel": "1501",
+   "titel": "63606",
+   "text": "Pauschale Abgeltung der Aufwendungen der Krankenkassen für gesamtgesellschaftliche Aufgaben (Gesundheitsfonds)",
+   "fkt": "224",
+   "grp": "636",
+   "flexibilisiert": "nein",
+   "ist_eur": 14500000000.0,
+   "soll_eur": 14500000000.0,
+   "xpath": "/haushalt/einzelplan[@nr='15']/kapitel[@nr='1501']//titel[@nr='63606']/ist/@wert"
+  },
+  {
+   "rank": 7,
+   "einzelplan": "11",
+   "kapitel": "1101",
+   "titel": "63211",
+   "text": "Beteiligung des Bundes an den Leistungen für Unterkunft und Heizung",
+   "fkt": "252",
+   "grp": "632",
+   "flexibilisiert": "nein",
+   "ist_eur": 12359619802.71,
+   "soll_eur": 11100000000.0,
+   "xpath": "/haushalt/einzelplan[@nr='11']/kapitel[@nr='1101']//titel[@nr='63211']/ist/@wert"
+  },
+  {
+   "rank": 8,
+   "einzelplan": "11",
+   "kapitel": "1102",
+   "titel": "63682",
+   "text": "Zuschuss des Bundes an die allgemeine Rentenversicherung im Beitrittsgebiet",
+   "fkt": "221",
+   "grp": "636",
+   "flexibilisiert": "nein",
+   "ist_eur": 12097914000.0,
+   "soll_eur": 12022914000.0,
+   "xpath": "/haushalt/einzelplan[@nr='11']/kapitel[@nr='1102']//titel[@nr='63682']/ist/@wert"
+  },
+  {
+   "rank": 9,
+   "einzelplan": "11",
+   "kapitel": "1102",
+   "titel": "63201",
+   "text": "Erstattungen des Bundes für die Grundsicherung im Alter und bei Erwerbsminderung",
+   "fkt": "282",
+   "grp": "632",
+   "flexibilisiert": "nein",
+   "ist_eur": 11059914446.1,
+   "soll_eur": 10900000000.0,
+   "xpath": "/haushalt/einzelplan[@nr='11']/kapitel[@nr='1102']//titel[@nr='63201']/ist/@wert"
+  },
+  {
+   "rank": 10,
+   "einzelplan": "60",
+   "kapitel": "6002",
+   "titel": "68501",
+   "text": "Zuschuss an die Postbeamtenversorgungskasse",
+   "fkt": "018",
+   "grp": "685",
+   "flexibilisiert": "nein",
+   "ist_eur": 9712700000.0,
+   "soll_eur": 9852200000.0,
+   "xpath": "/haushalt/einzelplan[@nr='60']/kapitel[@nr='6002']//titel[@nr='68501']/ist/@wert"
+  },
+  {
+   "rank": 11,
+   "einzelplan": "14",
+   "kapitel": "1403",
+   "titel": "42301",
+   "text": "Bezüge und Nebenleistungen der Berufssoldatinnen und Berufssoldaten, der Soldatinnen und Soldaten auf Zeit sowie Ausbildungsgeld für Anwärterinnen und Anwärter der Sanitätsoffizierslaufbahn",
+   "fkt": "032",
+   "grp": "423",
+   "flexibilisiert": "nein",
+   "ist_eur": 8623533333.99,
+   "soll_eur": 8691659000.0,
+   "xpath": "/haushalt/einzelplan[@nr='14']/kapitel[@nr='1403']//titel[@nr='42301']/ist/@wert"
+  },
+  {
+   "rank": 12,
+   "einzelplan": "60",
+   "kapitel": "6002",
+   "titel": "68703",
+   "text": "Ertüchtigung von Partnerstaaten im Bereich Sicherheit, Verteidigung und Stabilisierung",
+   "fkt": "032",
+   "grp": "687",
+   "flexibilisiert": "nein",
+   "ist_eur": 7965334956.23,
+   "soll_eur": 7480000000.0,
+   "xpath": "/haushalt/einzelplan[@nr='60']/kapitel[@nr='6002']//titel[@nr='68703']/ist/@wert"
+  },
+  {
+   "rank": 13,
+   "einzelplan": "12",
+   "kapitel": "1202",
+   "titel": "89111",
+   "text": "Baukostenzuschüsse für einen Infrastrukturbeitrag zur Erhaltung der Schienenwege der Eisenbahnen des Bundes",
+   "fkt": "742",
+   "grp": "891",
+   "flexibilisiert": "nein",
+   "ist_eur": 7473200000.0,
+   "soll_eur": 7473233000.0,
+   "xpath": "/haushalt/einzelplan[@nr='12']/kapitel[@nr='1202']//titel[@nr='89111']/ist/@wert"
+  },
+  {
+   "rank": 14,
+   "einzelplan": "17",
+   "kapitel": "1701",
+   "titel": "68102",
+   "text": "Elterngeld",
+   "fkt": "232",
+   "grp": "681",
+   "flexibilisiert": "nein",
+   "ist_eur": 7172429826.58,
+   "soll_eur": 8030000000.0,
+   "xpath": "/haushalt/einzelplan[@nr='17']/kapitel[@nr='1701']//titel[@nr='68102']/ist/@wert"
+  },
+  {
+   "rank": 15,
+   "einzelplan": "32",
+   "kapitel": "3205",
+   "titel": "57509",
+   "text": "Disagio auf Bundesanleihen, Bundesobligationen, Bundesschatzanweisungen, Unverzinsliche Schatzanweisungen und Darlehen",
+   "fkt": "830",
+   "grp": "575",
+   "flexibilisiert": "nein",
+   "ist_eur": 6774308658.83,
+   "soll_eur": 9157257000.0,
+   "xpath": "/haushalt/einzelplan[@nr='32']/kapitel[@nr='3205']//titel[@nr='57509']/ist/@wert"
+  },
+  {
+   "rank": 16,
+   "einzelplan": "12",
+   "kapitel": "1201",
+   "titel": "89111",
+   "text": "Investitionen der \"Die Autobahn GmbH des Bundes\"",
+   "fkt": "721",
+   "grp": "891",
+   "flexibilisiert": "nein",
+   "ist_eur": 6637623962.91,
+   "soll_eur": 6032719000.0,
+   "xpath": "/haushalt/einzelplan[@nr='12']/kapitel[@nr='1201']//titel[@nr='89111']/ist/@wert"
+  },
+  {
+   "rank": 17,
+   "einzelplan": "11",
+   "kapitel": "1101",
+   "titel": "63613",
+   "text": "Verwaltungskosten für die Durchführung der Grundsicherung für Arbeitsuchende",
+   "fkt": "259",
+   "grp": "636",
+   "flexibilisiert": "nein",
+   "ist_eur": 6535046596.76,
+   "soll_eur": 5050000000.0,
+   "xpath": "/haushalt/einzelplan[@nr='11']/kapitel[@nr='1101']//titel[@nr='63613']/ist/@wert"
+  },
+  {
+   "rank": 18,
+   "einzelplan": "12",
+   "kapitel": "1202",
+   "titel": "83101",
+   "text": "Erhöhung des Eigenkapitals der Deutschen Bahn AG",
+   "fkt": "742",
+   "grp": "831",
+   "flexibilisiert": "nein",
+   "ist_eur": 5500000000.0,
+   "soll_eur": 5500000000.0,
+   "xpath": "/haushalt/einzelplan[@nr='12']/kapitel[@nr='1202']//titel[@nr='83101']/ist/@wert"
+  },
+  {
+   "rank": 19,
+   "einzelplan": "12",
+   "kapitel": "1216",
+   "titel": "63401",
+   "text": "Erstattungen von Verwaltungsausgaben des Bundeseisenbahnvermögens",
+   "fkt": "813",
+   "grp": "634",
+   "flexibilisiert": "nein",
+   "ist_eur": 5384391000.0,
+   "soll_eur": 5116980000.0,
+   "xpath": "/haushalt/einzelplan[@nr='12']/kapitel[@nr='1216']//titel[@nr='63401']/ist/@wert"
+  },
+  {
+   "rank": 20,
+   "einzelplan": "11",
+   "kapitel": "1102",
+   "titel": "63616",
+   "text": "Beteiligung des Bundes in der knappschaftlichen Rentenversicherung",
+   "fkt": "222",
+   "grp": "636",
+   "flexibilisiert": "nein",
+   "ist_eur": 4881156830.41,
+   "soll_eur": 5050000000.0,
+   "xpath": "/haushalt/einzelplan[@nr='11']/kapitel[@nr='1102']//titel[@nr='63616']/ist/@wert"
+  },
+  {
+   "rank": 21,
+   "einzelplan": "32",
+   "kapitel": "3205",
+   "titel": "57506",
+   "text": "Diskont für Unverzinsliche Schatzanweisungen",
+   "fkt": "830",
+   "grp": "575",
+   "flexibilisiert": "nein",
+   "ist_eur": 4017829173.08,
+   "soll_eur": 4316915000.0,
+   "xpath": "/haushalt/einzelplan[@nr='32']/kapitel[@nr='3205']//titel[@nr='57506']/ist/@wert"
+  },
+  {
+   "rank": 22,
+   "einzelplan": "14",
+   "kapitel": "1403",
+   "titel": "43353",
+   "text": "Versorgungsbezüge",
+   "fkt": "039",
+   "grp": "433",
+   "flexibilisiert": "nein",
+   "ist_eur": 3684503724.85,
+   "soll_eur": 3786497000.0,
+   "xpath": "/haushalt/einzelplan[@nr='14']/kapitel[@nr='1403']//titel[@nr='43353']/ist/@wert"
+  },
+  {
+   "rank": 23,
+   "einzelplan": "11",
+   "kapitel": "1101",
+   "titel": "68511",
+   "text": "Leistungen zur Eingliederung in Arbeit",
+   "fkt": "253",
+   "grp": "685",
+   "flexibilisiert": "nein",
+   "ist_eur": 3676445635.1,
+   "soll_eur": 4150000000.0,
+   "xpath": "/haushalt/einzelplan[@nr='11']/kapitel[@nr='1101']//titel[@nr='68511']/ist/@wert"
+  },
+  {
+   "rank": 24,
+   "einzelplan": "11",
+   "kapitel": "1102",
+   "titel": "63612",
+   "text": "Erstattung von Aufwendungen der Deutschen Rentenversicherung Bund aufgrund der Überführung von Zusatzversorgungssystemen in die RV",
+   "fkt": "229",
+   "grp": "636",
+   "flexibilisiert": "nein",
+   "ist_eur": 3590528964.01,
+   "soll_eur": 3618000000.0,
+   "xpath": "/haushalt/einzelplan[@nr='11']/kapitel[@nr='1102']//titel[@nr='63612']/ist/@wert"
+  },
+  {
+   "rank": 25,
+   "einzelplan": "14",
+   "kapitel": "1406",
+   "titel": "55311",
+   "text": "Erhaltung von Flugzeugen, Flugkörpern, Flugzeugrettungs-, Sicherheits- und sonstigem flugtechnischen Gerät",
+   "fkt": "032",
+   "grp": "553",
+   "flexibilisiert": "nein",
+   "ist_eur": 3457612390.67,
+   "soll_eur": 3362000000.0,
+   "xpath": "/haushalt/einzelplan[@nr='14']/kapitel[@nr='1406']//titel[@nr='55311']/ist/@wert"
+  },
+  {
+   "rank": 26,
+   "einzelplan": "14",
+   "kapitel": "1408",
+   "titel": "51802",
+   "text": "Mieten und Pachten im Zusammenhang mit dem Einheitlichen Liegenschaftsmanagement",
+   "fkt": "032",
+   "grp": "518",
+   "flexibilisiert": "nein",
+   "ist_eur": 3015046642.3,
+   "soll_eur": 2907521000.0,
+   "xpath": "/haushalt/einzelplan[@nr='14']/kapitel[@nr='1408']//titel[@nr='51802']/ist/@wert"
+  },
+  {
+   "rank": 27,
+   "einzelplan": "17",
+   "kapitel": "1701",
+   "titel": "68113",
+   "text": "Kinderzuschlag für Anspruchsberechtigte nach § 6 a Bundeskindergeldgesetz",
+   "fkt": "231",
+   "grp": "681",
+   "flexibilisiert": "nein",
+   "ist_eur": 2955513981.75,
+   "soll_eur": 2370000000.0,
+   "xpath": "/haushalt/einzelplan[@nr='17']/kapitel[@nr='1701']//titel[@nr='68113']/ist/@wert"
+  },
+  {
+   "rank": 28,
+   "einzelplan": "30",
+   "kapitel": "3004",
+   "titel": "68570",
+   "text": "HGF-Zentren - Betrieb",
+   "fkt": "164",
+   "grp": "685",
+   "flexibilisiert": "nein",
+   "ist_eur": 2493842088.53,
+   "soll_eur": 2486267000.0,
+   "xpath": "/haushalt/einzelplan[@nr='30']/kapitel[@nr='3004']//titel[@nr='68570']/ist/@wert"
+  },
+  {
+   "rank": 29,
+   "einzelplan": "14",
+   "kapitel": "1413",
+   "titel": "42801",
+   "text": "Entgelte der Arbeitnehmerinnen und Arbeitnehmer",
+   "fkt": "031",
+   "grp": "428",
+   "flexibilisiert": "ja",
+   "ist_eur": 2453359847.31,
+   "soll_eur": 2436216000.0,
+   "xpath": "/haushalt/einzelplan[@nr='14']/kapitel[@nr='1413']//titel[@nr='42801']/ist/@wert"
+  },
+  {
+   "rank": 30,
+   "einzelplan": "12",
+   "kapitel": "1201",
+   "titel": "68212",
+   "text": "Ausgaben der \"Die Autobahn GmbH des Bundes\" für Betrieb, Planungsleistungen und Verwaltung",
+   "fkt": "790",
+   "grp": "682",
+   "flexibilisiert": "nein",
+   "ist_eur": 2423228206.34,
+   "soll_eur": 2290466000.0,
+   "xpath": "/haushalt/einzelplan[@nr='12']/kapitel[@nr='1201']//titel[@nr='68212']/ist/@wert"
+  },
+  {
+   "rank": 31,
+   "einzelplan": "06",
+   "kapitel": "0625",
+   "titel": "42201",
+   "text": "Bezüge und Nebenleistungen der planmäßigen Beamtinnen und Beamten",
+   "fkt": "042",
+   "grp": "422",
+   "flexibilisiert": "ja",
+   "ist_eur": 2393483326.8,
+   "soll_eur": 2188231000.0,
+   "xpath": "/haushalt/einzelplan[@nr='06']/kapitel[@nr='0625']//titel[@nr='42201']/ist/@wert"
+  },
+  {
+   "rank": 32,
+   "einzelplan": "25",
+   "kapitel": "2501",
+   "titel": "63201",
+   "text": "Wohngeld nach dem Wohngeldgesetz",
+   "fkt": "233",
+   "grp": "632",
+   "flexibilisiert": "nein",
+   "ist_eur": 2347166633.31,
+   "soll_eur": 2150000000.0,
+   "xpath": "/haushalt/einzelplan[@nr='25']/kapitel[@nr='2501']//titel[@nr='63201']/ist/@wert"
+  },
+  {
+   "rank": 33,
+   "einzelplan": "10",
+   "kapitel": "1001",
+   "titel": "63601",
+   "text": "Zuschüsse zur Alterssicherung der Landwirte",
+   "fkt": "226",
+   "grp": "636",
+   "flexibilisiert": "nein",
+   "ist_eur": 2272230800.83,
+   "soll_eur": 2440000000.0,
+   "xpath": "/haushalt/einzelplan[@nr='10']/kapitel[@nr='1001']//titel[@nr='63601']/ist/@wert"
+  },
+  {
+   "rank": 34,
+   "einzelplan": "05",
+   "kapitel": "0501",
+   "titel": "68732",
+   "text": "Humanitäre Hilfsmaßnahmen im Ausland",
+   "fkt": "029",
+   "grp": "687",
+   "flexibilisiert": "nein",
+   "ist_eur": 2259565250.42,
+   "soll_eur": 2229995000.0,
+   "xpath": "/haushalt/einzelplan[@nr='05']/kapitel[@nr='0501']//titel[@nr='68732']/ist/@wert"
+  },
+  {
+   "rank": 35,
+   "einzelplan": "30",
+   "kapitel": "3003",
+   "titel": "68530",
+   "text": "DFG - Laufende Zwecke",
+   "fkt": "137",
+   "grp": "685",
+   "flexibilisiert": "nein",
+   "ist_eur": 2077512000.0,
+   "soll_eur": 2077512000.0,
+   "xpath": "/haushalt/einzelplan[@nr='30']/kapitel[@nr='3003']//titel[@nr='68530']/ist/@wert"
+  },
+  {
+   "rank": 36,
+   "einzelplan": "08",
+   "kapitel": "0813",
+   "titel": "42201",
+   "text": "Bezüge und Nebenleistungen der planmäßigen Beamtinnen und Beamten",
+   "fkt": "061",
+   "grp": "422",
+   "flexibilisiert": "ja",
+   "ist_eur": 2072207556.0,
+   "soll_eur": 2047002000.0,
+   "xpath": "/haushalt/einzelplan[@nr='08']/kapitel[@nr='0813']//titel[@nr='42201']/ist/@wert"
+  },
+  {
+   "rank": 37,
+   "einzelplan": "12",
+   "kapitel": "1202",
+   "titel": "89101",
+   "text": "Baukostenzuschüsse für Investitionen des Bedarfsplans Schiene",
+   "fkt": "742",
+   "grp": "891",
+   "flexibilisiert": "nein",
+   "ist_eur": 2050000000.0,
+   "soll_eur": 1682299000.0,
+   "xpath": "/haushalt/einzelplan[@nr='12']/kapitel[@nr='1202']//titel[@nr='89101']/ist/@wert"
+  },
+  {
+   "rank": 38,
+   "einzelplan": "30",
+   "kapitel": "3003",
+   "titel": "63205",
+   "text": "Zukunftsvertrag Studium und Lehre stärken",
+   "fkt": "139",
+   "grp": "632",
+   "flexibilisiert": "nein",
+   "ist_eur": 2049469558.39,
+   "soll_eur": 2050000000.0,
+   "xpath": "/haushalt/einzelplan[@nr='30']/kapitel[@nr='3003']//titel[@nr='63205']/ist/@wert"
+  },
+  {
+   "rank": 39,
+   "einzelplan": "32",
+   "kapitel": "3205",
+   "titel": "57508",
+   "text": "Zinsen gem. § 4 des Schlusszahlungsfinanzierungsgesetzes (SchlussFinG)",
+   "fkt": "830",
+   "grp": "575",
+   "flexibilisiert": "nein",
+   "ist_eur": 1976266015.23,
+   "soll_eur": 2341747000.0,
+   "xpath": "/haushalt/einzelplan[@nr='32']/kapitel[@nr='3205']//titel[@nr='57508']/ist/@wert"
+  },
+  {
+   "rank": 40,
+   "einzelplan": "32",
+   "kapitel": "3205",
+   "titel": "57521",
+   "text": "Zinsen für das Kassenmanagement des Bundes",
+   "fkt": "830",
+   "grp": "575",
+   "flexibilisiert": "nein",
+   "ist_eur": 1942775678.66,
+   "soll_eur": 2284785000.0,
+   "xpath": "/haushalt/einzelplan[@nr='32']/kapitel[@nr='3205']//titel[@nr='57521']/ist/@wert"
+  }
+ ],
+ "key_items": {
+  "interest": {
+   "label": {
+    "de": "Zinsausgaben (Obergruppe 57)",
+    "en": "Interest expenditure (Obergruppe 57)"
+   },
+   "amount_eur": 34223037953.87,
+   "bmf_table_amount_meur": 34223.0,
+   "selection": "all expenditure Titel with Gruppierung 57x on the official basis"
+  },
+  "pension_insurance_federal_grants": {
+   "label": {
+    "de": "Leistungen des Bundes an die allgemeine Rentenversicherung (Epl. 11 Kap. 1102, alle Titel mit Funktion 221; davon Tit. 636 81-85 = 107.420,5 Mio)",
+    "en": "Federal payments to the general statutory pension insurance (Epl. 11 Kap. 1102, all Titel with function 221; of which Titel 636 81-85 = 107,420.5 Mio)"
+   },
+   "amount_eur": 107518682013.28,
+   "titel": [
+    {
+     "einzelplan": "11",
+     "kapitel": "1102",
+     "titel": "63681",
+     "text": "Zuschuss des Bundes an die allgemeine Rentenversicherung",
+     "fkt": "221",
+     "grp": "636",
+     "ist_eur": 44849311805.59
+    },
+    {
+     "einzelplan": "11",
+     "kapitel": "1102",
+     "titel": "63683",
+     "text": "Zusätzlicher Zuschuss des Bundes an die allgemeine Rentenversicherung",
+     "fkt": "221",
+     "grp": "636",
+     "ist_eur": 30835405046.97
+    },
+    {
+     "einzelplan": "11",
+     "kapitel": "1102",
+     "titel": "63684",
+     "text": "Beitragszahlungen für Kindererziehungszeiten an die allgemeine Rentenversicherung",
+     "fkt": "221",
+     "grp": "636",
+     "ist_eur": 18143397759.5
+    },
+    {
+     "einzelplan": "11",
+     "kapitel": "1102",
+     "titel": "63682",
+     "text": "Zuschuss des Bundes an die allgemeine Rentenversicherung im Beitrittsgebiet",
+     "fkt": "221",
+     "grp": "636",
+     "ist_eur": 12097914000.0
+    },
+    {
+     "einzelplan": "11",
+     "kapitel": "1102",
+     "titel": "63685",
+     "text": "Zuschüsse zu den Beiträgen zur Rentenversicherung der in Werkstätten, bei anderen Leistungsanbietern nach § 60 SGB IX und Inklusionsbetrieben beschäftigten behinderten Menschen",
+     "fkt": "221",
+     "grp": "636",
+     "ist_eur": 1494428921.82
+    },
+    {
+     "einzelplan": "11",
+     "kapitel": "1102",
+     "titel": "63614",
+     "text": "Erstattung von Invalidenrenten und Aufwendungen für Pflichtbeitragszeiten bei Erwerbsunfähigkeit im Beitrittsgebiet",
+     "fkt": "221",
+     "grp": "636",
+     "ist_eur": 83184596.59
+    },
+    {
+     "einzelplan": "11",
+     "kapitel": "1102",
+     "titel": "63602",
+     "text": "Erstattung an die Deutsche Rentenversicherung Bund für Gutachtenkosten im Zusammenhang mit der Grundsicherung",
+     "fkt": "221",
+     "grp": "636",
+     "ist_eur": 7933915.33
+    },
+    {
+     "einzelplan": "11",
+     "kapitel": "1102",
+     "titel": "63606",
+     "text": "Digitale Rentenübersicht",
+     "fkt": "221",
+     "grp": "636",
+     "ist_eur": 6800000.0
+    },
+    {
+     "einzelplan": "11",
+     "kapitel": "1102",
+     "titel": "63604",
+     "text": "Kosten der Nachversicherung gem. §§ 23 und 23a des Gesetzes zur Regelung der Verbindlichkeiten nationalsozialistischer Einrichtungen und der Rechtsverhältnisse an deren Vermögen",
+     "fkt": "221",
+     "grp": "636",
+     "ist_eur": 228771.35
+    },
+    {
+     "einzelplan": "11",
+     "kapitel": "1102",
+     "titel": "63603",
+     "text": "Kosten der Nachversicherung gem. Art. 6 §§ 19 und 23 des Fremdrenten- und Auslandsrenten-Neuregelungsgesetzes",
+     "fkt": "221",
+     "grp": "636",
+     "ist_eur": 77196.13
+    }
+   ],
+   "note": "Sum of the Zuschuss, zusätzlicher Zuschuss, Zuschuss Beitrittsgebiet, Beitragszahlungen für Kindererziehungszeiten and Zuschüsse zu Beiträgen für Werkstattbeschäftigte. Function 221 as a whole (BMF row 'Allgemeine Rentenversicherung') is slightly larger because it also carries small reimbursements.",
+   "funktion_221_total_eur": 107518682013.28,
+   "funktion_222_knappschaft_eur": 4944600071.59
+  },
+  "buergergeld": {
+   "label": {
+    "de": "Bürgergeld (Epl. 11 Kap. 1101 Tit. 681 12, Funktion 251)",
+    "en": "Bürgergeld basic income support (Epl. 11 Kap. 1101 Titel 681 12, function 251)"
+   },
+   "amount_eur": 29150930475.76,
+   "titel": [
+    {
+     "einzelplan": "11",
+     "kapitel": "1101",
+     "titel": "68112",
+     "text": "Bürgergeld",
+     "fkt": "251",
+     "grp": "681",
+     "ist_eur": 29150930475.76
+    }
+   ],
+   "bmf_table_amount_meur": 29151.0,
+   "related": {
+    "unterkunft_heizung_sgb2_eur": 12359619802.71,
+    "aktive_arbeitsmarktpolitik_eur": 4225473734.89,
+    "sonstige_grundsicherung_sgb2_eur": 6535046596.76,
+    "arbeitsmarktpolitik_funktion_25_eur": 52271070610.12
+   }
+  },
+  "grundsicherung_alter_erwerbsminderung": {
+   "label": {
+    "de": "Grundsicherung im Alter und bei Erwerbsminderung (SGB XII, Funktion 282)",
+    "en": "Basic old-age and reduced-earning-capacity support (SGB XII, function 282)"
+   },
+   "amount_eur": 11059942857.03,
+   "titel": [
+    {
+     "einzelplan": "11",
+     "kapitel": "1102",
+     "titel": "63201",
+     "text": "Erstattungen des Bundes für die Grundsicherung im Alter und bei Erwerbsminderung",
+     "fkt": "282",
+     "grp": "632",
+     "ist_eur": 11059914446.1
+    },
+    {
+     "einzelplan": "11",
+     "kapitel": "1110",
+     "titel": "63206",
+     "text": "Leistungen aufgrund rechtlicher Verpflichtungen des Bundes für Fürsorgezwecke",
+     "fkt": "282",
+     "grp": "632",
+     "ist_eur": 28410.93
+    }
+   ],
+   "bmf_table_amount_meur": 11060.0
+  },
+  "gkv_federal_grant": {
+   "label": {
+    "de": "Bundeszuschuss an den Gesundheitsfonds (Epl. 15 Kap. 1501 Tit. 636 06)",
+    "en": "Federal grant to the health fund (Epl. 15 Kap. 1501 Titel 636 06)"
+   },
+   "amount_eur": 14500000000.0,
+   "funktion_224_total_eur": 16018092000.0
+  },
+  "defence_einzelplan_14": {
+   "label": {
+    "de": "Einzelplan 14 Bundesministerium der Verteidigung (Kernhaushalt)",
+    "en": "Einzelplan 14 Federal Ministry of Defence (core budget)"
+   },
+   "amount_eur": 50215841825.34,
+   "funktion_03_verteidigung_eur": 57065006328.1,
+   "bmf_table_amount_meur_funktion_03": 57065.0,
+   "note": "Function 03 'Verteidigung' is larger than Einzelplan 14 because defence-related Titel also sit in other Einzelpläne (e.g. Epl. 60 Ertüchtigung). The Sondervermögen Bundeswehr is not contained in rechnung_2024.xml."
+  },
+  "kindergeld": {
+   "amount_eur": null,
+   "note": "Kindergeld is paid out of income-tax receipts (a deduction from tax revenue, Destatis/BMF), not an expenditure Titel; only the small BKGG residual (Epl. 17 Tit. 681 11) is expenditure."
+  }
+ },
+ "anomalies": {
+  "negative_ist_titel": {
+   "count": 27,
+   "sum_eur": -323152974.18,
+   "largest": [
+    {
+     "einzelplan": "30",
+     "kapitel": "3002",
+     "titel": "66140",
+     "text": "Bildungskredit (Erstattung von Kreditausfällen und Durchführungskosten für die Darlehensverwaltung an die Kreditanstalt für Wiederaufbau)",
+     "fkt": "142",
+     "grp": "661",
+     "ist_eur": -3622354.92
+    },
+    {
+     "einzelplan": "60",
+     "kapitel": "6002",
+     "titel": "88242",
+     "text": "Strukturhilfen gemäß Art. 1 Kap. 2 des Strukturstärkungsgesetzes Kohleregionen",
+     "fkt": "813",
+     "grp": "882",
+     "ist_eur": -4009054.97
+    },
+    {
+     "einzelplan": "09",
+     "kapitel": "0912",
+     "titel": "53999",
+     "text": "Vermischte Verwaltungsausgaben",
+     "fkt": "011",
+     "grp": "539",
+     "ist_eur": -7392407.73
+    },
+    {
+     "einzelplan": "09",
+     "kapitel": "0910",
+     "titel": "68307",
+     "text": "Zuschussprogramm für energieintensive Unternehmen",
+     "fkt": "634",
+     "grp": "683",
+     "ist_eur": -15894732.39
+    },
+    {
+     "einzelplan": "60",
+     "kapitel": "6002",
+     "titel": "67101",
+     "text": "Kosten im Zusammenhang mit der Anlegung und Auflösung von Gasreserven",
+     "fkt": "649",
+     "grp": "671",
+     "ist_eur": -285100575.59
+    }
+   ],
+   "note": "Negative Ist = refunds/recoveries booked against the expenditure Titel; kept as in the source."
+  },
+  "empty_titel_elements": 4
+ },
+ "sources": {
+  "xml": {
+   "source_id": "bundeshaushalt_rechnung",
+   "file": "rechnung_2024.xml",
+   "path": "research/raw/bundeshaushalt_rechnung/rechnung_2024.xml",
+   "url": "https://www.bundeshaushalt.de/static/daten/2024/ist/rechnung_2024.xml",
+   "retrieved": "2026-10-09T12:45:26Z",
+   "sha256": "40338733017d0a01c9f6856e678d4747f79ce9030e3d3db0c454626306b2f33e",
+   "licence": "Public data without copyright protection per the portal notice ('öffentliche Daten ohne urheberrechtlichen Schutz'; reproduction, distribution, processing and commercial use expressly permitted; users must be pointed to the official budget documents)",
+   "coordinates": "/haushalt/einzelplan[@nr]/kapitel[@nr]/ausgaben//titel[@nr][@fkt]/ist/@wert (titelgruppe and flexibilised <ausgaben> blocks included; deduplicated by einzelplan, kapitel, titel nr; 'nr' = Titelnummer whose first three digits are the Gruppierung)"
+  },
+  "bmf": {
+   "source_id": "bmf_monatsbericht",
+   "file": "2025-01-vorlaeufiger-abschluss-bundeshaushalt-2024.html",
+   "path": "research/cache/bmf_monatsbericht/2025-01-vorlaeufiger-abschluss-bundeshaushalt-2024.html",
+   "url": "https://www.bundesfinanzministerium.de/Monatsberichte/Ausgabe/2025/01/Inhalte/Kapitel-3-Analysen/3-1-vorlaeufiger-abschluss-bundeshaushalt-2024.html",
+   "retrieved": "2026-10-09T12:45:28Z",
+   "sha256": "2b0dc964501856829a941fa5a269444cf7749a438ab3c2d288acb341cdae517a",
+   "licence": "BMF web pages are copyright-protected; texts, tables and graphics may not be reproduced without permission (Impressum). Figures are facts and are cited with page coordinates; the pages themselves are not redistributed.",
+   "coordinates": "Tabelle 1 'Gesamtübersicht' row '1. Ausgaben', column 'Ist 2024'; Tabelle 6 'Ausgaben des Bundeshaushalts nach Aufgabenbereichen', column 'Ist 2024'; Tabelle 4 row 'Zinsausgaben' — rows extracted to research/extracts/bmf_monatsbericht/abschluss-2024-tabellen.csv"
+  }
+ }
+}

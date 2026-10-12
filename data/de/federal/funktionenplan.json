@@ -1,0 +1,2378 @@
+{
+ "schema_version": 2,
+ "id": "de.federal.funktionenplan",
+ "title": {
+  "de": "Funktionenplan des Bundes: Haupt-, Ober- und Funktionen",
+  "en": "Federal functional classification (Funktionenplan): main, upper and detailed functions"
+ },
+ "unit": "labels",
+ "basis": "Official classification per § 10 HGrG as published by BMF (Stand 12 November 2024); German names verbatim, English names editorial",
+ "generated": "2026-10-12",
+ "generated_by": "scripts/research/build_funktionenplan.py",
+ "source": {
+  "source_id": "bmf_funktionenplan",
+  "file": "funktionenplan.pdf",
+  "path": "research/cache/bmf_funktionenplan/funktionenplan.pdf",
+  "url": "https://www.bundesfinanzministerium.de/Content/DE/Downloads/Oeffentliche-Finanzen/Haushaltsrecht-und-Haushaltssystematik/funktionenplan.pdf?__blob=publicationFile&v=4",
+  "retrieved": "2026-10-12T08:24:06Z",
+  "sha256": "6426ad252fd50d376b628e1e7e3d147611b1e20ac365f2e21c49b51e100ed026",
+  "licence": "BMF document; the Funktionenplan is an official classification (Haushaltssystematik, § 10 HGrG) — names of functions are facts; PDF not redistributed",
+  "coordinates": "lines '<code> <name> Hauptfunktion|Oberfunktion|Funktion <code>', page numbers per row in research/extracts/bmf_funktionenplan/funktionenplan.csv"
+ },
+ "notes": [
+  "German names verbatim from the PDF (wrapped headings joined); English names are editorial translations.",
+  "Joint headings (11/12, 18/19) give both codes the same name; the plan does not name them separately.",
+  "Codes ending in 0 at the 3-digit level are derived Oberfunktion totals.",
+  "Where the plan prints two versions (markers 'gültig bis Haushaltsjahr 2023' / 'neu gültig ab Haushaltsjahr 2024'), the version valid from 2024 is used and the old one is listed under superseded_names."
+ ],
+ "superseded_names": [
+  {
+   "code": "015",
+   "label_de": "Zivildienst",
+   "valid_until": 2023,
+   "page": 4
+  },
+  {
+   "code": "039",
+   "label_de": "Versorgung einschließlich Beihilfen der Soldatinnen und Soldaten der Bundeswehr",
+   "valid_until": 2023,
+   "page": 7
+  },
+  {
+   "code": "045",
+   "label_de": "Bevölkerungs- und Katastrophenschutz",
+   "valid_until": 2023,
+   "page": 8
+  },
+  {
+   "code": "235",
+   "label_de": "Soziale Einrichtungen",
+   "valid_until": 2023,
+   "page": 21
+  },
+  {
+   "code": "24",
+   "label_de": "Soziale Leistungen für Folgen von Krieg und politischen Ereignissen",
+   "valid_until": 2023,
+   "page": 21
+  },
+  {
+   "code": "241",
+   "label_de": "Kriegsopferversorgung und -fürsorge und gleichartige",
+   "valid_until": 2023,
+   "page": 21
+  },
+  {
+   "code": "244",
+   "label_de": "Wiedergutmachung",
+   "valid_until": 2023,
+   "page": 22
+  },
+  {
+   "code": "29",
+   "label_de": "Sonstige soziale Angelegenheiten",
+   "valid_until": 2023,
+   "page": 25
+  },
+  {
+   "code": "314",
+   "label_de": "Gesundheitsschutz",
+   "valid_until": 2023,
+   "page": 26
+  }
+ ],
+ "rows": [
+  {
+   "code": "0",
+   "level": 1,
+   "label": {
+    "de": "Allgemeine Dienste",
+    "en": "General public services"
+   },
+   "page": 3
+  },
+  {
+   "code": "01",
+   "level": 2,
+   "label": {
+    "de": "Politische Führung und zentrale Verwaltung",
+    "en": "Political leadership and central administration"
+   },
+   "page": 3
+  },
+  {
+   "code": "011",
+   "level": 3,
+   "label": {
+    "de": "Politische Führung",
+    "en": "Political leadership"
+   },
+   "page": 3
+  },
+  {
+   "code": "012",
+   "level": 3,
+   "label": {
+    "de": "Innere Verwaltung",
+    "en": "Internal administration"
+   },
+   "page": 3
+  },
+  {
+   "code": "013",
+   "level": 3,
+   "label": {
+    "de": "Informationswesen",
+    "en": "Information services"
+   },
+   "page": 4
+  },
+  {
+   "code": "014",
+   "level": 3,
+   "label": {
+    "de": "Statistischer Dienst",
+    "en": "Statistical service"
+   },
+   "page": 4
+  },
+  {
+   "code": "015",
+   "level": 3,
+   "label": {
+    "de": "Zivildienst",
+    "en": "Civilian service"
+   },
+   "page": 4,
+   "valid_from": 2024
+  },
+  {
+   "code": "016",
+   "level": 3,
+   "label": {
+    "de": "Hochbauverwaltung",
+    "en": "Building administration"
+   },
+   "page": 4
+  },
+  {
+   "code": "018",
+   "level": 3,
+   "label": {
+    "de": "Versorgung einschließlich Beihilfen für Versorgungsempfängerinnen und Versorgungsempfänger, soweit nicht unter Funktionen 038, 039, 048, 058, 068, 118",
+    "en": "Pensions incl. allowances for civil servants of general administration"
+   },
+   "page": 5
+  },
+  {
+   "code": "019",
+   "level": 3,
+   "label": {
+    "de": "Sonstige allgemeine Staatsaufgaben",
+    "en": "Other general state tasks"
+   },
+   "page": 5
+  },
+  {
+   "code": "02",
+   "level": 2,
+   "label": {
+    "de": "Auswärtige Angelegenheiten",
+    "en": "Foreign affairs"
+   },
+   "page": 5
+  },
+  {
+   "code": "021",
+   "level": 3,
+   "label": {
+    "de": "Auslandsvertretungen (nur Bund)",
+    "en": "Foreign missions"
+   },
+   "page": 5
+  },
+  {
+   "code": "022",
+   "level": 3,
+   "label": {
+    "de": "Internationale Organisationen",
+    "en": "International organisations"
+   },
+   "page": 5
+  },
+  {
+   "code": "023",
+   "level": 3,
+   "label": {
+    "de": "Wirtschaftliche Zusammenarbeit und Entwicklung",
+    "en": "Economic cooperation and development"
+   },
+   "page": 5
+  },
+  {
+   "code": "024",
+   "level": 3,
+   "label": {
+    "de": "Auslandsschulwesen und kulturelle Angelegenheiten im Ausland",
+    "en": "German schools abroad and cultural affairs"
+   },
+   "page": 6
+  },
+  {
+   "code": "029",
+   "level": 3,
+   "label": {
+    "de": "Sonstige auswärtige Angelegenheiten",
+    "en": "Other foreign affairs"
+   },
+   "page": 6
+  },
+  {
+   "code": "03",
+   "level": 2,
+   "label": {
+    "de": "Verteidigung (nur Bund)",
+    "en": "Defence (federal only)"
+   },
+   "page": 6
+  },
+  {
+   "code": "031",
+   "level": 3,
+   "label": {
+    "de": "Bundeswehrverwaltung",
+    "en": "Bundeswehr administration"
+   },
+   "page": 6
+  },
+  {
+   "code": "032",
+   "level": 3,
+   "label": {
+    "de": "Deutsche Verteidigungsstreitkräfte",
+    "en": "German armed forces"
+   },
+   "page": 7
+  },
+  {
+   "code": "033",
+   "level": 3,
+   "label": {
+    "de": "Verteidigungslasten im Zusammenhang mit dem Aufenthalt ausländischer Streitkräfte",
+    "en": "Defence burdens linked to the stationing of foreign forces"
+   },
+   "page": 7
+  },
+  {
+   "code": "036",
+   "level": 3,
+   "label": {
+    "de": "Wehrforschung und wehrtechnische Entwicklung",
+    "en": "Defence research and development"
+   },
+   "page": 7
+  },
+  {
+   "code": "037",
+   "level": 3,
+   "label": {
+    "de": "Unterhaltssicherung",
+    "en": "Income support for conscripts"
+   },
+   "page": 7
+  },
+  {
+   "code": "038",
+   "level": 3,
+   "label": {
+    "de": "Versorgung einschließlich Beihilfen für Versorgungsempfängerinnen und Versorgungsempfänger im Bereich der Bundeswehrverwaltung",
+    "en": "Pensions incl. allowances for civil servants of the defence administration"
+   },
+   "page": 7
+  },
+  {
+   "code": "039",
+   "level": 3,
+   "label": {
+    "de": "Versorgung einschließlich Beihilfen der Soldatinnen und Soldaten der Bundeswehr",
+    "en": "Pensions incl. allowances for soldiers"
+   },
+   "page": 7,
+   "valid_from": 2024
+  },
+  {
+   "code": "04",
+   "level": 2,
+   "label": {
+    "de": "Öffentliche Sicherheit und Ordnung",
+    "en": "Public security and order"
+   },
+   "page": 8
+  },
+  {
+   "code": "042",
+   "level": 3,
+   "label": {
+    "de": "Polizei",
+    "en": "Police"
+   },
+   "page": 8
+  },
+  {
+   "code": "043",
+   "level": 3,
+   "label": {
+    "de": "Öffentliche Ordnung",
+    "en": "Public order"
+   },
+   "page": 8
+  },
+  {
+   "code": "044",
+   "level": 3,
+   "label": {
+    "de": "Brandschutz",
+    "en": "Fire protection"
+   },
+   "page": 8
+  },
+  {
+   "code": "045",
+   "level": 3,
+   "label": {
+    "de": "Bevölkerungs- und Katastrophenschutz",
+    "en": "Civil protection and disaster control"
+   },
+   "page": 8,
+   "valid_from": 2024
+  },
+  {
+   "code": "046",
+   "level": 3,
+   "label": {
+    "de": "Wetterdienst",
+    "en": "Meteorological service"
+   },
+   "page": 9
+  },
+  {
+   "code": "047",
+   "level": 3,
+   "label": {
+    "de": "Schutz der Verfassung",
+    "en": "Protection of the constitution"
+   },
+   "page": 9
+  },
+  {
+   "code": "048",
+   "level": 3,
+   "label": {
+    "de": "Versorgung einschließlich Beihilfen für Versorgungsempfängerinnen und Versorgungsempfänger im Bereich der öffentlichen Sicherheit und Ordnung",
+    "en": "Pensions incl. allowances for civil servants of public security"
+   },
+   "page": 9
+  },
+  {
+   "code": "05",
+   "level": 2,
+   "label": {
+    "de": "Rechtsschutz",
+    "en": "Legal protection (courts)"
+   },
+   "page": 9
+  },
+  {
+   "code": "051",
+   "level": 3,
+   "label": {
+    "de": "Gerichte und Staatsanwaltschaften",
+    "en": "Courts and public prosecutors"
+   },
+   "page": 9
+  },
+  {
+   "code": "056",
+   "level": 3,
+   "label": {
+    "de": "Justizvollzugsanstalten",
+    "en": "Prisons"
+   },
+   "page": 9
+  },
+  {
+   "code": "058",
+   "level": 3,
+   "label": {
+    "de": "Versorgung einschließlich Beihilfen für Versorgungsempfängerinnen und Versorgungsempfänger im Bereich des Rechtsschutzes (nur Länder)",
+    "en": "Pensions incl. allowances for civil servants of the judiciary"
+   },
+   "page": 9
+  },
+  {
+   "code": "059",
+   "level": 3,
+   "label": {
+    "de": "Sonstige Rechtsschutzaufgaben",
+    "en": "Other legal protection tasks"
+   },
+   "page": 9
+  },
+  {
+   "code": "06",
+   "level": 2,
+   "label": {
+    "de": "Finanzverwaltung",
+    "en": "Financial administration"
+   },
+   "page": 10
+  },
+  {
+   "code": "061",
+   "level": 3,
+   "label": {
+    "de": "Steuer- und Zollverwaltung",
+    "en": "Tax and customs administration"
+   },
+   "page": 10
+  },
+  {
+   "code": "062",
+   "level": 3,
+   "label": {
+    "de": "Schulden-, Vermögens- und sonstige Finanzverwaltung",
+    "en": "Debt, asset and other financial administration"
+   },
+   "page": 10
+  },
+  {
+   "code": "068",
+   "level": 3,
+   "label": {
+    "de": "Versorgung einschließlich Beihilfen für Versorgungsempfängerinnen und Versorgungsempfänger im Bereich der Finanzverwaltung",
+    "en": "Pensions incl. allowances for civil servants of the financial administration"
+   },
+   "page": 10
+  },
+  {
+   "code": "1",
+   "level": 1,
+   "label": {
+    "de": "Bildungswesen, Wissenschaft, Forschung, kulturelle Angelegenheiten",
+    "en": "Education, science, research, cultural affairs"
+   },
+   "page": 10
+  },
+  {
+   "code": "11",
+   "level": 2,
+   "label": {
+    "de": "Allgemeinbildende und berufliche Schulen",
+    "en": "General and vocational schools (joint heading 11/12)"
+   },
+   "page": 10,
+   "joint_heading": "11/12"
+  },
+  {
+   "code": "111",
+   "level": 3,
+   "label": {
+    "de": "Unterrichtsverwaltung",
+    "en": "Administration of schools"
+   },
+   "page": 11
+  },
+  {
+   "code": "112",
+   "level": 3,
+   "label": {
+    "de": "Öffentliche Grundschulen",
+    "en": "Primary and secondary schools (general)"
+   },
+   "page": 11
+  },
+  {
+   "code": "113",
+   "level": 3,
+   "label": {
+    "de": "Private Grundschulen",
+    "en": "Private primary schools"
+   },
+   "page": 11
+  },
+  {
+   "code": "114",
+   "level": 3,
+   "label": {
+    "de": "Öffentliche weiterführende allgemeinbildende Schulen (ohne Sonderschulen/Förderschulen)",
+    "en": "Public secondary general schools"
+   },
+   "page": 11
+  },
+  {
+   "code": "115",
+   "level": 3,
+   "label": {
+    "de": "Private weiterführende allgemeinbildende Schulen (ohne Sonderschulen/Förderschulen)",
+    "en": "Private secondary general schools"
+   },
+   "page": 11
+  },
+  {
+   "code": "118",
+   "level": 3,
+   "label": {
+    "de": "Versorgung einschließlich Beihilfen für Versorgungsempfängerinnen und Versorgungsempfänger",
+    "en": "Pensions incl. allowances for school staff"
+   },
+   "page": 11
+  },
+  {
+   "code": "12",
+   "level": 2,
+   "label": {
+    "de": "Allgemeinbildende und berufliche Schulen",
+    "en": "General and vocational schools (joint heading 11/12)"
+   },
+   "page": 10,
+   "joint_heading": "11/12"
+  },
+  {
+   "code": "124",
+   "level": 3,
+   "label": {
+    "de": "Öffentliche Sonderschulen/Förderschulen des allgemeinbildenden Bereichs",
+    "en": "Public special-needs schools"
+   },
+   "page": 12
+  },
+  {
+   "code": "125",
+   "level": 3,
+   "label": {
+    "de": "Private Sonderschulen/Förderschulen des allgemeinbildenden Bereichs",
+    "en": "Private special-needs schools"
+   },
+   "page": 12
+  },
+  {
+   "code": "127",
+   "level": 3,
+   "label": {
+    "de": "Öffentliche berufliche Schulen",
+    "en": "Public vocational schools"
+   },
+   "page": 12
+  },
+  {
+   "code": "128",
+   "level": 3,
+   "label": {
+    "de": "Private berufliche Schulen",
+    "en": "Private vocational schools"
+   },
+   "page": 12
+  },
+  {
+   "code": "129",
+   "level": 3,
+   "label": {
+    "de": "Sonstige schulische Aufgaben",
+    "en": "Other school tasks"
+   },
+   "page": 12
+  },
+  {
+   "code": "13",
+   "level": 2,
+   "label": {
+    "de": "Hochschulen",
+    "en": "Higher education"
+   },
+   "page": 13
+  },
+  {
+   "code": "132",
+   "level": 3,
+   "label": {
+    "de": "Hochschulkliniken",
+    "en": "University hospitals"
+   },
+   "page": 13
+  },
+  {
+   "code": "133",
+   "level": 3,
+   "label": {
+    "de": "Öffentliche Hochschulen und Berufsakademien",
+    "en": "Public universities and universities of cooperative education"
+   },
+   "page": 13
+  },
+  {
+   "code": "134",
+   "level": 3,
+   "label": {
+    "de": "Private Hochschulen und Berufsakademien",
+    "en": "Private universities"
+   },
+   "page": 13
+  },
+  {
+   "code": "137",
+   "level": 3,
+   "label": {
+    "de": "Deutsche Forschungsgemeinschaft",
+    "en": "German Research Foundation (DFG)"
+   },
+   "page": 14
+  },
+  {
+   "code": "138",
+   "level": 3,
+   "label": {
+    "de": "Versorgung einschließlich Beihilfen für Versorgungsempfängerinnen und Versorgungsempfänger im Bereich der Hochschulen (nur Länder)",
+    "en": "Pensions incl. allowances for higher-education staff"
+   },
+   "page": 14
+  },
+  {
+   "code": "139",
+   "level": 3,
+   "label": {
+    "de": "Sonstige Hochschulaufgaben",
+    "en": "Other higher-education tasks"
+   },
+   "page": 14
+  },
+  {
+   "code": "14",
+   "level": 2,
+   "label": {
+    "de": "Förderung für Schülerinnen und Schüler, Studierende, Weiterbildungsteilnehmende und dgl.",
+    "en": "Support for pupils, students and trainees"
+   },
+   "page": 14
+  },
+  {
+   "code": "141",
+   "level": 3,
+   "label": {
+    "de": "Förderung für Schülerinnen und Schüler",
+    "en": "Support for pupils"
+   },
+   "page": 14
+  },
+  {
+   "code": "142",
+   "level": 3,
+   "label": {
+    "de": "Förderung für Studierende und wissenschaftlichen Nachwuchs",
+    "en": "Support for students and young researchers"
+   },
+   "page": 14
+  },
+  {
+   "code": "144",
+   "level": 3,
+   "label": {
+    "de": "Förderung für Weiterbildungsteilnehmende",
+    "en": "Support for continuing-education participants"
+   },
+   "page": 15
+  },
+  {
+   "code": "145",
+   "level": 3,
+   "label": {
+    "de": "Schülerbeförderung",
+    "en": "Pupil transport"
+   },
+   "page": 15
+  },
+  {
+   "code": "15",
+   "level": 2,
+   "label": {
+    "de": "Sonstiges Bildungswesen",
+    "en": "Other education"
+   },
+   "page": 15
+  },
+  {
+   "code": "152",
+   "level": 3,
+   "label": {
+    "de": "Volkshochschulen",
+    "en": "Adult education centres"
+   },
+   "page": 15
+  },
+  {
+   "code": "153",
+   "level": 3,
+   "label": {
+    "de": "Sonstige Weiterbildung (ohne Förderung für Teilnehmende)",
+    "en": "Other continuing education"
+   },
+   "page": 15
+  },
+  {
+   "code": "154",
+   "level": 3,
+   "label": {
+    "de": "Ausbildung der Lehrkräfte",
+    "en": "Teacher training"
+   },
+   "page": 16
+  },
+  {
+   "code": "155",
+   "level": 3,
+   "label": {
+    "de": "Fort- und Weiterbildung der Lehrkräfte",
+    "en": "In-service teacher training"
+   },
+   "page": 16
+  },
+  {
+   "code": "16",
+   "level": 2,
+   "label": {
+    "de": "Wissenschaft, Forschung, Entwicklung außerhalb der Hochschulen (ohne Wehrforschung und wehrtechnische Entwicklung, siehe Funktion 036)",
+    "en": "Science, research and development outside universities"
+   },
+   "page": 16
+  },
+  {
+   "code": "162",
+   "level": 3,
+   "label": {
+    "de": "Wissenschaftliche Bibliotheken, Archive, Fachinformationszentren",
+    "en": "Scientific libraries, archives, documentation"
+   },
+   "page": 16
+  },
+  {
+   "code": "163",
+   "level": 3,
+   "label": {
+    "de": "Wissenschaftliche Museen",
+    "en": "Research institutions"
+   },
+   "page": 16
+  },
+  {
+   "code": "164",
+   "level": 3,
+   "label": {
+    "de": "Gemeinsame Forschungsförderung von Bund und Ländern (ohne Deutsche Forschungsgemeinschaft)",
+    "en": "Joint federal-state research funding (excl. DFG)"
+   },
+   "page": 16
+  },
+  {
+   "code": "165",
+   "level": 3,
+   "label": {
+    "de": "Forschung und experimentelle Entwicklung",
+    "en": "Research and experimental development"
+   },
+   "page": 17
+  },
+  {
+   "code": "167",
+   "level": 3,
+   "label": {
+    "de": "Zuschüsse an internationale wissenschaftliche Organisationen und zwischenstaatliche Forschungseinrichtungen",
+    "en": "Grants to international scientific organisations"
+   },
+   "page": 17
+  },
+  {
+   "code": "18",
+   "level": 2,
+   "label": {
+    "de": "Kultur und Religion",
+    "en": "Culture and religion (joint heading 18/19)"
+   },
+   "page": 17,
+   "joint_heading": "18/19"
+  },
+  {
+   "code": "181",
+   "level": 3,
+   "label": {
+    "de": "Theater",
+    "en": "Theatres"
+   },
+   "page": 17
+  },
+  {
+   "code": "182",
+   "level": 3,
+   "label": {
+    "de": "Musikpflege",
+    "en": "Music"
+   },
+   "page": 17
+  },
+  {
+   "code": "183",
+   "level": 3,
+   "label": {
+    "de": "Museen, Sammlungen, Ausstellungen",
+    "en": "Museums, collections, exhibitions"
+   },
+   "page": 18
+  },
+  {
+   "code": "184",
+   "level": 3,
+   "label": {
+    "de": "Zoologische und botanische Gärten",
+    "en": "Zoological and botanical gardens"
+   },
+   "page": 18
+  },
+  {
+   "code": "185",
+   "level": 3,
+   "label": {
+    "de": "Musikschulen",
+    "en": "Music schools"
+   },
+   "page": 18
+  },
+  {
+   "code": "186",
+   "level": 3,
+   "label": {
+    "de": "Nichtwissenschaftliche Bibliotheken",
+    "en": "Non-scientific libraries"
+   },
+   "page": 18
+  },
+  {
+   "code": "187",
+   "level": 3,
+   "label": {
+    "de": "Sonstige Kulturpflege",
+    "en": "Other cultural promotion"
+   },
+   "page": 18
+  },
+  {
+   "code": "188",
+   "level": 3,
+   "label": {
+    "de": "Verwaltung für kulturelle Angelegenheiten",
+    "en": "Administration for cultural affairs"
+   },
+   "page": 19
+  },
+  {
+   "code": "19",
+   "level": 2,
+   "label": {
+    "de": "Kultur und Religion",
+    "en": "Culture and religion (joint heading 18/19)"
+   },
+   "page": 17,
+   "joint_heading": "18/19"
+  },
+  {
+   "code": "195",
+   "level": 3,
+   "label": {
+    "de": "Denkmalschutz und -pflege",
+    "en": "Heritage protection and preservation"
+   },
+   "page": 19
+  },
+  {
+   "code": "199",
+   "level": 3,
+   "label": {
+    "de": "Kirchliche Angelegenheiten",
+    "en": "Church affairs"
+   },
+   "page": 19
+  },
+  {
+   "code": "2",
+   "level": 1,
+   "label": {
+    "de": "Soziale Sicherung, Familie und Jugend, Arbeitsmarktpolitik",
+    "en": "Social security, family and youth, labour market"
+   },
+   "page": 19
+  },
+  {
+   "code": "21",
+   "level": 2,
+   "label": {
+    "de": "Verwaltung für soziale Angelegenheiten",
+    "en": "Social administration"
+   },
+   "page": 19
+  },
+  {
+   "code": "211",
+   "level": 3,
+   "label": {
+    "de": "Verwaltungskostenerstattung SGB II (nur Bund)",
+    "en": "Administration for social affairs"
+   },
+   "page": 20
+  },
+  {
+   "code": "219",
+   "level": 3,
+   "label": {
+    "de": "Sonstige Verwaltung für soziale Angelegenheiten",
+    "en": "Other social administration"
+   },
+   "page": 20
+  },
+  {
+   "code": "22",
+   "level": 2,
+   "label": {
+    "de": "Sozialversicherung einschl. Arbeitslosenversicherung",
+    "en": "Social insurance incl. unemployment insurance"
+   },
+   "page": 20
+  },
+  {
+   "code": "221",
+   "level": 3,
+   "label": {
+    "de": "Allgemeine Rentenversicherung (nur Bundesträger)",
+    "en": "Statutory pension insurance"
+   },
+   "page": 20
+  },
+  {
+   "code": "222",
+   "level": 3,
+   "label": {
+    "de": "Knappschaftliche Rentenversicherung (nur Bundesträger)",
+    "en": "Statutory health insurance"
+   },
+   "page": 20
+  },
+  {
+   "code": "223",
+   "level": 3,
+   "label": {
+    "de": "Unfallversicherung",
+    "en": "Accident insurance"
+   },
+   "page": 20
+  },
+  {
+   "code": "224",
+   "level": 3,
+   "label": {
+    "de": "Krankenversicherung",
+    "en": "Health insurance"
+   },
+   "page": 20
+  },
+  {
+   "code": "225",
+   "level": 3,
+   "label": {
+    "de": "Arbeitslosenversicherung (nur Bund)",
+    "en": "Unemployment insurance (federal only)"
+   },
+   "page": 20
+  },
+  {
+   "code": "226",
+   "level": 3,
+   "label": {
+    "de": "Alterssicherung der Landwirte (nur Bund)",
+    "en": "Farmers' old-age insurance (federal only)"
+   },
+   "page": 20
+  },
+  {
+   "code": "227",
+   "level": 3,
+   "label": {
+    "de": "Pflegeversicherung",
+    "en": "Long-term care insurance"
+   },
+   "page": 20
+  },
+  {
+   "code": "229",
+   "level": 3,
+   "label": {
+    "de": "Sonstige Sozialversicherungen",
+    "en": "Other social insurance"
+   },
+   "page": 20
+  },
+  {
+   "code": "23",
+   "level": 2,
+   "label": {
+    "de": "Familienhilfe, Wohlfahrtspflege u. Ä. (ohne Leistungen nach dem SGB VIII)",
+    "en": "Family assistance, welfare and similar"
+   },
+   "page": 21
+  },
+  {
+   "code": "231",
+   "level": 3,
+   "label": {
+    "de": "Kindergeld, Kinderzuschlag",
+    "en": "Child benefit, child supplement"
+   },
+   "page": 21
+  },
+  {
+   "code": "232",
+   "level": 3,
+   "label": {
+    "de": "Elterngeld, Erziehungsgeld und Mutterschutz",
+    "en": "Parental allowance, parental leave"
+   },
+   "page": 21
+  },
+  {
+   "code": "233",
+   "level": 3,
+   "label": {
+    "de": "Wohngeld",
+    "en": "Housing benefit"
+   },
+   "page": 21
+  },
+  {
+   "code": "235",
+   "level": 3,
+   "label": {
+    "de": "Soziale Einrichtungen",
+    "en": "Social institutions"
+   },
+   "page": 21,
+   "valid_from": 2024
+  },
+  {
+   "code": "236",
+   "level": 3,
+   "label": {
+    "de": "Förderung der Wohlfahrtspflege",
+    "en": "Promotion of welfare organisations"
+   },
+   "page": 21
+  },
+  {
+   "code": "237",
+   "level": 3,
+   "label": {
+    "de": "Leistungen nach dem Unterhaltsvorschussgesetz",
+    "en": "Maintenance-advance benefits"
+   },
+   "page": 21
+  },
+  {
+   "code": "24",
+   "level": 2,
+   "label": {
+    "de": "Leistungen nach dem Sozialen Entschädigungsrecht und für Folgen von politischen Ereignissen",
+    "en": "Social compensation benefits (SGB XIV) and benefits for consequences of political events"
+   },
+   "page": 21,
+   "valid_from": 2024
+  },
+  {
+   "code": "241",
+   "level": 3,
+   "label": {
+    "de": "Leistungen der Sozialen Entschädigung",
+    "en": "Social compensation benefits (SGB XIV)"
+   },
+   "page": 22,
+   "valid_from": 2024
+  },
+  {
+   "code": "243",
+   "level": 3,
+   "label": {
+    "de": "Lastenausgleich",
+    "en": "Burden equalisation"
+   },
+   "page": 22
+  },
+  {
+   "code": "244",
+   "level": 3,
+   "label": {
+    "de": "Wiedergutmachung",
+    "en": "Restitution"
+   },
+   "page": 22,
+   "valid_from": 2024
+  },
+  {
+   "code": "246",
+   "level": 3,
+   "label": {
+    "de": "Vertriebene und Spätaussiedlerinnen und Spätaussiedler",
+    "en": "Expellees and ethnic German resettlers"
+   },
+   "page": 22
+  },
+  {
+   "code": "249",
+   "level": 3,
+   "label": {
+    "de": "Sonstige Leistungen für Folgen von Krieg und politischen Ereignissen",
+    "en": "Other benefits for consequences of war and political events"
+   },
+   "page": 23
+  },
+  {
+   "code": "25",
+   "level": 2,
+   "label": {
+    "de": "Arbeitsmarktpolitik",
+    "en": "Labour-market policy"
+   },
+   "page": 23
+  },
+  {
+   "code": "251",
+   "level": 3,
+   "label": {
+    "de": "Arbeitslosengeld II nach dem SGB II",
+    "en": "Citizen's benefit (Bürgergeld, formerly Arbeitslosengeld II) under SGB II"
+   },
+   "page": 23
+  },
+  {
+   "code": "252",
+   "level": 3,
+   "label": {
+    "de": "Leistungen für Unterkunft und Heizung nach dem SGB II",
+    "en": "Accommodation and heating benefits under SGB II"
+   },
+   "page": 23
+  },
+  {
+   "code": "253",
+   "level": 3,
+   "label": {
+    "de": "Aktive Arbeitsmarktpolitik",
+    "en": "Active labour-market policy"
+   },
+   "page": 23
+  },
+  {
+   "code": "259",
+   "level": 3,
+   "label": {
+    "de": "Sonstige Leistungen der Grundsicherung für Arbeitsuchende nach dem SGB II",
+    "en": "Other basic income support for job seekers (SGB II)"
+   },
+   "page": 24
+  },
+  {
+   "code": "26",
+   "level": 2,
+   "label": {
+    "de": "Kinder- und Jugendhilfe nach dem SGB VIII (ohne Kindertagesbetreuung)",
+    "en": "Child and youth welfare (SGB VIII)"
+   },
+   "page": 24
+  },
+  {
+   "code": "261",
+   "level": 3,
+   "label": {
+    "de": "Jugendarbeit und Jugendverbandsarbeit",
+    "en": "Youth work and youth associations"
+   },
+   "page": 24
+  },
+  {
+   "code": "262",
+   "level": 3,
+   "label": {
+    "de": "Jugendsozialarbeit",
+    "en": "Youth social work"
+   },
+   "page": 24
+  },
+  {
+   "code": "263",
+   "level": 3,
+   "label": {
+    "de": "Erzieherischer Kinder- und Jugendschutz, Förderung der Erziehung in der Familie",
+    "en": "Child and youth protection, family education support"
+   },
+   "page": 24
+  },
+  {
+   "code": "265",
+   "level": 3,
+   "label": {
+    "de": "Hilfen zur Erziehung und Eingliederungshilfen",
+    "en": "Educational and integration assistance"
+   },
+   "page": 24
+  },
+  {
+   "code": "266",
+   "level": 3,
+   "label": {
+    "de": "Weitere Aufgaben der Jugendhilfe",
+    "en": "Further youth-welfare tasks"
+   },
+   "page": 24
+  },
+  {
+   "code": "27",
+   "level": 2,
+   "label": {
+    "de": "Kindertagesbetreuung nach dem SGB VIII",
+    "en": "Day care for children (SGB VIII)"
+   },
+   "page": 24
+  },
+  {
+   "code": "28",
+   "level": 2,
+   "label": {
+    "de": "Soziale Leistungen nach dem SGB XII und dem Asylbewerberleistungsgesetz, Eingliederungshilfe für Menschen mit Behinderungen nach dem SGB IX",
+    "en": "Social assistance (SGB XII), asylum-seeker benefits, integration assistance"
+   },
+   "page": 25
+  },
+  {
+   "code": "281",
+   "level": 3,
+   "label": {
+    "de": "Hilfe zum Lebensunterhalt nach dem SGB XII",
+    "en": "Subsistence assistance (SGB XII)"
+   },
+   "page": 25
+  },
+  {
+   "code": "282",
+   "level": 3,
+   "label": {
+    "de": "Grundsicherung im Alter und bei Erwerbsminderung nach dem SGB XII",
+    "en": "Basic income support in old age and reduced earning capacity"
+   },
+   "page": 25
+  },
+  {
+   "code": "283",
+   "level": 3,
+   "label": {
+    "de": "Eingliederungshilfe für Menschen mit Behinderungen nach dem SGB IX",
+    "en": "Assistance for health, care and other situations"
+   },
+   "page": 25
+  },
+  {
+   "code": "284",
+   "level": 3,
+   "label": {
+    "de": "Hilfe zur Pflege nach dem SGB XII",
+    "en": "Care assistance (SGB XII)"
+   },
+   "page": 25
+  },
+  {
+   "code": "285",
+   "level": 3,
+   "label": {
+    "de": "Weitere Leistungen nach dem SGB XII",
+    "en": "Integration assistance for people with disabilities"
+   },
+   "page": 25
+  },
+  {
+   "code": "286",
+   "level": 3,
+   "label": {
+    "de": "Leistungen nach dem SGB XII - nur Flächenländer",
+    "en": "SGB XII benefits (territorial Länder only)"
+   },
+   "page": 25
+  },
+  {
+   "code": "287",
+   "level": 3,
+   "label": {
+    "de": "Leistungen nach dem Asylbewerberleistungsgesetz",
+    "en": "Asylum-seeker benefits"
+   },
+   "page": 25
+  },
+  {
+   "code": "29",
+   "level": 2,
+   "label": {
+    "de": "Sonstige soziale Angelegenheiten",
+    "en": "Other social affairs"
+   },
+   "page": 26,
+   "valid_from": 2024
+  },
+  {
+   "code": "290",
+   "level": 3,
+   "label": {
+    "de": "Sonstige soziale Angelegenheiten",
+    "en": "Other social affairs (total)"
+   },
+   "page": 26,
+   "derived": true,
+   "derived_note": "Oberfunktion total; the plan lists no 3-digit code ending in 0"
+  },
+  {
+   "code": "3",
+   "level": 1,
+   "label": {
+    "de": "Gesundheit, Umwelt, Sport und Erholung",
+    "en": "Health, environment, sport and recreation"
+   },
+   "page": 26
+  },
+  {
+   "code": "31",
+   "level": 2,
+   "label": {
+    "de": "Gesundheitswesen",
+    "en": "Health"
+   },
+   "page": 26
+  },
+  {
+   "code": "311",
+   "level": 3,
+   "label": {
+    "de": "Gesundheitsverwaltung",
+    "en": "Health administration"
+   },
+   "page": 26
+  },
+  {
+   "code": "312",
+   "level": 3,
+   "label": {
+    "de": "Krankenhäuser und Heilstätten",
+    "en": "Hospitals and sanatoria"
+   },
+   "page": 26
+  },
+  {
+   "code": "313",
+   "level": 3,
+   "label": {
+    "de": "Arbeitsschutz",
+    "en": "Occupational safety"
+   },
+   "page": 26
+  },
+  {
+   "code": "314",
+   "level": 3,
+   "label": {
+    "de": "Gesundheitsschutz",
+    "en": "Health protection"
+   },
+   "page": 27,
+   "valid_from": 2024
+  },
+  {
+   "code": "32",
+   "level": 2,
+   "label": {
+    "de": "Sport und Erholung",
+    "en": "Sport and recreation"
+   },
+   "page": 27
+  },
+  {
+   "code": "321",
+   "level": 3,
+   "label": {
+    "de": "Park- und Gartenanlagen",
+    "en": "Recreation"
+   },
+   "page": 27
+  },
+  {
+   "code": "322",
+   "level": 3,
+   "label": {
+    "de": "Sport",
+    "en": "Sport"
+   },
+   "page": 27
+  },
+  {
+   "code": "33",
+   "level": 2,
+   "label": {
+    "de": "Umwelt- und Naturschutz",
+    "en": "Environmental and nature protection"
+   },
+   "page": 27
+  },
+  {
+   "code": "331",
+   "level": 3,
+   "label": {
+    "de": "Umwelt- und Naturschutzverwaltung",
+    "en": "Environmental administration"
+   },
+   "page": 27
+  },
+  {
+   "code": "332",
+   "level": 3,
+   "label": {
+    "de": "Maßnahmen des Umwelt- und Naturschutzes",
+    "en": "Environmental and nature-protection measures"
+   },
+   "page": 27
+  },
+  {
+   "code": "34",
+   "level": 2,
+   "label": {
+    "de": "Nukleare Sicherheit und Strahlenschutz",
+    "en": "Nuclear safety and radiation protection"
+   },
+   "page": 28
+  },
+  {
+   "code": "341",
+   "level": 3,
+   "label": {
+    "de": "Verwaltung für nukleare Sicherheit und Strahlenschutz",
+    "en": "Administration for nuclear safety and radiation protection"
+   },
+   "page": 28
+  },
+  {
+   "code": "342",
+   "level": 3,
+   "label": {
+    "de": "Maßnahmen der nuklearen Sicherheit und des Strahlenschutzes",
+    "en": "Nuclear safety and radiation-protection measures"
+   },
+   "page": 28
+  },
+  {
+   "code": "4",
+   "level": 1,
+   "label": {
+    "de": "Wohnungswesen, Städtebau, Raumordnung und kommunale Gemeinschaftsdienste",
+    "en": "Housing, urban development, regional planning, community services"
+   },
+   "page": 28
+  },
+  {
+   "code": "41",
+   "level": 2,
+   "label": {
+    "de": "Wohnungswesen, Wohnungsbauprämie",
+    "en": "Housing, housing-construction premium"
+   },
+   "page": 28
+  },
+  {
+   "code": "411",
+   "level": 3,
+   "label": {
+    "de": "Förderung des Wohnungsbaues",
+    "en": "Housing-construction promotion"
+   },
+   "page": 28
+  },
+  {
+   "code": "412",
+   "level": 3,
+   "label": {
+    "de": "Wohnungsbauprämie/Vermögensbildung (nur Bund)",
+    "en": "Housing-construction premium / wealth formation (federal only)"
+   },
+   "page": 29
+  },
+  {
+   "code": "419",
+   "level": 3,
+   "label": {
+    "de": "Sonstiges Wohnungswesen",
+    "en": "Other housing"
+   },
+   "page": 29
+  },
+  {
+   "code": "42",
+   "level": 2,
+   "label": {
+    "de": "Geoinformation, Raumordnung und Landesplanung, Städtebauförderung",
+    "en": "Geo-information, regional and state planning, urban development funding"
+   },
+   "page": 29
+  },
+  {
+   "code": "421",
+   "level": 3,
+   "label": {
+    "de": "Geoinformation",
+    "en": "Geo-information"
+   },
+   "page": 29
+  },
+  {
+   "code": "422",
+   "level": 3,
+   "label": {
+    "de": "Raumordnung und Landesplanung",
+    "en": "Regional and state planning"
+   },
+   "page": 29
+  },
+  {
+   "code": "423",
+   "level": 3,
+   "label": {
+    "de": "Städtebauförderung",
+    "en": "Urban development funding"
+   },
+   "page": 29
+  },
+  {
+   "code": "43",
+   "level": 2,
+   "label": {
+    "de": "Kommunale Gemeinschaftsdienste (ohne Straßenbeleuchtung, Abwasserentsorgung und Abfallwirtschaft)",
+    "en": "Community services"
+   },
+   "page": 29
+  },
+  {
+   "code": "5",
+   "level": 1,
+   "label": {
+    "de": "Ernährung, Landwirtschaft und Forsten",
+    "en": "Food, agriculture and forestry"
+   },
+   "page": 30
+  },
+  {
+   "code": "51",
+   "level": 2,
+   "label": {
+    "de": "Verwaltung für Ernährung, Landwirtschaft und Forsten (ohne Betriebsverwaltung)",
+    "en": "Administration for food, agriculture and forestry"
+   },
+   "page": 30
+  },
+  {
+   "code": "511",
+   "level": 3,
+   "label": {
+    "de": "Verwaltung für Ernährung und Landwirtschaft",
+    "en": "Administration for food and agriculture"
+   },
+   "page": 30
+  },
+  {
+   "code": "512",
+   "level": 3,
+   "label": {
+    "de": "Forst-, Jagd- und Fischereiverwaltung",
+    "en": "Forestry administration"
+   },
+   "page": 30
+  },
+  {
+   "code": "52",
+   "level": 2,
+   "label": {
+    "de": "Landwirtschaft und Ernährung",
+    "en": "Agriculture and food"
+   },
+   "page": 30
+  },
+  {
+   "code": "521",
+   "level": 3,
+   "label": {
+    "de": "Agrarstruktur und ländlicher Raum",
+    "en": "Agricultural structure and rural areas"
+   },
+   "page": 30
+  },
+  {
+   "code": "522",
+   "level": 3,
+   "label": {
+    "de": "Einkommenstabilisierende Maßnahmen",
+    "en": "Income-stabilising measures"
+   },
+   "page": 30
+  },
+  {
+   "code": "523",
+   "level": 3,
+   "label": {
+    "de": "Landwirtschaftliche Produktion, Tiergesundheit und Ernährung",
+    "en": "Agricultural production, animal health and food"
+   },
+   "page": 30
+  },
+  {
+   "code": "53",
+   "level": 2,
+   "label": {
+    "de": "Forstwirtschaft und Jagd, Fischerei",
+    "en": "Forestry, fishing and hunting"
+   },
+   "page": 31
+  },
+  {
+   "code": "531",
+   "level": 3,
+   "label": {
+    "de": "Forstwirtschaft und Jagd",
+    "en": "Forestry"
+   },
+   "page": 31
+  },
+  {
+   "code": "532",
+   "level": 3,
+   "label": {
+    "de": "Fischerei",
+    "en": "Fisheries"
+   },
+   "page": 31
+  },
+  {
+   "code": "6",
+   "level": 1,
+   "label": {
+    "de": "Energie- und Wasserwirtschaft, Gewerbe, Dienstleistungen",
+    "en": "Energy and water, trade and services"
+   },
+   "page": 31
+  },
+  {
+   "code": "61",
+   "level": 2,
+   "label": {
+    "de": "Verwaltung für Energie- und Wasserwirtschaft, Gewerbe und Dienstleistungen",
+    "en": "Administration for energy, water, trade and services"
+   },
+   "page": 31
+  },
+  {
+   "code": "610",
+   "level": 3,
+   "label": {
+    "de": "Verwaltung für Energie- und Wasserwirtschaft, Gewerbe und Dienstleistungen",
+    "en": "Administration for energy, water, trade and services (total)"
+   },
+   "page": 31,
+   "derived": true,
+   "derived_note": "Oberfunktion total; the plan lists no 3-digit code ending in 0"
+  },
+  {
+   "code": "62",
+   "level": 2,
+   "label": {
+    "de": "Wasserwirtschaft, Hochwasser- und Küstenschutz",
+    "en": "Water management, flood and coastal protection"
+   },
+   "page": 31
+  },
+  {
+   "code": "623",
+   "level": 3,
+   "label": {
+    "de": "Wasserwirtschaft und Kulturbau",
+    "en": "Water management and land improvement"
+   },
+   "page": 31
+  },
+  {
+   "code": "624",
+   "level": 3,
+   "label": {
+    "de": "Talsperren, Hochwasserrückhaltebecken",
+    "en": "Dams and flood retention basins"
+   },
+   "page": 31
+  },
+  {
+   "code": "625",
+   "level": 3,
+   "label": {
+    "de": "Küstenschutz",
+    "en": "Coastal protection"
+   },
+   "page": 31
+  },
+  {
+   "code": "63",
+   "level": 2,
+   "label": {
+    "de": "Bergbau, verarbeitendes Gewerbe und Baugewerbe",
+    "en": "Mining, manufacturing and construction"
+   },
+   "page": 31
+  },
+  {
+   "code": "631",
+   "level": 3,
+   "label": {
+    "de": "Kohlenbergbau",
+    "en": "Coal mining"
+   },
+   "page": 31
+  },
+  {
+   "code": "632",
+   "level": 3,
+   "label": {
+    "de": "Sonstiger Bergbau",
+    "en": "Other mining"
+   },
+   "page": 31
+  },
+  {
+   "code": "634",
+   "level": 3,
+   "label": {
+    "de": "Verarbeitende Industrie",
+    "en": "Manufacturing industry"
+   },
+   "page": 31
+  },
+  {
+   "code": "635",
+   "level": 3,
+   "label": {
+    "de": "Handwerk und Kleingewerbe",
+    "en": "Crafts and small trades"
+   },
+   "page": 31
+  },
+  {
+   "code": "638",
+   "level": 3,
+   "label": {
+    "de": "Baugewerbe",
+    "en": "Construction industry"
+   },
+   "page": 32
+  },
+  {
+   "code": "64",
+   "level": 2,
+   "label": {
+    "de": "Energie- und Wasserversorgung, Entsorgung",
+    "en": "Energy and water supply, waste disposal"
+   },
+   "page": 32
+  },
+  {
+   "code": "641",
+   "level": 3,
+   "label": {
+    "de": "Kernenergie",
+    "en": "Nuclear energy"
+   },
+   "page": 32
+  },
+  {
+   "code": "642",
+   "level": 3,
+   "label": {
+    "de": "Erneuerbare Energieformen",
+    "en": "Renewable energy"
+   },
+   "page": 32
+  },
+  {
+   "code": "643",
+   "level": 3,
+   "label": {
+    "de": "Elektrizitätsversorgung",
+    "en": "Electricity supply"
+   },
+   "page": 32
+  },
+  {
+   "code": "644",
+   "level": 3,
+   "label": {
+    "de": "Wasserversorgung",
+    "en": "Water supply"
+   },
+   "page": 32
+  },
+  {
+   "code": "645",
+   "level": 3,
+   "label": {
+    "de": "Abwasserentsorgung",
+    "en": "Waste-water disposal"
+   },
+   "page": 32
+  },
+  {
+   "code": "646",
+   "level": 3,
+   "label": {
+    "de": "Abfallwirtschaft",
+    "en": "Waste management"
+   },
+   "page": 32
+  },
+  {
+   "code": "647",
+   "level": 3,
+   "label": {
+    "de": "Straßenreinigung",
+    "en": "Street cleaning"
+   },
+   "page": 32
+  },
+  {
+   "code": "649",
+   "level": 3,
+   "label": {
+    "de": "Sonstige Energie- und Wasserversorgung",
+    "en": "Other energy and water supply"
+   },
+   "page": 32
+  },
+  {
+   "code": "65",
+   "level": 2,
+   "label": {
+    "de": "Handel und Tourismus",
+    "en": "Trade and tourism"
+   },
+   "page": 33
+  },
+  {
+   "code": "651",
+   "level": 3,
+   "label": {
+    "de": "Handel",
+    "en": "Trade"
+   },
+   "page": 33
+  },
+  {
+   "code": "652",
+   "level": 3,
+   "label": {
+    "de": "Tourismus",
+    "en": "Tourism"
+   },
+   "page": 33
+  },
+  {
+   "code": "66",
+   "level": 2,
+   "label": {
+    "de": "Geld- und Versicherungswesen",
+    "en": "Banking and insurance"
+   },
+   "page": 33
+  },
+  {
+   "code": "661",
+   "level": 3,
+   "label": {
+    "de": "Banken und Kreditinstitute",
+    "en": "Banks and credit institutions"
+   },
+   "page": 33
+  },
+  {
+   "code": "669",
+   "level": 3,
+   "label": {
+    "de": "Sonstiges Geld- und Versicherungswesen",
+    "en": "Other banking and insurance"
+   },
+   "page": 33
+  },
+  {
+   "code": "68",
+   "level": 2,
+   "label": {
+    "de": "Sonstiges im Bereich Gewerbe und Dienstleistungen",
+    "en": "Other trade and services"
+   },
+   "page": 33
+  },
+  {
+   "code": "680",
+   "level": 3,
+   "label": {
+    "de": "Sonstiges im Bereich Gewerbe und Dienstleistungen",
+    "en": "Other trade and services (total)"
+   },
+   "page": 33,
+   "derived": true,
+   "derived_note": "Oberfunktion total; the plan lists no 3-digit code ending in 0"
+  },
+  {
+   "code": "69",
+   "level": 2,
+   "label": {
+    "de": "Regionale Fördermaßnahmen",
+    "en": "Regional development measures"
+   },
+   "page": 34
+  },
+  {
+   "code": "691",
+   "level": 3,
+   "label": {
+    "de": "Betriebliche Investitionen",
+    "en": "Business investment"
+   },
+   "page": 34
+  },
+  {
+   "code": "692",
+   "level": 3,
+   "label": {
+    "de": "Verbesserung der Wirtschafts- und Infrastruktur",
+    "en": "Improvement of economic and infrastructure conditions"
+   },
+   "page": 34
+  },
+  {
+   "code": "7",
+   "level": 1,
+   "label": {
+    "de": "Verkehrs- und Nachrichtenwesen",
+    "en": "Transport and communications"
+   },
+   "page": 34
+  },
+  {
+   "code": "71",
+   "level": 2,
+   "label": {
+    "de": "Verwaltung des Verkehrs- und Nachrichtenwesens",
+    "en": "Administration of transport and communications"
+   },
+   "page": 34
+  },
+  {
+   "code": "711",
+   "level": 3,
+   "label": {
+    "de": "Verwaltung für Straßen- und Brückenbau",
+    "en": "Road administration"
+   },
+   "page": 34
+  },
+  {
+   "code": "712",
+   "level": 3,
+   "label": {
+    "de": "Verwaltung für Wasserstraßen und Häfen",
+    "en": "Waterways and ports administration"
+   },
+   "page": 34
+  },
+  {
+   "code": "719",
+   "level": 3,
+   "label": {
+    "de": "Sonstige Verkehrs- und Nachrichtenverwaltung",
+    "en": "Other transport and communications administration"
+   },
+   "page": 34
+  },
+  {
+   "code": "72",
+   "level": 2,
+   "label": {
+    "de": "Straßen",
+    "en": "Roads"
+   },
+   "page": 34
+  },
+  {
+   "code": "721",
+   "level": 3,
+   "label": {
+    "de": "Bundesautobahnen",
+    "en": "Federal motorways"
+   },
+   "page": 34
+  },
+  {
+   "code": "722",
+   "level": 3,
+   "label": {
+    "de": "Bundesstraßen",
+    "en": "Federal roads"
+   },
+   "page": 34
+  },
+  {
+   "code": "723",
+   "level": 3,
+   "label": {
+    "de": "Landesstraßen",
+    "en": "State roads"
+   },
+   "page": 34
+  },
+  {
+   "code": "724",
+   "level": 3,
+   "label": {
+    "de": "Kreisstraßen",
+    "en": "District roads"
+   },
+   "page": 35
+  },
+  {
+   "code": "725",
+   "level": 3,
+   "label": {
+    "de": "Gemeindestraßen",
+    "en": "Municipal roads"
+   },
+   "page": 35
+  },
+  {
+   "code": "726",
+   "level": 3,
+   "label": {
+    "de": "Straßenbeleuchtung",
+    "en": "Street lighting"
+   },
+   "page": 35
+  },
+  {
+   "code": "729",
+   "level": 3,
+   "label": {
+    "de": "Sonstiger Straßenverkehr",
+    "en": "Other road transport"
+   },
+   "page": 35
+  },
+  {
+   "code": "73",
+   "level": 2,
+   "label": {
+    "de": "Wasserstraßen und Häfen, Förderung der Schifffahrt",
+    "en": "Waterways and ports, shipping support"
+   },
+   "page": 35
+  },
+  {
+   "code": "731",
+   "level": 3,
+   "label": {
+    "de": "Wasserstraßen und Häfen",
+    "en": "Waterways and ports"
+   },
+   "page": 35
+  },
+  {
+   "code": "732",
+   "level": 3,
+   "label": {
+    "de": "Förderung der Schifffahrt",
+    "en": "Shipping support"
+   },
+   "page": 35
+  },
+  {
+   "code": "74",
+   "level": 2,
+   "label": {
+    "de": "Eisenbahnen und öffentlicher Personennahverkehr",
+    "en": "Railways and local public transport"
+   },
+   "page": 35
+  },
+  {
+   "code": "741",
+   "level": 3,
+   "label": {
+    "de": "Öffentlicher Personennahverkehr",
+    "en": "Local public transport"
+   },
+   "page": 35
+  },
+  {
+   "code": "742",
+   "level": 3,
+   "label": {
+    "de": "Eisenbahnen",
+    "en": "Railways"
+   },
+   "page": 36
+  },
+  {
+   "code": "75",
+   "level": 2,
+   "label": {
+    "de": "Luftfahrt",
+    "en": "Aviation"
+   },
+   "page": 36
+  },
+  {
+   "code": "750",
+   "level": 3,
+   "label": {
+    "de": "Luftfahrt",
+    "en": "Aviation (total)"
+   },
+   "page": 36,
+   "derived": true,
+   "derived_note": "Oberfunktion total; the plan lists no 3-digit code ending in 0"
+  },
+  {
+   "code": "77",
+   "level": 2,
+   "label": {
+    "de": "Nachrichtenwesen",
+    "en": "Communications"
+   },
+   "page": 36
+  },
+  {
+   "code": "771",
+   "level": 3,
+   "label": {
+    "de": "Post und Telekommunikation",
+    "en": "Postal services"
+   },
+   "page": 36
+  },
+  {
+   "code": "772",
+   "level": 3,
+   "label": {
+    "de": "Rundfunk und Fernsehen",
+    "en": "Broadcasting and television"
+   },
+   "page": 36
+  },
+  {
+   "code": "79",
+   "level": 2,
+   "label": {
+    "de": "Sonstiges Verkehrswesen",
+    "en": "Other transport"
+   },
+   "page": 36
+  },
+  {
+   "code": "790",
+   "level": 3,
+   "label": {
+    "de": "Sonstiges Verkehrswesen",
+    "en": "Other transport (total)"
+   },
+   "page": 36,
+   "derived": true,
+   "derived_note": "Oberfunktion total; the plan lists no 3-digit code ending in 0"
+  },
+  {
+   "code": "8",
+   "level": 1,
+   "label": {
+    "de": "Finanzwirtschaft",
+    "en": "General financial management"
+   },
+   "page": 36
+  },
+  {
+   "code": "81",
+   "level": 2,
+   "label": {
+    "de": "Grund- und Kapitalvermögen, Sondervermögen",
+    "en": "Real and financial assets, special funds"
+   },
+   "page": 36
+  },
+  {
+   "code": "811",
+   "level": 3,
+   "label": {
+    "de": "Grundvermögen",
+    "en": "Real estate"
+   },
+   "page": 36
+  },
+  {
+   "code": "812",
+   "level": 3,
+   "label": {
+    "de": "Kapitalvermögen",
+    "en": "Financial assets"
+   },
+   "page": 37
+  },
+  {
+   "code": "813",
+   "level": 3,
+   "label": {
+    "de": "Sondervermögen",
+    "en": "Special funds"
+   },
+   "page": 37
+  },
+  {
+   "code": "82",
+   "level": 2,
+   "label": {
+    "de": "Steuern und Finanzzuweisungen",
+    "en": "Taxes and financial allocations"
+   },
+   "page": 37
+  },
+  {
+   "code": "820",
+   "level": 3,
+   "label": {
+    "de": "Steuern und Finanzzuweisungen",
+    "en": "Taxes and financial allocations (total)"
+   },
+   "page": 37,
+   "derived": true,
+   "derived_note": "Oberfunktion total; the plan lists no 3-digit code ending in 0"
+  },
+  {
+   "code": "83",
+   "level": 2,
+   "label": {
+    "de": "Schulden",
+    "en": "Debt"
+   },
+   "page": 37
+  },
+  {
+   "code": "830",
+   "level": 3,
+   "label": {
+    "de": "Schulden",
+    "en": "Debt (total)"
+   },
+   "page": 37,
+   "derived": true,
+   "derived_note": "Oberfunktion total; the plan lists no 3-digit code ending in 0"
+  },
+  {
+   "code": "84",
+   "level": 2,
+   "label": {
+    "de": "Beihilfen, Unterstützungen u. Ä.",
+    "en": "Allowances and support"
+   },
+   "page": 37
+  },
+  {
+   "code": "840",
+   "level": 3,
+   "label": {
+    "de": "Beihilfen, Unterstützungen u. Ä.",
+    "en": "Allowances and support (total)"
+   },
+   "page": 37,
+   "derived": true,
+   "derived_note": "Oberfunktion total; the plan lists no 3-digit code ending in 0"
+  },
+  {
+   "code": "85",
+   "level": 2,
+   "label": {
+    "de": "Rücklagen",
+    "en": "Reserves"
+   },
+   "page": 38
+  },
+  {
+   "code": "86",
+   "level": 2,
+   "label": {
+    "de": "Sonstiges",
+    "en": "Other"
+   },
+   "page": 38
+  },
+  {
+   "code": "860",
+   "level": 3,
+   "label": {
+    "de": "Sonstiges",
+    "en": "Other (total)"
+   },
+   "page": 38,
+   "derived": true,
+   "derived_note": "Oberfunktion total; the plan lists no 3-digit code ending in 0"
+  },
+  {
+   "code": "87",
+   "level": 2,
+   "label": {
+    "de": "Abwicklung der Vorjahre",
+    "en": "Settlement of previous years"
+   },
+   "page": 38
+  },
+  {
+   "code": "88",
+   "level": 2,
+   "label": {
+    "de": "Globalposten",
+    "en": "Global items"
+   },
+   "page": 38
+  },
+  {
+   "code": "880",
+   "level": 3,
+   "label": {
+    "de": "Globalposten",
+    "en": "Global items (total)"
+   },
+   "page": 38,
+   "derived": true,
+   "derived_note": "Oberfunktion total; the plan lists no 3-digit code ending in 0"
+  },
+  {
+   "code": "89",
+   "level": 2,
+   "label": {
+    "de": "Haushaltstechnische Verrechnungen",
+    "en": "Budget-technical clearing items"
+   },
+   "page": 38
+  }
+ ]
+}

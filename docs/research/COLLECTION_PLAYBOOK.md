@@ -4,6 +4,11 @@ This workflow collects a routed fiscal graph, not one consolidated revenue/expen
 Read `GERMANY_FISCAL_GRAPH_2026-08-05.md`, `RESEARCH_LEARNINGS.md`, and `SOURCE_CATALOG.md` before a
 new run.
 
+> **2026-10-09:** the mechanics now live in code. Register a source in `research/sources.json`
+> (or `research/sources.d/<topic>.json`), run `scripts/research/fetch.py`, write/extend a
+> `scripts/research/build_<topic>.py` with hard checks, run `build_all.py`, then `check.py`, then
+> `build_docs.py`. The steps below remain the method; the exit checklist is unchanged.
+
 ## 1. Open the run
 
 1. Copy `logs/TEMPLATE.md` to a dated run log.

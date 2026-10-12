@@ -1,0 +1,49 @@
+year,csv_row,steuerart,ertragshoheit,dezember_teur,jan_dez_teur
+2024,2,Lohnsteuer,Landesanteil an den Gemeinschaftsteuern,588825,5182891
+2024,3,Veranlagte Einkommensteuer,Landesanteil an den Gemeinschaftsteuern,335885,1377656
+2024,4,Nicht veranlagte Steuer vom Ertrag,Landesanteil an den Gemeinschaftsteuern,42283,497227
+2024,5,Abgeltungsteuer auf Zins.- u. Veräußerungserträge,Landesanteil an den Gemeinschaftsteuern,51299,408594
+2024,6,Körperschaftsteuer,Landesanteil an den Gemeinschaftsteuern,278683,1094631
+2024,7,Umsatzsteuer,Landesanteil an den Gemeinschaftsteuern,462238,9105159
+2024,8,Einfuhr-Umsatzsteuer,Landesanteil an den Gemeinschaftsteuern,125193,1488726
+2024,9,Gewerbesteuerumlage Land,Landesanteil an den Gemeinschaftsteuern,36833,153501
+2024,10,Vermögensteuer,Landessteuern,0,0
+2024,11,Erbschaftsteuer,Landessteuern,25106,415369
+2024,12,Grunderwerbsteuer,Landessteuern,58646,910834
+2024,13,Rennwett- und Lotteriesteuer,Landessteuern,4921,82463
+2024,14,Biersteuer,Landessteuern,28,11323
+2024,15,Feuerschutzsteuer,Landessteuern,1979,25375
+2024,16,Grundsteuer,Gemeindesteuern,3134,870447
+2024,17,Gewerbesteuer,Gemeindesteuern,100750,3011215
+2024,18,Gewerbesteuerumlage Gesamt,Gemeindesteuern,-62886,-262074
+2024,19,Vergnügungsteuer,Gemeindesteuern,2513,32908
+2024,20,Hundesteuer,Gemeindesteuern,2181,12786
+2024,21,Zweitwohnungsteuer,Gemeindesteuern,383,15364
+2024,22,Übernachtungsteuer,Gemeindesteuern,7732,89619
+2024,23,Umsatzsteuer,Gemeindeanteile an Gemeinschaftsteuern,30610,351392
+2024,24,Lohn- und Einkommensteuer,Gemeindeanteile an Gemeinschaftsteuern,326368,2315487
+2024,25,Abgeltungsteuer auf Zins.-u.V.erträge,Gemeindeanteile an Gemeinschaftsteuern,13991,111435
+2025,2,Lohnsteuer,Landesanteil an den Gemeinschaftsteuern,637533,5562634
+2025,3,Veranlagte Einkommensteuer,Landesanteil an den Gemeinschaftsteuern,321109,1378186
+2025,4,Nicht veranlagte Steuer vom Ertrag,Landesanteil an den Gemeinschaftsteuern,67442,558668
+2025,5,Abgeltungsteuer auf Zins.- u. Veräußerungserträge,Landesanteil an den Gemeinschaftsteuern,51121,519362
+2025,6,Körperschaftsteuer,Landesanteil an den Gemeinschaftsteuern,277119,1084539
+2025,7,Umsatzsteuer,Landesanteil an den Gemeinschaftsteuern,1202262,9206063
+2025,8,Einfuhr-Umsatzsteuer,Landesanteil an den Gemeinschaftsteuern,125420,1461059
+2025,9,Gewerbesteuerumlage Land,Landesanteil an den Gemeinschaftsteuern,37588,160138
+2025,10,Vermögensteuer,Landessteuern,0,1
+2025,11,Erbschaftsteuer,Landessteuern,30087,510995
+2025,12,Grunderwerbsteuer,Landessteuern,79298,990911
+2025,13,Rennwett- und Lotteriesteuer,Landessteuern,6199,90740
+2025,14,Biersteuer,Landessteuern,839,11716
+2025,15,Feuerschutzsteuer,Landessteuern,2153,27908
+2025,16,Grundsteuer,Gemeindesteuern,4172,883572
+2025,17,Gewerbesteuer,Gemeindesteuern,107497,3301506
+2025,18,Gewerbesteuerumlage Gesamt,Gemeindesteuern,-64174,-273406
+2025,19,Vergnügungsteuer,Gemeindesteuern,2568,34888
+2025,20,Hundesteuer,Gemeindesteuern,2109,12440
+2025,21,Zweitwohnungsteuer,Gemeindesteuern,759,20538
+2025,22,Übernachtungsteuer,Gemeindesteuern,13131,150350
+2025,23,Umsatzsteuer,Gemeindeanteile an Gemeinschaftsteuern,35783,371891
+2025,24,Lohn- und Einkommensteuer,Gemeindeanteile an Gemeinschaftsteuern,338344,2449701
+2025,25,Abgeltungsteuer auf Zins.-u.V.erträge,Gemeindeanteile an Gemeinschaftsteuern,13942,141644

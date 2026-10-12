@@ -1,0 +1,369 @@
+{
+  "schema_version": 2,
+  "notes": [
+    "Registry of every raw source used by the data layer. scripts/research/fetch.py downloads each file into research/raw/<id>/ (committed) or research/cache/<id>/ (git-ignored) and records URL, retrieval time, bytes and SHA-256 in research/raw/MANIFEST.json.",
+    "redistribution = allowed | not_allowed | unverified. Files are only committed when allowed AND store = raw. Large permitted files may be kept in the cache (store = cache) with the sheet-level extract committed under research/extracts/.",
+    "Downloaded bytes are untrusted data: never executed, never imported, parsed only with -I Python or Node readers that treat them as data."
+  ],
+  "sources": [
+    {
+      "id": "destatis_genesis_71211",
+      "institution": "Statistisches Bundesamt (Destatis), GENESIS-Online",
+      "title": "Statistik über das Steueraufkommen (71211): cash tax receipts before and after distribution, Germany and Länder",
+      "licence": "DL-DE-BY-2.0 (Datenlizenz Deutschland – Namensnennung – 2.0); attribution: Statistisches Bundesamt (Destatis), GENESIS-Online, table code, retrieval date",
+      "licence_evidence": "https://www.destatis.de/DE/Service/Impressum/_inhalt.html (section 'Copyright für Datenbank GENESIS-Online')",
+      "redistribution": "allowed",
+      "store": "raw",
+      "basis": "Cash receipts (kassenmäßige Steuereinnahmen), annual; status flags per cell ('e' = endgültig/final, '-' = nil)",
+      "access_note": "Public, unauthenticated JSON endpoint used by the GENESIS web application. Response is JSON-stat-like (dimension/value/status). Label lists come from /variables/<code>/values.",
+      "files": [
+        {"file": "71211-0001.json", "url": "https://genesis.destatis.de/genesis/api/rest/tables/71211-0001/data", "description": "Germany, years 1999-2025, 56 tax positions before distribution (START1), EUR thousand"},
+        {"file": "71211-0002.json", "url": "https://genesis.destatis.de/genesis/api/rest/tables/71211-0002/data", "description": "Germany, years 1999-2025, 39 recipient positions after distribution (STAT10), EUR thousand"},
+        {"file": "71211-0101.json", "url": "https://genesis.destatis.de/genesis/api/rest/tables/71211-0101/data", "description": "16 Länder, years 2013-2025, 56 positions before distribution, EUR thousand"},
+        {"file": "71211-0102.json", "url": "https://genesis.destatis.de/genesis/api/rest/tables/71211-0102/data", "description": "16 Länder, years 2013-2025, 39 positions after distribution, EUR thousand"},
+        {"file": "variables-START1.json", "url": "https://genesis.destatis.de/genesis/api/rest/variables/START1/values", "description": "Official DE/EN labels and definitions of the before-distribution tax positions"},
+        {"file": "variables-STAT10.json", "url": "https://genesis.destatis.de/genesis/api/rest/variables/STAT10/values", "description": "Official DE/EN labels of the after-distribution recipient positions"},
+        {"file": "variables-DLAND.json", "url": "https://genesis.destatis.de/genesis/api/rest/variables/DLAND/values", "description": "Land codes and names"},
+        {"file": "statistic-71211-tables.json", "url": "https://genesis.destatis.de/genesis/api/rest/statistics/71211/tables", "description": "Table list of statistic 71211 (metadata)"}
+      ]
+    },
+    {
+      "id": "destatis_genesis_12411",
+      "institution": "Statistisches Bundesamt (Destatis), GENESIS-Online",
+      "title": "Fortschreibung des Bevölkerungsstandes (12411): population at 31 December",
+      "licence": "DL-DE-BY-2.0; attribution: Statistisches Bundesamt (Destatis), GENESIS-Online",
+      "licence_evidence": "https://www.destatis.de/DE/Service/Impressum/_inhalt.html",
+      "redistribution": "allowed",
+      "store": "raw",
+      "basis": "Population update based on the 2022 census; reference date 31.12.",
+      "files": [
+        {"file": "12411-0001.json", "url": "https://genesis.destatis.de/genesis/api/rest/tables/12411-0001/data", "description": "Germany, population at 31.12., 1950-2025"},
+        {"file": "12411-0010.json", "url": "https://genesis.destatis.de/genesis/api/rest/tables/12411-0010/data", "description": "Länder, population at 31.12., 1958-2025"}
+      ]
+    },
+    {
+      "id": "destatis_genesis_71321",
+      "institution": "Statistisches Bundesamt (Destatis), GENESIS-Online",
+      "title": "Schulden des Öffentlichen Gesamthaushalts (71321): debt owed to the non-public sector by level, at 31 December",
+      "licence": "DL-DE-BY-2.0; attribution: Statistisches Bundesamt (Destatis), GENESIS-Online",
+      "licence_evidence": "https://www.destatis.de/DE/Service/Impressum/_inhalt.html",
+      "redistribution": "allowed",
+      "store": "raw",
+      "basis": "Financial statistics (Schuldenstatistik), core and extra budgets, debt to the non-public sector",
+      "files": [
+        {"file": "71321-0005.json", "url": "https://genesis.destatis.de/genesis/api/rest/tables/71321-0005/data", "description": "Germany, 2010-2025, by level (Bund, Länder, Gemeinden, Sozialversicherung) and debt type"}
+      ]
+    },
+    {
+      "id": "destatis_kassenergebnisse",
+      "institution": "Statistisches Bundesamt (Destatis)",
+      "title": "Statistischer Bericht – Vierteljährliche Kassenergebnisse des Öffentlichen Gesamthaushalts (71511), 1.-4. Vierteljahr",
+      "licence": "DL-DE-BY-2.0 (stated on the workbook's Impressum sheet); attribution: Statistisches Bundesamt (Destatis), report code, year",
+      "licence_evidence": "Impressum sheet inside each workbook; https://www.destatis.de/DE/Service/Impressum/_inhalt.html",
+      "redistribution": "allowed",
+      "store": "cache",
+      "basis": "Cash results (Kassenstatistik), core and extra budgets, by level: Bund, EU shares, Länder, Gemeinden/Gv., Sozialversicherung; EUR million",
+      "files": [
+        {"file": "kassenergebnisse-2024-q1-4.xlsx", "url": "https://www.destatis.de/DE/Themen/Staat/Oeffentliche-Finanzen/Ausgaben-Einnahmen/Publikationen/Downloads-Ausgaben-und-Einnahmen/statistischer-bericht-kassenergebnis-gesamthaushalt-2140200243245.xlsx?__blob=publicationFile", "description": "Full-year 2024 cash results, all levels; sheet csv-71511-01 used"},
+        {"file": "kassenergebnisse-2025-q1-4.xlsx", "url": "https://www.destatis.de/DE/Themen/Staat/Oeffentliche-Finanzen/Ausgaben-Einnahmen/Publikationen/Downloads-Ausgaben-und-Einnahmen/statistischer-bericht-kassenergebnis-gesamthaushalt-2140200253245.xlsx?__blob=publicationFile", "description": "Full-year 2025 cash results, all levels; sheet csv-71511-01 used"}
+      ]
+    },
+    {
+      "id": "destatis_rechnungsergebnisse_2022",
+      "institution": "Statistisches Bundesamt (Destatis)",
+      "title": "Statistischer Bericht – Rechnungsergebnisse des Öffentlichen Gesamthaushalts 2022 (71711), Kern- und Extrahaushalte",
+      "licence": "DL-DE-BY-2.0 (workbook Impressum sheet); attribution: Statistisches Bundesamt (Destatis)",
+      "licence_evidence": "Impressum sheet inside the workbook",
+      "redistribution": "allowed",
+      "store": "cache",
+      "basis": "Annual accounts statistics (Jahresrechnungsstatistik), final; expenditure by function (Aufgabenbereiche) for Germany, each Land (Land + municipalities) etc.; EUR million",
+      "files": [
+        {"file": "rechnungsergebnisse-2022.xlsx", "url": "https://www.destatis.de/DE/Themen/Staat/Oeffentliche-Finanzen/Ausgaben-Einnahmen/Publikationen/Downloads-Ausgaben-und-Einnahmen/statistischer-bericht-rechnungsergebnis-oeffentlicher-haushalt-2140310227015.xlsx?__blob=publicationFile", "description": "2022 edition (newest edition available on 2026-10-09); sheet csv-71711-12 used"}
+      ]
+    },
+    {
+      "id": "destatis_rechnungsergebnisse_gemeinden_2024",
+      "institution": "Statistisches Bundesamt (Destatis)",
+      "title": "Statistischer Bericht – Rechnungsergebnisse der Kernhaushalte der Gemeinden und Gemeindeverbände 2024 (71717)",
+      "licence": "DL-DE-BY-2.0 (workbook Impressum sheet); attribution: Statistisches Bundesamt (Destatis)",
+      "licence_evidence": "Impressum sheet inside the workbook",
+      "redistribution": "allowed",
+      "store": "cache",
+      "basis": "Annual accounts statistics of municipal core budgets, 2024; adjusted expenditure by product area (Produktoberbereich), by Land; EUR million",
+      "files": [
+        {"file": "rechnungsergebnisse-gemeinden-2024.xlsx", "url": "https://www.destatis.de/DE/Themen/Staat/Oeffentliche-Finanzen/Ausgaben-Einnahmen/Publikationen/Downloads-Ausgaben-und-Einnahmen/statistischer-bericht-rechnungsergebnis-kernhaushalt-gemeinden-2140331247005.xlsx?__blob=publicationFile", "description": "Sheets csv-71717-b01 (time series 2011-2024 by product area) and csv-71717-20 (2024 by Land and product area) used"}
+      ]
+    },
+    {
+      "id": "bundeshaushalt_rechnung",
+      "institution": "Bundesministerium der Finanzen, bundeshaushalt.de download portal",
+      "title": "Bundeshaushalt – Haushaltsrechnung (Ist) als XML: Einzelplan → Kapitel → Titel with Funktionenplan and Gruppierungsplan codes",
+      "licence": "Public data without copyright protection per the portal notice ('öffentliche Daten ohne urheberrechtlichen Schutz'; reproduction, distribution, processing and commercial use expressly permitted; users must be pointed to the official budget documents)",
+      "licence_evidence": "https://www.bundeshaushalt.de/DE/Download-Portal/download-portal.html (notice text stored in research/raw/bundeshaushalt_rechnung/download-portal.html)",
+      "redistribution": "allowed",
+      "store": "raw",
+      "basis": "Federal core budget, cash/cameral actuals (Ist) per Titel; special funds (Sondervermögen) are not included",
+      "files": [
+        {"file": "rechnung_2024.xml", "url": "https://www.bundeshaushalt.de/static/daten/2024/ist/rechnung_2024.xml", "description": "Actual account 2024, 6,787 Titel"},
+        {"file": "rechnung_2025.xml", "url": "https://www.bundeshaushalt.de/static/daten/2025/ist/rechnung_2025.xml", "description": "Actual account 2025"},
+        {"file": "download-portal.html", "url": "https://www.bundeshaushalt.de/DE/Download-Portal/download-portal.html", "description": "Portal page carrying the reuse notice (licence evidence)"}
+      ]
+    },
+    {
+      "id": "bundeshaushalt_rechnung_2023",
+      "institution": "Bundesministerium der Finanzen, bundeshaushalt.de download portal",
+      "title": "Bundeshaushalt – Haushaltsrechnung 2023 (Ist) XML",
+      "licence": "Public data without copyright protection (see bundeshaushalt_rechnung)",
+      "licence_evidence": "https://www.bundeshaushalt.de/DE/Download-Portal/download-portal.html",
+      "redistribution": "allowed",
+      "store": "cache",
+      "basis": "Federal core budget cash actuals 2023 (context year only)",
+      "files": [
+        {"file": "rechnung_2023.xml", "url": "https://www.bundeshaushalt.de/static/daten/2023/ist/rechnung_2023.xml", "description": "Actual account 2023"}
+      ]
+    },
+    {
+      "id": "bmf_monatsbericht",
+      "institution": "Bundesministerium der Finanzen, Monatsbericht",
+      "title": "BMF monthly report articles: provisional federal closing 2024 and 2025, tax receipts December 2024/2025, fiscal equalisation 2024/2025, tax law changes 2026",
+      "licence": "BMF web pages are copyright-protected; texts, tables and graphics may not be reproduced without permission (Impressum). Figures are facts and are cited with page coordinates; the pages themselves are not redistributed.",
+      "licence_evidence": "https://www.bundesfinanzministerium.de/Web/DE/Service/Impressum/impressum.html",
+      "redistribution": "not_allowed",
+      "store": "cache",
+      "basis": "Official provisional closing figures (vorläufiger Haushaltsabschluss) and BMF calculations",
+      "files": [
+        {"file": "2025-01-vorlaeufiger-abschluss-bundeshaushalt-2024.html", "url": "https://www.bundesfinanzministerium.de/Monatsberichte/Ausgabe/2025/01/Inhalte/Kapitel-3-Analysen/3-1-vorlaeufiger-abschluss-bundeshaushalt-2024.html", "description": "Tables 1 (Gesamtübersicht), 3 (konsumtiv/investiv), 6 (Ausgaben nach Aufgabenbereichen Ist 2024), 7 (Einnahmen)"},
+        {"file": "2026-01-abschluss-bundeshaushalt-ktf-svik-2025.html", "url": "https://www.bundesfinanzministerium.de/Monatsberichte/Ausgabe/2026/01/Inhalte/Kapitel-2-Analysen/2-1-abschluss-bundeshaushalt-ktf-svik-2025.html", "description": "Provisional closing 2025 of the federal budget, KTF and SVIK; Tables 1, 4, 7, 8"},
+        {"file": "2025-01-steuereinnahmen-dezember-2024.html", "url": "https://www.bundesfinanzministerium.de/Monatsberichte/Ausgabe/2025/01/Inhalte/Kapitel-4-Wirtschafts-und-Finanzlage/4-2-steuereinnahmen-dezember-2024.html", "description": "Tax receipts 2024 incl. EU own resources"},
+        {"file": "2026-01-steuereinnahmen-dezember-2025.html", "url": "https://www.bundesfinanzministerium.de/Monatsberichte/Ausgabe/2026/01/Inhalte/Kapitel-3-Wirtschafts-und-Finanzlage/3-2-steuereinnahmen-dezember-2025.html", "description": "Tax receipts 2025 incl. EU own resources"},
+        {"file": "2025-04-bundesstaatlicher-finanzausgleich-2024.html", "url": "https://www.bundesfinanzministerium.de/Monatsberichte/Ausgabe/2025/04/Inhalte/Kapitel-3-Analysen/3-1-bundesstaatlicher-finanzausgleich-2024.html", "description": "Fiscal equalisation 2024: Tables 2 (BEZ) and 3 (SoBEZ) per Land"},
+        {"file": "2026-04-bundesstaatlicher-finanzausgleich-2025.html", "url": "https://www.bundesfinanzministerium.de/Monatsberichte/Ausgabe/2026/04/Inhalte/Kapitel-2-Analysen/2-3-bundesstaatlicher-finanzausgleich-2025.html", "description": "Fiscal equalisation 2025: BEZ and SoBEZ per Land"},
+        {"file": "2026-02-wichtigste-steuerliche-aenderungen-2026.html", "url": "https://www.bundesfinanzministerium.de/Monatsberichte/Ausgabe/2026/02/Inhalte/Kapitel-2-Analysen/2-5-wichtigste-steuerliche-aenderungen-2026.html", "description": "Tax law changes 2026 (Grundfreibetrag etc.)"},
+        {"file": "2025-01-kreditaufnahme-des-bundes.html", "url": "https://www.bundesfinanzministerium.de/Monatsberichte/Ausgabe/2025/01/Inhalte/Kapitel-4-Wirtschafts-und-Finanzlage/4-4-kreditaufnahme-des-bundes.html", "description": "Borrowing of the Federation and its special funds (context)"}
+      ]
+    },
+    {
+      "id": "bmf_abrechnung_finanzausgleich",
+      "institution": "Bundesministerium der Finanzen",
+      "title": "Abrechnung des Finanzausgleichs: Umsatzsteuerverteilung und Finanzkraftausgleich, Ausgleichsjahre 2024 and 2025 (Anlage 1 and following)",
+      "licence": "unverified (BMF document; no explicit reuse licence). Figures are cited with page/row coordinates; PDF not redistributed.",
+      "licence_evidence": "https://www.bundesfinanzministerium.de/Web/DE/Service/Impressum/impressum.html",
+      "redistribution": "unverified",
+      "store": "cache",
+      "basis": "Official BMF calculation based on the provisional annual account (vorläufige Jahresrechnung) of each year",
+      "files": [
+        {"file": "abrechnung-ausgleichsjahr-2024.pdf", "url": "https://www.bundesfinanzministerium.de/Content/DE/Downloads/Oeffentliche-Finanzen/Foederale-Finanzbeziehungen/Bundestaatlicher-Finanzausgleich/abrechnung-ausgleichsjahr-2024.pdf?__blob=publicationFile&v=3", "description": "2024 calculation, all Länder"},
+        {"file": "abrechnung-ausgleichsjahr-2025.pdf", "url": "https://www.bundesfinanzministerium.de/Content/DE/Downloads/Oeffentliche-Finanzen/Foederale-Finanzbeziehungen/Bundestaatlicher-Finanzausgleich/abrechnung-ausgleichsjahr-2025.pdf?__blob=publicationFile", "description": "2025 calculation, all Länder"}
+      ]
+    },
+    {
+      "id": "eurostat_gov",
+      "institution": "Eurostat",
+      "title": "Government finance statistics (ESA 2010): expenditure by function (gov_10a_exp), main aggregates (gov_10a_main), EDP debt (gov_10dd_edpt1), taxes and social contributions by subsector (gov_10a_taxag) for Germany",
+      "licence": "CC BY 4.0 (Eurostat copyright notice: reuse of statistical data permitted with source acknowledgement: 'Source: Eurostat')",
+      "licence_evidence": "https://ec.europa.eu/eurostat/web/main/help/copyright-notice",
+      "redistribution": "allowed",
+      "store": "raw",
+      "basis": "ESA 2010 accrual national accounts, general government (S13) and subsectors; 'p' = provisional",
+      "files": [
+        {"file": "gov_10a_exp_DE.json", "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_exp?geo=DE&unit=MIO_EUR&na_item=TE&lang=en", "description": "Total expenditure by COFOG division and group, S13 + S1311-S1314, 1995-2024"},
+        {"file": "gov_10a_main_DE.json", "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_main?geo=DE&unit=MIO_EUR&sector=S13&lang=en", "description": "All main aggregates (TR, TE, B9, D2, D5, D61, D91, D41, D62, ...), S13, 1991-2025"},
+        {"file": "gov_10dd_edpt1_DE.json", "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10dd_edpt1?geo=DE&unit=MIO_EUR&sector=S13&lang=en", "description": "EDP: gross debt (GD), net lending (B9), GDP (B1GQ) etc., 1995-2025"},
+        {"file": "gov_10a_taxag_DE_2024.json", "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_taxag?geo=DE&unit=MIO_EUR&time=2024&lang=en", "description": "Taxes and social contributions 2024 by receiving subsector incl. EU institutions (S212)"},
+        {"file": "copyright-notice.html", "url": "https://ec.europa.eu/eurostat/web/main/help/copyright-notice", "description": "Licence evidence"}
+      ]
+    },
+    {
+      "id": "berlin_steuereinnahmen",
+      "institution": "Senatsverwaltung für Finanzen Berlin (via datenregister.berlin.de)",
+      "title": "Steuereinnahmen des Landes Berlin, cumulative January-December 2024 and 2025 (monthly CSV, December file = full year)",
+      "licence": "CC BY (cc-by per CKAN metadata); attribution: Senatsverwaltung für Finanzen Berlin",
+      "licence_evidence": "https://datenregister.berlin.de/api/3/action/package_show?id=steuereinnahmen-des-landes-berlin-2024-1493690",
+      "redistribution": "allowed",
+      "store": "raw",
+      "basis": "Cash receipts, Land and municipal shares separately, EUR thousand",
+      "files": [
+        {"file": "steuereinnahmen_12_2024.csv", "url": "https://www.berlin.de/sen/finanzen/service/daten/steuereinnahmen_12_2024.csv", "description": "Berlin tax receipts January-December 2024"},
+        {"file": "steuereinnahmen_122025.csv", "url": "https://www.berlin.de/sen/finanzen/service/daten/steuereinnahmen_122025.csv", "description": "Berlin tax receipts January-December 2025"},
+        {"file": "ckan-package-2024.json", "url": "https://datenregister.berlin.de/api/3/action/package_show?id=steuereinnahmen-des-landes-berlin-2024-1493690", "description": "CKAN metadata incl. licence (evidence)"},
+        {"file": "ckan-package-2025.json", "url": "https://datenregister.berlin.de/api/3/action/package_show?id=steuereinnahmen-des-landes-berlin-2025-1532571", "description": "CKAN metadata incl. licence (evidence)"}
+      ]
+    },
+    {
+      "id": "berlin_jahresrechnung_2024",
+      "institution": "Abgeordnetenhaus von Berlin / Senatsverwaltung für Finanzen",
+      "title": "Haushalts- und Vermögensrechnung von Berlin für das Haushaltsjahr 2024, Drucksache 19/2681",
+      "licence": "unverified (parliamentary document; cite 'AGH Berlin, Drucksache 19/2681'; PDF not redistributed)",
+      "licence_evidence": "https://www.parlament-berlin.de/",
+      "redistribution": "unverified",
+      "store": "cache",
+      "basis": "Final cameral annual account 2024, expenditure by function (Funktionenübersicht, pages 79-88)",
+      "files": [
+        {"file": "d19-2681.pdf", "url": "https://www.parlament-berlin.de/ados/19/IIIPlen/vorgang/d19-2681.pdf", "description": "88-page PDF"}
+      ]
+    },
+    {
+      "id": "drv_finanzen",
+      "institution": "Deutsche Rentenversicherung Bund",
+      "title": "Frühjahrsfinanzschätzung 2026 (Rechnungsergebnis 2024 endgültig / 2025 vorläufig) and 'Aktuelle Daten' (Berechnungswerte 2025/2026)",
+      "licence": "unverified (DRV publications; no explicit reuse licence found). Figures cited with page coordinates; PDFs not redistributed.",
+      "licence_evidence": "https://www.deutsche-rentenversicherung.de/DRV/DE/Impressum/impressum_node.html",
+      "redistribution": "unverified",
+      "store": "cache",
+      "basis": "Statutory pension insurance (allgemeine Rentenversicherung) account, EUR billion, 2024 final, 2025 provisional",
+      "files": [
+        {"file": "finanzbericht-fruehjahr-2026.pdf", "url": "https://www.deutsche-rentenversicherung.de/SharedDocs/Downloads/DE/Experten/finanzbericht-fruehjahr-2026.pdf?__blob=publicationFile&v=4", "description": "Page 3: Rechnungsergebnis allgemeine RV 2024 (endgültig) and 2025 (vorläufig) with contribution breakdown"},
+        {"file": "aktuelle_daten.pdf", "url": "https://www.deutsche-rentenversicherung.de/SharedDocs/Downloads/DE/Statistiken-und-Berichte/statistikpublikationen/aktuelle_daten.pdf?__blob=publicationFile", "description": "Page 2: contribution rate, contribution ceiling and reference values 2025/2026"}
+      ]
+    },
+    {
+      "id": "bmg_gkv_finanzergebnisse",
+      "institution": "Bundesministerium für Gesundheit",
+      "title": "GKV endgültige Rechnungsergebnisse (KJ1) 2024 and 2025",
+      "licence": "unverified (BMG statistics PDFs). Figures cited with page coordinates; PDFs not redistributed.",
+      "licence_evidence": "https://www.bundesgesundheitsministerium.de/impressum",
+      "redistribution": "unverified",
+      "store": "cache",
+      "basis": "Statutory health insurance: final annual accounts of all insurers and the Gesundheitsfonds, EUR",
+      "files": [
+        {"file": "KJ1_2024.pdf", "url": "https://www.bundesgesundheitsministerium.de/fileadmin/Dateien/3_Downloads/Statistiken/GKV/Finanzergebnisse/KJ1_2024_Internetauftritt.pdf", "description": "Final results 2024"},
+        {"file": "KJ1_2025.pdf", "url": "https://www.bundesgesundheitsministerium.de/fileadmin/Dateien/3_Downloads/Statistiken/GKV/Finanzergebnisse/KJ1_2025_bf.pdf", "description": "Final results 2025"}
+      ]
+    },
+    {
+      "id": "bmg_pflegeversicherung",
+      "institution": "Bundesministerium für Gesundheit",
+      "title": "Finanzentwicklung der sozialen Pflegeversicherung (Ist-Ergebnisse to 2024 and to 2025)",
+      "licence": "unverified (BMG statistics PDFs). Figures cited with page coordinates; PDFs not redistributed.",
+      "licence_evidence": "https://www.bundesgesundheitsministerium.de/impressum",
+      "redistribution": "unverified",
+      "store": "cache",
+      "basis": "Social long-term care insurance account, EUR billion",
+      "files": [
+        {"file": "finanzentwicklung-spv-2024.pdf", "url": "https://www.bundesgesundheitsministerium.de/fileadmin/Dateien/3_Downloads/Statistiken/Pflegeversicherung/Finanzentwicklung/03-Finanzentwicklung-der-sozialen-Pflegeversicherung__2024.pdf", "description": "Time series to 2024"},
+        {"file": "finanzentwicklung-spv-2025.pdf", "url": "https://www.bundesgesundheitsministerium.de/fileadmin/Dateien/3_Downloads/Statistiken/Pflegeversicherung/Finanzentwicklung/03-Finanzentwicklung-der-sozialen-Pflegeversicherung__2025.pdf", "description": "Time series to 2025"}
+      ]
+    },
+    {
+      "id": "ba_finanzentwicklung",
+      "institution": "Bundesagentur für Arbeit",
+      "title": "Finanzentwicklung in der Arbeitslosenversicherung – Geschäftsjahr 2024 and 2025",
+      "licence": "unverified (BA report PDFs). Figures cited with page coordinates; PDFs not redistributed.",
+      "licence_evidence": "https://www.arbeitsagentur.de/impressum",
+      "redistribution": "unverified",
+      "store": "cache",
+      "basis": "Unemployment insurance (SGB III) account of the Federal Employment Agency, EUR",
+      "files": [
+        {"file": "finanzentwicklung-alv-2024.pdf", "url": "https://www.arbeitsagentur.de/datei/2024-bericht-finanzentwicklung-arbeitslosenversicherung_ba052761.pdf", "description": "Annual report 2024"},
+        {"file": "finanzentwicklung-alv-2025.pdf", "url": "https://www.arbeitsagentur.de/datei/2025-bericht-finanzentwicklung-arbeitslosenversicherung_ba056264.pdf", "description": "Annual report 2025"}
+      ]
+    },
+    {
+      "id": "bmas_rechengroessen",
+      "institution": "Bundesministerium für Arbeit und Soziales",
+      "title": "Sozialversicherungs-Rechengrößenverordnung 2026 (BMAS page with the official table of contribution ceilings and reference values)",
+      "licence": "Federal ministry web page; facts only (the values are law, see svbezgrv statutes below)",
+      "licence_evidence": "https://www.bmas.de/DE/Service/Impressum/impressum.html",
+      "redistribution": "not_allowed",
+      "store": "cache",
+      "basis": "Regulation values for 2026",
+      "files": [
+        {"file": "sv-rechengroessenverordnung-2026.html", "url": "https://www.bmas.de/DE/Service/Gesetze-und-Gesetzesvorhaben/sozialversicherungs-rechengroessenverordnung-2026.html", "description": "Table of 2026 values"}
+      ]
+    },
+    {
+      "id": "bmg_finanzierung_gkv",
+      "institution": "Bundesministerium für Gesundheit",
+      "title": "Finanzierung der GKV (BMG topic page): general contribution rate and average additional contribution rate",
+      "licence": "Federal ministry web page; facts only",
+      "licence_evidence": "https://www.bundesgesundheitsministerium.de/impressum",
+      "redistribution": "not_allowed",
+      "store": "cache",
+      "basis": "Explanatory page; states the average Zusatzbeitragssatz actually levied (Stand date given on page)",
+      "files": [
+        {"file": "finanzierung-gkv.html", "url": "https://www.bundesgesundheitsministerium.de/finanzierung-gkv", "description": "Average additional contribution actually levied (3.13 % as of 1 April 2026 at retrieval)"}
+      ]
+    },
+    {
+      "id": "eu_budget_spending_revenue",
+      "institution": "European Commission, DG Budget",
+      "title": "EU budget: spending and revenue 2000-2025 by Member State (xlsx)",
+      "licence": "Commission reuse policy (Decision 2011/833/EU): reuse permitted with source acknowledgement (CC BY 4.0 for Commission documents)",
+      "licence_evidence": "https://commission.europa.eu/legal-notice_en",
+      "redistribution": "allowed",
+      "store": "raw",
+      "basis": "EU budget implementation: expenditure by heading/programme allocated to Member States, and revenue (own resources) by Member State, EUR million",
+      "files": [
+        {"file": "eu_budget_spending_and_revenue_2000-2025.xlsx", "url": "https://commission.europa.eu/document/download/9f334bee-d097-4b68-8f93-2225eabeb631_en?filename=eu_budget_spending_and_revenue_2000-2025.xlsx", "description": "One sheet per year; column DE"}
+      ]
+    },
+    {
+      "id": "gesetze_im_internet",
+      "institution": "Bundesministerium der Justiz / juris, gesetze-im-internet.de",
+      "title": "Federal statutes (amtliche Werke, § 5 UrhG, not copyright-protected): constitutional and statutory tax allocation, tariff, social-contribution rates and excise rates",
+      "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+      "licence_evidence": "https://www.gesetze-im-internet.de/hinweise.html",
+      "redistribution": "allowed",
+      "store": "raw",
+      "basis": "Statute text as in force on the retrieval date (gesetze-im-internet shows the current consolidated version)",
+      "files": [
+        {"file": "gg_art_106.html", "url": "https://www.gesetze-im-internet.de/gg/art_106.html", "description": "Art. 106 GG: allocation of tax revenue"},
+        {"file": "gg_art_107.html", "url": "https://www.gesetze-im-internet.de/gg/art_107.html", "description": "Art. 107 GG: equalisation"},
+        {"file": "estg_32a.html", "url": "https://www.gesetze-im-internet.de/estg/__32a.html", "description": "§ 32a EStG income-tax tariff (2026 version in force)"},
+        {"file": "estg_39b.html", "url": "https://www.gesetze-im-internet.de/estg/__39b.html", "description": "§ 39b EStG wage-tax withholding (Vorsorgepauschale)"},
+        {"file": "solzg_3.html", "url": "https://www.gesetze-im-internet.de/solzg_1995/__3.html", "description": "§ 3 SolzG: exemption threshold and base"},
+        {"file": "solzg_4.html", "url": "https://www.gesetze-im-internet.de/solzg_1995/__4.html", "description": "§ 4 SolzG: 5.5 % rate and phase-in"},
+        {"file": "ustg_12.html", "url": "https://www.gesetze-im-internet.de/ustg_1980/__12.html", "description": "§ 12 UStG: VAT rates 19 % / 7 %"},
+        {"file": "finausglg_1.html", "url": "https://www.gesetze-im-internet.de/finausglg_2005/__1.html", "description": "§ 1 FAG: VAT shares between Bund, Länder, Gemeinden"},
+        {"file": "gemfinrefg_6.html", "url": "https://www.gesetze-im-internet.de/gemfinrefg/__6.html", "description": "§ 6 GemFinRefG: trade-tax levy multipliers"},
+        {"file": "sgb6_158.html", "url": "https://www.gesetze-im-internet.de/sgb_6/__158.html", "description": "§ 158 SGB VI: pension contribution rate"},
+        {"file": "sgb5_241.html", "url": "https://www.gesetze-im-internet.de/sgb_5/__241.html", "description": "§ 241 SGB V: general health-insurance contribution rate 14.6 %"},
+        {"file": "sgb5_242a.html", "url": "https://www.gesetze-im-internet.de/sgb_5/__242a.html", "description": "§ 242a SGB V: average additional contribution rate"},
+        {"file": "sgb11_55.html", "url": "https://www.gesetze-im-internet.de/sgb_11/__55.html", "description": "§ 55 SGB XI: long-term care contribution rate and childless surcharge"},
+        {"file": "sgb3_341.html", "url": "https://www.gesetze-im-internet.de/sgb_3/__341.html", "description": "§ 341 SGB III: unemployment-insurance contribution rate"},
+        {"file": "svbezgrv_2026_1.html", "url": "https://www.gesetze-im-internet.de/svbezgrv_2026/__1.html", "description": "SV-Rechengrößenverordnung 2026 § 1"},
+        {"file": "svbezgrv_2026_2.html", "url": "https://www.gesetze-im-internet.de/svbezgrv_2026/__2.html", "description": "SV-Rechengrößenverordnung 2026 § 2"},
+        {"file": "svbezgrv_2026_3.html", "url": "https://www.gesetze-im-internet.de/svbezgrv_2026/__3.html", "description": "SV-Rechengrößenverordnung 2026 § 3 (contribution ceilings)"},
+        {"file": "svbezgrv_2025_3.html", "url": "https://www.gesetze-im-internet.de/svbezgrv_2025/__3.html", "description": "SV-Rechengrößenverordnung 2025 § 3"},
+        {"file": "svbezgrv_2024_3.html", "url": "https://www.gesetze-im-internet.de/svbezgrv_2024/__3.html", "description": "SV-Rechengrößenverordnung 2024 § 3"},
+        {"file": "energiestg_2.html", "url": "https://www.gesetze-im-internet.de/energiestg/__2.html", "description": "§ 2 EnergieStG: energy tax rates (petrol, diesel, ...)"},
+        {"file": "stromstg_3.html", "url": "https://www.gesetze-im-internet.de/stromstg/__3.html", "description": "§ 3 StromStG: electricity tax rate"},
+        {"file": "tabstg_2.html", "url": "https://www.gesetze-im-internet.de/tabstg_2009/__2.html", "description": "§ 2 TabStG: tobacco tax rates"},
+        {"file": "bierstg_2.html", "url": "https://www.gesetze-im-internet.de/bierstg_2009/__2.html", "description": "§ 2 BierStG: beer tax rate"},
+        {"file": "kaffeestg_2.html", "url": "https://www.gesetze-im-internet.de/kaffeestg_2009/__2.html", "description": "§ 2 KaffeeStG: coffee tax rate"},
+        {"file": "versstg_6.html", "url": "https://www.gesetze-im-internet.de/versstg/__6.html", "description": "§ 6 VersStG: insurance tax rate"},
+        {"file": "alkstg_2.html", "url": "https://www.gesetze-im-internet.de/alkstg/__2.html", "description": "§ 2 AlkStG: spirits tax rate"},
+        {"file": "schaumwzwstg_2.html", "url": "https://www.gesetze-im-internet.de/schaumwzwstg_2009/__2.html", "description": "§ 2 SchaumwZwStG: sparkling-wine tax rate"},
+        {"file": "grestg_11.html", "url": "https://www.gesetze-im-internet.de/grestg_1983/__11.html", "description": "§ 11 GrEStG: real-estate transfer tax default rate"},
+        {"file": "bho_8.html", "url": "https://www.gesetze-im-internet.de/bho/__8.html", "description": "§ 8 BHO: general coverage principle (budget boundary)"},
+        {"file": "hinweise.html", "url": "https://www.gesetze-im-internet.de/hinweise.html", "description": "Site notice (licence evidence)"}
+      ]
+    },
+    {
+      "id": "govdata_dl_de_by_2_0",
+      "institution": "GovData",
+      "title": "Datenlizenz Deutschland – Namensnennung – Version 2.0 (licence text)",
+      "licence": "Licence text itself",
+      "licence_evidence": "https://www.govdata.de/dl-de/by-2-0",
+      "redistribution": "allowed",
+      "store": "raw",
+      "basis": "Licence text",
+      "files": [
+        {"file": "dl-de-by-2-0.html", "url": "https://www.govdata.de/dl-de/by-2-0", "description": "Licence text"}
+      ]
+    },
+    {
+      "id": "destatis_impressum",
+      "institution": "Statistisches Bundesamt (Destatis)",
+      "title": "Destatis Impressum (copyright notice for GENESIS-Online: DL-DE-BY-2.0)",
+      "licence": "Licence evidence page",
+      "licence_evidence": "https://www.destatis.de/DE/Service/Impressum/_inhalt.html",
+      "redistribution": "allowed",
+      "store": "raw",
+      "basis": "Licence evidence",
+      "files": [
+        {"file": "impressum.html", "url": "https://www.destatis.de/DE/Service/Impressum/_inhalt.html", "description": "Licence evidence"}
+      ]
+    }
+  ]
+}

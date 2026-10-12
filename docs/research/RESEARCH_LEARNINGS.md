@@ -137,9 +137,14 @@ the same 15-field provenance block adds work without adding auditability.
 
 ## 16. API and licence claims need their own verification
 
-Public browser access does not imply an unauthenticated API or unrestricted redistribution. The
-current GENESIS API requires authentication even though web tables are public. Record the exact
-licence for each source family and use `licence_unverified` when reuse rights are unclear.
+Public browser access does not imply an unauthenticated API or unrestricted redistribution.
+*Corrected 2026-10-09:* the documented GENESIS web service (`genesisWS/rest/2020`) requires a
+token, but the GENESIS web application itself serves an unauthenticated JSON endpoint
+(`https://genesis.destatis.de/genesis/api/rest/tables/<table>/data`, labels from
+`/variables/<code>/values`, table lists from `/statistics/<code>/tables`). It is unversioned, so
+the retrieved responses are committed under `research/raw/` with checksums and the fetch is
+reproducible. Record the exact licence for each source family and use `unverified` when reuse
+rights are unclear.
 
 ## Claims the product must reject
 
@@ -174,3 +179,42 @@ combined federal+Berlin spending view does NOT double-count BEZ. What does overl
 programme transfers to the Länder (Gruppierung 632/882: €40.96bn Ist 2024 across all Länder;
 transfers to municipalities 633/883: €0.50bn); the per-Land slice is not derivable from the
 XML — a real transfer ledger needs recipient-side identification.
+
+## 2026-10-09 — The federal XML sum is gross; BMF's Ist is net of four items
+
+- **Claim:** summing every expenditure Titel in `rechnung_<year>.xml` overstates BMF's official
+  Ist by exactly: Obergruppe 59 repayments from non-structural refunds (2024: Titel 595 01 in
+  Kapitel 3201, €8,493.8m), Obergruppe 91 reserve allocations, Obergruppe 96 cash-shortfall cover
+  and Obergruppe 98 haushaltstechnische Verrechnungen (€590.3m). 2024: 474,753.7 − 8,493.8 −
+  590.3 = 465,669.7 vs 465,670 Mio EUR. From 2025 the XML also carries annexed Wirtschaftspläne
+  (Kapitel `xx9y`: Sondervermögen Bundeswehr 1491, KTF 6092, SVIK 6093, EU pass-through 6090)
+  that must be excluded from the core total.
+- **Why it is stable:** it is the footnote BMF prints under every Gesamtübersicht table.
+- **Authoritative source:** BMF Monatsbericht, vorläufiger Abschluss (Jan 2025, Jan 2026), Tabelle 1 footnote 1.
+- **Consequence:** `data/de/federal/budget-<year>.json` carries the bridge; never show the gross XML sum as "federal spending".
+- **Verified by:** build check (residual ≤ 0.5 Mio) and review log 2026-10-09.
+
+## 2026-10-09 — "Contributions" of the social-insurance systems are partly paid by public bodies
+
+- **Claim:** the pension insurance's €305.3bn "Beitragseinnahmen" (2024) contain €18.1bn paid by
+  the federal budget for child-raising periods, €5.0bn by the Bundesagentur, €4.4bn by health and
+  €4.2bn by care insurance; the health insurance's contributions contain those paid by the pension
+  insurance for pensioners (€27.3bn KVdR). Summing the four systems' contributions is not
+  "payroll deductions".
+- **Source:** DRV Frühjahrsfinanzschätzung 2026 p. 3; BMG KJ1; see `data/de/social-insurance/accounts.json` payer split.
+- **Consequence:** show contributions by payer; count public-body contributions as transfers.
+
+## 2026-10-09 — After-distribution tax table: decomposable only from 2013, plastics deducted implicitly
+
+- **Claim:** in Destatis 71211-0002 the deductions from the federal column (ÖPNV, BEZ, Kfz
+  compensation, consolidation aid, EU VAT/GNI own resources) exist as positions only from 2013;
+  the EU plastics own resource (from 2021) is deducted from the federal total without its own
+  federal position. Before and after-distribution totals differ slightly (2024: 392 Mio) and both
+  are kept as published.
+- **Consequence:** hierarchy checks in `build_taxes.py` apply from 2013 and subtract STEUERNVEU50 for the Bund.
+
+## 2026-10-09 — Reference-year pairing is now 2024 (hero) + 2025 (freshness) + 2022 (Länder functions)
+
+- Eurostat COFOG for Germany reaches 2024 (provisional); Destatis Rechnungsergebnisse by Land
+  reach 2022; municipal core-budget accounts reach 2024; everything else reaches 2025. The 2021
+  comparable mode in learning 11 is superseded.

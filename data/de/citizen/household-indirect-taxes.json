@@ -1,0 +1,3034 @@
+{
+ "schema_version": 2,
+ "id": "de.citizen.household_indirect_taxes",
+ "title": {
+  "de": "Indirekte Steuern eines Haushalts (Schätzung ≈): Umsatzsteuer und Verbrauchsteuern nach Haushaltsnettoeinkommen",
+  "en": "A household's indirect taxes (estimate ≈): VAT and excises by household net income class"
+ },
+ "unit": "EUR per household per year",
+ "basis": "ESTIMATE*: LWR 2024 monthly consumption per household (Destatis, all household sizes) × statutory VAT rates per purpose × 12, plus excise shares for energy, fuel, tobacco, alcohol and insurance from price assumptions. Not a measurement; quality flags of the LWR cells not propagated.",
+ "generated": "2026-10-12",
+ "generated_by": "scripts/research/build_household_taxes.py",
+ "status": "estimate*",
+ "method": {
+  "vat": "VAT inside the gross spend: spend × r/(1+r) with r from the table 'vat_rate_assumptions'; rent, health, education, finance, insurance exempt",
+  "excises": "spend × assumed excise share (table 'excise_assumptions'); the shares depend on assumed prices",
+  "recipients": "VAT by the effective 2024 split Bund 48.10 % / Länder 49.11 % / Gemeinden 2.79 % (data/de/equalisation/2024.json); energy, electricity, tobacco, spirits, sparkling-wine and insurance taxes to the Federation; beer tax to the Länder (Art. 106 GG)",
+  "wage_slider_mapping": "The classes are HOUSEHOLD NET income per month (all household members). For a single earner, use the payslip net ÷ 12 to pick the class*; for couples add both nets."
+ },
+ "vat_rate_assumptions": [
+  {
+   "item_prefix_de": "Nahrungsmittel, Getränke, Tabakwaren und Ähnliches, Nahrungsmittel, alkoholfreie Getränke",
+   "rate": 0.07,
+   "reason": "food 7 % (§ 12 (2) Nr. 1 UStG, Anlage 2); soft drinks are 19 % — ignored, small*"
+  },
+  {
+   "item_prefix_de": "Nahrungsmittel, Getränke, Tabakwaren und Ähnliches, alkoholische Getränke, Tabakwaren und Ähnliches",
+   "rate": 0.19,
+   "reason": "19 %"
+  },
+  {
+   "item_prefix_de": "Bekleidung und Schuhe",
+   "rate": 0.19,
+   "reason": "19 %"
+  },
+  {
+   "item_prefix_de": "Wohnen, Energie, Wohnungsinstandhaltung , Wohnungsmieten und Ähnliches",
+   "rate": 0.0,
+   "reason": "residential rent is VAT-exempt (§ 4 Nr. 12 UStG); owner-occupiers' imputed rent carries no VAT"
+  },
+  {
+   "item_prefix_de": "Wohnen, Energie, Wohnungsinstandhaltung , Energie",
+   "rate": 0.19,
+   "reason": "19 % on electricity, gas, heating oil, district heating"
+  },
+  {
+   "item_prefix_de": "Wohnen, Energie, Wohnungsinstandhaltung, Wohnungsinstandhaltung",
+   "rate": 0.19,
+   "reason": "19 %"
+  },
+  {
+   "item_prefix_de": "Innenausstattung, Haushaltsgeräte und -gegenstände, Dienstleistungen von Haushaltshilfen und häusliche Dienste",
+   "rate": 0.0,
+   "reason": "mostly mini-jobs/private persons without VAT*"
+  },
+  {
+   "item_prefix_de": "Innenausstattung, Haushaltsgeräte und -gegenstände",
+   "rate": 0.19,
+   "reason": "19 %"
+  },
+  {
+   "item_prefix_de": "Gesundheit, Hilfsmittel für die Gesundheit",
+   "rate": 0.19,
+   "reason": "19 % (glasses, hearing aids; some 7 %)*"
+  },
+  {
+   "item_prefix_de": "Gesundheit, Arzneimittel, medizinische Erzeugnisse",
+   "rate": 0.19,
+   "reason": "19 %"
+  },
+  {
+   "item_prefix_de": "Gesundheit, Gesundheitsdienstleistungen (ambulant und stationär)",
+   "rate": 0.0,
+   "reason": "medical services exempt (§ 4 Nr. 14 UStG)"
+  },
+  {
+   "item_prefix_de": "Verkehr, Personenbeförderungsdienstleistungen",
+   "rate": 0.07,
+   "reason": "7 % for rail (all distances) and for bus/taxi/ferry within a municipality or up to 50 km (§ 12 (2) Nr. 10 UStG); long-distance bus and air travel 19 % — ignored*"
+  },
+  {
+   "item_prefix_de": "Verkehr",
+   "rate": 0.19,
+   "reason": "19 % (cars, bikes, parts, repairs, fuel)"
+  },
+  {
+   "item_prefix_de": "Information und Kommunikation",
+   "rate": 0.19,
+   "reason": "19 %"
+  },
+  {
+   "item_prefix_de": "Freizeit, Sport und Kultur, Kulturdienstleistungen",
+   "rate": 0.07,
+   "reason": "7 % for theatre, concerts, museums, cinema (§ 12 (2) Nr. 7); streaming 19 % — ignored*"
+  },
+  {
+   "item_prefix_de": "Freizeit, Sport und Kultur, Bücher (auch CD-ROMs, E-Book-Downloads)",
+   "rate": 0.07,
+   "reason": "7 % books incl. e-books"
+  },
+  {
+   "item_prefix_de": "Freizeit, Sport und Kultur, Zeitungen, Zeitschriften und Ähnliches",
+   "rate": 0.07,
+   "reason": "7 %"
+  },
+  {
+   "item_prefix_de": "Freizeit, Sport und Kultur, Blumen und Gärten",
+   "rate": 0.07,
+   "reason": "7 % cut flowers and plants (Anlage 2)"
+  },
+  {
+   "item_prefix_de": "Freizeit, Sport und Kultur, Pauschalreisen",
+   "rate": 0.0,
+   "reason": "package tours: margin taxation, mostly abroad; effective VAT small — set to 0*"
+  },
+  {
+   "item_prefix_de": "Freizeit, Sport und Kultur",
+   "rate": 0.19,
+   "reason": "19 %"
+  },
+  {
+   "item_prefix_de": "Bildungsdienstleistungen",
+   "rate": 0.0,
+   "reason": "education and child care exempt (§ 4 Nr. 21-25 UStG)"
+  },
+  {
+   "item_prefix_de": "Gastronomie- und Beherbergungsdienstleistungen, Gastronomiedienstleistungen",
+   "rate": 0.19,
+   "reason": "19 % in 2024 (restaurant food returned to 19 % on 1 Jan 2024; 7 % again from 1 Jan 2026)"
+  },
+  {
+   "item_prefix_de": "Gastronomie- und Beherbergungsdienstleistungen, Beherbergungsdienstleistungen",
+   "rate": 0.07,
+   "reason": "7 % accommodation (§ 12 (2) Nr. 11)"
+  },
+  {
+   "item_prefix_de": "Versicherungs- und Finanzdienstleistungen, Versicherungsdienstleistungen",
+   "rate": 0.0,
+   "reason": "no VAT on insurance (§ 4 Nr. 10); insurance premiums are outside LWR consumption ('/' in every class), so the 19 % insurance tax is NOT in this estimate"
+  },
+  {
+   "item_prefix_de": "Versicherungs- und Finanzdienstleistungen, Finanzdienstleistungen",
+   "rate": 0.0,
+   "reason": "financial services exempt (§ 4 Nr. 8)"
+  },
+  {
+   "item_prefix_de": "Andere Waren und Dienstleistungen",
+   "rate": 0.19,
+   "reason": "19 %"
+  }
+ ],
+ "excise_assumptions": [
+  {
+   "item_de": "Wohnen, Energie, Wohnungsinstandhaltung , Energie",
+   "tax": "electricity_tax",
+   "share_of_spend": 0.03,
+   "recipient": "bund",
+   "reason": "electricity ≈ 55 % of household energy spend*; 20.50 EUR/MWh at ≈ 0.38 EUR/kWh = 5.4 % of electricity spend → 3.0 % of energy spend"
+  },
+  {
+   "item_de": "Wohnen, Energie, Wohnungsinstandhaltung , Energie",
+   "tax": "energy_tax_heating",
+   "share_of_spend": 0.015,
+   "recipient": "bund",
+   "reason": "gas/heating oil ≈ 40 % of energy spend*; 5.50 EUR/MWh gas (§ 2 (3) EnergieStG) at ≈ 0.12 EUR/kWh ≈ 4.6 %, heating oil 61.35 EUR/1000 l at ≈ 1.0 EUR/l ≈ 6 % → ≈ 1.5 % of energy spend"
+  },
+  {
+   "item_de": "Verkehr, Kraft- und Schmierstoffe",
+   "tax": "energy_tax_fuel",
+   "share_of_spend": 0.338,
+   "recipient": "bund",
+   "reason": "petrol 654.50 EUR/1000 l at 1.75 EUR/l = 37.4 %, diesel 470.40 at 1.65 EUR/l = 28.5 %; mix 60/40* → 33.8 % of fuel spend"
+  },
+  {
+   "item_de": "Nahrungsmittel, Getränke, Tabakwaren und Ähnliches, alkoholische Getränke, Tabakwaren und Ähnliches",
+   "tax": "tobacco_tax",
+   "share_of_spend": 0.16,
+   "recipient": "bund",
+   "reason": "tobacco share of this item from EVS 2023 (tobacco / (alcohol + tobacco)) × cigarette tax share 44.6 % of retail price (2024 tariff § 2 (1) Nr. 1c TabStG: 20 × 11.15 ct + 19.84 % at an assumed 9.00 EUR/pack)*"
+  },
+  {
+   "item_de": "Nahrungsmittel, Getränke, Tabakwaren und Ähnliches, alkoholische Getränke, Tabakwaren und Ähnliches",
+   "tax": "alcohol_taxes",
+   "share_of_spend": 0.0513,
+   "recipient": "mixed",
+   "reason": "alcohol share of this item from EVS 2023 × assumed 8 % excise share of alcoholic-drink spend* (beer 0.787 EUR/hl·°Plato ≈ 1 %, wine 0 %, sparkling 136 EUR/hl ≈ 3 %, spirits 1,303 EUR/hl pure alcohol ≈ 25 %); split 80 % Bund (spirits, sparkling) / 20 % Länder (beer)*"
+  }
+ ],
+ "evs_tobacco_share_of_alcohol_plus_tobacco": {
+  "value": 0.3585,
+  "source": {
+   "source_id": "destatis_evs_2023_feinanschreibung",
+   "file": "evs-2023-feinanschreibung.xlsx",
+   "path": "research/cache/destatis_evs_2023_feinanschreibung/evs-2023-feinanschreibung.xlsx",
+   "url": "https://www.destatis.de/DE/Themen/Gesellschaft-Umwelt/Einkommen-Konsum-Lebensbedingungen/Konsumausgaben-Lebenshaltungskosten/Publikationen/Downloads-Konsumausgaben/statistischer-bericht-evs-feinanschreibung-nahrungsmittel-getraenke-tabakwaren-2152603239005.xlsx?__blob=publicationFile&v=2",
+   "retrieved": "2026-10-12T08:26:25Z",
+   "sha256": "7511a6c997cadbd66b03119d4fc096f05c3b92e32720c17f9cbff804f83910f4",
+   "licence": "DL-DE-BY-2.0 (workbook Impressum sheet)",
+   "coordinates": "sheet csv-63231-04, rows 'Alkoholische Getränke, Tabakwaren, alkoholische Getränke' (34.64) and '…, Tabakwaren' (19.36), Haushalte insgesamt, EUR/month 2023"
+  }
+ },
+ "sources": {
+  "lwr": {
+   "source_id": "destatis_lwr_2024",
+   "file": "lwr-2024.xlsx",
+   "path": "research/cache/destatis_lwr_2024/lwr-2024.xlsx",
+   "url": "https://www.destatis.de/DE/Themen/Gesellschaft-Umwelt/Einkommen-Konsum-Lebensbedingungen/Konsumausgaben-Lebenshaltungskosten/Publikationen/Downloads-Konsumausgaben/statistischer-bericht-laufende-wirtschaftsrechnungen-2150100247005.xlsx?__blob=publicationFile&v=8",
+   "retrieved": "2026-10-12T08:24:06Z",
+   "sha256": "4b40d036a70f1045b89f1793759c8cc4e559eebee89744766250be688a87f23b",
+   "licence": "DL-DE-BY-2.0 (workbook Impressum sheet)",
+   "coordinates": "sheet csv-63111-03 (Konsumausgaben nach monatlichem Haushaltsnettoeinkommen, je Haushalt und Monat in EUR, 2024); rows in research/extracts/destatis_lwr_2024/csv-63111-03-with-rates.csv"
+  }
+ },
+ "lwr_universe": {
+  "households_grossed_up": 38713000,
+  "source": {
+   "source_id": "destatis_lwr_2024",
+   "file": "lwr-2024.xlsx",
+   "path": "research/cache/destatis_lwr_2024/lwr-2024.xlsx",
+   "url": "https://www.destatis.de/DE/Themen/Gesellschaft-Umwelt/Einkommen-Konsum-Lebensbedingungen/Konsumausgaben-Lebenshaltungskosten/Publikationen/Downloads-Konsumausgaben/statistischer-bericht-laufende-wirtschaftsrechnungen-2150100247005.xlsx?__blob=publicationFile&v=8",
+   "retrieved": "2026-10-12T08:24:06Z",
+   "sha256": "4b40d036a70f1045b89f1793759c8cc4e559eebee89744766250be688a87f23b",
+   "licence": "DL-DE-BY-2.0 (workbook Impressum sheet)",
+   "coordinates": "sheet csv-63111-b01, row 'Haushalte insgesamt', Hochgerechnete_Haushalte_1000"
+  },
+  "note": "LWR covers private households with net income below 18,000 EUR/month, excluding institutional households; use this count, not the 41.9 m census households, for any grossing-up"
+ },
+ "macro_sanity": {
+  "vat_per_household_x_universe_eur": 130036967000,
+  "vat_receipts_2024_eur": null,
+  "note": "≈ 130 bn EUR ≈ 43 % of 2024 VAT receipts (302 bn, data/de/taxes/by-tax.json G60+G70); the rest is borne by government, non-deductible business sectors, housing investment and households outside the survey — a plausibility bound, not a sourced share"
+ },
+ "class_order": [
+  "Unter 1300 Euro",
+  "1300 bis unter 2600 Euro",
+  "2600 bis unter 3600 Euro",
+  "3600 bis unter 5000 Euro",
+  "5000 und mehr Euro",
+  "Haushalte insgesamt"
+ ],
+ "classes": {
+  "Unter 1300 Euro": {
+   "household_net_income_class_de": "Unter 1300 Euro",
+   "consumption_month_eur": 1332.0,
+   "leaf_sum_month_eur": 1331.0,
+   "vat_year_eur": 1237,
+   "excises_year_eur": {
+    "tobacco_tax": 58,
+    "alcohol_taxes": 18,
+    "electricity_tax": 43,
+    "energy_tax_heating": 22,
+    "energy_tax_fuel": 101
+   },
+   "indirect_taxes_year_eur": 1479,
+   "share_of_consumption": 0.0925,
+   "recipients_year_eur": {
+    "bund": 833,
+    "laender": 611,
+    "gemeinden": 35
+   },
+   "items": [
+    {
+     "item_de": "Nahrungsmittel, Getränke, Tabakwaren und Ähnliches, Nahrungsmittel, alkoholfreie Getränke",
+     "spend_month_eur": 208.0,
+     "vat_rate": 0.07,
+     "vat_month_eur": 13.61,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Nahrungsmittel, Getränke, Tabakwaren und Ähnliches, alkoholische Getränke, Tabakwaren und Ähnliches",
+     "spend_month_eur": 30.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 4.79,
+     "excise_month_eur": {
+      "tobacco_tax": 4.8,
+      "alcohol_taxes": 1.54
+     }
+    },
+    {
+     "item_de": "Bekleidung und Schuhe, Herrenbekleidung (ab 14 Jahren)",
+     "spend_month_eur": 9.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 1.44,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Bekleidung und Schuhe, Damenbekleidung (ab 14 Jahren)",
+     "spend_month_eur": 17.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 2.71,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Bekleidung und Schuhe, Bekleidung für Kinder (unter 14 Jahren)",
+     "spend_month_eur": 1.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 0.16,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Bekleidung und Schuhe, sonstige Bekleidung und Zubehör, nicht eindeutig zuordenbare Bekleidung",
+     "spend_month_eur": 3.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 0.48,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Bekleidung und Schuhe, Schuhe und Schuhzubehör",
+     "spend_month_eur": 9.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 1.44,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Bekleidung und Schuhe, Reparaturen, Reinigung, Ausleihe",
+     "spend_month_eur": 1.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 0.16,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Wohnen, Energie, Wohnungsinstandhaltung , Wohnungsmieten und Ähnliches",
+     "spend_month_eur": 478.0,
+     "vat_rate": 0.0,
+     "vat_month_eur": 0.0,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Wohnen, Energie, Wohnungsinstandhaltung , Energie",
+     "spend_month_eur": 120.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 19.16,
+     "excise_month_eur": {
+      "electricity_tax": 3.6,
+      "energy_tax_heating": 1.8
+     }
+    },
+    {
+     "item_de": "Wohnen, Energie, Wohnungsinstandhaltung, Wohnungsinstandhaltung",
+     "spend_month_eur": 7.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 1.12,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Innenausstattung, Haushaltsgeräte und -gegenstände, Möbel, Einrichtungsgegenstände, lose Teppiche",
+     "spend_month_eur": 23.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 3.67,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Innenausstattung, Haushaltsgeräte und -gegenstände, Haushaltsgroßgeräte (elektrische und andere)",
+     "spend_month_eur": 3.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 0.48,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Innenausstattung, Haushaltsgeräte und -gegenstände, Haushaltskleingeräte (elektrische und andere)",
+     "spend_month_eur": 2.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 0.32,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Innenausstattung, Haushaltsgeräte und -gegenstände, Heimtextilien",
+     "spend_month_eur": 3.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 0.48,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Innenausstattung, Haushaltsgeräte und -gegenstände, sonstige Gebrauchsgüter und Werkzeuge für Haushalt und Garten",
+     "spend_month_eur": 7.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 1.12,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Innenausstattung, Haushaltsgeräte und -gegenstände, Verbrauchsgüter für den Haushalt",
+     "spend_month_eur": 7.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 1.12,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Innenausstattung, Haushaltsgeräte und -gegenstände, Dienstleistungen von Haushaltshilfen und häusliche Dienste",
+     "spend_month_eur": 1.0,
+     "vat_rate": 0.0,
+     "vat_month_eur": 0.0,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Gesundheit, Hilfsmittel für die Gesundheit",
+     "spend_month_eur": 3.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 0.48,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Gesundheit, Arzneimittel, medizinische Erzeugnisse",
+     "spend_month_eur": 13.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 2.08,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Gesundheit, Gesundheitsdienstleistungen (ambulant und stationär)",
+     "spend_month_eur": 15.0,
+     "vat_rate": 0.0,
+     "vat_month_eur": 0.0,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Verkehr, Personenkraftwagen (auch Leasing)",
+     "spend_month_eur": 32.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 5.11,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Verkehr, Kraft- und Fahrräder inklusive E-Bikes und Pedelecs (auch Leasing)",
+     "spend_month_eur": 0.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 0.0,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Verkehr, Ersatzteile und Zubehör",
+     "spend_month_eur": 4.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 0.64,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Verkehr, Kraft- und Schmierstoffe",
+     "spend_month_eur": 25.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 3.99,
+     "excise_month_eur": {
+      "energy_tax_fuel": 8.45
+     }
+    },
+    {
+     "item_de": "Verkehr, Wartung, Reparaturen an Privatfahrzeugen",
+     "spend_month_eur": 12.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 1.92,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Verkehr, sonstige Dienstleistungen",
+     "spend_month_eur": 5.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 0.8,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Verkehr, Personenbeförderungsdienstleistungen",
+     "spend_month_eur": 28.0,
+     "vat_rate": 0.07,
+     "vat_month_eur": 1.83,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Verkehr, Transportdienstleistungen für Waren (auch Briefe und Pakete)",
+     "spend_month_eur": 5.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 0.8,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Information und Kommunikation, Telefone und andere Geräte (Festnetz und mobil; ohne Vertrag, ohne SIM-Karte)",
+     "spend_month_eur": 2.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 0.32,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Information und Kommunikation, Computer, Laptops, Tablets (ohne Software)",
+     "spend_month_eur": 2.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 0.32,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Information und Kommunikation, Peripheriegeräte, Zubehör für DV-Geräte",
+     "spend_month_eur": 2.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 0.32,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Information und Kommunikation, Ton- und Bildempfangs-, -aufnahme- und -wiedergabegeräte",
+     "spend_month_eur": 3.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 0.48,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Information und Kommunikation, anderes Zubehör (z. B. Prozessoren, Speicher, Etuis, Halterungen)",
+     "spend_month_eur": 1.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 0.16,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Information und Kommunikation, Software (ohne Spiele)",
+     "spend_month_eur": 3.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 0.48,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Information und Kommunikation, Dienstleistungen für Festnetz, Mobilfunk, Internet",
+     "spend_month_eur": 41.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 6.55,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Information und Kommunikation, Reparatur und Miete von Geräten",
+     "spend_month_eur": 0.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 0.0,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Information und Kommunikation, andere Dienstleistungen und Gebühren",
+     "spend_month_eur": 17.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 2.71,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Freizeit, Sport und Kultur,Foto-, Filmausrüstung, optische Geräte und Zubehör",
+     "spend_month_eur": 0.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 0.0,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Freizeit, Sport und Kultur, Geräte und Ausrüstungen für Sport und Camping",
+     "spend_month_eur": 1.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 0.16,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Freizeit, Sport und Kultur,Musikinstrumente und audiovisuelle Medien",
+     "spend_month_eur": 1.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 0.16,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Freizeit, Sport und Kultur, Spielwaren und Hobbys",
+     "spend_month_eur": 6.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 0.96,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Freizeit, Sport und Kultur, Blumen und Gärten",
+     "spend_month_eur": 5.0,
+     "vat_rate": 0.07,
+     "vat_month_eur": 0.33,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Freizeit, Sport und Kultur, Haustiere, Produkte für Haustiere",
+     "spend_month_eur": 8.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 1.28,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Freizeit, Sport und Kultur, Freizeitdienstleistungen (unter anderem Miete, Reparatur)",
+     "spend_month_eur": 16.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 2.55,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Freizeit, Sport und Kultur, Kulturdienstleistungen",
+     "spend_month_eur": 8.0,
+     "vat_rate": 0.07,
+     "vat_month_eur": 0.52,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Freizeit, Sport und Kultur, Bücher (auch CD-ROMs, E-Book-Downloads)",
+     "spend_month_eur": 5.0,
+     "vat_rate": 0.07,
+     "vat_month_eur": 0.33,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Freizeit, Sport und Kultur, Zeitungen, Zeitschriften und Ähnliches",
+     "spend_month_eur": 5.0,
+     "vat_rate": 0.07,
+     "vat_month_eur": 0.33,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Freizeit, Sport und Kultur, Schreibwaren, Zeichenmaterialien",
+     "spend_month_eur": 2.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 0.32,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Freizeit, Sport und Kultur, Pauschalreisen",
+     "spend_month_eur": 20.0,
+     "vat_rate": 0.0,
+     "vat_month_eur": 0.0,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Bildungsdienstleistungen, Gebühren für Bildungseinrichtungen und Kinderbetreuung (ohne Verpflegung)",
+     "spend_month_eur": 8.0,
+     "vat_rate": 0.0,
+     "vat_month_eur": 0.0,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Gastronomie- und Beherbergungsdienstleistungen, Gastronomiedienstleistungen",
+     "spend_month_eur": 48.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 7.66,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Gastronomie- und Beherbergungsdienstleistungen, Beherbergungsdienstleistungen",
+     "spend_month_eur": 13.0,
+     "vat_rate": 0.07,
+     "vat_month_eur": 0.85,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Versicherungs- und Finanzdienstleistungen, Finanzdienstleistungen",
+     "spend_month_eur": 3.0,
+     "vat_rate": 0.0,
+     "vat_month_eur": 0.0,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Andere Waren und Dienstleistungen, Schmuck, Uhren",
+     "spend_month_eur": 1.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 0.16,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Andere Waren und Dienstleistungen, sonstige persönliche Gebrauchsgegenstände",
+     "spend_month_eur": 3.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 0.48,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Andere Waren und Dienstleistungen, Dienstleistungen für die Körperpflege",
+     "spend_month_eur": 11.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 1.76,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Andere Waren und Dienstleistungen, Körperpflegeartikel und -geräte",
+     "spend_month_eur": 18.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 2.87,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Andere Waren und Dienstleistungen, sonstige Dienstleistungen",
+     "spend_month_eur": 7.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 1.12,
+     "excise_month_eur": null
+    }
+   ]
+  },
+  "1300 bis unter 2600 Euro": {
+   "household_net_income_class_de": "1300 bis unter 2600 Euro",
+   "consumption_month_eur": 1948.0,
+   "leaf_sum_month_eur": 1948.0,
+   "vat_year_eur": 1916,
+   "excises_year_eur": {
+    "tobacco_tax": 65,
+    "alcohol_taxes": 21,
+    "electricity_tax": 60,
+    "energy_tax_heating": 30,
+    "energy_tax_fuel": 219
+   },
+   "indirect_taxes_year_eur": 2312,
+   "share_of_consumption": 0.0989,
+   "recipients_year_eur": {
+    "bund": 1314,
+    "laender": 945,
+    "gemeinden": 53
+   },
+   "items": [
+    {
+     "item_de": "Nahrungsmittel, Getränke, Tabakwaren und Ähnliches, Nahrungsmittel, alkoholfreie Getränke",
+     "spend_month_eur": 273.0,
+     "vat_rate": 0.07,
+     "vat_month_eur": 17.86,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Nahrungsmittel, Getränke, Tabakwaren und Ähnliches, alkoholische Getränke, Tabakwaren und Ähnliches",
+     "spend_month_eur": 34.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 5.43,
+     "excise_month_eur": {
+      "tobacco_tax": 5.44,
+      "alcohol_taxes": 1.74
+     }
+    },
+    {
+     "item_de": "Bekleidung und Schuhe, Herrenbekleidung (ab 14 Jahren)",
+     "spend_month_eur": 11.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 1.76,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Bekleidung und Schuhe, Damenbekleidung (ab 14 Jahren)",
+     "spend_month_eur": 29.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 4.63,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Bekleidung und Schuhe, Bekleidung für Kinder (unter 14 Jahren)",
+     "spend_month_eur": 2.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 0.32,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Bekleidung und Schuhe, sonstige Bekleidung und Zubehör, nicht eindeutig zuordenbare Bekleidung",
+     "spend_month_eur": 4.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 0.64,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Bekleidung und Schuhe, Schuhe und Schuhzubehör",
+     "spend_month_eur": 12.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 1.92,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Bekleidung und Schuhe, Reparaturen, Reinigung, Ausleihe",
+     "spend_month_eur": 1.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 0.16,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Wohnen, Energie, Wohnungsinstandhaltung , Wohnungsmieten und Ähnliches",
+     "spend_month_eur": 642.0,
+     "vat_rate": 0.0,
+     "vat_month_eur": 0.0,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Wohnen, Energie, Wohnungsinstandhaltung , Energie",
+     "spend_month_eur": 168.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 26.82,
+     "excise_month_eur": {
+      "electricity_tax": 5.04,
+      "energy_tax_heating": 2.52
+     }
+    },
+    {
+     "item_de": "Wohnen, Energie, Wohnungsinstandhaltung, Wohnungsinstandhaltung",
+     "spend_month_eur": 6.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 0.96,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Innenausstattung, Haushaltsgeräte und -gegenstände, Möbel, Einrichtungsgegenstände, lose Teppiche",
+     "spend_month_eur": 28.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 4.47,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Innenausstattung, Haushaltsgeräte und -gegenstände, Haushaltsgroßgeräte (elektrische und andere)",
+     "spend_month_eur": 10.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 1.6,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Innenausstattung, Haushaltsgeräte und -gegenstände, Haushaltskleingeräte (elektrische und andere)",
+     "spend_month_eur": 3.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 0.48,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Innenausstattung, Haushaltsgeräte und -gegenstände, Heimtextilien",
+     "spend_month_eur": 10.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 1.6,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Innenausstattung, Haushaltsgeräte und -gegenstände, sonstige Gebrauchsgüter und Werkzeuge für Haushalt und Garten",
+     "spend_month_eur": 12.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 1.92,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Innenausstattung, Haushaltsgeräte und -gegenstände, Verbrauchsgüter für den Haushalt",
+     "spend_month_eur": 10.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 1.6,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Innenausstattung, Haushaltsgeräte und -gegenstände, Dienstleistungen von Haushaltshilfen und häusliche Dienste",
+     "spend_month_eur": 2.0,
+     "vat_rate": 0.0,
+     "vat_month_eur": 0.0,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Gesundheit, Hilfsmittel für die Gesundheit",
+     "spend_month_eur": 9.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 1.44,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Gesundheit, Arzneimittel, medizinische Erzeugnisse",
+     "spend_month_eur": 20.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 3.19,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Gesundheit, Gesundheitsdienstleistungen (ambulant und stationär)",
+     "spend_month_eur": 29.0,
+     "vat_rate": 0.0,
+     "vat_month_eur": 0.0,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Verkehr, Personenkraftwagen (auch Leasing)",
+     "spend_month_eur": 69.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 11.02,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Verkehr, Kraft- und Fahrräder inklusive E-Bikes und Pedelecs (auch Leasing)",
+     "spend_month_eur": 2.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 0.32,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Verkehr, Ersatzteile und Zubehör",
+     "spend_month_eur": 6.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 0.96,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Verkehr, Kraft- und Schmierstoffe",
+     "spend_month_eur": 54.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 8.62,
+     "excise_month_eur": {
+      "energy_tax_fuel": 18.25
+     }
+    },
+    {
+     "item_de": "Verkehr, Wartung, Reparaturen an Privatfahrzeugen",
+     "spend_month_eur": 25.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 3.99,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Verkehr, sonstige Dienstleistungen",
+     "spend_month_eur": 12.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 1.92,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Verkehr, Personenbeförderungsdienstleistungen",
+     "spend_month_eur": 32.0,
+     "vat_rate": 0.07,
+     "vat_month_eur": 2.09,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Verkehr, Transportdienstleistungen für Waren (auch Briefe und Pakete)",
+     "spend_month_eur": 5.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 0.8,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Information und Kommunikation, Telefone und andere Geräte (Festnetz und mobil; ohne Vertrag, ohne SIM-Karte)",
+     "spend_month_eur": 5.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 0.8,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Information und Kommunikation, Computer, Laptops, Tablets (ohne Software)",
+     "spend_month_eur": 5.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 0.8,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Information und Kommunikation, Peripheriegeräte, Zubehör für DV-Geräte",
+     "spend_month_eur": 3.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 0.48,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Information und Kommunikation, Ton- und Bildempfangs-, -aufnahme- und -wiedergabegeräte",
+     "spend_month_eur": 6.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 0.96,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Information und Kommunikation, Aufzeichnungsträger unbespielt (z. B. CD, Blu-ray, Speichersticks)",
+     "spend_month_eur": 0.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 0.0,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Information und Kommunikation, andere Geräte (z. B. Smartwatches, E-Book-Reader oder nicht zuordenbare Geräte/Zubehör)",
+     "spend_month_eur": 1.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 0.16,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Information und Kommunikation, anderes Zubehör (z. B. Prozessoren, Speicher, Etuis, Halterungen)",
+     "spend_month_eur": 2.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 0.32,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Information und Kommunikation, Software (ohne Spiele)",
+     "spend_month_eur": 3.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 0.48,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Information und Kommunikation, Dienstleistungen für Festnetz, Mobilfunk, Internet",
+     "spend_month_eur": 53.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 8.46,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Information und Kommunikation, Reparatur und Miete von Geräten",
+     "spend_month_eur": 1.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 0.16,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Information und Kommunikation, andere Dienstleistungen und Gebühren",
+     "spend_month_eur": 26.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 4.15,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Freizeit, Sport und Kultur,Foto-, Filmausrüstung, optische Geräte und Zubehör",
+     "spend_month_eur": 2.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 0.32,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Freizeit, Sport und Kultur, Geräte und Ausrüstungen für Sport und Camping",
+     "spend_month_eur": 4.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 0.64,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Freizeit, Sport und Kultur,Musikinstrumente und audiovisuelle Medien",
+     "spend_month_eur": 2.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 0.32,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Freizeit, Sport und Kultur, Spielwaren und Hobbys",
+     "spend_month_eur": 14.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 2.24,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Freizeit, Sport und Kultur, Blumen und Gärten",
+     "spend_month_eur": 11.0,
+     "vat_rate": 0.07,
+     "vat_month_eur": 0.72,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Freizeit, Sport und Kultur, Haustiere, Produkte für Haustiere",
+     "spend_month_eur": 13.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 2.08,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Freizeit, Sport und Kultur, Freizeitdienstleistungen (unter anderem Miete, Reparatur)",
+     "spend_month_eur": 24.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 3.83,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Freizeit, Sport und Kultur, Kulturdienstleistungen",
+     "spend_month_eur": 14.0,
+     "vat_rate": 0.07,
+     "vat_month_eur": 0.92,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Freizeit, Sport und Kultur, Bücher (auch CD-ROMs, E-Book-Downloads)",
+     "spend_month_eur": 6.0,
+     "vat_rate": 0.07,
+     "vat_month_eur": 0.39,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Freizeit, Sport und Kultur, Zeitungen, Zeitschriften und Ähnliches",
+     "spend_month_eur": 9.0,
+     "vat_rate": 0.07,
+     "vat_month_eur": 0.59,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Freizeit, Sport und Kultur, Schreibwaren, Zeichenmaterialien",
+     "spend_month_eur": 2.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 0.32,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Freizeit, Sport und Kultur, Pauschalreisen",
+     "spend_month_eur": 44.0,
+     "vat_rate": 0.0,
+     "vat_month_eur": 0.0,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Bildungsdienstleistungen, Gebühren für Bildungseinrichtungen und Kinderbetreuung (ohne Verpflegung)",
+     "spend_month_eur": 9.0,
+     "vat_rate": 0.0,
+     "vat_month_eur": 0.0,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Gastronomie- und Beherbergungsdienstleistungen, Gastronomiedienstleistungen",
+     "spend_month_eur": 77.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 12.29,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Gastronomie- und Beherbergungsdienstleistungen, Beherbergungsdienstleistungen",
+     "spend_month_eur": 24.0,
+     "vat_rate": 0.07,
+     "vat_month_eur": 1.57,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Versicherungs- und Finanzdienstleistungen, Finanzdienstleistungen",
+     "spend_month_eur": 4.0,
+     "vat_rate": 0.0,
+     "vat_month_eur": 0.0,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Andere Waren und Dienstleistungen, Schmuck, Uhren",
+     "spend_month_eur": 3.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 0.48,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Andere Waren und Dienstleistungen, sonstige persönliche Gebrauchsgegenstände",
+     "spend_month_eur": 5.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 0.8,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Andere Waren und Dienstleistungen, Dienstleistungen für die Körperpflege",
+     "spend_month_eur": 21.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 3.35,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Andere Waren und Dienstleistungen, Körperpflegeartikel und -geräte",
+     "spend_month_eur": 25.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 3.99,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Andere Waren und Dienstleistungen, sonstige Dienstleistungen",
+     "spend_month_eur": 10.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 1.6,
+     "excise_month_eur": null
+    }
+   ]
+  },
+  "2600 bis unter 3600 Euro": {
+   "household_net_income_class_de": "2600 bis unter 3600 Euro",
+   "consumption_month_eur": 2754.0,
+   "leaf_sum_month_eur": 2744.0,
+   "vat_year_eur": 2793,
+   "excises_year_eur": {
+    "tobacco_tax": 83,
+    "alcohol_taxes": 26,
+    "electricity_tax": 73,
+    "energy_tax_heating": 37,
+    "energy_tax_fuel": 361
+   },
+   "indirect_taxes_year_eur": 3373,
+   "share_of_consumption": 0.1021,
+   "recipients_year_eur": {
+    "bund": 1918,
+    "laender": 1377,
+    "gemeinden": 78
+   },
+   "items": [
+    {
+     "item_de": "Nahrungsmittel, Getränke, Tabakwaren und Ähnliches, Nahrungsmittel, alkoholfreie Getränke",
+     "spend_month_eur": 360.0,
+     "vat_rate": 0.07,
+     "vat_month_eur": 23.55,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Nahrungsmittel, Getränke, Tabakwaren und Ähnliches, alkoholische Getränke, Tabakwaren und Ähnliches",
+     "spend_month_eur": 43.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 6.87,
+     "excise_month_eur": {
+      "tobacco_tax": 6.88,
+      "alcohol_taxes": 2.21
+     }
+    },
+    {
+     "item_de": "Bekleidung und Schuhe, Herrenbekleidung (ab 14 Jahren)",
+     "spend_month_eur": 17.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 2.71,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Bekleidung und Schuhe, Damenbekleidung (ab 14 Jahren)",
+     "spend_month_eur": 43.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 6.87,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Bekleidung und Schuhe, Bekleidung für Kinder (unter 14 Jahren)",
+     "spend_month_eur": 7.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 1.12,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Bekleidung und Schuhe, sonstige Bekleidung und Zubehör, nicht eindeutig zuordenbare Bekleidung",
+     "spend_month_eur": 7.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 1.12,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Bekleidung und Schuhe, Schuhe und Schuhzubehör",
+     "spend_month_eur": 20.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 3.19,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Bekleidung und Schuhe, Reparaturen, Reinigung, Ausleihe",
+     "spend_month_eur": 1.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 0.16,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Wohnen, Energie, Wohnungsinstandhaltung , Wohnungsmieten und Ähnliches",
+     "spend_month_eur": 843.0,
+     "vat_rate": 0.0,
+     "vat_month_eur": 0.0,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Wohnen, Energie, Wohnungsinstandhaltung , Energie",
+     "spend_month_eur": 204.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 32.57,
+     "excise_month_eur": {
+      "electricity_tax": 6.12,
+      "energy_tax_heating": 3.06
+     }
+    },
+    {
+     "item_de": "Wohnen, Energie, Wohnungsinstandhaltung, Wohnungsinstandhaltung",
+     "spend_month_eur": 16.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 2.55,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Innenausstattung, Haushaltsgeräte und -gegenstände, Möbel, Einrichtungsgegenstände, lose Teppiche",
+     "spend_month_eur": 48.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 7.66,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Innenausstattung, Haushaltsgeräte und -gegenstände, Haushaltsgroßgeräte (elektrische und andere)",
+     "spend_month_eur": 14.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 2.24,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Innenausstattung, Haushaltsgeräte und -gegenstände, Haushaltskleingeräte (elektrische und andere)",
+     "spend_month_eur": 5.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 0.8,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Innenausstattung, Haushaltsgeräte und -gegenstände, Heimtextilien",
+     "spend_month_eur": 10.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 1.6,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Innenausstattung, Haushaltsgeräte und -gegenstände, sonstige Gebrauchsgüter und Werkzeuge für Haushalt und Garten",
+     "spend_month_eur": 23.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 3.67,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Innenausstattung, Haushaltsgeräte und -gegenstände, Verbrauchsgüter für den Haushalt",
+     "spend_month_eur": 14.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 2.24,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Innenausstattung, Haushaltsgeräte und -gegenstände, Dienstleistungen von Haushaltshilfen und häusliche Dienste",
+     "spend_month_eur": 4.0,
+     "vat_rate": 0.0,
+     "vat_month_eur": 0.0,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Gesundheit, Hilfsmittel für die Gesundheit",
+     "spend_month_eur": 15.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 2.39,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Gesundheit, Arzneimittel, medizinische Erzeugnisse",
+     "spend_month_eur": 23.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 3.67,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Gesundheit, Gesundheitsdienstleistungen (ambulant und stationär)",
+     "spend_month_eur": 38.0,
+     "vat_rate": 0.0,
+     "vat_month_eur": 0.0,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Verkehr, Personenkraftwagen (auch Leasing)",
+     "spend_month_eur": 138.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 22.03,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Verkehr, Kraft- und Fahrräder inklusive E-Bikes und Pedelecs (auch Leasing)",
+     "spend_month_eur": 10.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 1.6,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Verkehr, Ersatzteile und Zubehör",
+     "spend_month_eur": 14.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 2.24,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Verkehr, Kraft- und Schmierstoffe",
+     "spend_month_eur": 89.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 14.21,
+     "excise_month_eur": {
+      "energy_tax_fuel": 30.08
+     }
+    },
+    {
+     "item_de": "Verkehr, Wartung, Reparaturen an Privatfahrzeugen",
+     "spend_month_eur": 41.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 6.55,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Verkehr, sonstige Dienstleistungen",
+     "spend_month_eur": 17.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 2.71,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Verkehr, Personenbeförderungsdienstleistungen",
+     "spend_month_eur": 41.0,
+     "vat_rate": 0.07,
+     "vat_month_eur": 2.68,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Verkehr, Transportdienstleistungen für Waren (auch Briefe und Pakete)",
+     "spend_month_eur": 4.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 0.64,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Information und Kommunikation, Telefone und andere Geräte (Festnetz und mobil; ohne Vertrag, ohne SIM-Karte)",
+     "spend_month_eur": 7.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 1.12,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Information und Kommunikation, Computer, Laptops, Tablets (ohne Software)",
+     "spend_month_eur": 6.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 0.96,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Information und Kommunikation, Peripheriegeräte, Zubehör für DV-Geräte",
+     "spend_month_eur": 5.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 0.8,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Information und Kommunikation, Ton- und Bildempfangs-, -aufnahme- und -wiedergabegeräte",
+     "spend_month_eur": 8.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 1.28,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Information und Kommunikation, Aufzeichnungsträger unbespielt (z. B. CD, Blu-ray, Speichersticks)",
+     "spend_month_eur": 1.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 0.16,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Information und Kommunikation, andere Geräte (z. B. Smartwatches, E-Book-Reader oder nicht zuordenbare Geräte/Zubehör)",
+     "spend_month_eur": 2.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 0.32,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Information und Kommunikation, anderes Zubehör (z. B. Prozessoren, Speicher, Etuis, Halterungen)",
+     "spend_month_eur": 2.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 0.32,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Information und Kommunikation, Software (ohne Spiele)",
+     "spend_month_eur": 3.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 0.48,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Information und Kommunikation, Dienstleistungen für Festnetz, Mobilfunk, Internet",
+     "spend_month_eur": 63.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 10.06,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Information und Kommunikation, Reparatur und Miete von Geräten",
+     "spend_month_eur": 1.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 0.16,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Information und Kommunikation, andere Dienstleistungen und Gebühren",
+     "spend_month_eur": 29.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 4.63,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Freizeit, Sport und Kultur,Foto-, Filmausrüstung, optische Geräte und Zubehör",
+     "spend_month_eur": 2.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 0.32,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Freizeit, Sport und Kultur, Geräte und Ausrüstungen für Sport und Camping",
+     "spend_month_eur": 5.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 0.8,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Freizeit, Sport und Kultur,Musikinstrumente und audiovisuelle Medien",
+     "spend_month_eur": 2.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 0.32,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Freizeit, Sport und Kultur, Spielwaren und Hobbys",
+     "spend_month_eur": 19.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 3.03,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Freizeit, Sport und Kultur, Blumen und Gärten",
+     "spend_month_eur": 16.0,
+     "vat_rate": 0.07,
+     "vat_month_eur": 1.05,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Freizeit, Sport und Kultur, Haustiere, Produkte für Haustiere",
+     "spend_month_eur": 18.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 2.87,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Freizeit, Sport und Kultur, Freizeitdienstleistungen (unter anderem Miete, Reparatur)",
+     "spend_month_eur": 40.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 6.39,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Freizeit, Sport und Kultur, Kulturdienstleistungen",
+     "spend_month_eur": 27.0,
+     "vat_rate": 0.07,
+     "vat_month_eur": 1.77,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Freizeit, Sport und Kultur, Bücher (auch CD-ROMs, E-Book-Downloads)",
+     "spend_month_eur": 8.0,
+     "vat_rate": 0.07,
+     "vat_month_eur": 0.52,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Freizeit, Sport und Kultur, Zeitungen, Zeitschriften und Ähnliches",
+     "spend_month_eur": 15.0,
+     "vat_rate": 0.07,
+     "vat_month_eur": 0.98,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Freizeit, Sport und Kultur, Schreibwaren, Zeichenmaterialien",
+     "spend_month_eur": 3.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 0.48,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Freizeit, Sport und Kultur, Pauschalreisen",
+     "spend_month_eur": 83.0,
+     "vat_rate": 0.0,
+     "vat_month_eur": 0.0,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Bildungsdienstleistungen, Gebühren für Bildungseinrichtungen und Kinderbetreuung (ohne Verpflegung)",
+     "spend_month_eur": 11.0,
+     "vat_rate": 0.0,
+     "vat_month_eur": 0.0,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Gastronomie- und Beherbergungsdienstleistungen, Gastronomiedienstleistungen",
+     "spend_month_eur": 115.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 18.36,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Gastronomie- und Beherbergungsdienstleistungen, Beherbergungsdienstleistungen",
+     "spend_month_eur": 45.0,
+     "vat_rate": 0.07,
+     "vat_month_eur": 2.94,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Versicherungs- und Finanzdienstleistungen, Finanzdienstleistungen",
+     "spend_month_eur": 5.0,
+     "vat_rate": 0.0,
+     "vat_month_eur": 0.0,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Andere Waren und Dienstleistungen, Schmuck, Uhren",
+     "spend_month_eur": 4.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 0.64,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Andere Waren und Dienstleistungen, sonstige persönliche Gebrauchsgegenstände",
+     "spend_month_eur": 8.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 1.28,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Andere Waren und Dienstleistungen, Dienstleistungen für die Körperpflege",
+     "spend_month_eur": 30.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 4.79,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Andere Waren und Dienstleistungen, Körperpflegeartikel und -geräte",
+     "spend_month_eur": 34.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 5.43,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Andere Waren und Dienstleistungen, sonstige Dienstleistungen",
+     "spend_month_eur": 18.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 2.87,
+     "excise_month_eur": null
+    }
+   ]
+  },
+  "3600 bis unter 5000 Euro": {
+   "household_net_income_class_de": "3600 bis unter 5000 Euro",
+   "consumption_month_eur": 3436.0,
+   "leaf_sum_month_eur": 3436.0,
+   "vat_year_eur": 3537,
+   "excises_year_eur": {
+    "tobacco_tax": 106,
+    "alcohol_taxes": 34,
+    "electricity_tax": 84,
+    "energy_tax_heating": 42,
+    "energy_tax_fuel": 462
+   },
+   "indirect_taxes_year_eur": 4265,
+   "share_of_consumption": 0.1034,
+   "recipients_year_eur": {
+    "bund": 2423,
+    "laender": 1744,
+    "gemeinden": 99
+   },
+   "items": [
+    {
+     "item_de": "Nahrungsmittel, Getränke, Tabakwaren und Ähnliches, Nahrungsmittel, alkoholfreie Getränke",
+     "spend_month_eur": 447.0,
+     "vat_rate": 0.07,
+     "vat_month_eur": 29.24,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Nahrungsmittel, Getränke, Tabakwaren und Ähnliches, alkoholische Getränke, Tabakwaren und Ähnliches",
+     "spend_month_eur": 55.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 8.78,
+     "excise_month_eur": {
+      "tobacco_tax": 8.8,
+      "alcohol_taxes": 2.82
+     }
+    },
+    {
+     "item_de": "Bekleidung und Schuhe, Herrenbekleidung (ab 14 Jahren)",
+     "spend_month_eur": 24.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 3.83,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Bekleidung und Schuhe, Damenbekleidung (ab 14 Jahren)",
+     "spend_month_eur": 50.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 7.98,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Bekleidung und Schuhe, Bekleidung für Kinder (unter 14 Jahren)",
+     "spend_month_eur": 9.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 1.44,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Bekleidung und Schuhe, sonstige Bekleidung und Zubehör, nicht eindeutig zuordenbare Bekleidung",
+     "spend_month_eur": 8.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 1.28,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Bekleidung und Schuhe, Schuhe und Schuhzubehör",
+     "spend_month_eur": 24.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 3.83,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Bekleidung und Schuhe, Reparaturen, Reinigung, Ausleihe",
+     "spend_month_eur": 1.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 0.16,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Wohnen, Energie, Wohnungsinstandhaltung , Wohnungsmieten und Ähnliches",
+     "spend_month_eur": 1009.0,
+     "vat_rate": 0.0,
+     "vat_month_eur": 0.0,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Wohnen, Energie, Wohnungsinstandhaltung , Energie",
+     "spend_month_eur": 234.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 37.36,
+     "excise_month_eur": {
+      "electricity_tax": 7.02,
+      "energy_tax_heating": 3.51
+     }
+    },
+    {
+     "item_de": "Wohnen, Energie, Wohnungsinstandhaltung, Wohnungsinstandhaltung",
+     "spend_month_eur": 28.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 4.47,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Innenausstattung, Haushaltsgeräte und -gegenstände, Möbel, Einrichtungsgegenstände, lose Teppiche",
+     "spend_month_eur": 59.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 9.42,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Innenausstattung, Haushaltsgeräte und -gegenstände, Haushaltsgroßgeräte (elektrische und andere)",
+     "spend_month_eur": 22.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 3.51,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Innenausstattung, Haushaltsgeräte und -gegenstände, Haushaltskleingeräte (elektrische und andere)",
+     "spend_month_eur": 7.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 1.12,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Innenausstattung, Haushaltsgeräte und -gegenstände, Reparatur, Miete, Leasing von Haushaltsgeräten",
+     "spend_month_eur": 2.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 0.32,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Innenausstattung, Haushaltsgeräte und -gegenstände, Heimtextilien",
+     "spend_month_eur": 12.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 1.92,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Innenausstattung, Haushaltsgeräte und -gegenstände, sonstige Gebrauchsgüter und Werkzeuge für Haushalt und Garten",
+     "spend_month_eur": 27.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 4.31,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Innenausstattung, Haushaltsgeräte und -gegenstände, Verbrauchsgüter für den Haushalt",
+     "spend_month_eur": 17.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 2.71,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Innenausstattung, Haushaltsgeräte und -gegenstände, Dienstleistungen von Haushaltshilfen und häusliche Dienste",
+     "spend_month_eur": 9.0,
+     "vat_rate": 0.0,
+     "vat_month_eur": 0.0,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Gesundheit, Hilfsmittel für die Gesundheit",
+     "spend_month_eur": 17.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 2.71,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Gesundheit, Arzneimittel, medizinische Erzeugnisse",
+     "spend_month_eur": 31.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 4.95,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Gesundheit, Gesundheitsdienstleistungen (ambulant und stationär)",
+     "spend_month_eur": 59.0,
+     "vat_rate": 0.0,
+     "vat_month_eur": 0.0,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Verkehr, Personenkraftwagen (auch Leasing)",
+     "spend_month_eur": 193.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 30.82,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Verkehr, Kraft- und Fahrräder inklusive E-Bikes und Pedelecs (auch Leasing)",
+     "spend_month_eur": 7.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 1.12,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Verkehr, Ersatzteile und Zubehör",
+     "spend_month_eur": 16.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 2.55,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Verkehr, Kraft- und Schmierstoffe",
+     "spend_month_eur": 114.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 18.2,
+     "excise_month_eur": {
+      "energy_tax_fuel": 38.53
+     }
+    },
+    {
+     "item_de": "Verkehr, Wartung, Reparaturen an Privatfahrzeugen",
+     "spend_month_eur": 60.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 9.58,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Verkehr, sonstige Dienstleistungen",
+     "spend_month_eur": 29.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 4.63,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Verkehr, Personenbeförderungsdienstleistungen",
+     "spend_month_eur": 44.0,
+     "vat_rate": 0.07,
+     "vat_month_eur": 2.88,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Verkehr, Transportdienstleistungen für Waren (auch Briefe und Pakete)",
+     "spend_month_eur": 5.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 0.8,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Information und Kommunikation, Telefone und andere Geräte (Festnetz und mobil; ohne Vertrag, ohne SIM-Karte)",
+     "spend_month_eur": 12.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 1.92,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Information und Kommunikation, Computer, Laptops, Tablets (ohne Software)",
+     "spend_month_eur": 9.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 1.44,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Information und Kommunikation, Peripheriegeräte, Zubehör für DV-Geräte",
+     "spend_month_eur": 6.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 0.96,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Information und Kommunikation, Ton- und Bildempfangs-, -aufnahme- und -wiedergabegeräte",
+     "spend_month_eur": 7.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 1.12,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Information und Kommunikation, Aufzeichnungsträger unbespielt (z. B. CD, Blu-ray, Speichersticks)",
+     "spend_month_eur": 0.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 0.0,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Information und Kommunikation, andere Geräte (z. B. Smartwatches, E-Book-Reader oder nicht zuordenbare Geräte/Zubehör)",
+     "spend_month_eur": 2.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 0.32,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Information und Kommunikation, anderes Zubehör (z. B. Prozessoren, Speicher, Etuis, Halterungen)",
+     "spend_month_eur": 5.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 0.8,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Information und Kommunikation, Software (ohne Spiele)",
+     "spend_month_eur": 4.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 0.64,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Information und Kommunikation, Dienstleistungen für Festnetz, Mobilfunk, Internet",
+     "spend_month_eur": 69.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 11.02,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Information und Kommunikation, Reparatur und Miete von Geräten",
+     "spend_month_eur": 1.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 0.16,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Information und Kommunikation, andere Dienstleistungen und Gebühren",
+     "spend_month_eur": 33.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 5.27,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Freizeit, Sport und Kultur,Foto-, Filmausrüstung, optische Geräte und Zubehör",
+     "spend_month_eur": 2.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 0.32,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Freizeit, Sport und Kultur,größere langlebige Gebrauchsgüter für Freizeit",
+     "spend_month_eur": 5.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 0.8,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Freizeit, Sport und Kultur, Geräte und Ausrüstungen für Sport und Camping",
+     "spend_month_eur": 9.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 1.44,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Freizeit, Sport und Kultur,Musikinstrumente und audiovisuelle Medien",
+     "spend_month_eur": 4.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 0.64,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Freizeit, Sport und Kultur, Spielwaren und Hobbys",
+     "spend_month_eur": 29.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 4.63,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Freizeit, Sport und Kultur, Blumen und Gärten",
+     "spend_month_eur": 21.0,
+     "vat_rate": 0.07,
+     "vat_month_eur": 1.37,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Freizeit, Sport und Kultur, Haustiere, Produkte für Haustiere",
+     "spend_month_eur": 18.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 2.87,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Freizeit, Sport und Kultur, Freizeitdienstleistungen (unter anderem Miete, Reparatur)",
+     "spend_month_eur": 48.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 7.66,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Freizeit, Sport und Kultur, Kulturdienstleistungen",
+     "spend_month_eur": 33.0,
+     "vat_rate": 0.07,
+     "vat_month_eur": 2.16,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Freizeit, Sport und Kultur, Bücher (auch CD-ROMs, E-Book-Downloads)",
+     "spend_month_eur": 10.0,
+     "vat_rate": 0.07,
+     "vat_month_eur": 0.65,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Freizeit, Sport und Kultur, Zeitungen, Zeitschriften und Ähnliches",
+     "spend_month_eur": 17.0,
+     "vat_rate": 0.07,
+     "vat_month_eur": 1.11,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Freizeit, Sport und Kultur, Schreibwaren, Zeichenmaterialien",
+     "spend_month_eur": 4.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 0.64,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Freizeit, Sport und Kultur, Pauschalreisen",
+     "spend_month_eur": 111.0,
+     "vat_rate": 0.0,
+     "vat_month_eur": 0.0,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Bildungsdienstleistungen, Gebühren für Bildungseinrichtungen und Kinderbetreuung (ohne Verpflegung)",
+     "spend_month_eur": 19.0,
+     "vat_rate": 0.0,
+     "vat_month_eur": 0.0,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Gastronomie- und Beherbergungsdienstleistungen, Gastronomiedienstleistungen",
+     "spend_month_eur": 159.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 25.39,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Gastronomie- und Beherbergungsdienstleistungen, Beherbergungsdienstleistungen",
+     "spend_month_eur": 67.0,
+     "vat_rate": 0.07,
+     "vat_month_eur": 4.38,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Versicherungs- und Finanzdienstleistungen, Finanzdienstleistungen",
+     "spend_month_eur": 6.0,
+     "vat_rate": 0.0,
+     "vat_month_eur": 0.0,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Andere Waren und Dienstleistungen, Schmuck, Uhren",
+     "spend_month_eur": 8.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 1.28,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Andere Waren und Dienstleistungen, sonstige persönliche Gebrauchsgegenstände",
+     "spend_month_eur": 10.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 1.6,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Andere Waren und Dienstleistungen, Dienstleistungen für die Körperpflege",
+     "spend_month_eur": 34.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 5.43,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Andere Waren und Dienstleistungen, Körperpflegeartikel und -geräte",
+     "spend_month_eur": 39.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 6.23,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Andere Waren und Dienstleistungen, sonstige Dienstleistungen",
+     "spend_month_eur": 16.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 2.55,
+     "excise_month_eur": null
+    }
+   ]
+  },
+  "5000 und mehr Euro": {
+   "household_net_income_class_de": "5000 und mehr Euro",
+   "consumption_month_eur": 5075.0,
+   "leaf_sum_month_eur": 5073.0,
+   "vat_year_eur": 5362,
+   "excises_year_eur": {
+    "tobacco_tax": 119,
+    "alcohol_taxes": 38,
+    "electricity_tax": 94,
+    "energy_tax_heating": 47,
+    "energy_tax_fuel": 673
+   },
+   "indirect_taxes_year_eur": 6332,
+   "share_of_consumption": 0.104,
+   "recipients_year_eur": {
+    "bund": 3542,
+    "laender": 2641,
+    "gemeinden": 150
+   },
+   "items": [
+    {
+     "item_de": "Nahrungsmittel, Getränke, Tabakwaren und Ähnliches, Nahrungsmittel, alkoholfreie Getränke",
+     "spend_month_eur": 590.0,
+     "vat_rate": 0.07,
+     "vat_month_eur": 38.6,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Nahrungsmittel, Getränke, Tabakwaren und Ähnliches, alkoholische Getränke, Tabakwaren und Ähnliches",
+     "spend_month_eur": 62.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 9.9,
+     "excise_month_eur": {
+      "tobacco_tax": 9.92,
+      "alcohol_taxes": 3.18
+     }
+    },
+    {
+     "item_de": "Bekleidung und Schuhe, Herrenbekleidung (ab 14 Jahren)",
+     "spend_month_eur": 45.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 7.18,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Bekleidung und Schuhe, Damenbekleidung (ab 14 Jahren)",
+     "spend_month_eur": 74.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 11.82,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Bekleidung und Schuhe, Bekleidung für Kinder (unter 14 Jahren)",
+     "spend_month_eur": 18.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 2.87,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Bekleidung und Schuhe, sonstige Bekleidung und Zubehör, nicht eindeutig zuordenbare Bekleidung",
+     "spend_month_eur": 12.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 1.92,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Bekleidung und Schuhe, Schuhe und Schuhzubehör",
+     "spend_month_eur": 38.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 6.07,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Bekleidung und Schuhe, Reparaturen, Reinigung, Ausleihe",
+     "spend_month_eur": 2.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 0.32,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Wohnen, Energie, Wohnungsinstandhaltung , Wohnungsmieten und Ähnliches",
+     "spend_month_eur": 1349.0,
+     "vat_rate": 0.0,
+     "vat_month_eur": 0.0,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Wohnen, Energie, Wohnungsinstandhaltung , Energie",
+     "spend_month_eur": 260.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 41.51,
+     "excise_month_eur": {
+      "electricity_tax": 7.8,
+      "energy_tax_heating": 3.9
+     }
+    },
+    {
+     "item_de": "Wohnen, Energie, Wohnungsinstandhaltung, Wohnungsinstandhaltung",
+     "spend_month_eur": 57.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 9.1,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Innenausstattung, Haushaltsgeräte und -gegenstände, Möbel, Einrichtungsgegenstände, lose Teppiche",
+     "spend_month_eur": 108.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 17.24,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Innenausstattung, Haushaltsgeräte und -gegenstände, Haushaltsgroßgeräte (elektrische und andere)",
+     "spend_month_eur": 28.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 4.47,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Innenausstattung, Haushaltsgeräte und -gegenstände, Haushaltskleingeräte (elektrische und andere)",
+     "spend_month_eur": 10.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 1.6,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Innenausstattung, Haushaltsgeräte und -gegenstände, Reparatur, Miete, Leasing von Haushaltsgeräten",
+     "spend_month_eur": 3.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 0.48,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Innenausstattung, Haushaltsgeräte und -gegenstände, Heimtextilien",
+     "spend_month_eur": 20.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 3.19,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Innenausstattung, Haushaltsgeräte und -gegenstände, sonstige Gebrauchsgüter und Werkzeuge für Haushalt und Garten",
+     "spend_month_eur": 43.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 6.87,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Innenausstattung, Haushaltsgeräte und -gegenstände, Verbrauchsgüter für den Haushalt",
+     "spend_month_eur": 24.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 3.83,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Innenausstattung, Haushaltsgeräte und -gegenstände, Dienstleistungen von Haushaltshilfen und häusliche Dienste",
+     "spend_month_eur": 13.0,
+     "vat_rate": 0.0,
+     "vat_month_eur": 0.0,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Gesundheit, Hilfsmittel für die Gesundheit",
+     "spend_month_eur": 24.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 3.83,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Gesundheit, Arzneimittel, medizinische Erzeugnisse",
+     "spend_month_eur": 51.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 8.14,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Gesundheit, Gesundheitsdienstleistungen (ambulant und stationär)",
+     "spend_month_eur": 118.0,
+     "vat_rate": 0.0,
+     "vat_month_eur": 0.0,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Verkehr, Personenkraftwagen (auch Leasing)",
+     "spend_month_eur": 322.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 51.41,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Verkehr, Kraft- und Fahrräder inklusive E-Bikes und Pedelecs (auch Leasing)",
+     "spend_month_eur": 29.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 4.63,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Verkehr, Ersatzteile und Zubehör",
+     "spend_month_eur": 35.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 5.59,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Verkehr, Kraft- und Schmierstoffe",
+     "spend_month_eur": 166.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 26.5,
+     "excise_month_eur": {
+      "energy_tax_fuel": 56.11
+     }
+    },
+    {
+     "item_de": "Verkehr, Wartung, Reparaturen an Privatfahrzeugen",
+     "spend_month_eur": 97.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 15.49,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Verkehr, sonstige Dienstleistungen",
+     "spend_month_eur": 49.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 7.82,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Verkehr, Personenbeförderungsdienstleistungen",
+     "spend_month_eur": 81.0,
+     "vat_rate": 0.07,
+     "vat_month_eur": 5.3,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Verkehr, Transportdienstleistungen für Waren (auch Briefe und Pakete)",
+     "spend_month_eur": 7.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 1.12,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Information und Kommunikation, Telefone und andere Geräte (Festnetz und mobil; ohne Vertrag, ohne SIM-Karte)",
+     "spend_month_eur": 15.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 2.39,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Information und Kommunikation, Computer, Laptops, Tablets (ohne Software)",
+     "spend_month_eur": 14.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 2.24,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Information und Kommunikation, Peripheriegeräte, Zubehör für DV-Geräte",
+     "spend_month_eur": 10.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 1.6,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Information und Kommunikation, Ton- und Bildempfangs-, -aufnahme- und -wiedergabegeräte",
+     "spend_month_eur": 17.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 2.71,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Information und Kommunikation, Aufzeichnungsträger unbespielt (z. B. CD, Blu-ray, Speichersticks)",
+     "spend_month_eur": 1.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 0.16,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Information und Kommunikation, andere Geräte (z. B. Smartwatches, E-Book-Reader oder nicht zuordenbare Geräte/Zubehör)",
+     "spend_month_eur": 4.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 0.64,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Information und Kommunikation, anderes Zubehör (z. B. Prozessoren, Speicher, Etuis, Halterungen)",
+     "spend_month_eur": 6.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 0.96,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Information und Kommunikation, Software (ohne Spiele)",
+     "spend_month_eur": 6.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 0.96,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Information und Kommunikation, Dienstleistungen für Festnetz, Mobilfunk, Internet",
+     "spend_month_eur": 79.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 12.61,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Information und Kommunikation, Reparatur und Miete von Geräten",
+     "spend_month_eur": 1.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 0.16,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Information und Kommunikation, andere Dienstleistungen und Gebühren",
+     "spend_month_eur": 39.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 6.23,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Freizeit, Sport und Kultur,Foto-, Filmausrüstung, optische Geräte und Zubehör",
+     "spend_month_eur": 4.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 0.64,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Freizeit, Sport und Kultur,größere langlebige Gebrauchsgüter für Freizeit",
+     "spend_month_eur": 24.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 3.83,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Freizeit, Sport und Kultur, Geräte und Ausrüstungen für Sport und Camping",
+     "spend_month_eur": 17.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 2.71,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Freizeit, Sport und Kultur,Musikinstrumente und audiovisuelle Medien",
+     "spend_month_eur": 5.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 0.8,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Freizeit, Sport und Kultur, Spielwaren und Hobbys",
+     "spend_month_eur": 50.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 7.98,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Freizeit, Sport und Kultur, Blumen und Gärten",
+     "spend_month_eur": 31.0,
+     "vat_rate": 0.07,
+     "vat_month_eur": 2.03,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Freizeit, Sport und Kultur, Haustiere, Produkte für Haustiere",
+     "spend_month_eur": 28.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 4.47,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Freizeit, Sport und Kultur, Freizeitdienstleistungen (unter anderem Miete, Reparatur)",
+     "spend_month_eur": 91.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 14.53,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Freizeit, Sport und Kultur, Kulturdienstleistungen",
+     "spend_month_eur": 55.0,
+     "vat_rate": 0.07,
+     "vat_month_eur": 3.6,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Freizeit, Sport und Kultur, Bücher (auch CD-ROMs, E-Book-Downloads)",
+     "spend_month_eur": 16.0,
+     "vat_rate": 0.07,
+     "vat_month_eur": 1.05,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Freizeit, Sport und Kultur, Zeitungen, Zeitschriften und Ähnliches",
+     "spend_month_eur": 21.0,
+     "vat_rate": 0.07,
+     "vat_month_eur": 1.37,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Freizeit, Sport und Kultur, Schreibwaren, Zeichenmaterialien",
+     "spend_month_eur": 5.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 0.8,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Freizeit, Sport und Kultur, Pauschalreisen",
+     "spend_month_eur": 196.0,
+     "vat_rate": 0.0,
+     "vat_month_eur": 0.0,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Bildungsdienstleistungen, Nachhilfeunterricht",
+     "spend_month_eur": 2.0,
+     "vat_rate": 0.0,
+     "vat_month_eur": 0.0,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Bildungsdienstleistungen, Gebühren für Bildungseinrichtungen und Kinderbetreuung (ohne Verpflegung)",
+     "spend_month_eur": 44.0,
+     "vat_rate": 0.0,
+     "vat_month_eur": 0.0,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Gastronomie- und Beherbergungsdienstleistungen, Gastronomiedienstleistungen",
+     "spend_month_eur": 251.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 40.08,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Gastronomie- und Beherbergungsdienstleistungen, Beherbergungsdienstleistungen",
+     "spend_month_eur": 127.0,
+     "vat_rate": 0.07,
+     "vat_month_eur": 8.31,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Versicherungs- und Finanzdienstleistungen, Finanzdienstleistungen",
+     "spend_month_eur": 9.0,
+     "vat_rate": 0.0,
+     "vat_month_eur": 0.0,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Andere Waren und Dienstleistungen, Schmuck, Uhren",
+     "spend_month_eur": 16.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 2.55,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Andere Waren und Dienstleistungen, sonstige persönliche Gebrauchsgegenstände",
+     "spend_month_eur": 17.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 2.71,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Andere Waren und Dienstleistungen, Dienstleistungen für die Körperpflege",
+     "spend_month_eur": 44.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 7.03,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Andere Waren und Dienstleistungen, Körperpflegeartikel und -geräte",
+     "spend_month_eur": 54.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 8.62,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Andere Waren und Dienstleistungen, sonstige Dienstleistungen",
+     "spend_month_eur": 39.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 6.23,
+     "excise_month_eur": null
+    }
+   ]
+  },
+  "Haushalte insgesamt": {
+   "household_net_income_class_de": "Haushalte insgesamt",
+   "consumption_month_eur": 3257.0,
+   "leaf_sum_month_eur": 3258.0,
+   "vat_year_eur": 3359,
+   "excises_year_eur": {
+    "tobacco_tax": 90,
+    "alcohol_taxes": 29,
+    "electricity_tax": 75,
+    "energy_tax_heating": 38,
+    "energy_tax_fuel": 414
+   },
+   "indirect_taxes_year_eur": 4005,
+   "share_of_consumption": 0.1025,
+   "recipients_year_eur": {
+    "bund": 2256,
+    "laender": 1655,
+    "gemeinden": 94
+   },
+   "items": [
+    {
+     "item_de": "Nahrungsmittel, Getränke, Tabakwaren und Ähnliches, Nahrungsmittel, alkoholfreie Getränke",
+     "spend_month_eur": 410.0,
+     "vat_rate": 0.07,
+     "vat_month_eur": 26.82,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Nahrungsmittel, Getränke, Tabakwaren und Ähnliches, alkoholische Getränke, Tabakwaren und Ähnliches",
+     "spend_month_eur": 47.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 7.5,
+     "excise_month_eur": {
+      "tobacco_tax": 7.52,
+      "alcohol_taxes": 2.41
+     }
+    },
+    {
+     "item_de": "Bekleidung und Schuhe, Herrenbekleidung (ab 14 Jahren)",
+     "spend_month_eur": 24.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 3.83,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Bekleidung und Schuhe, Damenbekleidung (ab 14 Jahren)",
+     "spend_month_eur": 48.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 7.66,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Bekleidung und Schuhe, Bekleidung für Kinder (unter 14 Jahren)",
+     "spend_month_eur": 9.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 1.44,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Bekleidung und Schuhe, sonstige Bekleidung und Zubehör, nicht eindeutig zuordenbare Bekleidung",
+     "spend_month_eur": 8.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 1.28,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Bekleidung und Schuhe, Schuhe und Schuhzubehör",
+     "spend_month_eur": 23.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 3.67,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Bekleidung und Schuhe, Reparaturen, Reinigung, Ausleihe",
+     "spend_month_eur": 1.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 0.16,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Wohnen, Energie, Wohnungsinstandhaltung , Wohnungsmieten und Ähnliches",
+     "spend_month_eur": 944.0,
+     "vat_rate": 0.0,
+     "vat_month_eur": 0.0,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Wohnen, Energie, Wohnungsinstandhaltung , Energie",
+     "spend_month_eur": 209.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 33.37,
+     "excise_month_eur": {
+      "electricity_tax": 6.27,
+      "energy_tax_heating": 3.13
+     }
+    },
+    {
+     "item_de": "Wohnen, Energie, Wohnungsinstandhaltung, Wohnungsinstandhaltung",
+     "spend_month_eur": 28.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 4.47,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Innenausstattung, Haushaltsgeräte und -gegenstände, Möbel, Einrichtungsgegenstände, lose Teppiche",
+     "spend_month_eur": 61.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 9.74,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Innenausstattung, Haushaltsgeräte und -gegenstände, Haushaltsgroßgeräte (elektrische und andere)",
+     "spend_month_eur": 17.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 2.71,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Innenausstattung, Haushaltsgeräte und -gegenstände, Haushaltskleingeräte (elektrische und andere)",
+     "spend_month_eur": 6.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 0.96,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Innenausstattung, Haushaltsgeräte und -gegenstände, Reparatur, Miete, Leasing von Haushaltsgeräten",
+     "spend_month_eur": 2.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 0.32,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Innenausstattung, Haushaltsgeräte und -gegenstände, Heimtextilien",
+     "spend_month_eur": 13.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 2.08,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Innenausstattung, Haushaltsgeräte und -gegenstände, sonstige Gebrauchsgüter und Werkzeuge für Haushalt und Garten",
+     "spend_month_eur": 25.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 3.99,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Innenausstattung, Haushaltsgeräte und -gegenstände, Verbrauchsgüter für den Haushalt",
+     "spend_month_eur": 16.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 2.55,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Innenausstattung, Haushaltsgeräte und -gegenstände, Dienstleistungen von Haushaltshilfen und häusliche Dienste",
+     "spend_month_eur": 7.0,
+     "vat_rate": 0.0,
+     "vat_month_eur": 0.0,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Gesundheit, Hilfsmittel für die Gesundheit",
+     "spend_month_eur": 16.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 2.55,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Gesundheit, Arzneimittel, medizinische Erzeugnisse",
+     "spend_month_eur": 32.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 5.11,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Gesundheit, Gesundheitsdienstleistungen (ambulant und stationär)",
+     "spend_month_eur": 62.0,
+     "vat_rate": 0.0,
+     "vat_month_eur": 0.0,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Verkehr, Personenkraftwagen (auch Leasing)",
+     "spend_month_eur": 177.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 28.26,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Verkehr, Kraft- und Fahrräder inklusive E-Bikes und Pedelecs (auch Leasing)",
+     "spend_month_eur": 13.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 2.08,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Verkehr, Ersatzteile und Zubehör",
+     "spend_month_eur": 18.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 2.87,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Verkehr, Kraft- und Schmierstoffe",
+     "spend_month_eur": 102.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 16.29,
+     "excise_month_eur": {
+      "energy_tax_fuel": 34.48
+     }
+    },
+    {
+     "item_de": "Verkehr, Wartung, Reparaturen an Privatfahrzeugen",
+     "spend_month_eur": 55.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 8.78,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Verkehr, sonstige Dienstleistungen",
+     "spend_month_eur": 27.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 4.31,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Verkehr, Personenbeförderungsdienstleistungen",
+     "spend_month_eur": 51.0,
+     "vat_rate": 0.07,
+     "vat_month_eur": 3.34,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Verkehr, Transportdienstleistungen für Waren (auch Briefe und Pakete)",
+     "spend_month_eur": 6.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 0.96,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Information und Kommunikation, Telefone und andere Geräte (Festnetz und mobil; ohne Vertrag, ohne SIM-Karte)",
+     "spend_month_eur": 9.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 1.44,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Information und Kommunikation, Computer, Laptops, Tablets (ohne Software)",
+     "spend_month_eur": 8.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 1.28,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Information und Kommunikation, Peripheriegeräte, Zubehör für DV-Geräte",
+     "spend_month_eur": 6.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 0.96,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Information und Kommunikation, Ton- und Bildempfangs-, -aufnahme- und -wiedergabegeräte",
+     "spend_month_eur": 10.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 1.6,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Information und Kommunikation, Aufzeichnungsträger unbespielt (z. B. CD, Blu-ray, Speichersticks)",
+     "spend_month_eur": 1.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 0.16,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Information und Kommunikation, andere Geräte (z. B. Smartwatches, E-Book-Reader oder nicht zuordenbare Geräte/Zubehör)",
+     "spend_month_eur": 2.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 0.32,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Information und Kommunikation, anderes Zubehör (z. B. Prozessoren, Speicher, Etuis, Halterungen)",
+     "spend_month_eur": 4.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 0.64,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Information und Kommunikation, Software (ohne Spiele)",
+     "spend_month_eur": 4.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 0.64,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Information und Kommunikation, Dienstleistungen für Festnetz, Mobilfunk, Internet",
+     "spend_month_eur": 65.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 10.38,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Information und Kommunikation, Reparatur und Miete von Geräten",
+     "spend_month_eur": 1.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 0.16,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Information und Kommunikation, andere Dienstleistungen und Gebühren",
+     "spend_month_eur": 31.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 4.95,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Freizeit, Sport und Kultur,Foto-, Filmausrüstung, optische Geräte und Zubehör",
+     "spend_month_eur": 2.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 0.32,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Freizeit, Sport und Kultur,größere langlebige Gebrauchsgüter für Freizeit",
+     "spend_month_eur": 10.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 1.6,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Freizeit, Sport und Kultur, Geräte und Ausrüstungen für Sport und Camping",
+     "spend_month_eur": 9.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 1.44,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Freizeit, Sport und Kultur,Musikinstrumente und audiovisuelle Medien",
+     "spend_month_eur": 3.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 0.48,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Freizeit, Sport und Kultur, Spielwaren und Hobbys",
+     "spend_month_eur": 28.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 4.47,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Freizeit, Sport und Kultur, Blumen und Gärten",
+     "spend_month_eur": 19.0,
+     "vat_rate": 0.07,
+     "vat_month_eur": 1.24,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Freizeit, Sport und Kultur, Haustiere, Produkte für Haustiere",
+     "spend_month_eur": 19.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 3.03,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Freizeit, Sport und Kultur, Freizeitdienstleistungen (unter anderem Miete, Reparatur)",
+     "spend_month_eur": 51.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 8.14,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Freizeit, Sport und Kultur, Kulturdienstleistungen",
+     "spend_month_eur": 32.0,
+     "vat_rate": 0.07,
+     "vat_month_eur": 2.09,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Freizeit, Sport und Kultur, Bücher (auch CD-ROMs, E-Book-Downloads)",
+     "spend_month_eur": 10.0,
+     "vat_rate": 0.07,
+     "vat_month_eur": 0.65,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Freizeit, Sport und Kultur, Zeitungen, Zeitschriften und Ähnliches",
+     "spend_month_eur": 15.0,
+     "vat_rate": 0.07,
+     "vat_month_eur": 0.98,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Freizeit, Sport und Kultur, Schreibwaren, Zeichenmaterialien",
+     "spend_month_eur": 4.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 0.64,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Freizeit, Sport und Kultur, Pauschalreisen",
+     "spend_month_eur": 107.0,
+     "vat_rate": 0.0,
+     "vat_month_eur": 0.0,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Bildungsdienstleistungen, Nachhilfeunterricht",
+     "spend_month_eur": 1.0,
+     "vat_rate": 0.0,
+     "vat_month_eur": 0.0,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Bildungsdienstleistungen, Gebühren für Bildungseinrichtungen und Kinderbetreuung (ohne Verpflegung)",
+     "spend_month_eur": 22.0,
+     "vat_rate": 0.0,
+     "vat_month_eur": 0.0,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Gastronomie- und Beherbergungsdienstleistungen, Gastronomiedienstleistungen",
+     "spend_month_eur": 149.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 23.79,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Gastronomie- und Beherbergungsdienstleistungen, Beherbergungsdienstleistungen",
+     "spend_month_eur": 66.0,
+     "vat_rate": 0.07,
+     "vat_month_eur": 4.32,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Versicherungs- und Finanzdienstleistungen, Finanzdienstleistungen",
+     "spend_month_eur": 6.0,
+     "vat_rate": 0.0,
+     "vat_month_eur": 0.0,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Andere Waren und Dienstleistungen, Schmuck, Uhren",
+     "spend_month_eur": 8.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 1.28,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Andere Waren und Dienstleistungen, sonstige persönliche Gebrauchsgegenstände",
+     "spend_month_eur": 10.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 1.6,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Andere Waren und Dienstleistungen, Dienstleistungen für die Körperpflege",
+     "spend_month_eur": 31.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 4.95,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Andere Waren und Dienstleistungen, Körperpflegeartikel und -geräte",
+     "spend_month_eur": 37.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 5.91,
+     "excise_month_eur": null
+    },
+    {
+     "item_de": "Andere Waren und Dienstleistungen, sonstige Dienstleistungen",
+     "spend_month_eur": 21.0,
+     "vat_rate": 0.19,
+     "vat_month_eur": 3.35,
+     "excise_month_eur": null
+    }
+   ]
+  }
+ },
+ "caveats": [
+  "Order-of-magnitude estimate: VAT rate assignment is per purpose group, not per product; excise shares rest on assumed retail prices.",
+  "Survey under-coverage: LWR/EVS households report far less tobacco and alcohol than market sales imply (tobacco tax receipts 15.6 bn ÷ 38.7 m households ≈ 400 EUR vs ≈ 90 EUR here; alcohol similar), so the excise lines are lower bounds.",
+  "Biggest levers: car purchases and fuel (19 % + energy tax), package holidays (set to 0 VAT here), restaurant meals (19 % in 2024, 7 % from 2026) and the treatment of items with mixed rates (soft drinks, air travel, streaming).",
+  "Insurance tax is not included (premiums are outside LWR consumption).",
+  "Household (not person) and net-income (not gross-wage) classes; richer households save more, so indirect taxes fall as a share of income.",
+  "Quality flags ('/', '()') of small cells are not propagated; the lowest class has few households."
+ ]
+}

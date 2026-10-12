@@ -1,0 +1,3990 @@
+{
+ "schema_version": 2,
+ "id": "de.equalisation.2025",
+ "title": {
+  "de": "Umsatzsteuerverteilung, Finanzkraftausgleich und Bundesergänzungszuweisungen, Ausgleichsjahr 2025",
+  "en": "VAT distribution, fiscal capacity equalisation and supplementary federal grants, equalisation year 2025"
+ },
+ "unit": "EUR",
+ "basis": "BMF Abrechnung Ausgleichsjahr 2025 (Anlage 1, in 1.000 Euro, converted ×1000) and BMF Monatsbericht tables (in Mio. Euro, converted ×1,000,000; BEZ values are therefore rounded to the million). Population: residents on 30.06.2025.",
+ "generated": "2026-10-12",
+ "generated_by": "scripts/research/build_equalisation.py",
+ "year": 2025,
+ "status": "provisional (BMF: based on the vorläufige Jahresrechnung)",
+ "land_order": [
+  "BW",
+  "BY",
+  "BE",
+  "BB",
+  "HB",
+  "HH",
+  "HE",
+  "MV",
+  "NI",
+  "NW",
+  "RP",
+  "SL",
+  "SN",
+  "ST",
+  "SH",
+  "TH"
+ ],
+ "notes": [
+  "Positive FKA adjustment = the Land receives a supplement out of the Länder VAT pool; negative = the Land's VAT share is reduced (§ 10 FAG). Adjustments sum to zero across the 16 Länder.",
+  "BEZ (Bundesergänzungszuweisungen) are paid by the Federation on top of the VAT distribution; they are published by BMF only rounded to Mio EUR. A dash in the 2024 tables means no grant and is stored as 0 (the 2025 tables print 0).",
+  "Fiscal strength percentages before FKA come from Anlage 1 row 15.4; after FKA/BEZ/SoBEZ they come from Monatsbericht Tabellen 1–3 (one decimal). The after-FKA value is re-derived in the build from rows 15.3, 15.8 and 15.10 and agrees within rounding.",
+  "destatis_comparison lists the same items in Destatis 71211-0102 (cash receipts after distribution). VAT share and FKA agree to the EUR thousand; BEZ and municipal VAT differ because Destatis records cash paid in the calendar year (including settlements of earlier years) while BMF shows the amounts attributed to the equalisation year.",
+  "per_resident values are derived (value ÷ residents on 30.06.) and are not published by BMF."
+ ],
+ "sources": {
+  "anlage1": {
+   "source_id": "bmf_abrechnung_finanzausgleich",
+   "file": "abrechnung-ausgleichsjahr-2025.pdf",
+   "path": "research/cache/bmf_abrechnung_finanzausgleich/abrechnung-ausgleichsjahr-2025.pdf",
+   "url": "https://www.bundesfinanzministerium.de/Content/DE/Downloads/Oeffentliche-Finanzen/Foederale-Finanzbeziehungen/Bundestaatlicher-Finanzausgleich/abrechnung-ausgleichsjahr-2025.pdf?__blob=publicationFile",
+   "retrieved": "2026-10-09T12:45:30Z",
+   "sha256": "ef5fe07e6a05fdc933fc31282ee1eb2f6915bbc2ab45f6f22b5149746ff184d3",
+   "licence": "unverified (BMF document; no explicit reuse licence). Figures are cited with page/row coordinates; PDF not redistributed.",
+   "coordinates": "Anlage 1, Seiten 1–3; row numbers as printed; extract research/extracts/bmf_abrechnung_finanzausgleich/anlage1-2025.csv"
+  },
+  "monatsbericht": {
+   "source_id": "bmf_monatsbericht",
+   "file": "2026-04-bundesstaatlicher-finanzausgleich-2025.html",
+   "path": "research/cache/bmf_monatsbericht/2026-04-bundesstaatlicher-finanzausgleich-2025.html",
+   "url": "https://www.bundesfinanzministerium.de/Monatsberichte/Ausgabe/2026/04/Inhalte/Kapitel-2-Analysen/2-3-bundesstaatlicher-finanzausgleich-2025.html",
+   "retrieved": "2026-10-09T12:45:29Z",
+   "sha256": "a1a046e46172961bb330895222e5d09292b06ca703095ad5ff0f6a82bab329ba",
+   "licence": "BMF web pages are copyright-protected; texts, tables and graphics may not be reproduced without permission (Impressum). Figures are facts and are cited with page coordinates; the pages themselves are not redistributed.",
+   "coordinates": "Tabelle 1 (UStV/FKA), Tabelle 2 (BEZ), Tabelle 3 (SoBEZ); extract research/extracts/bmf_monatsbericht/bez-2025.csv"
+  },
+  "fag_1": {
+   "source_id": "gesetze_im_internet",
+   "file": "finausglg_1.html",
+   "path": "research/raw/gesetze_im_internet/finausglg_1.html",
+   "url": "https://www.gesetze-im-internet.de/finausglg_2005/__1.html",
+   "retrieved": "2026-10-09T12:45:40Z",
+   "sha256": "e243c805b44243a2cbef34474a223974cff8fe7450f1e418d870419b7f1643aa",
+   "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+   "coordinates": "§ 1 (1) FAG percentages, § 1 (2) fixed amounts"
+  },
+  "gg_107": {
+   "source_id": "gesetze_im_internet",
+   "file": "gg_art_107.html",
+   "path": "research/raw/gesetze_im_internet/gg_art_107.html",
+   "url": "https://www.gesetze-im-internet.de/gg/art_107.html",
+   "retrieved": "2026-10-09T12:45:40Z",
+   "sha256": "cd4bd183ac9df023bd2f679094b05dd3982fe3b9ab1dad99c63bd7ffae342146",
+   "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+   "coordinates": "Art. 107 (2) GG: constitutional basis of the equalisation"
+  },
+  "destatis": {
+   "file": "data/de/taxes/by-land.json, data/de/taxes/by-recipient.json",
+   "positions": [
+    "STEUERNVL40",
+    "STEUERNVL71",
+    "STEUERNVL66",
+    "STEUERNVG40",
+    "STEUERNVB40"
+   ]
+  }
+ },
+ "laender": [
+  {
+   "code": "BW",
+   "name": {
+    "de": "Baden-Württemberg",
+    "en": "Baden-Württemberg"
+   },
+   "city_state": false,
+   "population": {
+    "value": 11238636,
+    "date": "2025-06-30",
+    "unit": "persons",
+    "coordinates": "Anlage 1 Seite 1, Zeile 1",
+    "label": {
+     "de": "Einwohner (30.06.2025)",
+     "en": "Residents on 2025-06-30 (basis of the calculation)"
+    }
+   },
+   "tax_bases": {
+    "unit": "EUR",
+    "precision": "EUR thousand in source",
+    "land_taxes_by_revenue": {
+     "value": 34606973000,
+     "coordinates": "Anlage 1 Seite 2, Zeile 9",
+     "label": {
+      "de": "Steuern der Länder n. d. Aufkommen",
+      "en": "Land taxes by place of collection (before VAT distribution)"
+     }
+    },
+    "land_taxes_in_fka": {
+     "value": 55003018000,
+     "coordinates": "Anlage 1 Seite 3, Zeile 15.1",
+     "label": {
+      "de": "Steuern der Länder im FKA 5)",
+      "en": "Land taxes counted in the equalisation (incl. VAT share, Förderabgabe, after § 7 (3) FAG deduction)"
+     }
+    },
+    "municipal_taxes_in_fka": {
+     "value": 16979503000,
+     "coordinates": "Anlage 1 Seite 3, Zeile 15.2",
+     "label": {
+      "de": "Gemeindesteueransatz im FKA",
+      "en": "Municipal taxes counted in the equalisation (75 % of the municipal tax basis)"
+     }
+    },
+    "finanzkraftmesszahl": {
+     "value": 71982521000,
+     "coordinates": "Anlage 1 Seite 3, Zeile 15.3",
+     "label": {
+      "de": "Finanzkraftmesszahl (15.1.+15.2.)",
+      "en": "Fiscal capacity measure (Land + municipal part)"
+     }
+    },
+    "ausgleichsmesszahl": {
+     "value": 65623973000,
+     "coordinates": "Anlage 1 Seite 3, Zeile 15.8",
+     "label": {
+      "de": "Ausgleichsmesszahl (15.6.+15.7.)",
+      "en": "Equalisation measure (what the Land would have at the national average, with resident weights)"
+     }
+    },
+    "fiscal_strength_before_fka_pct": {
+     "value": 109.7,
+     "unit": "percent",
+     "coordinates": "Anlage 1 Seite 3, Zeile 15.4",
+     "label": {
+      "de": "in v.H. der Ausgleichsmesszahl",
+      "en": "Fiscal capacity in % of the equalisation measure, before FKA"
+     }
+    }
+   },
+   "vat_share": {
+    "unit": "EUR",
+    "precision": "EUR thousand in source",
+    "population_part": {
+     "value": 18869729000,
+     "coordinates": "Anlage 1 Seite 2, Zeile 10.1",
+     "label": {
+      "de": "nach § 1 FAG - v.H.-Satz",
+      "en": "Land share of VAT by residents (§ 1 FAG percentage)"
+     }
+    },
+    "festbetrag_part": {
+     "value": 1526220000,
+     "coordinates": "Anlage 1 Seite 2, Zeile 10.2",
+     "label": {
+      "de": "nach § 1 FAG - Festbetrag",
+      "en": "Land share of VAT, fixed amounts (§ 1 FAG Festbeträge)"
+     }
+    },
+    "total": {
+     "value": 20395948000,
+     "coordinates": "Anlage 1 Seite 2, Zeile 10.3",
+     "label": {
+      "de": "Länderanteil an der Umsatzsteuer insgesamt",
+      "en": "Land share of VAT, total"
+     }
+    }
+   },
+   "fka": {
+    "unit": "EUR",
+    "precision": "EUR thousand in source",
+    "adjustment": {
+     "value": -4005885000,
+     "coordinates": "Anlage 1 Seite 3, Zeile 15.10",
+     "label": {
+      "de": "Zu- / Abschläge (-) im FKA",
+      "en": "Equalisation adjustment (+ received / − paid) within the VAT distribution"
+     }
+    },
+    "fiscal_strength_after_fka_pct": {
+     "value": 103.6,
+     "unit": "percent",
+     "coordinates": "Tabelle 1 (Daten zur Umsatzsteuerverteilung und zum Finanzkraftausgleich im Jahr 2025), Zeile 'Relative Finanzkraft in Prozent der jeweiligen Ausgleichsmes', Spalte BW",
+     "source": "monatsbericht",
+     "derived_check": 103.59,
+     "label": {
+      "de": "Relative Finanzkraft in Prozent der jeweiligen Ausgleichsmesszahl nach Finanzkraftausgleich",
+      "en": "Fiscal capacity in % of the equalisation measure, after FKA"
+     }
+    }
+   },
+   "bez": {
+    "unit": "EUR",
+    "precision": "Mio EUR in source (rounded)",
+    "source": "monatsbericht",
+    "allgemeine": {
+     "value": 0,
+     "coordinates": "Tabelle 2 (Daten zu den Bundesergänzungszuweisungen im Ausgleichsjahr 2025), Zeile 'Bundesergänzungszuweisung zur ergänzenden Deckung des allgem', Spalte BW",
+     "label": {
+      "de": "Allgemeine Bundesergänzungszuweisungen",
+      "en": "General supplementary federal grants (§ 11 (2) FAG)"
+     }
+    },
+    "gstk": {
+     "value": 0,
+     "coordinates": "Tabelle 2 (Daten zu den Bundesergänzungszuweisungen im Ausgleichsjahr 2025), Zeile 'Bundesergänzungszuweisung zum Ausgleich besonders geringer k', Spalte BW",
+     "label": {
+      "de": "BEZ zum Ausgleich besonders geringer kommunaler Steuerkraft (GStK-BEZ)",
+      "en": "Grants for particularly low municipal tax capacity (§ 11 (5) FAG)"
+     }
+    },
+    "dof": {
+     "value": 0,
+     "coordinates": "Tabelle 2 (Daten zu den Bundesergänzungszuweisungen im Ausgleichsjahr 2025), Zeile 'Bundesergänzungszuweisung durchschnittsorientierter Forschun', Spalte BW",
+     "label": {
+      "de": "BEZ durchschnittsorientierter Forschungsförderungsausgleich (doF-BEZ)",
+      "en": "Research-funding equalisation grants (§ 11 (6) FAG)"
+     }
+    },
+    "sobez_unemployment": {
+     "value": 0,
+     "coordinates": "Tabelle 3 (Daten zu den Sonderbedarfs-Bundesergänzungszuweisungen (SoBEZ) im Jahr 2025), Zeile 'SoBEZ zum Ausgleich von Sonderlasten durch strukturelle Arbe', Spalte BW",
+     "label": {
+      "de": "SoBEZ wegen struktureller Arbeitslosigkeit",
+      "en": "Special-needs grants for structural unemployment (§ 11 (3) FAG)"
+     }
+    },
+    "sobez_political": {
+     "value": 0,
+     "coordinates": "Tabelle 3 (Daten zu den Sonderbedarfs-Bundesergänzungszuweisungen (SoBEZ) im Jahr 2025), Zeile 'SoBEZ wegen überdurchschnittlich hoher Kosten politischer Fü', Spalte BW",
+     "label": {
+      "de": "SoBEZ wegen überdurchschnittlich hoher Kosten politischer Führung",
+      "en": "Special-needs grants for above-average costs of political leadership (§ 11 (4) FAG)"
+     }
+    },
+    "total": {
+     "value": 0,
+     "derived": true,
+     "coordinates": "sum of the five BEZ columns",
+     "label": {
+      "de": "Bundesergänzungszuweisungen insgesamt (inkl. SoBEZ)",
+      "en": "All supplementary federal grants incl. SoBEZ"
+     }
+    },
+    "fiscal_strength_after_bez_pct": {
+     "value": 103.6,
+     "unit": "percent",
+     "coordinates": "Tabelle 2 (Daten zu den Bundesergänzungszuweisungen im Ausgleichsjahr 2025), Zeile 'Finanzkraft in Prozent der Ausgleichsmesszahl nach Finanzkra', Spalte BW",
+     "label": {
+      "de": "Finanzkraft in Prozent der Ausgleichsmesszahl nach Finanzkraftausgleich und Bundesergänzungszuweisungen",
+      "en": "Fiscal capacity in % after FKA and general/GStK/doF BEZ"
+     }
+    },
+    "fiscal_strength_after_sobez_pct": {
+     "value": 103.6,
+     "unit": "percent",
+     "coordinates": "Tabelle 3 (Daten zu den Sonderbedarfs-Bundesergänzungszuweisungen (SoBEZ) im Jahr 2025), Zeile 'Finanzkraft in Prozent der Ausgleichsmesszahl nach Finanzkra', Spalte BW",
+     "label": {
+      "de": "Finanzkraft in Prozent der Ausgleichsmesszahl nach Finanzkraftausgleich, Bundesergänzungszuweisungen und SoBEZ",
+      "en": "Fiscal capacity in % after FKA, BEZ and SoBEZ"
+     }
+    }
+   },
+   "per_resident": {
+    "unit": "EUR per resident",
+    "derived": true,
+    "basis": "value ÷ residents on 2025-06-30 (row 1)",
+    "vat_share": 1814.81,
+    "fka_adjustment": -356.44,
+    "bez_total": 0.0,
+    "fka_plus_bez": -356.44
+   }
+  },
+  {
+   "code": "BY",
+   "name": {
+    "de": "Bayern",
+    "en": "Bavaria"
+   },
+   "city_state": false,
+   "population": {
+    "value": 13246222,
+    "date": "2025-06-30",
+    "unit": "persons",
+    "coordinates": "Anlage 1 Seite 1, Zeile 1",
+    "label": {
+     "de": "Einwohner (30.06.2025)",
+     "en": "Residents on 2025-06-30 (basis of the calculation)"
+    }
+   },
+   "tax_bases": {
+    "unit": "EUR",
+    "precision": "EUR thousand in source",
+    "land_taxes_by_revenue": {
+     "value": 51042640000,
+     "coordinates": "Anlage 1 Seite 2, Zeile 9",
+     "label": {
+      "de": "Steuern der Länder n. d. Aufkommen",
+      "en": "Land taxes by place of collection (before VAT distribution)"
+     }
+    },
+    "land_taxes_in_fka": {
+     "value": 74858715000,
+     "coordinates": "Anlage 1 Seite 3, Zeile 15.1",
+     "label": {
+      "de": "Steuern der Länder im FKA 5)",
+      "en": "Land taxes counted in the equalisation (incl. VAT share, Förderabgabe, after § 7 (3) FAG deduction)"
+     }
+    },
+    "municipal_taxes_in_fka": {
+     "value": 20995232000,
+     "coordinates": "Anlage 1 Seite 3, Zeile 15.2",
+     "label": {
+      "de": "Gemeindesteueransatz im FKA",
+      "en": "Municipal taxes counted in the equalisation (75 % of the municipal tax basis)"
+     }
+    },
+    "finanzkraftmesszahl": {
+     "value": 95853947000,
+     "coordinates": "Anlage 1 Seite 3, Zeile 15.3",
+     "label": {
+      "de": "Finanzkraftmesszahl (15.1.+15.2.)",
+      "en": "Fiscal capacity measure (Land + municipal part)"
+     }
+    },
+    "ausgleichsmesszahl": {
+     "value": 77346549000,
+     "coordinates": "Anlage 1 Seite 3, Zeile 15.8",
+     "label": {
+      "de": "Ausgleichsmesszahl (15.6.+15.7.)",
+      "en": "Equalisation measure (what the Land would have at the national average, with resident weights)"
+     }
+    },
+    "fiscal_strength_before_fka_pct": {
+     "value": 123.9,
+     "unit": "percent",
+     "coordinates": "Anlage 1 Seite 3, Zeile 15.4",
+     "label": {
+      "de": "in v.H. der Ausgleichsmesszahl",
+      "en": "Fiscal capacity in % of the equalisation measure, before FKA"
+     }
+    }
+   },
+   "vat_share": {
+    "unit": "EUR",
+    "precision": "EUR thousand in source",
+    "population_part": {
+     "value": 22240476000,
+     "coordinates": "Anlage 1 Seite 2, Zeile 10.1",
+     "label": {
+      "de": "nach § 1 FAG - v.H.-Satz",
+      "en": "Land share of VAT by residents (§ 1 FAG percentage)"
+     }
+    },
+    "festbetrag_part": {
+     "value": 1798852000,
+     "coordinates": "Anlage 1 Seite 2, Zeile 10.2",
+     "label": {
+      "de": "nach § 1 FAG - Festbetrag",
+      "en": "Land share of VAT, fixed amounts (§ 1 FAG Festbeträge)"
+     }
+    },
+    "total": {
+     "value": 24039328000,
+     "coordinates": "Anlage 1 Seite 2, Zeile 10.3",
+     "label": {
+      "de": "Länderanteil an der Umsatzsteuer insgesamt",
+      "en": "Land share of VAT, total"
+     }
+    }
+   },
+   "fka": {
+    "unit": "EUR",
+    "precision": "EUR thousand in source",
+    "adjustment": {
+     "value": -11659661000,
+     "coordinates": "Anlage 1 Seite 3, Zeile 15.10",
+     "label": {
+      "de": "Zu- / Abschläge (-) im FKA",
+      "en": "Equalisation adjustment (+ received / − paid) within the VAT distribution"
+     }
+    },
+    "fiscal_strength_after_fka_pct": {
+     "value": 108.9,
+     "unit": "percent",
+     "coordinates": "Tabelle 1 (Daten zur Umsatzsteuerverteilung und zum Finanzkraftausgleich im Jahr 2025), Zeile 'Relative Finanzkraft in Prozent der jeweiligen Ausgleichsmes', Spalte BY",
+     "source": "monatsbericht",
+     "derived_check": 108.85,
+     "label": {
+      "de": "Relative Finanzkraft in Prozent der jeweiligen Ausgleichsmesszahl nach Finanzkraftausgleich",
+      "en": "Fiscal capacity in % of the equalisation measure, after FKA"
+     }
+    }
+   },
+   "bez": {
+    "unit": "EUR",
+    "precision": "Mio EUR in source (rounded)",
+    "source": "monatsbericht",
+    "allgemeine": {
+     "value": 0,
+     "coordinates": "Tabelle 2 (Daten zu den Bundesergänzungszuweisungen im Ausgleichsjahr 2025), Zeile 'Bundesergänzungszuweisung zur ergänzenden Deckung des allgem', Spalte BY",
+     "label": {
+      "de": "Allgemeine Bundesergänzungszuweisungen",
+      "en": "General supplementary federal grants (§ 11 (2) FAG)"
+     }
+    },
+    "gstk": {
+     "value": 0,
+     "coordinates": "Tabelle 2 (Daten zu den Bundesergänzungszuweisungen im Ausgleichsjahr 2025), Zeile 'Bundesergänzungszuweisung zum Ausgleich besonders geringer k', Spalte BY",
+     "label": {
+      "de": "BEZ zum Ausgleich besonders geringer kommunaler Steuerkraft (GStK-BEZ)",
+      "en": "Grants for particularly low municipal tax capacity (§ 11 (5) FAG)"
+     }
+    },
+    "dof": {
+     "value": 0,
+     "coordinates": "Tabelle 2 (Daten zu den Bundesergänzungszuweisungen im Ausgleichsjahr 2025), Zeile 'Bundesergänzungszuweisung durchschnittsorientierter Forschun', Spalte BY",
+     "label": {
+      "de": "BEZ durchschnittsorientierter Forschungsförderungsausgleich (doF-BEZ)",
+      "en": "Research-funding equalisation grants (§ 11 (6) FAG)"
+     }
+    },
+    "sobez_unemployment": {
+     "value": 0,
+     "coordinates": "Tabelle 3 (Daten zu den Sonderbedarfs-Bundesergänzungszuweisungen (SoBEZ) im Jahr 2025), Zeile 'SoBEZ zum Ausgleich von Sonderlasten durch strukturelle Arbe', Spalte BY",
+     "label": {
+      "de": "SoBEZ wegen struktureller Arbeitslosigkeit",
+      "en": "Special-needs grants for structural unemployment (§ 11 (3) FAG)"
+     }
+    },
+    "sobez_political": {
+     "value": 0,
+     "coordinates": "Tabelle 3 (Daten zu den Sonderbedarfs-Bundesergänzungszuweisungen (SoBEZ) im Jahr 2025), Zeile 'SoBEZ wegen überdurchschnittlich hoher Kosten politischer Fü', Spalte BY",
+     "label": {
+      "de": "SoBEZ wegen überdurchschnittlich hoher Kosten politischer Führung",
+      "en": "Special-needs grants for above-average costs of political leadership (§ 11 (4) FAG)"
+     }
+    },
+    "total": {
+     "value": 0,
+     "derived": true,
+     "coordinates": "sum of the five BEZ columns",
+     "label": {
+      "de": "Bundesergänzungszuweisungen insgesamt (inkl. SoBEZ)",
+      "en": "All supplementary federal grants incl. SoBEZ"
+     }
+    },
+    "fiscal_strength_after_bez_pct": {
+     "value": 108.9,
+     "unit": "percent",
+     "coordinates": "Tabelle 2 (Daten zu den Bundesergänzungszuweisungen im Ausgleichsjahr 2025), Zeile 'Finanzkraft in Prozent der Ausgleichsmesszahl nach Finanzkra', Spalte BY",
+     "label": {
+      "de": "Finanzkraft in Prozent der Ausgleichsmesszahl nach Finanzkraftausgleich und Bundesergänzungszuweisungen",
+      "en": "Fiscal capacity in % after FKA and general/GStK/doF BEZ"
+     }
+    },
+    "fiscal_strength_after_sobez_pct": {
+     "value": 108.9,
+     "unit": "percent",
+     "coordinates": "Tabelle 3 (Daten zu den Sonderbedarfs-Bundesergänzungszuweisungen (SoBEZ) im Jahr 2025), Zeile 'Finanzkraft in Prozent der Ausgleichsmesszahl nach Finanzkra', Spalte BY",
+     "label": {
+      "de": "Finanzkraft in Prozent der Ausgleichsmesszahl nach Finanzkraftausgleich, Bundesergänzungszuweisungen und SoBEZ",
+      "en": "Fiscal capacity in % after FKA, BEZ and SoBEZ"
+     }
+    }
+   },
+   "per_resident": {
+    "unit": "EUR per resident",
+    "derived": true,
+    "basis": "value ÷ residents on 2025-06-30 (row 1)",
+    "vat_share": 1814.81,
+    "fka_adjustment": -880.23,
+    "bez_total": 0.0,
+    "fka_plus_bez": -880.23
+   }
+  },
+  {
+   "code": "BE",
+   "name": {
+    "de": "Berlin",
+    "en": "Berlin"
+   },
+   "city_state": true,
+   "population": {
+    "value": 3692265,
+    "date": "2025-06-30",
+    "unit": "persons",
+    "coordinates": "Anlage 1 Seite 1, Zeile 1",
+    "label": {
+     "de": "Einwohner (30.06.2025)",
+     "en": "Residents on 2025-06-30 (basis of the calculation)"
+    }
+   },
+   "tax_bases": {
+    "unit": "EUR",
+    "precision": "EUR thousand in source",
+    "land_taxes_by_revenue": {
+     "value": 11026069000,
+     "coordinates": "Anlage 1 Seite 2, Zeile 9",
+     "label": {
+      "de": "Steuern der Länder n. d. Aufkommen",
+      "en": "Land taxes by place of collection (before VAT distribution)"
+     }
+    },
+    "land_taxes_in_fka": {
+     "value": 17726815000,
+     "coordinates": "Anlage 1 Seite 3, Zeile 15.1",
+     "label": {
+      "de": "Steuern der Länder im FKA 5)",
+      "en": "Land taxes counted in the equalisation (incl. VAT share, Förderabgabe, after § 7 (3) FAG deduction)"
+     }
+    },
+    "municipal_taxes_in_fka": {
+     "value": 4675289000,
+     "coordinates": "Anlage 1 Seite 3, Zeile 15.2",
+     "label": {
+      "de": "Gemeindesteueransatz im FKA",
+      "en": "Municipal taxes counted in the equalisation (75 % of the municipal tax basis)"
+     }
+    },
+    "finanzkraftmesszahl": {
+     "value": 22402104000,
+     "coordinates": "Anlage 1 Seite 3, Zeile 15.3",
+     "label": {
+      "de": "Finanzkraftmesszahl (15.1.+15.2.)",
+      "en": "Fiscal capacity measure (Land + municipal part)"
+     }
+    },
+    "ausgleichsmesszahl": {
+     "value": 29105532000,
+     "coordinates": "Anlage 1 Seite 3, Zeile 15.8",
+     "label": {
+      "de": "Ausgleichsmesszahl (15.6.+15.7.)",
+      "en": "Equalisation measure (what the Land would have at the national average, with resident weights)"
+     }
+    },
+    "fiscal_strength_before_fka_pct": {
+     "value": 77.0,
+     "unit": "percent",
+     "coordinates": "Anlage 1 Seite 3, Zeile 15.4",
+     "label": {
+      "de": "in v.H. der Ausgleichsmesszahl",
+      "en": "Fiscal capacity in % of the equalisation measure, before FKA"
+     }
+    }
+   },
+   "vat_share": {
+    "unit": "EUR",
+    "precision": "EUR thousand in source",
+    "population_part": {
+     "value": 6199332000,
+     "coordinates": "Anlage 1 Seite 2, Zeile 10.1",
+     "label": {
+      "de": "nach § 1 FAG - v.H.-Satz",
+      "en": "Land share of VAT by residents (§ 1 FAG percentage)"
+     }
+    },
+    "festbetrag_part": {
+     "value": 501414000,
+     "coordinates": "Anlage 1 Seite 2, Zeile 10.2",
+     "label": {
+      "de": "nach § 1 FAG - Festbetrag",
+      "en": "Land share of VAT, fixed amounts (§ 1 FAG Festbeträge)"
+     }
+    },
+    "total": {
+     "value": 6700746000,
+     "coordinates": "Anlage 1 Seite 2, Zeile 10.3",
+     "label": {
+      "de": "Länderanteil an der Umsatzsteuer insgesamt",
+      "en": "Land share of VAT, total"
+     }
+    }
+   },
+   "fka": {
+    "unit": "EUR",
+    "precision": "EUR thousand in source",
+    "adjustment": {
+     "value": 4223160000,
+     "coordinates": "Anlage 1 Seite 3, Zeile 15.10",
+     "label": {
+      "de": "Zu- / Abschläge (-) im FKA",
+      "en": "Equalisation adjustment (+ received / − paid) within the VAT distribution"
+     }
+    },
+    "fiscal_strength_after_fka_pct": {
+     "value": 91.5,
+     "unit": "percent",
+     "coordinates": "Tabelle 1 (Daten zur Umsatzsteuerverteilung und zum Finanzkraftausgleich im Jahr 2025), Zeile 'Relative Finanzkraft in Prozent der jeweiligen Ausgleichsmes', Spalte BE",
+     "source": "monatsbericht",
+     "derived_check": 91.48,
+     "label": {
+      "de": "Relative Finanzkraft in Prozent der jeweiligen Ausgleichsmesszahl nach Finanzkraftausgleich",
+      "en": "Fiscal capacity in % of the equalisation measure, after FKA"
+     }
+    }
+   },
+   "bez": {
+    "unit": "EUR",
+    "precision": "Mio EUR in source (rounded)",
+    "source": "monatsbericht",
+    "allgemeine": {
+     "value": 1926000000,
+     "coordinates": "Tabelle 2 (Daten zu den Bundesergänzungszuweisungen im Ausgleichsjahr 2025), Zeile 'Bundesergänzungszuweisung zur ergänzenden Deckung des allgem', Spalte BE",
+     "label": {
+      "de": "Allgemeine Bundesergänzungszuweisungen",
+      "en": "General supplementary federal grants (§ 11 (2) FAG)"
+     }
+    },
+    "gstk": {
+     "value": 0,
+     "coordinates": "Tabelle 2 (Daten zu den Bundesergänzungszuweisungen im Ausgleichsjahr 2025), Zeile 'Bundesergänzungszuweisung zum Ausgleich besonders geringer k', Spalte BE",
+     "label": {
+      "de": "BEZ zum Ausgleich besonders geringer kommunaler Steuerkraft (GStK-BEZ)",
+      "en": "Grants for particularly low municipal tax capacity (§ 11 (5) FAG)"
+     }
+    },
+    "dof": {
+     "value": 0,
+     "coordinates": "Tabelle 2 (Daten zu den Bundesergänzungszuweisungen im Ausgleichsjahr 2025), Zeile 'Bundesergänzungszuweisung durchschnittsorientierter Forschun', Spalte BE",
+     "label": {
+      "de": "BEZ durchschnittsorientierter Forschungsförderungsausgleich (doF-BEZ)",
+      "en": "Research-funding equalisation grants (§ 11 (6) FAG)"
+     }
+    },
+    "sobez_unemployment": {
+     "value": 0,
+     "coordinates": "Tabelle 3 (Daten zu den Sonderbedarfs-Bundesergänzungszuweisungen (SoBEZ) im Jahr 2025), Zeile 'SoBEZ zum Ausgleich von Sonderlasten durch strukturelle Arbe', Spalte BE",
+     "label": {
+      "de": "SoBEZ wegen struktureller Arbeitslosigkeit",
+      "en": "Special-needs grants for structural unemployment (§ 11 (3) FAG)"
+     }
+    },
+    "sobez_political": {
+     "value": 63000000,
+     "coordinates": "Tabelle 3 (Daten zu den Sonderbedarfs-Bundesergänzungszuweisungen (SoBEZ) im Jahr 2025), Zeile 'SoBEZ wegen überdurchschnittlich hoher Kosten politischer Fü', Spalte BE",
+     "label": {
+      "de": "SoBEZ wegen überdurchschnittlich hoher Kosten politischer Führung",
+      "en": "Special-needs grants for above-average costs of political leadership (§ 11 (4) FAG)"
+     }
+    },
+    "total": {
+     "value": 1989000000,
+     "derived": true,
+     "coordinates": "sum of the five BEZ columns",
+     "label": {
+      "de": "Bundesergänzungszuweisungen insgesamt (inkl. SoBEZ)",
+      "en": "All supplementary federal grants incl. SoBEZ"
+     }
+    },
+    "fiscal_strength_after_bez_pct": {
+     "value": 98.1,
+     "unit": "percent",
+     "coordinates": "Tabelle 2 (Daten zu den Bundesergänzungszuweisungen im Ausgleichsjahr 2025), Zeile 'Finanzkraft in Prozent der Ausgleichsmesszahl nach Finanzkra', Spalte BE",
+     "label": {
+      "de": "Finanzkraft in Prozent der Ausgleichsmesszahl nach Finanzkraftausgleich und Bundesergänzungszuweisungen",
+      "en": "Fiscal capacity in % after FKA and general/GStK/doF BEZ"
+     }
+    },
+    "fiscal_strength_after_sobez_pct": {
+     "value": 98.3,
+     "unit": "percent",
+     "coordinates": "Tabelle 3 (Daten zu den Sonderbedarfs-Bundesergänzungszuweisungen (SoBEZ) im Jahr 2025), Zeile 'Finanzkraft in Prozent der Ausgleichsmesszahl nach Finanzkra', Spalte BE",
+     "label": {
+      "de": "Finanzkraft in Prozent der Ausgleichsmesszahl nach Finanzkraftausgleich, Bundesergänzungszuweisungen und SoBEZ",
+      "en": "Fiscal capacity in % after FKA, BEZ and SoBEZ"
+     }
+    }
+   },
+   "per_resident": {
+    "unit": "EUR per resident",
+    "derived": true,
+    "basis": "value ÷ residents on 2025-06-30 (row 1)",
+    "vat_share": 1814.81,
+    "fka_adjustment": 1143.79,
+    "bez_total": 538.69,
+    "fka_plus_bez": 1682.48
+   }
+  },
+  {
+   "code": "BB",
+   "name": {
+    "de": "Brandenburg",
+    "en": "Brandenburg"
+   },
+   "city_state": false,
+   "population": {
+    "value": 2553072,
+    "date": "2025-06-30",
+    "unit": "persons",
+    "coordinates": "Anlage 1 Seite 1, Zeile 1",
+    "label": {
+     "de": "Einwohner (30.06.2025)",
+     "en": "Residents on 2025-06-30 (basis of the calculation)"
+    }
+   },
+   "tax_bases": {
+    "unit": "EUR",
+    "precision": "EUR thousand in source",
+    "land_taxes_by_revenue": {
+     "value": 5485520000,
+     "coordinates": "Anlage 1 Seite 2, Zeile 9",
+     "label": {
+      "de": "Steuern der Länder n. d. Aufkommen",
+      "en": "Land taxes by place of collection (before VAT distribution)"
+     }
+    },
+    "land_taxes_in_fka": {
+     "value": 10104828000,
+     "coordinates": "Anlage 1 Seite 3, Zeile 15.1",
+     "label": {
+      "de": "Steuern der Länder im FKA 5)",
+      "en": "Land taxes counted in the equalisation (incl. VAT share, Förderabgabe, after § 7 (3) FAG deduction)"
+     }
+    },
+    "municipal_taxes_in_fka": {
+     "value": 2677669000,
+     "coordinates": "Anlage 1 Seite 3, Zeile 15.2",
+     "label": {
+      "de": "Gemeindesteueransatz im FKA",
+      "en": "Municipal taxes counted in the equalisation (75 % of the municipal tax basis)"
+     }
+    },
+    "finanzkraftmesszahl": {
+     "value": 12782496000,
+     "coordinates": "Anlage 1 Seite 3, Zeile 15.3",
+     "label": {
+      "de": "Finanzkraftmesszahl (15.1.+15.2.)",
+      "en": "Fiscal capacity measure (Land + municipal part)"
+     }
+    },
+    "ausgleichsmesszahl": {
+     "value": 15006697000,
+     "coordinates": "Anlage 1 Seite 3, Zeile 15.8",
+     "label": {
+      "de": "Ausgleichsmesszahl (15.6.+15.7.)",
+      "en": "Equalisation measure (what the Land would have at the national average, with resident weights)"
+     }
+    },
+    "fiscal_strength_before_fka_pct": {
+     "value": 85.2,
+     "unit": "percent",
+     "coordinates": "Anlage 1 Seite 3, Zeile 15.4",
+     "label": {
+      "de": "in v.H. der Ausgleichsmesszahl",
+      "en": "Fiscal capacity in % of the equalisation measure, before FKA"
+     }
+    }
+   },
+   "vat_share": {
+    "unit": "EUR",
+    "precision": "EUR thousand in source",
+    "population_part": {
+     "value": 4286621000,
+     "coordinates": "Anlage 1 Seite 2, Zeile 10.1",
+     "label": {
+      "de": "nach § 1 FAG - v.H.-Satz",
+      "en": "Land share of VAT by residents (§ 1 FAG percentage)"
+     }
+    },
+    "festbetrag_part": {
+     "value": 346710000,
+     "coordinates": "Anlage 1 Seite 2, Zeile 10.2",
+     "label": {
+      "de": "nach § 1 FAG - Festbetrag",
+      "en": "Land share of VAT, fixed amounts (§ 1 FAG Festbeträge)"
+     }
+    },
+    "total": {
+     "value": 4633331000,
+     "coordinates": "Anlage 1 Seite 2, Zeile 10.3",
+     "label": {
+      "de": "Länderanteil an der Umsatzsteuer insgesamt",
+      "en": "Land share of VAT, total"
+     }
+    }
+   },
+   "fka": {
+    "unit": "EUR",
+    "precision": "EUR thousand in source",
+    "adjustment": {
+     "value": 1401247000,
+     "coordinates": "Anlage 1 Seite 3, Zeile 15.10",
+     "label": {
+      "de": "Zu- / Abschläge (-) im FKA",
+      "en": "Equalisation adjustment (+ received / − paid) within the VAT distribution"
+     }
+    },
+    "fiscal_strength_after_fka_pct": {
+     "value": 94.5,
+     "unit": "percent",
+     "coordinates": "Tabelle 1 (Daten zur Umsatzsteuerverteilung und zum Finanzkraftausgleich im Jahr 2025), Zeile 'Relative Finanzkraft in Prozent der jeweiligen Ausgleichsmes', Spalte BB",
+     "source": "monatsbericht",
+     "derived_check": 94.52,
+     "label": {
+      "de": "Relative Finanzkraft in Prozent der jeweiligen Ausgleichsmesszahl nach Finanzkraftausgleich",
+      "en": "Fiscal capacity in % of the equalisation measure, after FKA"
+     }
+    }
+   },
+   "bez": {
+    "unit": "EUR",
+    "precision": "Mio EUR in source (rounded)",
+    "source": "monatsbericht",
+    "allgemeine": {
+     "value": 628000000,
+     "coordinates": "Tabelle 2 (Daten zu den Bundesergänzungszuweisungen im Ausgleichsjahr 2025), Zeile 'Bundesergänzungszuweisung zur ergänzenden Deckung des allgem', Spalte BB",
+     "label": {
+      "de": "Allgemeine Bundesergänzungszuweisungen",
+      "en": "General supplementary federal grants (§ 11 (2) FAG)"
+     }
+    },
+    "gstk": {
+     "value": 26000000,
+     "coordinates": "Tabelle 2 (Daten zu den Bundesergänzungszuweisungen im Ausgleichsjahr 2025), Zeile 'Bundesergänzungszuweisung zum Ausgleich besonders geringer k', Spalte BB",
+     "label": {
+      "de": "BEZ zum Ausgleich besonders geringer kommunaler Steuerkraft (GStK-BEZ)",
+      "en": "Grants for particularly low municipal tax capacity (§ 11 (5) FAG)"
+     }
+    },
+    "dof": {
+     "value": 3000000,
+     "coordinates": "Tabelle 2 (Daten zu den Bundesergänzungszuweisungen im Ausgleichsjahr 2025), Zeile 'Bundesergänzungszuweisung durchschnittsorientierter Forschun', Spalte BB",
+     "label": {
+      "de": "BEZ durchschnittsorientierter Forschungsförderungsausgleich (doF-BEZ)",
+      "en": "Research-funding equalisation grants (§ 11 (6) FAG)"
+     }
+    },
+    "sobez_unemployment": {
+     "value": 16000000,
+     "coordinates": "Tabelle 3 (Daten zu den Sonderbedarfs-Bundesergänzungszuweisungen (SoBEZ) im Jahr 2025), Zeile 'SoBEZ zum Ausgleich von Sonderlasten durch strukturelle Arbe', Spalte BB",
+     "label": {
+      "de": "SoBEZ wegen struktureller Arbeitslosigkeit",
+      "en": "Special-needs grants for structural unemployment (§ 11 (3) FAG)"
+     }
+    },
+    "sobez_political": {
+     "value": 77000000,
+     "coordinates": "Tabelle 3 (Daten zu den Sonderbedarfs-Bundesergänzungszuweisungen (SoBEZ) im Jahr 2025), Zeile 'SoBEZ wegen überdurchschnittlich hoher Kosten politischer Fü', Spalte BB",
+     "label": {
+      "de": "SoBEZ wegen überdurchschnittlich hoher Kosten politischer Führung",
+      "en": "Special-needs grants for above-average costs of political leadership (§ 11 (4) FAG)"
+     }
+    },
+    "total": {
+     "value": 750000000,
+     "derived": true,
+     "coordinates": "sum of the five BEZ columns",
+     "label": {
+      "de": "Bundesergänzungszuweisungen insgesamt (inkl. SoBEZ)",
+      "en": "All supplementary federal grants incl. SoBEZ"
+     }
+    },
+    "fiscal_strength_after_bez_pct": {
+     "value": 98.9,
+     "unit": "percent",
+     "coordinates": "Tabelle 2 (Daten zu den Bundesergänzungszuweisungen im Ausgleichsjahr 2025), Zeile 'Finanzkraft in Prozent der Ausgleichsmesszahl nach Finanzkra', Spalte BB",
+     "label": {
+      "de": "Finanzkraft in Prozent der Ausgleichsmesszahl nach Finanzkraftausgleich und Bundesergänzungszuweisungen",
+      "en": "Fiscal capacity in % after FKA and general/GStK/doF BEZ"
+     }
+    },
+    "fiscal_strength_after_sobez_pct": {
+     "value": 99.5,
+     "unit": "percent",
+     "coordinates": "Tabelle 3 (Daten zu den Sonderbedarfs-Bundesergänzungszuweisungen (SoBEZ) im Jahr 2025), Zeile 'Finanzkraft in Prozent der Ausgleichsmesszahl nach Finanzkra', Spalte BB",
+     "label": {
+      "de": "Finanzkraft in Prozent der Ausgleichsmesszahl nach Finanzkraftausgleich, Bundesergänzungszuweisungen und SoBEZ",
+      "en": "Fiscal capacity in % after FKA, BEZ and SoBEZ"
+     }
+    }
+   },
+   "per_resident": {
+    "unit": "EUR per resident",
+    "derived": true,
+    "basis": "value ÷ residents on 2025-06-30 (row 1)",
+    "vat_share": 1814.81,
+    "fka_adjustment": 548.85,
+    "bez_total": 293.76,
+    "fka_plus_bez": 842.61
+   }
+  },
+  {
+   "code": "HB",
+   "name": {
+    "de": "Bremen",
+    "en": "Bremen"
+   },
+   "city_state": true,
+   "population": {
+    "value": 705123,
+    "date": "2025-06-30",
+    "unit": "persons",
+    "coordinates": "Anlage 1 Seite 1, Zeile 1",
+    "label": {
+     "de": "Einwohner (30.06.2025)",
+     "en": "Residents on 2025-06-30 (basis of the calculation)"
+    }
+   },
+   "tax_bases": {
+    "unit": "EUR",
+    "precision": "EUR thousand in source",
+    "land_taxes_by_revenue": {
+     "value": 1631819000,
+     "coordinates": "Anlage 1 Seite 2, Zeile 9",
+     "label": {
+      "de": "Steuern der Länder n. d. Aufkommen",
+      "en": "Land taxes by place of collection (before VAT distribution)"
+     }
+    },
+    "land_taxes_in_fka": {
+     "value": 2911481000,
+     "coordinates": "Anlage 1 Seite 3, Zeile 15.1",
+     "label": {
+      "de": "Steuern der Länder im FKA 5)",
+      "en": "Land taxes counted in the equalisation (incl. VAT share, Förderabgabe, after § 7 (3) FAG deduction)"
+     }
+    },
+    "municipal_taxes_in_fka": {
+     "value": 1026553000,
+     "coordinates": "Anlage 1 Seite 3, Zeile 15.2",
+     "label": {
+      "de": "Gemeindesteueransatz im FKA",
+      "en": "Municipal taxes counted in the equalisation (75 % of the municipal tax basis)"
+     }
+    },
+    "finanzkraftmesszahl": {
+     "value": 3938034000,
+     "coordinates": "Anlage 1 Seite 3, Zeile 15.3",
+     "label": {
+      "de": "Finanzkraftmesszahl (15.1.+15.2.)",
+      "en": "Fiscal capacity measure (Land + municipal part)"
+     }
+    },
+    "ausgleichsmesszahl": {
+     "value": 5558371000,
+     "coordinates": "Anlage 1 Seite 3, Zeile 15.8",
+     "label": {
+      "de": "Ausgleichsmesszahl (15.6.+15.7.)",
+      "en": "Equalisation measure (what the Land would have at the national average, with resident weights)"
+     }
+    },
+    "fiscal_strength_before_fka_pct": {
+     "value": 70.8,
+     "unit": "percent",
+     "coordinates": "Anlage 1 Seite 3, Zeile 15.4",
+     "label": {
+      "de": "in v.H. der Ausgleichsmesszahl",
+      "en": "Fiscal capacity in % of the equalisation measure, before FKA"
+     }
+    }
+   },
+   "vat_share": {
+    "unit": "EUR",
+    "precision": "EUR thousand in source",
+    "population_part": {
+     "value": 1183905000,
+     "coordinates": "Anlage 1 Seite 2, Zeile 10.1",
+     "label": {
+      "de": "nach § 1 FAG - v.H.-Satz",
+      "en": "Land share of VAT by residents (§ 1 FAG percentage)"
+     }
+    },
+    "festbetrag_part": {
+     "value": 95757000,
+     "coordinates": "Anlage 1 Seite 2, Zeile 10.2",
+     "label": {
+      "de": "nach § 1 FAG - Festbetrag",
+      "en": "Land share of VAT, fixed amounts (§ 1 FAG Festbeträge)"
+     }
+    },
+    "total": {
+     "value": 1279662000,
+     "coordinates": "Anlage 1 Seite 2, Zeile 10.3",
+     "label": {
+      "de": "Länderanteil an der Umsatzsteuer insgesamt",
+      "en": "Land share of VAT, total"
+     }
+    }
+   },
+   "fka": {
+    "unit": "EUR",
+    "precision": "EUR thousand in source",
+    "adjustment": {
+     "value": 1020813000,
+     "coordinates": "Anlage 1 Seite 3, Zeile 15.10",
+     "label": {
+      "de": "Zu- / Abschläge (-) im FKA",
+      "en": "Equalisation adjustment (+ received / − paid) within the VAT distribution"
+     }
+    },
+    "fiscal_strength_after_fka_pct": {
+     "value": 89.2,
+     "unit": "percent",
+     "coordinates": "Tabelle 1 (Daten zur Umsatzsteuerverteilung und zum Finanzkraftausgleich im Jahr 2025), Zeile 'Relative Finanzkraft in Prozent der jeweiligen Ausgleichsmes', Spalte HB",
+     "source": "monatsbericht",
+     "derived_check": 89.21,
+     "label": {
+      "de": "Relative Finanzkraft in Prozent der jeweiligen Ausgleichsmesszahl nach Finanzkraftausgleich",
+      "en": "Fiscal capacity in % of the equalisation measure, after FKA"
+     }
+    }
+   },
+   "bez": {
+    "unit": "EUR",
+    "precision": "Mio EUR in source (rounded)",
+    "source": "monatsbericht",
+    "allgemeine": {
+     "value": 469000000,
+     "coordinates": "Tabelle 2 (Daten zu den Bundesergänzungszuweisungen im Ausgleichsjahr 2025), Zeile 'Bundesergänzungszuweisung zur ergänzenden Deckung des allgem', Spalte HB",
+     "label": {
+      "de": "Allgemeine Bundesergänzungszuweisungen",
+      "en": "General supplementary federal grants (§ 11 (2) FAG)"
+     }
+    },
+    "gstk": {
+     "value": 0,
+     "coordinates": "Tabelle 2 (Daten zu den Bundesergänzungszuweisungen im Ausgleichsjahr 2025), Zeile 'Bundesergänzungszuweisung zum Ausgleich besonders geringer k', Spalte HB",
+     "label": {
+      "de": "BEZ zum Ausgleich besonders geringer kommunaler Steuerkraft (GStK-BEZ)",
+      "en": "Grants for particularly low municipal tax capacity (§ 11 (5) FAG)"
+     }
+    },
+    "dof": {
+     "value": 0,
+     "coordinates": "Tabelle 2 (Daten zu den Bundesergänzungszuweisungen im Ausgleichsjahr 2025), Zeile 'Bundesergänzungszuweisung durchschnittsorientierter Forschun', Spalte HB",
+     "label": {
+      "de": "BEZ durchschnittsorientierter Forschungsförderungsausgleich (doF-BEZ)",
+      "en": "Research-funding equalisation grants (§ 11 (6) FAG)"
+     }
+    },
+    "sobez_unemployment": {
+     "value": 0,
+     "coordinates": "Tabelle 3 (Daten zu den Sonderbedarfs-Bundesergänzungszuweisungen (SoBEZ) im Jahr 2025), Zeile 'SoBEZ zum Ausgleich von Sonderlasten durch strukturelle Arbe', Spalte HB",
+     "label": {
+      "de": "SoBEZ wegen struktureller Arbeitslosigkeit",
+      "en": "Special-needs grants for structural unemployment (§ 11 (3) FAG)"
+     }
+    },
+    "sobez_political": {
+     "value": 63000000,
+     "coordinates": "Tabelle 3 (Daten zu den Sonderbedarfs-Bundesergänzungszuweisungen (SoBEZ) im Jahr 2025), Zeile 'SoBEZ wegen überdurchschnittlich hoher Kosten politischer Fü', Spalte HB",
+     "label": {
+      "de": "SoBEZ wegen überdurchschnittlich hoher Kosten politischer Führung",
+      "en": "Special-needs grants for above-average costs of political leadership (§ 11 (4) FAG)"
+     }
+    },
+    "total": {
+     "value": 532000000,
+     "derived": true,
+     "coordinates": "sum of the five BEZ columns",
+     "label": {
+      "de": "Bundesergänzungszuweisungen insgesamt (inkl. SoBEZ)",
+      "en": "All supplementary federal grants incl. SoBEZ"
+     }
+    },
+    "fiscal_strength_after_bez_pct": {
+     "value": 97.6,
+     "unit": "percent",
+     "coordinates": "Tabelle 2 (Daten zu den Bundesergänzungszuweisungen im Ausgleichsjahr 2025), Zeile 'Finanzkraft in Prozent der Ausgleichsmesszahl nach Finanzkra', Spalte HB",
+     "label": {
+      "de": "Finanzkraft in Prozent der Ausgleichsmesszahl nach Finanzkraftausgleich und Bundesergänzungszuweisungen",
+      "en": "Fiscal capacity in % after FKA and general/GStK/doF BEZ"
+     }
+    },
+    "fiscal_strength_after_sobez_pct": {
+     "value": 98.8,
+     "unit": "percent",
+     "coordinates": "Tabelle 3 (Daten zu den Sonderbedarfs-Bundesergänzungszuweisungen (SoBEZ) im Jahr 2025), Zeile 'Finanzkraft in Prozent der Ausgleichsmesszahl nach Finanzkra', Spalte HB",
+     "label": {
+      "de": "Finanzkraft in Prozent der Ausgleichsmesszahl nach Finanzkraftausgleich, Bundesergänzungszuweisungen und SoBEZ",
+      "en": "Fiscal capacity in % after FKA, BEZ and SoBEZ"
+     }
+    }
+   },
+   "per_resident": {
+    "unit": "EUR per resident",
+    "derived": true,
+    "basis": "value ÷ residents on 2025-06-30 (row 1)",
+    "vat_share": 1814.81,
+    "fka_adjustment": 1447.71,
+    "bez_total": 754.48,
+    "fka_plus_bez": 2202.19
+   }
+  },
+  {
+   "code": "HH",
+   "name": {
+    "de": "Hamburg",
+    "en": "Hamburg"
+   },
+   "city_state": true,
+   "population": {
+    "value": 1864953,
+    "date": "2025-06-30",
+    "unit": "persons",
+    "coordinates": "Anlage 1 Seite 1, Zeile 1",
+    "label": {
+     "de": "Einwohner (30.06.2025)",
+     "en": "Residents on 2025-06-30 (basis of the calculation)"
+    }
+   },
+   "tax_bases": {
+    "unit": "EUR",
+    "precision": "EUR thousand in source",
+    "land_taxes_by_revenue": {
+     "value": 8107662000,
+     "coordinates": "Anlage 1 Seite 2, Zeile 9",
+     "label": {
+      "de": "Steuern der Länder n. d. Aufkommen",
+      "en": "Land taxes by place of collection (before VAT distribution)"
+     }
+    },
+    "land_taxes_in_fka": {
+     "value": 11413145000,
+     "coordinates": "Anlage 1 Seite 3, Zeile 15.1",
+     "label": {
+      "de": "Steuern der Länder im FKA 5)",
+      "en": "Land taxes counted in the equalisation (incl. VAT share, Förderabgabe, after § 7 (3) FAG deduction)"
+     }
+    },
+    "municipal_taxes_in_fka": {
+     "value": 3813285000,
+     "coordinates": "Anlage 1 Seite 3, Zeile 15.2",
+     "label": {
+      "de": "Gemeindesteueransatz im FKA",
+      "en": "Municipal taxes counted in the equalisation (75 % of the municipal tax basis)"
+     }
+    },
+    "finanzkraftmesszahl": {
+     "value": 15226430000,
+     "coordinates": "Anlage 1 Seite 3, Zeile 15.3",
+     "label": {
+      "de": "Finanzkraftmesszahl (15.1.+15.2.)",
+      "en": "Fiscal capacity measure (Land + municipal part)"
+     }
+    },
+    "ausgleichsmesszahl": {
+     "value": 14701125000,
+     "coordinates": "Anlage 1 Seite 3, Zeile 15.8",
+     "label": {
+      "de": "Ausgleichsmesszahl (15.6.+15.7.)",
+      "en": "Equalisation measure (what the Land would have at the national average, with resident weights)"
+     }
+    },
+    "fiscal_strength_before_fka_pct": {
+     "value": 103.6,
+     "unit": "percent",
+     "coordinates": "Anlage 1 Seite 3, Zeile 15.4",
+     "label": {
+      "de": "in v.H. der Ausgleichsmesszahl",
+      "en": "Fiscal capacity in % of the equalisation measure, before FKA"
+     }
+    }
+   },
+   "vat_share": {
+    "unit": "EUR",
+    "precision": "EUR thousand in source",
+    "population_part": {
+     "value": 3131266000,
+     "coordinates": "Anlage 1 Seite 2, Zeile 10.1",
+     "label": {
+      "de": "nach § 1 FAG - v.H.-Satz",
+      "en": "Land share of VAT by residents (§ 1 FAG percentage)"
+     }
+    },
+    "festbetrag_part": {
+     "value": 253263000,
+     "coordinates": "Anlage 1 Seite 2, Zeile 10.2",
+     "label": {
+      "de": "nach § 1 FAG - Festbetrag",
+      "en": "Land share of VAT, fixed amounts (§ 1 FAG Festbeträge)"
+     }
+    },
+    "total": {
+     "value": 3384529000,
+     "coordinates": "Anlage 1 Seite 2, Zeile 10.3",
+     "label": {
+      "de": "Länderanteil an der Umsatzsteuer insgesamt",
+      "en": "Land share of VAT, total"
+     }
+    }
+   },
+   "fka": {
+    "unit": "EUR",
+    "precision": "EUR thousand in source",
+    "adjustment": {
+     "value": -330942000,
+     "coordinates": "Anlage 1 Seite 3, Zeile 15.10",
+     "label": {
+      "de": "Zu- / Abschläge (-) im FKA",
+      "en": "Equalisation adjustment (+ received / − paid) within the VAT distribution"
+     }
+    },
+    "fiscal_strength_after_fka_pct": {
+     "value": 101.3,
+     "unit": "percent",
+     "coordinates": "Tabelle 1 (Daten zur Umsatzsteuerverteilung und zum Finanzkraftausgleich im Jahr 2025), Zeile 'Relative Finanzkraft in Prozent der jeweiligen Ausgleichsmes', Spalte HH",
+     "source": "monatsbericht",
+     "derived_check": 101.32,
+     "label": {
+      "de": "Relative Finanzkraft in Prozent der jeweiligen Ausgleichsmesszahl nach Finanzkraftausgleich",
+      "en": "Fiscal capacity in % of the equalisation measure, after FKA"
+     }
+    }
+   },
+   "bez": {
+    "unit": "EUR",
+    "precision": "Mio EUR in source (rounded)",
+    "source": "monatsbericht",
+    "allgemeine": {
+     "value": 0,
+     "coordinates": "Tabelle 2 (Daten zu den Bundesergänzungszuweisungen im Ausgleichsjahr 2025), Zeile 'Bundesergänzungszuweisung zur ergänzenden Deckung des allgem', Spalte HH",
+     "label": {
+      "de": "Allgemeine Bundesergänzungszuweisungen",
+      "en": "General supplementary federal grants (§ 11 (2) FAG)"
+     }
+    },
+    "gstk": {
+     "value": 0,
+     "coordinates": "Tabelle 2 (Daten zu den Bundesergänzungszuweisungen im Ausgleichsjahr 2025), Zeile 'Bundesergänzungszuweisung zum Ausgleich besonders geringer k', Spalte HH",
+     "label": {
+      "de": "BEZ zum Ausgleich besonders geringer kommunaler Steuerkraft (GStK-BEZ)",
+      "en": "Grants for particularly low municipal tax capacity (§ 11 (5) FAG)"
+     }
+    },
+    "dof": {
+     "value": 0,
+     "coordinates": "Tabelle 2 (Daten zu den Bundesergänzungszuweisungen im Ausgleichsjahr 2025), Zeile 'Bundesergänzungszuweisung durchschnittsorientierter Forschun', Spalte HH",
+     "label": {
+      "de": "BEZ durchschnittsorientierter Forschungsförderungsausgleich (doF-BEZ)",
+      "en": "Research-funding equalisation grants (§ 11 (6) FAG)"
+     }
+    },
+    "sobez_unemployment": {
+     "value": 0,
+     "coordinates": "Tabelle 3 (Daten zu den Sonderbedarfs-Bundesergänzungszuweisungen (SoBEZ) im Jahr 2025), Zeile 'SoBEZ zum Ausgleich von Sonderlasten durch strukturelle Arbe', Spalte HH",
+     "label": {
+      "de": "SoBEZ wegen struktureller Arbeitslosigkeit",
+      "en": "Special-needs grants for structural unemployment (§ 11 (3) FAG)"
+     }
+    },
+    "sobez_political": {
+     "value": 0,
+     "coordinates": "Tabelle 3 (Daten zu den Sonderbedarfs-Bundesergänzungszuweisungen (SoBEZ) im Jahr 2025), Zeile 'SoBEZ wegen überdurchschnittlich hoher Kosten politischer Fü', Spalte HH",
+     "label": {
+      "de": "SoBEZ wegen überdurchschnittlich hoher Kosten politischer Führung",
+      "en": "Special-needs grants for above-average costs of political leadership (§ 11 (4) FAG)"
+     }
+    },
+    "total": {
+     "value": 0,
+     "derived": true,
+     "coordinates": "sum of the five BEZ columns",
+     "label": {
+      "de": "Bundesergänzungszuweisungen insgesamt (inkl. SoBEZ)",
+      "en": "All supplementary federal grants incl. SoBEZ"
+     }
+    },
+    "fiscal_strength_after_bez_pct": {
+     "value": 101.3,
+     "unit": "percent",
+     "coordinates": "Tabelle 2 (Daten zu den Bundesergänzungszuweisungen im Ausgleichsjahr 2025), Zeile 'Finanzkraft in Prozent der Ausgleichsmesszahl nach Finanzkra', Spalte HH",
+     "label": {
+      "de": "Finanzkraft in Prozent der Ausgleichsmesszahl nach Finanzkraftausgleich und Bundesergänzungszuweisungen",
+      "en": "Fiscal capacity in % after FKA and general/GStK/doF BEZ"
+     }
+    },
+    "fiscal_strength_after_sobez_pct": {
+     "value": 101.3,
+     "unit": "percent",
+     "coordinates": "Tabelle 3 (Daten zu den Sonderbedarfs-Bundesergänzungszuweisungen (SoBEZ) im Jahr 2025), Zeile 'Finanzkraft in Prozent der Ausgleichsmesszahl nach Finanzkra', Spalte HH",
+     "label": {
+      "de": "Finanzkraft in Prozent der Ausgleichsmesszahl nach Finanzkraftausgleich, Bundesergänzungszuweisungen und SoBEZ",
+      "en": "Fiscal capacity in % after FKA, BEZ and SoBEZ"
+     }
+    }
+   },
+   "per_resident": {
+    "unit": "EUR per resident",
+    "derived": true,
+    "basis": "value ÷ residents on 2025-06-30 (row 1)",
+    "vat_share": 1814.81,
+    "fka_adjustment": -177.45,
+    "bez_total": 0.0,
+    "fka_plus_bez": -177.45
+   }
+  },
+  {
+   "code": "HE",
+   "name": {
+    "de": "Hessen",
+    "en": "Hesse"
+   },
+   "city_state": false,
+   "population": {
+    "value": 6277479,
+    "date": "2025-06-30",
+    "unit": "persons",
+    "coordinates": "Anlage 1 Seite 1, Zeile 1",
+    "label": {
+     "de": "Einwohner (30.06.2025)",
+     "en": "Residents on 2025-06-30 (basis of the calculation)"
+    }
+   },
+   "tax_bases": {
+    "unit": "EUR",
+    "precision": "EUR thousand in source",
+    "land_taxes_by_revenue": {
+     "value": 21461685000,
+     "coordinates": "Anlage 1 Seite 2, Zeile 9",
+     "label": {
+      "de": "Steuern der Länder n. d. Aufkommen",
+      "en": "Land taxes by place of collection (before VAT distribution)"
+     }
+    },
+    "land_taxes_in_fka": {
+     "value": 32843863000,
+     "coordinates": "Anlage 1 Seite 3, Zeile 15.1",
+     "label": {
+      "de": "Steuern der Länder im FKA 5)",
+      "en": "Land taxes counted in the equalisation (incl. VAT share, Förderabgabe, after § 7 (3) FAG deduction)"
+     }
+    },
+    "municipal_taxes_in_fka": {
+     "value": 10165629000,
+     "coordinates": "Anlage 1 Seite 3, Zeile 15.2",
+     "label": {
+      "de": "Gemeindesteueransatz im FKA",
+      "en": "Municipal taxes counted in the equalisation (75 % of the municipal tax basis)"
+     }
+    },
+    "finanzkraftmesszahl": {
+     "value": 43009491000,
+     "coordinates": "Anlage 1 Seite 3, Zeile 15.3",
+     "label": {
+      "de": "Finanzkraftmesszahl (15.1.+15.2.)",
+      "en": "Fiscal capacity measure (Land + municipal part)"
+     }
+    },
+    "ausgleichsmesszahl": {
+     "value": 36655081000,
+     "coordinates": "Anlage 1 Seite 3, Zeile 15.8",
+     "label": {
+      "de": "Ausgleichsmesszahl (15.6.+15.7.)",
+      "en": "Equalisation measure (what the Land would have at the national average, with resident weights)"
+     }
+    },
+    "fiscal_strength_before_fka_pct": {
+     "value": 117.3,
+     "unit": "percent",
+     "coordinates": "Anlage 1 Seite 3, Zeile 15.4",
+     "label": {
+      "de": "in v.H. der Ausgleichsmesszahl",
+      "en": "Fiscal capacity in % of the equalisation measure, before FKA"
+     }
+    }
+   },
+   "vat_share": {
+    "unit": "EUR",
+    "precision": "EUR thousand in source",
+    "population_part": {
+     "value": 10539920000,
+     "coordinates": "Anlage 1 Seite 2, Zeile 10.1",
+     "label": {
+      "de": "nach § 1 FAG - v.H.-Satz",
+      "en": "Land share of VAT by residents (§ 1 FAG percentage)"
+     }
+    },
+    "festbetrag_part": {
+     "value": 852489000,
+     "coordinates": "Anlage 1 Seite 2, Zeile 10.2",
+     "label": {
+      "de": "nach § 1 FAG - Festbetrag",
+      "en": "Land share of VAT, fixed amounts (§ 1 FAG Festbeträge)"
+     }
+    },
+    "total": {
+     "value": 11392409000,
+     "coordinates": "Anlage 1 Seite 2, Zeile 10.3",
+     "label": {
+      "de": "Länderanteil an der Umsatzsteuer insgesamt",
+      "en": "Land share of VAT, total"
+     }
+    }
+   },
+   "fka": {
+    "unit": "EUR",
+    "precision": "EUR thousand in source",
+    "adjustment": {
+     "value": -4003279000,
+     "coordinates": "Anlage 1 Seite 3, Zeile 15.10",
+     "label": {
+      "de": "Zu- / Abschläge (-) im FKA",
+      "en": "Equalisation adjustment (+ received / − paid) within the VAT distribution"
+     }
+    },
+    "fiscal_strength_after_fka_pct": {
+     "value": 106.4,
+     "unit": "percent",
+     "coordinates": "Tabelle 1 (Daten zur Umsatzsteuerverteilung und zum Finanzkraftausgleich im Jahr 2025), Zeile 'Relative Finanzkraft in Prozent der jeweiligen Ausgleichsmes', Spalte HE",
+     "source": "monatsbericht",
+     "derived_check": 106.41,
+     "label": {
+      "de": "Relative Finanzkraft in Prozent der jeweiligen Ausgleichsmesszahl nach Finanzkraftausgleich",
+      "en": "Fiscal capacity in % of the equalisation measure, after FKA"
+     }
+    }
+   },
+   "bez": {
+    "unit": "EUR",
+    "precision": "Mio EUR in source (rounded)",
+    "source": "monatsbericht",
+    "allgemeine": {
+     "value": 0,
+     "coordinates": "Tabelle 2 (Daten zu den Bundesergänzungszuweisungen im Ausgleichsjahr 2025), Zeile 'Bundesergänzungszuweisung zur ergänzenden Deckung des allgem', Spalte HE",
+     "label": {
+      "de": "Allgemeine Bundesergänzungszuweisungen",
+      "en": "General supplementary federal grants (§ 11 (2) FAG)"
+     }
+    },
+    "gstk": {
+     "value": 0,
+     "coordinates": "Tabelle 2 (Daten zu den Bundesergänzungszuweisungen im Ausgleichsjahr 2025), Zeile 'Bundesergänzungszuweisung zum Ausgleich besonders geringer k', Spalte HE",
+     "label": {
+      "de": "BEZ zum Ausgleich besonders geringer kommunaler Steuerkraft (GStK-BEZ)",
+      "en": "Grants for particularly low municipal tax capacity (§ 11 (5) FAG)"
+     }
+    },
+    "dof": {
+     "value": 0,
+     "coordinates": "Tabelle 2 (Daten zu den Bundesergänzungszuweisungen im Ausgleichsjahr 2025), Zeile 'Bundesergänzungszuweisung durchschnittsorientierter Forschun', Spalte HE",
+     "label": {
+      "de": "BEZ durchschnittsorientierter Forschungsförderungsausgleich (doF-BEZ)",
+      "en": "Research-funding equalisation grants (§ 11 (6) FAG)"
+     }
+    },
+    "sobez_unemployment": {
+     "value": 0,
+     "coordinates": "Tabelle 3 (Daten zu den Sonderbedarfs-Bundesergänzungszuweisungen (SoBEZ) im Jahr 2025), Zeile 'SoBEZ zum Ausgleich von Sonderlasten durch strukturelle Arbe', Spalte HE",
+     "label": {
+      "de": "SoBEZ wegen struktureller Arbeitslosigkeit",
+      "en": "Special-needs grants for structural unemployment (§ 11 (3) FAG)"
+     }
+    },
+    "sobez_political": {
+     "value": 0,
+     "coordinates": "Tabelle 3 (Daten zu den Sonderbedarfs-Bundesergänzungszuweisungen (SoBEZ) im Jahr 2025), Zeile 'SoBEZ wegen überdurchschnittlich hoher Kosten politischer Fü', Spalte HE",
+     "label": {
+      "de": "SoBEZ wegen überdurchschnittlich hoher Kosten politischer Führung",
+      "en": "Special-needs grants for above-average costs of political leadership (§ 11 (4) FAG)"
+     }
+    },
+    "total": {
+     "value": 0,
+     "derived": true,
+     "coordinates": "sum of the five BEZ columns",
+     "label": {
+      "de": "Bundesergänzungszuweisungen insgesamt (inkl. SoBEZ)",
+      "en": "All supplementary federal grants incl. SoBEZ"
+     }
+    },
+    "fiscal_strength_after_bez_pct": {
+     "value": 106.4,
+     "unit": "percent",
+     "coordinates": "Tabelle 2 (Daten zu den Bundesergänzungszuweisungen im Ausgleichsjahr 2025), Zeile 'Finanzkraft in Prozent der Ausgleichsmesszahl nach Finanzkra', Spalte HE",
+     "label": {
+      "de": "Finanzkraft in Prozent der Ausgleichsmesszahl nach Finanzkraftausgleich und Bundesergänzungszuweisungen",
+      "en": "Fiscal capacity in % after FKA and general/GStK/doF BEZ"
+     }
+    },
+    "fiscal_strength_after_sobez_pct": {
+     "value": 106.4,
+     "unit": "percent",
+     "coordinates": "Tabelle 3 (Daten zu den Sonderbedarfs-Bundesergänzungszuweisungen (SoBEZ) im Jahr 2025), Zeile 'Finanzkraft in Prozent der Ausgleichsmesszahl nach Finanzkra', Spalte HE",
+     "label": {
+      "de": "Finanzkraft in Prozent der Ausgleichsmesszahl nach Finanzkraftausgleich, Bundesergänzungszuweisungen und SoBEZ",
+      "en": "Fiscal capacity in % after FKA, BEZ and SoBEZ"
+     }
+    }
+   },
+   "per_resident": {
+    "unit": "EUR per resident",
+    "derived": true,
+    "basis": "value ÷ residents on 2025-06-30 (row 1)",
+    "vat_share": 1814.81,
+    "fka_adjustment": -637.72,
+    "bez_total": 0.0,
+    "fka_plus_bez": -637.72
+   }
+  },
+  {
+   "code": "MV",
+   "name": {
+    "de": "Mecklenburg-Vorpommern",
+    "en": "Mecklenburg-Western Pomerania"
+   },
+   "city_state": false,
+   "population": {
+    "value": 1569569,
+    "date": "2025-06-30",
+    "unit": "persons",
+    "coordinates": "Anlage 1 Seite 1, Zeile 1",
+    "label": {
+     "de": "Einwohner (30.06.2025)",
+     "en": "Residents on 2025-06-30 (basis of the calculation)"
+    }
+   },
+   "tax_bases": {
+    "unit": "EUR",
+    "precision": "EUR thousand in source",
+    "land_taxes_by_revenue": {
+     "value": 2698902000,
+     "coordinates": "Anlage 1 Seite 2, Zeile 9",
+     "label": {
+      "de": "Steuern der Länder n. d. Aufkommen",
+      "en": "Land taxes by place of collection (before VAT distribution)"
+     }
+    },
+    "land_taxes_in_fka": {
+     "value": 5546753000,
+     "coordinates": "Anlage 1 Seite 3, Zeile 15.1",
+     "label": {
+      "de": "Steuern der Länder im FKA 5)",
+      "en": "Land taxes counted in the equalisation (incl. VAT share, Förderabgabe, after § 7 (3) FAG deduction)"
+     }
+    },
+    "municipal_taxes_in_fka": {
+     "value": 1422904000,
+     "coordinates": "Anlage 1 Seite 3, Zeile 15.2",
+     "label": {
+      "de": "Gemeindesteueransatz im FKA",
+      "en": "Municipal taxes counted in the equalisation (75 % of the municipal tax basis)"
+     }
+    },
+    "finanzkraftmesszahl": {
+     "value": 6969657000,
+     "coordinates": "Anlage 1 Seite 3, Zeile 15.3",
+     "label": {
+      "de": "Finanzkraftmesszahl (15.1.+15.2.)",
+      "en": "Fiscal capacity measure (Land + municipal part)"
+     }
+    },
+    "ausgleichsmesszahl": {
+     "value": 9266322000,
+     "coordinates": "Anlage 1 Seite 3, Zeile 15.8",
+     "label": {
+      "de": "Ausgleichsmesszahl (15.6.+15.7.)",
+      "en": "Equalisation measure (what the Land would have at the national average, with resident weights)"
+     }
+    },
+    "fiscal_strength_before_fka_pct": {
+     "value": 75.2,
+     "unit": "percent",
+     "coordinates": "Anlage 1 Seite 3, Zeile 15.4",
+     "label": {
+      "de": "in v.H. der Ausgleichsmesszahl",
+      "en": "Fiscal capacity in % of the equalisation measure, before FKA"
+     }
+    }
+   },
+   "vat_share": {
+    "unit": "EUR",
+    "precision": "EUR thousand in source",
+    "population_part": {
+     "value": 2635315000,
+     "coordinates": "Anlage 1 Seite 2, Zeile 10.1",
+     "label": {
+      "de": "nach § 1 FAG - v.H.-Satz",
+      "en": "Land share of VAT by residents (§ 1 FAG percentage)"
+     }
+    },
+    "festbetrag_part": {
+     "value": 213149000,
+     "coordinates": "Anlage 1 Seite 2, Zeile 10.2",
+     "label": {
+      "de": "nach § 1 FAG - Festbetrag",
+      "en": "Land share of VAT, fixed amounts (§ 1 FAG Festbeträge)"
+     }
+    },
+    "total": {
+     "value": 2848464000,
+     "coordinates": "Anlage 1 Seite 2, Zeile 10.3",
+     "label": {
+      "de": "Länderanteil an der Umsatzsteuer insgesamt",
+      "en": "Land share of VAT, total"
+     }
+    }
+   },
+   "fka": {
+    "unit": "EUR",
+    "precision": "EUR thousand in source",
+    "adjustment": {
+     "value": 1446899000,
+     "coordinates": "Anlage 1 Seite 3, Zeile 15.10",
+     "label": {
+      "de": "Zu- / Abschläge (-) im FKA",
+      "en": "Equalisation adjustment (+ received / − paid) within the VAT distribution"
+     }
+    },
+    "fiscal_strength_after_fka_pct": {
+     "value": 90.8,
+     "unit": "percent",
+     "coordinates": "Tabelle 1 (Daten zur Umsatzsteuerverteilung und zum Finanzkraftausgleich im Jahr 2025), Zeile 'Relative Finanzkraft in Prozent der jeweiligen Ausgleichsmes', Spalte MV",
+     "source": "monatsbericht",
+     "derived_check": 90.83,
+     "label": {
+      "de": "Relative Finanzkraft in Prozent der jeweiligen Ausgleichsmesszahl nach Finanzkraftausgleich",
+      "en": "Fiscal capacity in % of the equalisation measure, after FKA"
+     }
+    }
+   },
+   "bez": {
+    "unit": "EUR",
+    "precision": "Mio EUR in source (rounded)",
+    "source": "monatsbericht",
+    "allgemeine": {
+     "value": 661000000,
+     "coordinates": "Tabelle 2 (Daten zu den Bundesergänzungszuweisungen im Ausgleichsjahr 2025), Zeile 'Bundesergänzungszuweisung zur ergänzenden Deckung des allgem', Spalte MV",
+     "label": {
+      "de": "Allgemeine Bundesergänzungszuweisungen",
+      "en": "General supplementary federal grants (§ 11 (2) FAG)"
+     }
+    },
+    "gstk": {
+     "value": 175000000,
+     "coordinates": "Tabelle 2 (Daten zu den Bundesergänzungszuweisungen im Ausgleichsjahr 2025), Zeile 'Bundesergänzungszuweisung zum Ausgleich besonders geringer k', Spalte MV",
+     "label": {
+      "de": "BEZ zum Ausgleich besonders geringer kommunaler Steuerkraft (GStK-BEZ)",
+      "en": "Grants for particularly low municipal tax capacity (§ 11 (5) FAG)"
+     }
+    },
+    "dof": {
+     "value": 15000000,
+     "coordinates": "Tabelle 2 (Daten zu den Bundesergänzungszuweisungen im Ausgleichsjahr 2025), Zeile 'Bundesergänzungszuweisung durchschnittsorientierter Forschun', Spalte MV",
+     "label": {
+      "de": "BEZ durchschnittsorientierter Forschungsförderungsausgleich (doF-BEZ)",
+      "en": "Research-funding equalisation grants (§ 11 (6) FAG)"
+     }
+    },
+    "sobez_unemployment": {
+     "value": 10000000,
+     "coordinates": "Tabelle 3 (Daten zu den Sonderbedarfs-Bundesergänzungszuweisungen (SoBEZ) im Jahr 2025), Zeile 'SoBEZ zum Ausgleich von Sonderlasten durch strukturelle Arbe', Spalte MV",
+     "label": {
+      "de": "SoBEZ wegen struktureller Arbeitslosigkeit",
+      "en": "Special-needs grants for structural unemployment (§ 11 (3) FAG)"
+     }
+    },
+    "sobez_political": {
+     "value": 78000000,
+     "coordinates": "Tabelle 3 (Daten zu den Sonderbedarfs-Bundesergänzungszuweisungen (SoBEZ) im Jahr 2025), Zeile 'SoBEZ wegen überdurchschnittlich hoher Kosten politischer Fü', Spalte MV",
+     "label": {
+      "de": "SoBEZ wegen überdurchschnittlich hoher Kosten politischer Führung",
+      "en": "Special-needs grants for above-average costs of political leadership (§ 11 (4) FAG)"
+     }
+    },
+    "total": {
+     "value": 939000000,
+     "derived": true,
+     "coordinates": "sum of the five BEZ columns",
+     "label": {
+      "de": "Bundesergänzungszuweisungen insgesamt (inkl. SoBEZ)",
+      "en": "All supplementary federal grants incl. SoBEZ"
+     }
+    },
+    "fiscal_strength_after_bez_pct": {
+     "value": 100.0,
+     "unit": "percent",
+     "coordinates": "Tabelle 2 (Daten zu den Bundesergänzungszuweisungen im Ausgleichsjahr 2025), Zeile 'Finanzkraft in Prozent der Ausgleichsmesszahl nach Finanzkra', Spalte MV",
+     "label": {
+      "de": "Finanzkraft in Prozent der Ausgleichsmesszahl nach Finanzkraftausgleich und Bundesergänzungszuweisungen",
+      "en": "Fiscal capacity in % after FKA and general/GStK/doF BEZ"
+     }
+    },
+    "fiscal_strength_after_sobez_pct": {
+     "value": 101.0,
+     "unit": "percent",
+     "coordinates": "Tabelle 3 (Daten zu den Sonderbedarfs-Bundesergänzungszuweisungen (SoBEZ) im Jahr 2025), Zeile 'Finanzkraft in Prozent der Ausgleichsmesszahl nach Finanzkra', Spalte MV",
+     "label": {
+      "de": "Finanzkraft in Prozent der Ausgleichsmesszahl nach Finanzkraftausgleich, Bundesergänzungszuweisungen und SoBEZ",
+      "en": "Fiscal capacity in % after FKA, BEZ and SoBEZ"
+     }
+    }
+   },
+   "per_resident": {
+    "unit": "EUR per resident",
+    "derived": true,
+    "basis": "value ÷ residents on 2025-06-30 (row 1)",
+    "vat_share": 1814.81,
+    "fka_adjustment": 921.84,
+    "bez_total": 598.25,
+    "fka_plus_bez": 1520.1
+   }
+  },
+  {
+   "code": "NI",
+   "name": {
+    "de": "Niedersachsen",
+    "en": "Lower Saxony"
+   },
+   "city_state": false,
+   "population": {
+    "value": 7999736,
+    "date": "2025-06-30",
+    "unit": "persons",
+    "coordinates": "Anlage 1 Seite 1, Zeile 1",
+    "label": {
+     "de": "Einwohner (30.06.2025)",
+     "en": "Residents on 2025-06-30 (basis of the calculation)"
+    }
+   },
+   "tax_bases": {
+    "unit": "EUR",
+    "precision": "EUR thousand in source",
+    "land_taxes_by_revenue": {
+     "value": 20255938000,
+     "coordinates": "Anlage 1 Seite 2, Zeile 9",
+     "label": {
+      "de": "Steuern der Länder n. d. Aufkommen",
+      "en": "Land taxes by place of collection (before VAT distribution)"
+     }
+    },
+    "land_taxes_in_fka": {
+     "value": 34756391000,
+     "coordinates": "Anlage 1 Seite 3, Zeile 15.1",
+     "label": {
+      "de": "Steuern der Länder im FKA 5)",
+      "en": "Land taxes counted in the equalisation (incl. VAT share, Förderabgabe, after § 7 (3) FAG deduction)"
+     }
+    },
+    "municipal_taxes_in_fka": {
+     "value": 9665088000,
+     "coordinates": "Anlage 1 Seite 3, Zeile 15.2",
+     "label": {
+      "de": "Gemeindesteueransatz im FKA",
+      "en": "Municipal taxes counted in the equalisation (75 % of the municipal tax basis)"
+     }
+    },
+    "finanzkraftmesszahl": {
+     "value": 44421479000,
+     "coordinates": "Anlage 1 Seite 3, Zeile 15.3",
+     "label": {
+      "de": "Finanzkraftmesszahl (15.1.+15.2.)",
+      "en": "Fiscal capacity measure (Land + municipal part)"
+     }
+    },
+    "ausgleichsmesszahl": {
+     "value": 46711581000,
+     "coordinates": "Anlage 1 Seite 3, Zeile 15.8",
+     "label": {
+      "de": "Ausgleichsmesszahl (15.6.+15.7.)",
+      "en": "Equalisation measure (what the Land would have at the national average, with resident weights)"
+     }
+    },
+    "fiscal_strength_before_fka_pct": {
+     "value": 95.1,
+     "unit": "percent",
+     "coordinates": "Anlage 1 Seite 3, Zeile 15.4",
+     "label": {
+      "de": "in v.H. der Ausgleichsmesszahl",
+      "en": "Fiscal capacity in % of the equalisation measure, before FKA"
+     }
+    }
+   },
+   "vat_share": {
+    "unit": "EUR",
+    "precision": "EUR thousand in source",
+    "population_part": {
+     "value": 13431599000,
+     "coordinates": "Anlage 1 Seite 2, Zeile 10.1",
+     "label": {
+      "de": "nach § 1 FAG - v.H.-Satz",
+      "en": "Land share of VAT by residents (§ 1 FAG percentage)"
+     }
+    },
+    "festbetrag_part": {
+     "value": 1086373000,
+     "coordinates": "Anlage 1 Seite 2, Zeile 10.2",
+     "label": {
+      "de": "nach § 1 FAG - Festbetrag",
+      "en": "Land share of VAT, fixed amounts (§ 1 FAG Festbeträge)"
+     }
+    },
+    "total": {
+     "value": 14517972000,
+     "coordinates": "Anlage 1 Seite 2, Zeile 10.3",
+     "label": {
+      "de": "Länderanteil an der Umsatzsteuer insgesamt",
+      "en": "Land share of VAT, total"
+     }
+    }
+   },
+   "fka": {
+    "unit": "EUR",
+    "precision": "EUR thousand in source",
+    "adjustment": {
+     "value": 1442764000,
+     "coordinates": "Anlage 1 Seite 3, Zeile 15.10",
+     "label": {
+      "de": "Zu- / Abschläge (-) im FKA",
+      "en": "Equalisation adjustment (+ received / − paid) within the VAT distribution"
+     }
+    },
+    "fiscal_strength_after_fka_pct": {
+     "value": 98.2,
+     "unit": "percent",
+     "coordinates": "Tabelle 1 (Daten zur Umsatzsteuerverteilung und zum Finanzkraftausgleich im Jahr 2025), Zeile 'Relative Finanzkraft in Prozent der jeweiligen Ausgleichsmes', Spalte NI",
+     "source": "monatsbericht",
+     "derived_check": 98.19,
+     "label": {
+      "de": "Relative Finanzkraft in Prozent der jeweiligen Ausgleichsmesszahl nach Finanzkraftausgleich",
+      "en": "Fiscal capacity in % of the equalisation measure, after FKA"
+     }
+    }
+   },
+   "bez": {
+    "unit": "EUR",
+    "precision": "Mio EUR in source (rounded)",
+    "source": "monatsbericht",
+    "allgemeine": {
+     "value": 584000000,
+     "coordinates": "Tabelle 2 (Daten zu den Bundesergänzungszuweisungen im Ausgleichsjahr 2025), Zeile 'Bundesergänzungszuweisung zur ergänzenden Deckung des allgem', Spalte NI",
+     "label": {
+      "de": "Allgemeine Bundesergänzungszuweisungen",
+      "en": "General supplementary federal grants (§ 11 (2) FAG)"
+     }
+    },
+    "gstk": {
+     "value": 0,
+     "coordinates": "Tabelle 2 (Daten zu den Bundesergänzungszuweisungen im Ausgleichsjahr 2025), Zeile 'Bundesergänzungszuweisung zum Ausgleich besonders geringer k', Spalte NI",
+     "label": {
+      "de": "BEZ zum Ausgleich besonders geringer kommunaler Steuerkraft (GStK-BEZ)",
+      "en": "Grants for particularly low municipal tax capacity (§ 11 (5) FAG)"
+     }
+    },
+    "dof": {
+     "value": 60000000,
+     "coordinates": "Tabelle 2 (Daten zu den Bundesergänzungszuweisungen im Ausgleichsjahr 2025), Zeile 'Bundesergänzungszuweisung durchschnittsorientierter Forschun', Spalte NI",
+     "label": {
+      "de": "BEZ durchschnittsorientierter Forschungsförderungsausgleich (doF-BEZ)",
+      "en": "Research-funding equalisation grants (§ 11 (6) FAG)"
+     }
+    },
+    "sobez_unemployment": {
+     "value": 0,
+     "coordinates": "Tabelle 3 (Daten zu den Sonderbedarfs-Bundesergänzungszuweisungen (SoBEZ) im Jahr 2025), Zeile 'SoBEZ zum Ausgleich von Sonderlasten durch strukturelle Arbe', Spalte NI",
+     "label": {
+      "de": "SoBEZ wegen struktureller Arbeitslosigkeit",
+      "en": "Special-needs grants for structural unemployment (§ 11 (3) FAG)"
+     }
+    },
+    "sobez_political": {
+     "value": 0,
+     "coordinates": "Tabelle 3 (Daten zu den Sonderbedarfs-Bundesergänzungszuweisungen (SoBEZ) im Jahr 2025), Zeile 'SoBEZ wegen überdurchschnittlich hoher Kosten politischer Fü', Spalte NI",
+     "label": {
+      "de": "SoBEZ wegen überdurchschnittlich hoher Kosten politischer Führung",
+      "en": "Special-needs grants for above-average costs of political leadership (§ 11 (4) FAG)"
+     }
+    },
+    "total": {
+     "value": 644000000,
+     "derived": true,
+     "coordinates": "sum of the five BEZ columns",
+     "label": {
+      "de": "Bundesergänzungszuweisungen insgesamt (inkl. SoBEZ)",
+      "en": "All supplementary federal grants incl. SoBEZ"
+     }
+    },
+    "fiscal_strength_after_bez_pct": {
+     "value": 99.6,
+     "unit": "percent",
+     "coordinates": "Tabelle 2 (Daten zu den Bundesergänzungszuweisungen im Ausgleichsjahr 2025), Zeile 'Finanzkraft in Prozent der Ausgleichsmesszahl nach Finanzkra', Spalte NI",
+     "label": {
+      "de": "Finanzkraft in Prozent der Ausgleichsmesszahl nach Finanzkraftausgleich und Bundesergänzungszuweisungen",
+      "en": "Fiscal capacity in % after FKA and general/GStK/doF BEZ"
+     }
+    },
+    "fiscal_strength_after_sobez_pct": {
+     "value": 99.6,
+     "unit": "percent",
+     "coordinates": "Tabelle 3 (Daten zu den Sonderbedarfs-Bundesergänzungszuweisungen (SoBEZ) im Jahr 2025), Zeile 'Finanzkraft in Prozent der Ausgleichsmesszahl nach Finanzkra', Spalte NI",
+     "label": {
+      "de": "Finanzkraft in Prozent der Ausgleichsmesszahl nach Finanzkraftausgleich, Bundesergänzungszuweisungen und SoBEZ",
+      "en": "Fiscal capacity in % after FKA, BEZ and SoBEZ"
+     }
+    }
+   },
+   "per_resident": {
+    "unit": "EUR per resident",
+    "derived": true,
+    "basis": "value ÷ residents on 2025-06-30 (row 1)",
+    "vat_share": 1814.81,
+    "fka_adjustment": 180.35,
+    "bez_total": 80.5,
+    "fka_plus_bez": 260.85
+   }
+  },
+  {
+   "code": "NW",
+   "name": {
+    "de": "Nordrhein-Westfalen",
+    "en": "North Rhine-Westphalia"
+   },
+   "city_state": false,
+   "population": {
+    "value": 18011826,
+    "date": "2025-06-30",
+    "unit": "persons",
+    "coordinates": "Anlage 1 Seite 1, Zeile 1",
+    "label": {
+     "de": "Einwohner (30.06.2025)",
+     "en": "Residents on 2025-06-30 (basis of the calculation)"
+    }
+   },
+   "tax_bases": {
+    "unit": "EUR",
+    "precision": "EUR thousand in source",
+    "land_taxes_by_revenue": {
+     "value": 48033509000,
+     "coordinates": "Anlage 1 Seite 2, Zeile 9",
+     "label": {
+      "de": "Steuern der Länder n. d. Aufkommen",
+      "en": "Land taxes by place of collection (before VAT distribution)"
+     }
+    },
+    "land_taxes_in_fka": {
+     "value": 80721522000,
+     "coordinates": "Anlage 1 Seite 3, Zeile 15.1",
+     "label": {
+      "de": "Steuern der Länder im FKA 5)",
+      "en": "Land taxes counted in the equalisation (incl. VAT share, Förderabgabe, after § 7 (3) FAG deduction)"
+     }
+    },
+    "municipal_taxes_in_fka": {
+     "value": 22838863000,
+     "coordinates": "Anlage 1 Seite 3, Zeile 15.2",
+     "label": {
+      "de": "Gemeindesteueransatz im FKA",
+      "en": "Municipal taxes counted in the equalisation (75 % of the municipal tax basis)"
+     }
+    },
+    "finanzkraftmesszahl": {
+     "value": 103560385000,
+     "coordinates": "Anlage 1 Seite 3, Zeile 15.3",
+     "label": {
+      "de": "Finanzkraftmesszahl (15.1.+15.2.)",
+      "en": "Fiscal capacity measure (Land + municipal part)"
+     }
+    },
+    "ausgleichsmesszahl": {
+     "value": 105173580000,
+     "coordinates": "Anlage 1 Seite 3, Zeile 15.8",
+     "label": {
+      "de": "Ausgleichsmesszahl (15.6.+15.7.)",
+      "en": "Equalisation measure (what the Land would have at the national average, with resident weights)"
+     }
+    },
+    "fiscal_strength_before_fka_pct": {
+     "value": 98.5,
+     "unit": "percent",
+     "coordinates": "Anlage 1 Seite 3, Zeile 15.4",
+     "label": {
+      "de": "in v.H. der Ausgleichsmesszahl",
+      "en": "Fiscal capacity in % of the equalisation measure, before FKA"
+     }
+    }
+   },
+   "vat_share": {
+    "unit": "EUR",
+    "precision": "EUR thousand in source",
+    "population_part": {
+     "value": 30241950000,
+     "coordinates": "Anlage 1 Seite 2, Zeile 10.1",
+     "label": {
+      "de": "nach § 1 FAG - v.H.-Satz",
+      "en": "Land share of VAT by residents (§ 1 FAG percentage)"
+     }
+    },
+    "festbetrag_part": {
+     "value": 2446027000,
+     "coordinates": "Anlage 1 Seite 2, Zeile 10.2",
+     "label": {
+      "de": "nach § 1 FAG - Festbetrag",
+      "en": "Land share of VAT, fixed amounts (§ 1 FAG Festbeträge)"
+     }
+    },
+    "total": {
+     "value": 32687976000,
+     "coordinates": "Anlage 1 Seite 2, Zeile 10.3",
+     "label": {
+      "de": "Länderanteil an der Umsatzsteuer insgesamt",
+      "en": "Land share of VAT, total"
+     }
+    }
+   },
+   "fka": {
+    "unit": "EUR",
+    "precision": "EUR thousand in source",
+    "adjustment": {
+     "value": 1016313000,
+     "coordinates": "Anlage 1 Seite 3, Zeile 15.10",
+     "label": {
+      "de": "Zu- / Abschläge (-) im FKA",
+      "en": "Equalisation adjustment (+ received / − paid) within the VAT distribution"
+     }
+    },
+    "fiscal_strength_after_fka_pct": {
+     "value": 99.4,
+     "unit": "percent",
+     "coordinates": "Tabelle 1 (Daten zur Umsatzsteuerverteilung und zum Finanzkraftausgleich im Jahr 2025), Zeile 'Relative Finanzkraft in Prozent der jeweiligen Ausgleichsmes', Spalte NW",
+     "source": "monatsbericht",
+     "derived_check": 99.43,
+     "label": {
+      "de": "Relative Finanzkraft in Prozent der jeweiligen Ausgleichsmesszahl nach Finanzkraftausgleich",
+      "en": "Fiscal capacity in % of the equalisation measure, after FKA"
+     }
+    }
+   },
+   "bez": {
+    "unit": "EUR",
+    "precision": "Mio EUR in source (rounded)",
+    "source": "monatsbericht",
+    "allgemeine": {
+     "value": 267000000,
+     "coordinates": "Tabelle 2 (Daten zu den Bundesergänzungszuweisungen im Ausgleichsjahr 2025), Zeile 'Bundesergänzungszuweisung zur ergänzenden Deckung des allgem', Spalte NW",
+     "label": {
+      "de": "Allgemeine Bundesergänzungszuweisungen",
+      "en": "General supplementary federal grants (§ 11 (2) FAG)"
+     }
+    },
+    "gstk": {
+     "value": 0,
+     "coordinates": "Tabelle 2 (Daten zu den Bundesergänzungszuweisungen im Ausgleichsjahr 2025), Zeile 'Bundesergänzungszuweisung zum Ausgleich besonders geringer k', Spalte NW",
+     "label": {
+      "de": "BEZ zum Ausgleich besonders geringer kommunaler Steuerkraft (GStK-BEZ)",
+      "en": "Grants for particularly low municipal tax capacity (§ 11 (5) FAG)"
+     }
+    },
+    "dof": {
+     "value": 109000000,
+     "coordinates": "Tabelle 2 (Daten zu den Bundesergänzungszuweisungen im Ausgleichsjahr 2025), Zeile 'Bundesergänzungszuweisung durchschnittsorientierter Forschun', Spalte NW",
+     "label": {
+      "de": "BEZ durchschnittsorientierter Forschungsförderungsausgleich (doF-BEZ)",
+      "en": "Research-funding equalisation grants (§ 11 (6) FAG)"
+     }
+    },
+    "sobez_unemployment": {
+     "value": 0,
+     "coordinates": "Tabelle 3 (Daten zu den Sonderbedarfs-Bundesergänzungszuweisungen (SoBEZ) im Jahr 2025), Zeile 'SoBEZ zum Ausgleich von Sonderlasten durch strukturelle Arbe', Spalte NW",
+     "label": {
+      "de": "SoBEZ wegen struktureller Arbeitslosigkeit",
+      "en": "Special-needs grants for structural unemployment (§ 11 (3) FAG)"
+     }
+    },
+    "sobez_political": {
+     "value": 0,
+     "coordinates": "Tabelle 3 (Daten zu den Sonderbedarfs-Bundesergänzungszuweisungen (SoBEZ) im Jahr 2025), Zeile 'SoBEZ wegen überdurchschnittlich hoher Kosten politischer Fü', Spalte NW",
+     "label": {
+      "de": "SoBEZ wegen überdurchschnittlich hoher Kosten politischer Führung",
+      "en": "Special-needs grants for above-average costs of political leadership (§ 11 (4) FAG)"
+     }
+    },
+    "total": {
+     "value": 376000000,
+     "derived": true,
+     "coordinates": "sum of the five BEZ columns",
+     "label": {
+      "de": "Bundesergänzungszuweisungen insgesamt (inkl. SoBEZ)",
+      "en": "All supplementary federal grants incl. SoBEZ"
+     }
+    },
+    "fiscal_strength_after_bez_pct": {
+     "value": 99.8,
+     "unit": "percent",
+     "coordinates": "Tabelle 2 (Daten zu den Bundesergänzungszuweisungen im Ausgleichsjahr 2025), Zeile 'Finanzkraft in Prozent der Ausgleichsmesszahl nach Finanzkra', Spalte NW",
+     "label": {
+      "de": "Finanzkraft in Prozent der Ausgleichsmesszahl nach Finanzkraftausgleich und Bundesergänzungszuweisungen",
+      "en": "Fiscal capacity in % after FKA and general/GStK/doF BEZ"
+     }
+    },
+    "fiscal_strength_after_sobez_pct": {
+     "value": 99.8,
+     "unit": "percent",
+     "coordinates": "Tabelle 3 (Daten zu den Sonderbedarfs-Bundesergänzungszuweisungen (SoBEZ) im Jahr 2025), Zeile 'Finanzkraft in Prozent der Ausgleichsmesszahl nach Finanzkra', Spalte NW",
+     "label": {
+      "de": "Finanzkraft in Prozent der Ausgleichsmesszahl nach Finanzkraftausgleich, Bundesergänzungszuweisungen und SoBEZ",
+      "en": "Fiscal capacity in % after FKA, BEZ and SoBEZ"
+     }
+    }
+   },
+   "per_resident": {
+    "unit": "EUR per resident",
+    "derived": true,
+    "basis": "value ÷ residents on 2025-06-30 (row 1)",
+    "vat_share": 1814.81,
+    "fka_adjustment": 56.42,
+    "bez_total": 20.88,
+    "fka_plus_bez": 77.3
+   }
+  },
+  {
+   "code": "RP",
+   "name": {
+    "de": "Rheinland-Pfalz",
+    "en": "Rhineland-Palatinate"
+   },
+   "city_state": false,
+   "population": {
+    "value": 4123329,
+    "date": "2025-06-30",
+    "unit": "persons",
+    "coordinates": "Anlage 1 Seite 1, Zeile 1",
+    "label": {
+     "de": "Einwohner (30.06.2025)",
+     "en": "Residents on 2025-06-30 (basis of the calculation)"
+    }
+   },
+   "tax_bases": {
+    "unit": "EUR",
+    "precision": "EUR thousand in source",
+    "land_taxes_by_revenue": {
+     "value": 10460601000,
+     "coordinates": "Anlage 1 Seite 2, Zeile 9",
+     "label": {
+      "de": "Steuern der Länder n. d. Aufkommen",
+      "en": "Land taxes by place of collection (before VAT distribution)"
+     }
+    },
+    "land_taxes_in_fka": {
+     "value": 17945829000,
+     "coordinates": "Anlage 1 Seite 3, Zeile 15.1",
+     "label": {
+      "de": "Steuern der Länder im FKA 5)",
+      "en": "Land taxes counted in the equalisation (incl. VAT share, Förderabgabe, after § 7 (3) FAG deduction)"
+     }
+    },
+    "municipal_taxes_in_fka": {
+     "value": 4931344000,
+     "coordinates": "Anlage 1 Seite 3, Zeile 15.2",
+     "label": {
+      "de": "Gemeindesteueransatz im FKA",
+      "en": "Municipal taxes counted in the equalisation (75 % of the municipal tax basis)"
+     }
+    },
+    "finanzkraftmesszahl": {
+     "value": 22877173000,
+     "coordinates": "Anlage 1 Seite 3, Zeile 15.3",
+     "label": {
+      "de": "Finanzkraftmesszahl (15.1.+15.2.)",
+      "en": "Fiscal capacity measure (Land + municipal part)"
+     }
+    },
+    "ausgleichsmesszahl": {
+     "value": 24076697000,
+     "coordinates": "Anlage 1 Seite 3, Zeile 15.8",
+     "label": {
+      "de": "Ausgleichsmesszahl (15.6.+15.7.)",
+      "en": "Equalisation measure (what the Land would have at the national average, with resident weights)"
+     }
+    },
+    "fiscal_strength_before_fka_pct": {
+     "value": 95.0,
+     "unit": "percent",
+     "coordinates": "Anlage 1 Seite 3, Zeile 15.4",
+     "label": {
+      "de": "in v.H. der Ausgleichsmesszahl",
+      "en": "Fiscal capacity in % of the equalisation measure, before FKA"
+     }
+    }
+   },
+   "vat_share": {
+    "unit": "EUR",
+    "precision": "EUR thousand in source",
+    "population_part": {
+     "value": 6923091000,
+     "coordinates": "Anlage 1 Seite 2, Zeile 10.1",
+     "label": {
+      "de": "nach § 1 FAG - v.H.-Satz",
+      "en": "Land share of VAT by residents (§ 1 FAG percentage)"
+     }
+    },
+    "festbetrag_part": {
+     "value": 559953000,
+     "coordinates": "Anlage 1 Seite 2, Zeile 10.2",
+     "label": {
+      "de": "nach § 1 FAG - Festbetrag",
+      "en": "Land share of VAT, fixed amounts (§ 1 FAG Festbeträge)"
+     }
+    },
+    "total": {
+     "value": 7483044000,
+     "coordinates": "Anlage 1 Seite 2, Zeile 10.3",
+     "label": {
+      "de": "Länderanteil an der Umsatzsteuer insgesamt",
+      "en": "Land share of VAT, total"
+     }
+    }
+   },
+   "fka": {
+    "unit": "EUR",
+    "precision": "EUR thousand in source",
+    "adjustment": {
+     "value": 755700000,
+     "coordinates": "Anlage 1 Seite 3, Zeile 15.10",
+     "label": {
+      "de": "Zu- / Abschläge (-) im FKA",
+      "en": "Equalisation adjustment (+ received / − paid) within the VAT distribution"
+     }
+    },
+    "fiscal_strength_after_fka_pct": {
+     "value": 98.2,
+     "unit": "percent",
+     "coordinates": "Tabelle 1 (Daten zur Umsatzsteuerverteilung und zum Finanzkraftausgleich im Jahr 2025), Zeile 'Relative Finanzkraft in Prozent der jeweiligen Ausgleichsmes', Spalte RP",
+     "source": "monatsbericht",
+     "derived_check": 98.16,
+     "label": {
+      "de": "Relative Finanzkraft in Prozent der jeweiligen Ausgleichsmesszahl nach Finanzkraftausgleich",
+      "en": "Fiscal capacity in % of the equalisation measure, after FKA"
+     }
+    }
+   },
+   "bez": {
+    "unit": "EUR",
+    "precision": "Mio EUR in source (rounded)",
+    "source": "monatsbericht",
+    "allgemeine": {
+     "value": 307000000,
+     "coordinates": "Tabelle 2 (Daten zu den Bundesergänzungszuweisungen im Ausgleichsjahr 2025), Zeile 'Bundesergänzungszuweisung zur ergänzenden Deckung des allgem', Spalte RP",
+     "label": {
+      "de": "Allgemeine Bundesergänzungszuweisungen",
+      "en": "General supplementary federal grants (§ 11 (2) FAG)"
+     }
+    },
+    "gstk": {
+     "value": 0,
+     "coordinates": "Tabelle 2 (Daten zu den Bundesergänzungszuweisungen im Ausgleichsjahr 2025), Zeile 'Bundesergänzungszuweisung zum Ausgleich besonders geringer k', Spalte RP",
+     "label": {
+      "de": "BEZ zum Ausgleich besonders geringer kommunaler Steuerkraft (GStK-BEZ)",
+      "en": "Grants for particularly low municipal tax capacity (§ 11 (5) FAG)"
+     }
+    },
+    "dof": {
+     "value": 87000000,
+     "coordinates": "Tabelle 2 (Daten zu den Bundesergänzungszuweisungen im Ausgleichsjahr 2025), Zeile 'Bundesergänzungszuweisung durchschnittsorientierter Forschun', Spalte RP",
+     "label": {
+      "de": "BEZ durchschnittsorientierter Forschungsförderungsausgleich (doF-BEZ)",
+      "en": "Research-funding equalisation grants (§ 11 (6) FAG)"
+     }
+    },
+    "sobez_unemployment": {
+     "value": 0,
+     "coordinates": "Tabelle 3 (Daten zu den Sonderbedarfs-Bundesergänzungszuweisungen (SoBEZ) im Jahr 2025), Zeile 'SoBEZ zum Ausgleich von Sonderlasten durch strukturelle Arbe', Spalte RP",
+     "label": {
+      "de": "SoBEZ wegen struktureller Arbeitslosigkeit",
+      "en": "Special-needs grants for structural unemployment (§ 11 (3) FAG)"
+     }
+    },
+    "sobez_political": {
+     "value": 54000000,
+     "coordinates": "Tabelle 3 (Daten zu den Sonderbedarfs-Bundesergänzungszuweisungen (SoBEZ) im Jahr 2025), Zeile 'SoBEZ wegen überdurchschnittlich hoher Kosten politischer Fü', Spalte RP",
+     "label": {
+      "de": "SoBEZ wegen überdurchschnittlich hoher Kosten politischer Führung",
+      "en": "Special-needs grants for above-average costs of political leadership (§ 11 (4) FAG)"
+     }
+    },
+    "total": {
+     "value": 448000000,
+     "derived": true,
+     "coordinates": "sum of the five BEZ columns",
+     "label": {
+      "de": "Bundesergänzungszuweisungen insgesamt (inkl. SoBEZ)",
+      "en": "All supplementary federal grants incl. SoBEZ"
+     }
+    },
+    "fiscal_strength_after_bez_pct": {
+     "value": 99.8,
+     "unit": "percent",
+     "coordinates": "Tabelle 2 (Daten zu den Bundesergänzungszuweisungen im Ausgleichsjahr 2025), Zeile 'Finanzkraft in Prozent der Ausgleichsmesszahl nach Finanzkra', Spalte RP",
+     "label": {
+      "de": "Finanzkraft in Prozent der Ausgleichsmesszahl nach Finanzkraftausgleich und Bundesergänzungszuweisungen",
+      "en": "Fiscal capacity in % after FKA and general/GStK/doF BEZ"
+     }
+    },
+    "fiscal_strength_after_sobez_pct": {
+     "value": 100.0,
+     "unit": "percent",
+     "coordinates": "Tabelle 3 (Daten zu den Sonderbedarfs-Bundesergänzungszuweisungen (SoBEZ) im Jahr 2025), Zeile 'Finanzkraft in Prozent der Ausgleichsmesszahl nach Finanzkra', Spalte RP",
+     "label": {
+      "de": "Finanzkraft in Prozent der Ausgleichsmesszahl nach Finanzkraftausgleich, Bundesergänzungszuweisungen und SoBEZ",
+      "en": "Fiscal capacity in % after FKA, BEZ and SoBEZ"
+     }
+    }
+   },
+   "per_resident": {
+    "unit": "EUR per resident",
+    "derived": true,
+    "basis": "value ÷ residents on 2025-06-30 (row 1)",
+    "vat_share": 1814.81,
+    "fka_adjustment": 183.27,
+    "bez_total": 108.65,
+    "fka_plus_bez": 291.92
+   }
+  },
+  {
+   "code": "SL",
+   "name": {
+    "de": "Saarland",
+    "en": "Saarland"
+   },
+   "city_state": false,
+   "population": {
+    "value": 1009164,
+    "date": "2025-06-30",
+    "unit": "persons",
+    "coordinates": "Anlage 1 Seite 1, Zeile 1",
+    "label": {
+     "de": "Einwohner (30.06.2025)",
+     "en": "Residents on 2025-06-30 (basis of the calculation)"
+    }
+   },
+   "tax_bases": {
+    "unit": "EUR",
+    "precision": "EUR thousand in source",
+    "land_taxes_by_revenue": {
+     "value": 2011161000,
+     "coordinates": "Anlage 1 Seite 2, Zeile 9",
+     "label": {
+      "de": "Steuern der Länder n. d. Aufkommen",
+      "en": "Land taxes by place of collection (before VAT distribution)"
+     }
+    },
+    "land_taxes_in_fka": {
+     "value": 3842659000,
+     "coordinates": "Anlage 1 Seite 3, Zeile 15.1",
+     "label": {
+      "de": "Steuern der Länder im FKA 5)",
+      "en": "Land taxes counted in the equalisation (incl. VAT share, Förderabgabe, after § 7 (3) FAG deduction)"
+     }
+    },
+    "municipal_taxes_in_fka": {
+     "value": 939874000,
+     "coordinates": "Anlage 1 Seite 3, Zeile 15.2",
+     "label": {
+      "de": "Gemeindesteueransatz im FKA",
+      "en": "Municipal taxes counted in the equalisation (75 % of the municipal tax basis)"
+     }
+    },
+    "finanzkraftmesszahl": {
+     "value": 4782532000,
+     "coordinates": "Anlage 1 Seite 3, Zeile 15.3",
+     "label": {
+      "de": "Finanzkraftmesszahl (15.1.+15.2.)",
+      "en": "Fiscal capacity measure (Land + municipal part)"
+     }
+    },
+    "ausgleichsmesszahl": {
+     "value": 5892650000,
+     "coordinates": "Anlage 1 Seite 3, Zeile 15.8",
+     "label": {
+      "de": "Ausgleichsmesszahl (15.6.+15.7.)",
+      "en": "Equalisation measure (what the Land would have at the national average, with resident weights)"
+     }
+    },
+    "fiscal_strength_before_fka_pct": {
+     "value": 81.2,
+     "unit": "percent",
+     "coordinates": "Anlage 1 Seite 3, Zeile 15.4",
+     "label": {
+      "de": "in v.H. der Ausgleichsmesszahl",
+      "en": "Fiscal capacity in % of the equalisation measure, before FKA"
+     }
+    }
+   },
+   "vat_share": {
+    "unit": "EUR",
+    "precision": "EUR thousand in source",
+    "population_part": {
+     "value": 1694392000,
+     "coordinates": "Anlage 1 Seite 2, Zeile 10.1",
+     "label": {
+      "de": "nach § 1 FAG - v.H.-Satz",
+      "en": "Land share of VAT by residents (§ 1 FAG percentage)"
+     }
+    },
+    "festbetrag_part": {
+     "value": 137046000,
+     "coordinates": "Anlage 1 Seite 2, Zeile 10.2",
+     "label": {
+      "de": "nach § 1 FAG - Festbetrag",
+      "en": "Land share of VAT, fixed amounts (§ 1 FAG Festbeträge)"
+     }
+    },
+    "total": {
+     "value": 1831437000,
+     "coordinates": "Anlage 1 Seite 2, Zeile 10.3",
+     "label": {
+      "de": "Länderanteil an der Umsatzsteuer insgesamt",
+      "en": "Land share of VAT, total"
+     }
+    }
+   },
+   "fka": {
+    "unit": "EUR",
+    "precision": "EUR thousand in source",
+    "adjustment": {
+     "value": 699374000,
+     "coordinates": "Anlage 1 Seite 3, Zeile 15.10",
+     "label": {
+      "de": "Zu- / Abschläge (-) im FKA",
+      "en": "Equalisation adjustment (+ received / − paid) within the VAT distribution"
+     }
+    },
+    "fiscal_strength_after_fka_pct": {
+     "value": 93.0,
+     "unit": "percent",
+     "coordinates": "Tabelle 1 (Daten zur Umsatzsteuerverteilung und zum Finanzkraftausgleich im Jahr 2025), Zeile 'Relative Finanzkraft in Prozent der jeweiligen Ausgleichsmes', Spalte SL",
+     "source": "monatsbericht",
+     "derived_check": 93.03,
+     "label": {
+      "de": "Relative Finanzkraft in Prozent der jeweiligen Ausgleichsmesszahl nach Finanzkraftausgleich",
+      "en": "Fiscal capacity in % of the equalisation measure, after FKA"
+     }
+    }
+   },
+   "bez": {
+    "unit": "EUR",
+    "precision": "Mio EUR in source (rounded)",
+    "source": "monatsbericht",
+    "allgemeine": {
+     "value": 317000000,
+     "coordinates": "Tabelle 2 (Daten zu den Bundesergänzungszuweisungen im Ausgleichsjahr 2025), Zeile 'Bundesergänzungszuweisung zur ergänzenden Deckung des allgem', Spalte SL",
+     "label": {
+      "de": "Allgemeine Bundesergänzungszuweisungen",
+      "en": "General supplementary federal grants (§ 11 (2) FAG)"
+     }
+    },
+    "gstk": {
+     "value": 95000000,
+     "coordinates": "Tabelle 2 (Daten zu den Bundesergänzungszuweisungen im Ausgleichsjahr 2025), Zeile 'Bundesergänzungszuweisung zum Ausgleich besonders geringer k', Spalte SL",
+     "label": {
+      "de": "BEZ zum Ausgleich besonders geringer kommunaler Steuerkraft (GStK-BEZ)",
+      "en": "Grants for particularly low municipal tax capacity (§ 11 (5) FAG)"
+     }
+    },
+    "dof": {
+     "value": 8000000,
+     "coordinates": "Tabelle 2 (Daten zu den Bundesergänzungszuweisungen im Ausgleichsjahr 2025), Zeile 'Bundesergänzungszuweisung durchschnittsorientierter Forschun', Spalte SL",
+     "label": {
+      "de": "BEZ durchschnittsorientierter Forschungsförderungsausgleich (doF-BEZ)",
+      "en": "Research-funding equalisation grants (§ 11 (6) FAG)"
+     }
+    },
+    "sobez_unemployment": {
+     "value": 0,
+     "coordinates": "Tabelle 3 (Daten zu den Sonderbedarfs-Bundesergänzungszuweisungen (SoBEZ) im Jahr 2025), Zeile 'SoBEZ zum Ausgleich von Sonderlasten durch strukturelle Arbe', Spalte SL",
+     "label": {
+      "de": "SoBEZ wegen struktureller Arbeitslosigkeit",
+      "en": "Special-needs grants for structural unemployment (§ 11 (3) FAG)"
+     }
+    },
+    "sobez_political": {
+     "value": 71000000,
+     "coordinates": "Tabelle 3 (Daten zu den Sonderbedarfs-Bundesergänzungszuweisungen (SoBEZ) im Jahr 2025), Zeile 'SoBEZ wegen überdurchschnittlich hoher Kosten politischer Fü', Spalte SL",
+     "label": {
+      "de": "SoBEZ wegen überdurchschnittlich hoher Kosten politischer Führung",
+      "en": "Special-needs grants for above-average costs of political leadership (§ 11 (4) FAG)"
+     }
+    },
+    "total": {
+     "value": 491000000,
+     "derived": true,
+     "coordinates": "sum of the five BEZ columns",
+     "label": {
+      "de": "Bundesergänzungszuweisungen insgesamt (inkl. SoBEZ)",
+      "en": "All supplementary federal grants incl. SoBEZ"
+     }
+    },
+    "fiscal_strength_after_bez_pct": {
+     "value": 100.2,
+     "unit": "percent",
+     "coordinates": "Tabelle 2 (Daten zu den Bundesergänzungszuweisungen im Ausgleichsjahr 2025), Zeile 'Finanzkraft in Prozent der Ausgleichsmesszahl nach Finanzkra', Spalte SL",
+     "label": {
+      "de": "Finanzkraft in Prozent der Ausgleichsmesszahl nach Finanzkraftausgleich und Bundesergänzungszuweisungen",
+      "en": "Fiscal capacity in % after FKA and general/GStK/doF BEZ"
+     }
+    },
+    "fiscal_strength_after_sobez_pct": {
+     "value": 101.4,
+     "unit": "percent",
+     "coordinates": "Tabelle 3 (Daten zu den Sonderbedarfs-Bundesergänzungszuweisungen (SoBEZ) im Jahr 2025), Zeile 'Finanzkraft in Prozent der Ausgleichsmesszahl nach Finanzkra', Spalte SL",
+     "label": {
+      "de": "Finanzkraft in Prozent der Ausgleichsmesszahl nach Finanzkraftausgleich, Bundesergänzungszuweisungen und SoBEZ",
+      "en": "Fiscal capacity in % after FKA, BEZ and SoBEZ"
+     }
+    }
+   },
+   "per_resident": {
+    "unit": "EUR per resident",
+    "derived": true,
+    "basis": "value ÷ residents on 2025-06-30 (row 1)",
+    "vat_share": 1814.81,
+    "fka_adjustment": 693.02,
+    "bez_total": 486.54,
+    "fka_plus_bez": 1179.56
+   }
+  },
+  {
+   "code": "SN",
+   "name": {
+    "de": "Sachsen",
+    "en": "Saxony"
+   },
+   "city_state": false,
+   "population": {
+    "value": 4027196,
+    "date": "2025-06-30",
+    "unit": "persons",
+    "coordinates": "Anlage 1 Seite 1, Zeile 1",
+    "label": {
+     "de": "Einwohner (30.06.2025)",
+     "en": "Residents on 2025-06-30 (basis of the calculation)"
+    }
+   },
+   "tax_bases": {
+    "unit": "EUR",
+    "precision": "EUR thousand in source",
+    "land_taxes_by_revenue": {
+     "value": 7002309000,
+     "coordinates": "Anlage 1 Seite 2, Zeile 9",
+     "label": {
+      "de": "Steuern der Länder n. d. Aufkommen",
+      "en": "Land taxes by place of collection (before VAT distribution)"
+     }
+    },
+    "land_taxes_in_fka": {
+     "value": 14311541000,
+     "coordinates": "Anlage 1 Seite 3, Zeile 15.1",
+     "label": {
+      "de": "Steuern der Länder im FKA 5)",
+      "en": "Land taxes counted in the equalisation (incl. VAT share, Förderabgabe, after § 7 (3) FAG deduction)"
+     }
+    },
+    "municipal_taxes_in_fka": {
+     "value": 3650540000,
+     "coordinates": "Anlage 1 Seite 3, Zeile 15.2",
+     "label": {
+      "de": "Gemeindesteueransatz im FKA",
+      "en": "Municipal taxes counted in the equalisation (75 % of the municipal tax basis)"
+     }
+    },
+    "finanzkraftmesszahl": {
+     "value": 17962082000,
+     "coordinates": "Anlage 1 Seite 3, Zeile 15.3",
+     "label": {
+      "de": "Finanzkraftmesszahl (15.1.+15.2.)",
+      "en": "Fiscal capacity measure (Land + municipal part)"
+     }
+    },
+    "ausgleichsmesszahl": {
+     "value": 23515363000,
+     "coordinates": "Anlage 1 Seite 3, Zeile 15.8",
+     "label": {
+      "de": "Ausgleichsmesszahl (15.6.+15.7.)",
+      "en": "Equalisation measure (what the Land would have at the national average, with resident weights)"
+     }
+    },
+    "fiscal_strength_before_fka_pct": {
+     "value": 76.4,
+     "unit": "percent",
+     "coordinates": "Anlage 1 Seite 3, Zeile 15.4",
+     "label": {
+      "de": "in v.H. der Ausgleichsmesszahl",
+      "en": "Fiscal capacity in % of the equalisation measure, before FKA"
+     }
+    }
+   },
+   "vat_share": {
+    "unit": "EUR",
+    "precision": "EUR thousand in source",
+    "population_part": {
+     "value": 6761683000,
+     "coordinates": "Anlage 1 Seite 2, Zeile 10.1",
+     "label": {
+      "de": "nach § 1 FAG - v.H.-Satz",
+      "en": "Land share of VAT by residents (§ 1 FAG percentage)"
+     }
+    },
+    "festbetrag_part": {
+     "value": 546898000,
+     "coordinates": "Anlage 1 Seite 2, Zeile 10.2",
+     "label": {
+      "de": "nach § 1 FAG - Festbetrag",
+      "en": "Land share of VAT, fixed amounts (§ 1 FAG Festbeträge)"
+     }
+    },
+    "total": {
+     "value": 7308581000,
+     "coordinates": "Anlage 1 Seite 2, Zeile 10.3",
+     "label": {
+      "de": "Länderanteil an der Umsatzsteuer insgesamt",
+      "en": "Land share of VAT, total"
+     }
+    }
+   },
+   "fka": {
+    "unit": "EUR",
+    "precision": "EUR thousand in source",
+    "adjustment": {
+     "value": 3498567000,
+     "coordinates": "Anlage 1 Seite 3, Zeile 15.10",
+     "label": {
+      "de": "Zu- / Abschläge (-) im FKA",
+      "en": "Equalisation adjustment (+ received / − paid) within the VAT distribution"
+     }
+    },
+    "fiscal_strength_after_fka_pct": {
+     "value": 91.3,
+     "unit": "percent",
+     "coordinates": "Tabelle 1 (Daten zur Umsatzsteuerverteilung und zum Finanzkraftausgleich im Jahr 2025), Zeile 'Relative Finanzkraft in Prozent der jeweiligen Ausgleichsmes', Spalte SN",
+     "source": "monatsbericht",
+     "derived_check": 91.26,
+     "label": {
+      "de": "Relative Finanzkraft in Prozent der jeweiligen Ausgleichsmesszahl nach Finanzkraftausgleich",
+      "en": "Fiscal capacity in % of the equalisation measure, after FKA"
+     }
+    }
+   },
+   "bez": {
+    "unit": "EUR",
+    "precision": "Mio EUR in source (rounded)",
+    "source": "monatsbericht",
+    "allgemeine": {
+     "value": 1597000000,
+     "coordinates": "Tabelle 2 (Daten zu den Bundesergänzungszuweisungen im Ausgleichsjahr 2025), Zeile 'Bundesergänzungszuweisung zur ergänzenden Deckung des allgem', Spalte SN",
+     "label": {
+      "de": "Allgemeine Bundesergänzungszuweisungen",
+      "en": "General supplementary federal grants (§ 11 (2) FAG)"
+     }
+    },
+    "gstk": {
+     "value": 450000000,
+     "coordinates": "Tabelle 2 (Daten zu den Bundesergänzungszuweisungen im Ausgleichsjahr 2025), Zeile 'Bundesergänzungszuweisung zum Ausgleich besonders geringer k', Spalte SN",
+     "label": {
+      "de": "BEZ zum Ausgleich besonders geringer kommunaler Steuerkraft (GStK-BEZ)",
+      "en": "Grants for particularly low municipal tax capacity (§ 11 (5) FAG)"
+     }
+    },
+    "dof": {
+     "value": 0,
+     "coordinates": "Tabelle 2 (Daten zu den Bundesergänzungszuweisungen im Ausgleichsjahr 2025), Zeile 'Bundesergänzungszuweisung durchschnittsorientierter Forschun', Spalte SN",
+     "label": {
+      "de": "BEZ durchschnittsorientierter Forschungsförderungsausgleich (doF-BEZ)",
+      "en": "Research-funding equalisation grants (§ 11 (6) FAG)"
+     }
+    },
+    "sobez_unemployment": {
+     "value": 26000000,
+     "coordinates": "Tabelle 3 (Daten zu den Sonderbedarfs-Bundesergänzungszuweisungen (SoBEZ) im Jahr 2025), Zeile 'SoBEZ zum Ausgleich von Sonderlasten durch strukturelle Arbe', Spalte SN",
+     "label": {
+      "de": "SoBEZ wegen struktureller Arbeitslosigkeit",
+      "en": "Special-needs grants for structural unemployment (§ 11 (3) FAG)"
+     }
+    },
+    "sobez_political": {
+     "value": 55000000,
+     "coordinates": "Tabelle 3 (Daten zu den Sonderbedarfs-Bundesergänzungszuweisungen (SoBEZ) im Jahr 2025), Zeile 'SoBEZ wegen überdurchschnittlich hoher Kosten politischer Fü', Spalte SN",
+     "label": {
+      "de": "SoBEZ wegen überdurchschnittlich hoher Kosten politischer Führung",
+      "en": "Special-needs grants for above-average costs of political leadership (§ 11 (4) FAG)"
+     }
+    },
+    "total": {
+     "value": 2128000000,
+     "derived": true,
+     "coordinates": "sum of the five BEZ columns",
+     "label": {
+      "de": "Bundesergänzungszuweisungen insgesamt (inkl. SoBEZ)",
+      "en": "All supplementary federal grants incl. SoBEZ"
+     }
+    },
+    "fiscal_strength_after_bez_pct": {
+     "value": 100.0,
+     "unit": "percent",
+     "coordinates": "Tabelle 2 (Daten zu den Bundesergänzungszuweisungen im Ausgleichsjahr 2025), Zeile 'Finanzkraft in Prozent der Ausgleichsmesszahl nach Finanzkra', Spalte SN",
+     "label": {
+      "de": "Finanzkraft in Prozent der Ausgleichsmesszahl nach Finanzkraftausgleich und Bundesergänzungszuweisungen",
+      "en": "Fiscal capacity in % after FKA and general/GStK/doF BEZ"
+     }
+    },
+    "fiscal_strength_after_sobez_pct": {
+     "value": 100.3,
+     "unit": "percent",
+     "coordinates": "Tabelle 3 (Daten zu den Sonderbedarfs-Bundesergänzungszuweisungen (SoBEZ) im Jahr 2025), Zeile 'Finanzkraft in Prozent der Ausgleichsmesszahl nach Finanzkra', Spalte SN",
+     "label": {
+      "de": "Finanzkraft in Prozent der Ausgleichsmesszahl nach Finanzkraftausgleich, Bundesergänzungszuweisungen und SoBEZ",
+      "en": "Fiscal capacity in % after FKA, BEZ and SoBEZ"
+     }
+    }
+   },
+   "per_resident": {
+    "unit": "EUR per resident",
+    "derived": true,
+    "basis": "value ÷ residents on 2025-06-30 (row 1)",
+    "vat_share": 1814.81,
+    "fka_adjustment": 868.74,
+    "bez_total": 528.41,
+    "fka_plus_bez": 1397.14
+   }
+  },
+  {
+   "code": "ST",
+   "name": {
+    "de": "Sachsen-Anhalt",
+    "en": "Saxony-Anhalt"
+   },
+   "city_state": false,
+   "population": {
+    "value": 2125359,
+    "date": "2025-06-30",
+    "unit": "persons",
+    "coordinates": "Anlage 1 Seite 1, Zeile 1",
+    "label": {
+     "de": "Einwohner (30.06.2025)",
+     "en": "Residents on 2025-06-30 (basis of the calculation)"
+    }
+   },
+   "tax_bases": {
+    "unit": "EUR",
+    "precision": "EUR thousand in source",
+    "land_taxes_by_revenue": {
+     "value": 3660621000,
+     "coordinates": "Anlage 1 Seite 2, Zeile 9",
+     "label": {
+      "de": "Steuern der Länder n. d. Aufkommen",
+      "en": "Land taxes by place of collection (before VAT distribution)"
+     }
+    },
+    "land_taxes_in_fka": {
+     "value": 7510266000,
+     "coordinates": "Anlage 1 Seite 3, Zeile 15.1",
+     "label": {
+      "de": "Steuern der Länder im FKA 5)",
+      "en": "Land taxes counted in the equalisation (incl. VAT share, Förderabgabe, after § 7 (3) FAG deduction)"
+     }
+    },
+    "municipal_taxes_in_fka": {
+     "value": 1860270000,
+     "coordinates": "Anlage 1 Seite 3, Zeile 15.2",
+     "label": {
+      "de": "Gemeindesteueransatz im FKA",
+      "en": "Municipal taxes counted in the equalisation (75 % of the municipal tax basis)"
+     }
+    },
+    "finanzkraftmesszahl": {
+     "value": 9370536000,
+     "coordinates": "Anlage 1 Seite 3, Zeile 15.3",
+     "label": {
+      "de": "Finanzkraftmesszahl (15.1.+15.2.)",
+      "en": "Fiscal capacity measure (Land + municipal part)"
+     }
+    },
+    "ausgleichsmesszahl": {
+     "value": 12465186000,
+     "coordinates": "Anlage 1 Seite 3, Zeile 15.8",
+     "label": {
+      "de": "Ausgleichsmesszahl (15.6.+15.7.)",
+      "en": "Equalisation measure (what the Land would have at the national average, with resident weights)"
+     }
+    },
+    "fiscal_strength_before_fka_pct": {
+     "value": 75.2,
+     "unit": "percent",
+     "coordinates": "Anlage 1 Seite 3, Zeile 15.4",
+     "label": {
+      "de": "in v.H. der Ausgleichsmesszahl",
+      "en": "Fiscal capacity in % of the equalisation measure, before FKA"
+     }
+    }
+   },
+   "vat_share": {
+    "unit": "EUR",
+    "precision": "EUR thousand in source",
+    "population_part": {
+     "value": 3568489000,
+     "coordinates": "Anlage 1 Seite 2, Zeile 10.1",
+     "label": {
+      "de": "nach § 1 FAG - v.H.-Satz",
+      "en": "Land share of VAT by residents (§ 1 FAG percentage)"
+     }
+    },
+    "festbetrag_part": {
+     "value": 288626000,
+     "coordinates": "Anlage 1 Seite 2, Zeile 10.2",
+     "label": {
+      "de": "nach § 1 FAG - Festbetrag",
+      "en": "Land share of VAT, fixed amounts (§ 1 FAG Festbeträge)"
+     }
+    },
+    "total": {
+     "value": 3857115000,
+     "coordinates": "Anlage 1 Seite 2, Zeile 10.3",
+     "label": {
+      "de": "Länderanteil an der Umsatzsteuer insgesamt",
+      "en": "Land share of VAT, total"
+     }
+    }
+   },
+   "fka": {
+    "unit": "EUR",
+    "precision": "EUR thousand in source",
+    "adjustment": {
+     "value": 1949630000,
+     "coordinates": "Anlage 1 Seite 3, Zeile 15.10",
+     "label": {
+      "de": "Zu- / Abschläge (-) im FKA",
+      "en": "Equalisation adjustment (+ received / − paid) within the VAT distribution"
+     }
+    },
+    "fiscal_strength_after_fka_pct": {
+     "value": 90.8,
+     "unit": "percent",
+     "coordinates": "Tabelle 1 (Daten zur Umsatzsteuerverteilung und zum Finanzkraftausgleich im Jahr 2025), Zeile 'Relative Finanzkraft in Prozent der jeweiligen Ausgleichsmes', Spalte ST",
+     "source": "monatsbericht",
+     "derived_check": 90.81,
+     "label": {
+      "de": "Relative Finanzkraft in Prozent der jeweiligen Ausgleichsmesszahl nach Finanzkraftausgleich",
+      "en": "Fiscal capacity in % of the equalisation measure, after FKA"
+     }
+    }
+   },
+   "bez": {
+    "unit": "EUR",
+    "precision": "Mio EUR in source (rounded)",
+    "source": "monatsbericht",
+    "allgemeine": {
+     "value": 891000000,
+     "coordinates": "Tabelle 2 (Daten zu den Bundesergänzungszuweisungen im Ausgleichsjahr 2025), Zeile 'Bundesergänzungszuweisung zur ergänzenden Deckung des allgem', Spalte ST",
+     "label": {
+      "de": "Allgemeine Bundesergänzungszuweisungen",
+      "en": "General supplementary federal grants (§ 11 (2) FAG)"
+     }
+    },
+    "gstk": {
+     "value": 285000000,
+     "coordinates": "Tabelle 2 (Daten zu den Bundesergänzungszuweisungen im Ausgleichsjahr 2025), Zeile 'Bundesergänzungszuweisung zum Ausgleich besonders geringer k', Spalte ST",
+     "label": {
+      "de": "BEZ zum Ausgleich besonders geringer kommunaler Steuerkraft (GStK-BEZ)",
+      "en": "Grants for particularly low municipal tax capacity (§ 11 (5) FAG)"
+     }
+    },
+    "dof": {
+     "value": 15000000,
+     "coordinates": "Tabelle 2 (Daten zu den Bundesergänzungszuweisungen im Ausgleichsjahr 2025), Zeile 'Bundesergänzungszuweisung durchschnittsorientierter Forschun', Spalte ST",
+     "label": {
+      "de": "BEZ durchschnittsorientierter Forschungsförderungsausgleich (doF-BEZ)",
+      "en": "Research-funding equalisation grants (§ 11 (6) FAG)"
+     }
+    },
+    "sobez_unemployment": {
+     "value": 15000000,
+     "coordinates": "Tabelle 3 (Daten zu den Sonderbedarfs-Bundesergänzungszuweisungen (SoBEZ) im Jahr 2025), Zeile 'SoBEZ zum Ausgleich von Sonderlasten durch strukturelle Arbe', Spalte ST",
+     "label": {
+      "de": "SoBEZ wegen struktureller Arbeitslosigkeit",
+      "en": "Special-needs grants for structural unemployment (§ 11 (3) FAG)"
+     }
+    },
+    "sobez_political": {
+     "value": 78000000,
+     "coordinates": "Tabelle 3 (Daten zu den Sonderbedarfs-Bundesergänzungszuweisungen (SoBEZ) im Jahr 2025), Zeile 'SoBEZ wegen überdurchschnittlich hoher Kosten politischer Fü', Spalte ST",
+     "label": {
+      "de": "SoBEZ wegen überdurchschnittlich hoher Kosten politischer Führung",
+      "en": "Special-needs grants for above-average costs of political leadership (§ 11 (4) FAG)"
+     }
+    },
+    "total": {
+     "value": 1284000000,
+     "derived": true,
+     "coordinates": "sum of the five BEZ columns",
+     "label": {
+      "de": "Bundesergänzungszuweisungen insgesamt (inkl. SoBEZ)",
+      "en": "All supplementary federal grants incl. SoBEZ"
+     }
+    },
+    "fiscal_strength_after_bez_pct": {
+     "value": 100.4,
+     "unit": "percent",
+     "coordinates": "Tabelle 2 (Daten zu den Bundesergänzungszuweisungen im Ausgleichsjahr 2025), Zeile 'Finanzkraft in Prozent der Ausgleichsmesszahl nach Finanzkra', Spalte ST",
+     "label": {
+      "de": "Finanzkraft in Prozent der Ausgleichsmesszahl nach Finanzkraftausgleich und Bundesergänzungszuweisungen",
+      "en": "Fiscal capacity in % after FKA and general/GStK/doF BEZ"
+     }
+    },
+    "fiscal_strength_after_sobez_pct": {
+     "value": 101.1,
+     "unit": "percent",
+     "coordinates": "Tabelle 3 (Daten zu den Sonderbedarfs-Bundesergänzungszuweisungen (SoBEZ) im Jahr 2025), Zeile 'Finanzkraft in Prozent der Ausgleichsmesszahl nach Finanzkra', Spalte ST",
+     "label": {
+      "de": "Finanzkraft in Prozent der Ausgleichsmesszahl nach Finanzkraftausgleich, Bundesergänzungszuweisungen und SoBEZ",
+      "en": "Fiscal capacity in % after FKA, BEZ and SoBEZ"
+     }
+    }
+   },
+   "per_resident": {
+    "unit": "EUR per resident",
+    "derived": true,
+    "basis": "value ÷ residents on 2025-06-30 (row 1)",
+    "vat_share": 1814.81,
+    "fka_adjustment": 917.32,
+    "bez_total": 604.13,
+    "fka_plus_bez": 1521.45
+   }
+  },
+  {
+   "code": "SH",
+   "name": {
+    "de": "Schleswig-Holstein",
+    "en": "Schleswig-Holstein"
+   },
+   "city_state": false,
+   "population": {
+    "value": 2958595,
+    "date": "2025-06-30",
+    "unit": "persons",
+    "coordinates": "Anlage 1 Seite 1, Zeile 1",
+    "label": {
+     "de": "Einwohner (30.06.2025)",
+     "en": "Residents on 2025-06-30 (basis of the calculation)"
+    }
+   },
+   "tax_bases": {
+    "unit": "EUR",
+    "precision": "EUR thousand in source",
+    "land_taxes_by_revenue": {
+     "value": 7728605000,
+     "coordinates": "Anlage 1 Seite 2, Zeile 9",
+     "label": {
+      "de": "Steuern der Länder n. d. Aufkommen",
+      "en": "Land taxes by place of collection (before VAT distribution)"
+     }
+    },
+    "land_taxes_in_fka": {
+     "value": 13112826000,
+     "coordinates": "Anlage 1 Seite 3, Zeile 15.1",
+     "label": {
+      "de": "Steuern der Länder im FKA 5)",
+      "en": "Land taxes counted in the equalisation (incl. VAT share, Förderabgabe, after § 7 (3) FAG deduction)"
+     }
+    },
+    "municipal_taxes_in_fka": {
+     "value": 3627479000,
+     "coordinates": "Anlage 1 Seite 3, Zeile 15.2",
+     "label": {
+      "de": "Gemeindesteueransatz im FKA",
+      "en": "Municipal taxes counted in the equalisation (75 % of the municipal tax basis)"
+     }
+    },
+    "finanzkraftmesszahl": {
+     "value": 16740304000,
+     "coordinates": "Anlage 1 Seite 3, Zeile 15.3",
+     "label": {
+      "de": "Finanzkraftmesszahl (15.1.+15.2.)",
+      "en": "Fiscal capacity measure (Land + municipal part)"
+     }
+    },
+    "ausgleichsmesszahl": {
+     "value": 17275651000,
+     "coordinates": "Anlage 1 Seite 3, Zeile 15.8",
+     "label": {
+      "de": "Ausgleichsmesszahl (15.6.+15.7.)",
+      "en": "Equalisation measure (what the Land would have at the national average, with resident weights)"
+     }
+    },
+    "fiscal_strength_before_fka_pct": {
+     "value": 96.9,
+     "unit": "percent",
+     "coordinates": "Anlage 1 Seite 3, Zeile 15.4",
+     "label": {
+      "de": "in v.H. der Ausgleichsmesszahl",
+      "en": "Fiscal capacity in % of the equalisation measure, before FKA"
+     }
+    }
+   },
+   "vat_share": {
+    "unit": "EUR",
+    "precision": "EUR thousand in source",
+    "population_part": {
+     "value": 4967496000,
+     "coordinates": "Anlage 1 Seite 2, Zeile 10.1",
+     "label": {
+      "de": "nach § 1 FAG - v.H.-Satz",
+      "en": "Land share of VAT by residents (§ 1 FAG percentage)"
+     }
+    },
+    "festbetrag_part": {
+     "value": 401781000,
+     "coordinates": "Anlage 1 Seite 2, Zeile 10.2",
+     "label": {
+      "de": "nach § 1 FAG - Festbetrag",
+      "en": "Land share of VAT, fixed amounts (§ 1 FAG Festbeträge)"
+     }
+    },
+    "total": {
+     "value": 5369277000,
+     "coordinates": "Anlage 1 Seite 2, Zeile 10.3",
+     "label": {
+      "de": "Länderanteil an der Umsatzsteuer insgesamt",
+      "en": "Land share of VAT, total"
+     }
+    }
+   },
+   "fka": {
+    "unit": "EUR",
+    "precision": "EUR thousand in source",
+    "adjustment": {
+     "value": 337269000,
+     "coordinates": "Anlage 1 Seite 3, Zeile 15.10",
+     "label": {
+      "de": "Zu- / Abschläge (-) im FKA",
+      "en": "Equalisation adjustment (+ received / − paid) within the VAT distribution"
+     }
+    },
+    "fiscal_strength_after_fka_pct": {
+     "value": 98.9,
+     "unit": "percent",
+     "coordinates": "Tabelle 1 (Daten zur Umsatzsteuerverteilung und zum Finanzkraftausgleich im Jahr 2025), Zeile 'Relative Finanzkraft in Prozent der jeweiligen Ausgleichsmes', Spalte SH",
+     "source": "monatsbericht",
+     "derived_check": 98.85,
+     "label": {
+      "de": "Relative Finanzkraft in Prozent der jeweiligen Ausgleichsmesszahl nach Finanzkraftausgleich",
+      "en": "Fiscal capacity in % of the equalisation measure, after FKA"
+     }
+    }
+   },
+   "bez": {
+    "unit": "EUR",
+    "precision": "Mio EUR in source (rounded)",
+    "source": "monatsbericht",
+    "allgemeine": {
+     "value": 124000000,
+     "coordinates": "Tabelle 2 (Daten zu den Bundesergänzungszuweisungen im Ausgleichsjahr 2025), Zeile 'Bundesergänzungszuweisung zur ergänzenden Deckung des allgem', Spalte SH",
+     "label": {
+      "de": "Allgemeine Bundesergänzungszuweisungen",
+      "en": "General supplementary federal grants (§ 11 (2) FAG)"
+     }
+    },
+    "gstk": {
+     "value": 0,
+     "coordinates": "Tabelle 2 (Daten zu den Bundesergänzungszuweisungen im Ausgleichsjahr 2025), Zeile 'Bundesergänzungszuweisung zum Ausgleich besonders geringer k', Spalte SH",
+     "label": {
+      "de": "BEZ zum Ausgleich besonders geringer kommunaler Steuerkraft (GStK-BEZ)",
+      "en": "Grants for particularly low municipal tax capacity (§ 11 (5) FAG)"
+     }
+    },
+    "dof": {
+     "value": 12000000,
+     "coordinates": "Tabelle 2 (Daten zu den Bundesergänzungszuweisungen im Ausgleichsjahr 2025), Zeile 'Bundesergänzungszuweisung durchschnittsorientierter Forschun', Spalte SH",
+     "label": {
+      "de": "BEZ durchschnittsorientierter Forschungsförderungsausgleich (doF-BEZ)",
+      "en": "Research-funding equalisation grants (§ 11 (6) FAG)"
+     }
+    },
+    "sobez_unemployment": {
+     "value": 0,
+     "coordinates": "Tabelle 3 (Daten zu den Sonderbedarfs-Bundesergänzungszuweisungen (SoBEZ) im Jahr 2025), Zeile 'SoBEZ zum Ausgleich von Sonderlasten durch strukturelle Arbe', Spalte SH",
+     "label": {
+      "de": "SoBEZ wegen struktureller Arbeitslosigkeit",
+      "en": "Special-needs grants for structural unemployment (§ 11 (3) FAG)"
+     }
+    },
+    "sobez_political": {
+     "value": 73000000,
+     "coordinates": "Tabelle 3 (Daten zu den Sonderbedarfs-Bundesergänzungszuweisungen (SoBEZ) im Jahr 2025), Zeile 'SoBEZ wegen überdurchschnittlich hoher Kosten politischer Fü', Spalte SH",
+     "label": {
+      "de": "SoBEZ wegen überdurchschnittlich hoher Kosten politischer Führung",
+      "en": "Special-needs grants for above-average costs of political leadership (§ 11 (4) FAG)"
+     }
+    },
+    "total": {
+     "value": 209000000,
+     "derived": true,
+     "coordinates": "sum of the five BEZ columns",
+     "label": {
+      "de": "Bundesergänzungszuweisungen insgesamt (inkl. SoBEZ)",
+      "en": "All supplementary federal grants incl. SoBEZ"
+     }
+    },
+    "fiscal_strength_after_bez_pct": {
+     "value": 99.6,
+     "unit": "percent",
+     "coordinates": "Tabelle 2 (Daten zu den Bundesergänzungszuweisungen im Ausgleichsjahr 2025), Zeile 'Finanzkraft in Prozent der Ausgleichsmesszahl nach Finanzkra', Spalte SH",
+     "label": {
+      "de": "Finanzkraft in Prozent der Ausgleichsmesszahl nach Finanzkraftausgleich und Bundesergänzungszuweisungen",
+      "en": "Fiscal capacity in % after FKA and general/GStK/doF BEZ"
+     }
+    },
+    "fiscal_strength_after_sobez_pct": {
+     "value": 100.1,
+     "unit": "percent",
+     "coordinates": "Tabelle 3 (Daten zu den Sonderbedarfs-Bundesergänzungszuweisungen (SoBEZ) im Jahr 2025), Zeile 'Finanzkraft in Prozent der Ausgleichsmesszahl nach Finanzkra', Spalte SH",
+     "label": {
+      "de": "Finanzkraft in Prozent der Ausgleichsmesszahl nach Finanzkraftausgleich, Bundesergänzungszuweisungen und SoBEZ",
+      "en": "Fiscal capacity in % after FKA, BEZ and SoBEZ"
+     }
+    }
+   },
+   "per_resident": {
+    "unit": "EUR per resident",
+    "derived": true,
+    "basis": "value ÷ residents on 2025-06-30 (row 1)",
+    "vat_share": 1814.81,
+    "fka_adjustment": 114.0,
+    "bez_total": 70.64,
+    "fka_plus_bez": 184.64
+   }
+  },
+  {
+   "code": "TH",
+   "name": {
+    "de": "Thüringen",
+    "en": "Thuringia"
+   },
+   "city_state": false,
+   "population": {
+    "value": 2088725,
+    "date": "2025-06-30",
+    "unit": "persons",
+    "coordinates": "Anlage 1 Seite 1, Zeile 1",
+    "label": {
+     "de": "Einwohner (30.06.2025)",
+     "en": "Residents on 2025-06-30 (basis of the calculation)"
+    }
+   },
+   "tax_bases": {
+    "unit": "EUR",
+    "precision": "EUR thousand in source",
+    "land_taxes_by_revenue": {
+     "value": 3217876000,
+     "coordinates": "Anlage 1 Seite 2, Zeile 9",
+     "label": {
+      "de": "Steuern der Länder n. d. Aufkommen",
+      "en": "Land taxes by place of collection (before VAT distribution)"
+     }
+    },
+    "land_taxes_in_fka": {
+     "value": 7009239000,
+     "coordinates": "Anlage 1 Seite 3, Zeile 15.1",
+     "label": {
+      "de": "Steuern der Länder im FKA 5)",
+      "en": "Land taxes counted in the equalisation (incl. VAT share, Förderabgabe, after § 7 (3) FAG deduction)"
+     }
+    },
+    "municipal_taxes_in_fka": {
+     "value": 1682307000,
+     "coordinates": "Anlage 1 Seite 3, Zeile 15.2",
+     "label": {
+      "de": "Gemeindesteueransatz im FKA",
+      "en": "Municipal taxes counted in the equalisation (75 % of the municipal tax basis)"
+     }
+    },
+    "finanzkraftmesszahl": {
+     "value": 8691545000,
+     "coordinates": "Anlage 1 Seite 3, Zeile 15.3",
+     "label": {
+      "de": "Finanzkraftmesszahl (15.1.+15.2.)",
+      "en": "Fiscal capacity measure (Land + municipal part)"
+     }
+    },
+    "ausgleichsmesszahl": {
+     "value": 12196358000,
+     "coordinates": "Anlage 1 Seite 3, Zeile 15.8",
+     "label": {
+      "de": "Ausgleichsmesszahl (15.6.+15.7.)",
+      "en": "Equalisation measure (what the Land would have at the national average, with resident weights)"
+     }
+    },
+    "fiscal_strength_before_fka_pct": {
+     "value": 71.3,
+     "unit": "percent",
+     "coordinates": "Anlage 1 Seite 3, Zeile 15.4",
+     "label": {
+      "de": "in v.H. der Ausgleichsmesszahl",
+      "en": "Fiscal capacity in % of the equalisation measure, before FKA"
+     }
+    }
+   },
+   "vat_share": {
+    "unit": "EUR",
+    "precision": "EUR thousand in source",
+    "population_part": {
+     "value": 3506980000,
+     "coordinates": "Anlage 1 Seite 2, Zeile 10.1",
+     "label": {
+      "de": "nach § 1 FAG - v.H.-Satz",
+      "en": "Land share of VAT by residents (§ 1 FAG percentage)"
+     }
+    },
+    "festbetrag_part": {
+     "value": 283651000,
+     "coordinates": "Anlage 1 Seite 2, Zeile 10.2",
+     "label": {
+      "de": "nach § 1 FAG - Festbetrag",
+      "en": "Land share of VAT, fixed amounts (§ 1 FAG Festbeträge)"
+     }
+    },
+    "total": {
+     "value": 3790631000,
+     "coordinates": "Anlage 1 Seite 2, Zeile 10.3",
+     "label": {
+      "de": "Länderanteil an der Umsatzsteuer insgesamt",
+      "en": "Land share of VAT, total"
+     }
+    }
+   },
+   "fka": {
+    "unit": "EUR",
+    "precision": "EUR thousand in source",
+    "adjustment": {
+     "value": 2208032000,
+     "coordinates": "Anlage 1 Seite 3, Zeile 15.10",
+     "label": {
+      "de": "Zu- / Abschläge (-) im FKA",
+      "en": "Equalisation adjustment (+ received / − paid) within the VAT distribution"
+     }
+    },
+    "fiscal_strength_after_fka_pct": {
+     "value": 89.4,
+     "unit": "percent",
+     "coordinates": "Tabelle 1 (Daten zur Umsatzsteuerverteilung und zum Finanzkraftausgleich im Jahr 2025), Zeile 'Relative Finanzkraft in Prozent der jeweiligen Ausgleichsmes', Spalte TH",
+     "source": "monatsbericht",
+     "derived_check": 89.37,
+     "label": {
+      "de": "Relative Finanzkraft in Prozent der jeweiligen Ausgleichsmesszahl nach Finanzkraftausgleich",
+      "en": "Fiscal capacity in % of the equalisation measure, after FKA"
+     }
+    }
+   },
+   "bez": {
+    "unit": "EUR",
+    "precision": "Mio EUR in source (rounded)",
+    "source": "monatsbericht",
+    "allgemeine": {
+     "value": 1013000000,
+     "coordinates": "Tabelle 2 (Daten zu den Bundesergänzungszuweisungen im Ausgleichsjahr 2025), Zeile 'Bundesergänzungszuweisung zur ergänzenden Deckung des allgem', Spalte TH",
+     "label": {
+      "de": "Allgemeine Bundesergänzungszuweisungen",
+      "en": "General supplementary federal grants (§ 11 (2) FAG)"
+     }
+    },
+    "gstk": {
+     "value": 384000000,
+     "coordinates": "Tabelle 2 (Daten zu den Bundesergänzungszuweisungen im Ausgleichsjahr 2025), Zeile 'Bundesergänzungszuweisung zum Ausgleich besonders geringer k', Spalte TH",
+     "label": {
+      "de": "BEZ zum Ausgleich besonders geringer kommunaler Steuerkraft (GStK-BEZ)",
+      "en": "Grants for particularly low municipal tax capacity (§ 11 (5) FAG)"
+     }
+    },
+    "dof": {
+     "value": 18000000,
+     "coordinates": "Tabelle 2 (Daten zu den Bundesergänzungszuweisungen im Ausgleichsjahr 2025), Zeile 'Bundesergänzungszuweisung durchschnittsorientierter Forschun', Spalte TH",
+     "label": {
+      "de": "BEZ durchschnittsorientierter Forschungsförderungsausgleich (doF-BEZ)",
+      "en": "Research-funding equalisation grants (§ 11 (6) FAG)"
+     }
+    },
+    "sobez_unemployment": {
+     "value": 14000000,
+     "coordinates": "Tabelle 3 (Daten zu den Sonderbedarfs-Bundesergänzungszuweisungen (SoBEZ) im Jahr 2025), Zeile 'SoBEZ zum Ausgleich von Sonderlasten durch strukturelle Arbe', Spalte TH",
+     "label": {
+      "de": "SoBEZ wegen struktureller Arbeitslosigkeit",
+      "en": "Special-needs grants for structural unemployment (§ 11 (3) FAG)"
+     }
+    },
+    "sobez_political": {
+     "value": 78000000,
+     "coordinates": "Tabelle 3 (Daten zu den Sonderbedarfs-Bundesergänzungszuweisungen (SoBEZ) im Jahr 2025), Zeile 'SoBEZ wegen überdurchschnittlich hoher Kosten politischer Fü', Spalte TH",
+     "label": {
+      "de": "SoBEZ wegen überdurchschnittlich hoher Kosten politischer Führung",
+      "en": "Special-needs grants for above-average costs of political leadership (§ 11 (4) FAG)"
+     }
+    },
+    "total": {
+     "value": 1507000000,
+     "derived": true,
+     "coordinates": "sum of the five BEZ columns",
+     "label": {
+      "de": "Bundesergänzungszuweisungen insgesamt (inkl. SoBEZ)",
+      "en": "All supplementary federal grants incl. SoBEZ"
+     }
+    },
+    "fiscal_strength_after_bez_pct": {
+     "value": 101.0,
+     "unit": "percent",
+     "coordinates": "Tabelle 2 (Daten zu den Bundesergänzungszuweisungen im Ausgleichsjahr 2025), Zeile 'Finanzkraft in Prozent der Ausgleichsmesszahl nach Finanzkra', Spalte TH",
+     "label": {
+      "de": "Finanzkraft in Prozent der Ausgleichsmesszahl nach Finanzkraftausgleich und Bundesergänzungszuweisungen",
+      "en": "Fiscal capacity in % after FKA and general/GStK/doF BEZ"
+     }
+    },
+    "fiscal_strength_after_sobez_pct": {
+     "value": 101.7,
+     "unit": "percent",
+     "coordinates": "Tabelle 3 (Daten zu den Sonderbedarfs-Bundesergänzungszuweisungen (SoBEZ) im Jahr 2025), Zeile 'Finanzkraft in Prozent der Ausgleichsmesszahl nach Finanzkra', Spalte TH",
+     "label": {
+      "de": "Finanzkraft in Prozent der Ausgleichsmesszahl nach Finanzkraftausgleich, Bundesergänzungszuweisungen und SoBEZ",
+      "en": "Fiscal capacity in % after FKA, BEZ and SoBEZ"
+     }
+    }
+   },
+   "per_resident": {
+    "unit": "EUR per resident",
+    "derived": true,
+    "basis": "value ÷ residents on 2025-06-30 (row 1)",
+    "vat_share": 1814.81,
+    "fka_adjustment": 1057.12,
+    "bez_total": 721.49,
+    "fka_plus_bez": 1778.61
+   }
+  }
+ ],
+ "totals": {
+  "vat": {
+   "unit": "EUR",
+   "total": {
+    "value": 310205837943.42,
+    "coordinates": "Anlage 1 Seite 3, Fußnote 4",
+    "label": {
+     "de": "Gesamtaufkommen der Umsatzsteuer (einschl. Einfuhrumsatzsteuer)",
+     "en": "Total VAT incl. import VAT"
+    }
+   },
+   "domestic": {
+    "value": 236266675468.68,
+    "coordinates": "Anlage 1 Seite 3, Fußnote 4",
+    "label": {
+     "de": "von den Ländern vereinnahmte Umsatzsteuer",
+     "en": "VAT collected by the Länder tax offices"
+    }
+   },
+   "import": {
+    "value": 73939162474.74,
+    "coordinates": "Anlage 1 Seite 3, Fußnote 4",
+    "label": {
+     "de": "Einfuhrumsatzsteuer",
+     "en": "Import VAT (customs)"
+    }
+   },
+   "laender": {
+    "value": 151520450000,
+    "coordinates": "Anlage 1 Seite 2, Zeile 10.3",
+    "label": {
+     "de": "Länderanteil (Zeile 10.3 Insgesamt)",
+     "en": "Länder share (row 10.3 total)"
+    }
+   },
+   "gemeinden": {
+    "value": 8839535000,
+    "coordinates": "Anlage 1 Seite 3, Zeile 14.5",
+    "label": {
+     "de": "Gemeindeanteil (Zeile 14.5 Insgesamt)",
+     "en": "Municipal share (row 14.5 total)"
+    }
+   },
+   "bund": {
+    "value": 149845852943,
+    "derived": true,
+    "coordinates": "total − Länder − Gemeinden; equals Destatis 71211-0002 STEUERNVB40 within 1,000 EUR",
+    "label": {
+     "de": "Bundesanteil",
+     "en": "Federal share"
+    }
+   },
+   "effective_shares_pct": {
+    "derived": true,
+    "bund": 48.31,
+    "laender": 48.85,
+    "gemeinden": 2.85
+   },
+   "statutory_shares_pct": {
+    "bund": 52.81398351,
+    "laender": 45.19007254,
+    "gemeinden": 1.99594395,
+    "note": "§ 1 (1) FAG percentages before the fixed-amount corrections of § 1 (2), (2a), (5) FAG; the effective split differs because of them"
+   }
+  },
+  "fka": {
+   "unit": "EUR",
+   "volume": {
+    "value": 19999767000,
+    "coordinates": "Anlage 1 Seite 3, Zeile 15.10 (Insgesamt, ±)",
+    "label": {
+     "de": "Gesamtvolumen der Zu- und Abschläge",
+     "en": "Redistribution volume (sum of all positive = sum of all negative adjustments)"
+    }
+   },
+   "rate_note": "Adjustments are 63 % of the gap between Finanzkraftmesszahl and Ausgleichsmesszahl (§ 10 FAG); verified row by row in the build"
+  },
+  "bez": {
+   "unit": "EUR",
+   "precision": "Mio EUR in source (rounded)",
+   "allgemeine": {
+    "value": 8784000000,
+    "coordinates": "Tabelle 2 (Daten zu den Bundesergänzungszuweisungen im Ausgleichsjahr 2025), Zeile 'Bundesergänzungszuweisung zur ergänzenden Deckung des allgem', Spalte Insgesamt"
+   },
+   "gstk": {
+    "value": 1415000000,
+    "coordinates": "Tabelle 2 (Daten zu den Bundesergänzungszuweisungen im Ausgleichsjahr 2025), Zeile 'Bundesergänzungszuweisung zum Ausgleich besonders geringer k', Spalte Insgesamt"
+   },
+   "dof": {
+    "value": 327000000,
+    "coordinates": "Tabelle 2 (Daten zu den Bundesergänzungszuweisungen im Ausgleichsjahr 2025), Zeile 'Bundesergänzungszuweisung durchschnittsorientierter Forschun', Spalte Insgesamt"
+   },
+   "sobez_unemployment": {
+    "value": 82000000,
+    "coordinates": "Tabelle 3 (Daten zu den Sonderbedarfs-Bundesergänzungszuweisungen (SoBEZ) im Jahr 2025), Zeile 'SoBEZ zum Ausgleich von Sonderlasten durch strukturelle Arbe', Spalte Insgesamt"
+   },
+   "sobez_political": {
+    "value": 689000000,
+    "coordinates": "Tabelle 3 (Daten zu den Sonderbedarfs-Bundesergänzungszuweisungen (SoBEZ) im Jahr 2025), Zeile 'SoBEZ wegen überdurchschnittlich hoher Kosten politischer Fü', Spalte Insgesamt"
+   },
+   "total": {
+    "value": 11297000000,
+    "derived": true
+   }
+  },
+  "population": {
+   "value": 83491249,
+   "date": "2025-06-30",
+   "coordinates": "Anlage 1 Seite 1, Zeile 1"
+  }
+ },
+ "destatis_comparison": [
+  {
+   "land": "BW",
+   "item": "VAT share of the Land (row 10.3)",
+   "destatis_position": "STEUERNVL40",
+   "bmf_eur": 20395948000,
+   "destatis_eur": 20395948000,
+   "difference_eur": 0
+  },
+  {
+   "land": "BW",
+   "item": "Finanzkraftausgleich (row 15.10)",
+   "destatis_position": "STEUERNVL71",
+   "bmf_eur": -4005885000,
+   "destatis_eur": -4005885000,
+   "difference_eur": 0
+  },
+  {
+   "land": "BW",
+   "item": "All BEZ incl. SoBEZ (Monatsbericht Tab. 2+3, Mio EUR rounded)",
+   "destatis_position": "STEUERNVL66",
+   "bmf_eur": 0,
+   "destatis_eur": 0,
+   "difference_eur": 0
+  },
+  {
+   "land": "BW",
+   "item": "Municipal VAT share used in the FKA (row 14.5)",
+   "destatis_position": "STEUERNVG40",
+   "bmf_eur": 1217243000,
+   "destatis_eur": 1195849000,
+   "difference_eur": -21394000
+  },
+  {
+   "land": "BY",
+   "item": "VAT share of the Land (row 10.3)",
+   "destatis_position": "STEUERNVL40",
+   "bmf_eur": 24039328000,
+   "destatis_eur": 24039328000,
+   "difference_eur": 0
+  },
+  {
+   "land": "BY",
+   "item": "Finanzkraftausgleich (row 15.10)",
+   "destatis_position": "STEUERNVL71",
+   "bmf_eur": -11659661000,
+   "destatis_eur": -11659661000,
+   "difference_eur": 0
+  },
+  {
+   "land": "BY",
+   "item": "All BEZ incl. SoBEZ (Monatsbericht Tab. 2+3, Mio EUR rounded)",
+   "destatis_position": "STEUERNVL66",
+   "bmf_eur": 0,
+   "destatis_eur": 0,
+   "difference_eur": 0
+  },
+  {
+   "land": "BY",
+   "item": "Municipal VAT share used in the FKA (row 14.5)",
+   "destatis_position": "STEUERNVG40",
+   "bmf_eur": 1508793000,
+   "destatis_eur": 1476040000,
+   "difference_eur": -32753000
+  },
+  {
+   "land": "BE",
+   "item": "VAT share of the Land (row 10.3)",
+   "destatis_position": "STEUERNVL40",
+   "bmf_eur": 6700746000,
+   "destatis_eur": 6700746000,
+   "difference_eur": 0
+  },
+  {
+   "land": "BE",
+   "item": "Finanzkraftausgleich (row 15.10)",
+   "destatis_position": "STEUERNVL71",
+   "bmf_eur": 4223160000,
+   "destatis_eur": 4223160000,
+   "difference_eur": 0
+  },
+  {
+   "land": "BE",
+   "item": "All BEZ incl. SoBEZ (Monatsbericht Tab. 2+3, Mio EUR rounded)",
+   "destatis_position": "STEUERNVL66",
+   "bmf_eur": 1989000000,
+   "destatis_eur": 1972705000,
+   "difference_eur": -16295000
+  },
+  {
+   "land": "BE",
+   "item": "Municipal VAT share used in the FKA (row 14.5)",
+   "destatis_position": "STEUERNVG40",
+   "bmf_eur": 371460000,
+   "destatis_eur": 371891000,
+   "difference_eur": 431000
+  },
+  {
+   "land": "BB",
+   "item": "VAT share of the Land (row 10.3)",
+   "destatis_position": "STEUERNVL40",
+   "bmf_eur": 4633331000,
+   "destatis_eur": 4633331000,
+   "difference_eur": 0
+  },
+  {
+   "land": "BB",
+   "item": "Finanzkraftausgleich (row 15.10)",
+   "destatis_position": "STEUERNVL71",
+   "bmf_eur": 1401247000,
+   "destatis_eur": 1401247000,
+   "difference_eur": 0
+  },
+  {
+   "land": "BB",
+   "item": "All BEZ incl. SoBEZ (Monatsbericht Tab. 2+3, Mio EUR rounded)",
+   "destatis_position": "STEUERNVL66",
+   "bmf_eur": 750000000,
+   "destatis_eur": 826254000,
+   "difference_eur": 76254000
+  },
+  {
+   "land": "BB",
+   "item": "Municipal VAT share used in the FKA (row 14.5)",
+   "destatis_position": "STEUERNVG40",
+   "bmf_eur": 175841000,
+   "destatis_eur": 173616000,
+   "difference_eur": -2225000
+  },
+  {
+   "land": "HB",
+   "item": "VAT share of the Land (row 10.3)",
+   "destatis_position": "STEUERNVL40",
+   "bmf_eur": 1279662000,
+   "destatis_eur": 1279662000,
+   "difference_eur": 0
+  },
+  {
+   "land": "HB",
+   "item": "Finanzkraftausgleich (row 15.10)",
+   "destatis_position": "STEUERNVL71",
+   "bmf_eur": 1020813000,
+   "destatis_eur": 1020813000,
+   "difference_eur": 0
+  },
+  {
+   "land": "HB",
+   "item": "All BEZ incl. SoBEZ (Monatsbericht Tab. 2+3, Mio EUR rounded)",
+   "destatis_position": "STEUERNVL66",
+   "bmf_eur": 532000000,
+   "destatis_eur": 546075000,
+   "difference_eur": 14075000
+  },
+  {
+   "land": "HB",
+   "item": "Municipal VAT share used in the FKA (row 14.5)",
+   "destatis_position": "STEUERNVG40",
+   "bmf_eur": 98746000,
+   "destatis_eur": 98797000,
+   "difference_eur": 51000
+  },
+  {
+   "land": "HH",
+   "item": "VAT share of the Land (row 10.3)",
+   "destatis_position": "STEUERNVL40",
+   "bmf_eur": 3384529000,
+   "destatis_eur": 3384529000,
+   "difference_eur": 0
+  },
+  {
+   "land": "HH",
+   "item": "Finanzkraftausgleich (row 15.10)",
+   "destatis_position": "STEUERNVL71",
+   "bmf_eur": -330942000,
+   "destatis_eur": -330942000,
+   "difference_eur": 0
+  },
+  {
+   "land": "HH",
+   "item": "All BEZ incl. SoBEZ (Monatsbericht Tab. 2+3, Mio EUR rounded)",
+   "destatis_position": "STEUERNVL66",
+   "bmf_eur": 0,
+   "destatis_eur": 0,
+   "difference_eur": 0
+  },
+  {
+   "land": "HH",
+   "item": "Municipal VAT share used in the FKA (row 14.5)",
+   "destatis_position": "STEUERNVG40",
+   "bmf_eur": 330822000,
+   "destatis_eur": 318144000,
+   "difference_eur": -12678000
+  },
+  {
+   "land": "HE",
+   "item": "VAT share of the Land (row 10.3)",
+   "destatis_position": "STEUERNVL40",
+   "bmf_eur": 11392409000,
+   "destatis_eur": 11392409000,
+   "difference_eur": 0
+  },
+  {
+   "land": "HE",
+   "item": "Finanzkraftausgleich (row 15.10)",
+   "destatis_position": "STEUERNVL71",
+   "bmf_eur": -4003279000,
+   "destatis_eur": -4003279000,
+   "difference_eur": 0
+  },
+  {
+   "land": "HE",
+   "item": "All BEZ incl. SoBEZ (Monatsbericht Tab. 2+3, Mio EUR rounded)",
+   "destatis_position": "STEUERNVL66",
+   "bmf_eur": 0,
+   "destatis_eur": 0,
+   "difference_eur": 0
+  },
+  {
+   "land": "HE",
+   "item": "Municipal VAT share used in the FKA (row 14.5)",
+   "destatis_position": "STEUERNVG40",
+   "bmf_eur": 753711000,
+   "destatis_eur": 737349000,
+   "difference_eur": -16362000
+  },
+  {
+   "land": "MV",
+   "item": "VAT share of the Land (row 10.3)",
+   "destatis_position": "STEUERNVL40",
+   "bmf_eur": 2848464000,
+   "destatis_eur": 2848464000,
+   "difference_eur": 0
+  },
+  {
+   "land": "MV",
+   "item": "Finanzkraftausgleich (row 15.10)",
+   "destatis_position": "STEUERNVL71",
+   "bmf_eur": 1446899000,
+   "destatis_eur": 1446899000,
+   "difference_eur": 0
+  },
+  {
+   "land": "MV",
+   "item": "All BEZ incl. SoBEZ (Monatsbericht Tab. 2+3, Mio EUR rounded)",
+   "destatis_position": "STEUERNVL66",
+   "bmf_eur": 939000000,
+   "destatis_eur": 948440000,
+   "difference_eur": 9440000
+  },
+  {
+   "land": "MV",
+   "item": "Municipal VAT share used in the FKA (row 14.5)",
+   "destatis_position": "STEUERNVG40",
+   "bmf_eur": 122783000,
+   "destatis_eur": 120121000,
+   "difference_eur": -2662000
+  },
+  {
+   "land": "NI",
+   "item": "VAT share of the Land (row 10.3)",
+   "destatis_position": "STEUERNVL40",
+   "bmf_eur": 14517972000,
+   "destatis_eur": 14517972000,
+   "difference_eur": 0
+  },
+  {
+   "land": "NI",
+   "item": "Finanzkraftausgleich (row 15.10)",
+   "destatis_position": "STEUERNVL71",
+   "bmf_eur": 1442764000,
+   "destatis_eur": 1442764000,
+   "difference_eur": 0
+  },
+  {
+   "land": "NI",
+   "item": "All BEZ incl. SoBEZ (Monatsbericht Tab. 2+3, Mio EUR rounded)",
+   "destatis_position": "STEUERNVL66",
+   "bmf_eur": 644000000,
+   "destatis_eur": 504343000,
+   "difference_eur": -139657000
+  },
+  {
+   "land": "NI",
+   "item": "Municipal VAT share used in the FKA (row 14.5)",
+   "destatis_position": "STEUERNVG40",
+   "bmf_eur": 755751000,
+   "destatis_eur": 757204000,
+   "difference_eur": 1453000
+  },
+  {
+   "land": "NW",
+   "item": "VAT share of the Land (row 10.3)",
+   "destatis_position": "STEUERNVL40",
+   "bmf_eur": 32687976000,
+   "destatis_eur": 32687976000,
+   "difference_eur": 0
+  },
+  {
+   "land": "NW",
+   "item": "Finanzkraftausgleich (row 15.10)",
+   "destatis_position": "STEUERNVL71",
+   "bmf_eur": 1016313000,
+   "destatis_eur": 1016313000,
+   "difference_eur": 0
+  },
+  {
+   "land": "NW",
+   "item": "All BEZ incl. SoBEZ (Monatsbericht Tab. 2+3, Mio EUR rounded)",
+   "destatis_position": "STEUERNVL66",
+   "bmf_eur": 376000000,
+   "destatis_eur": 603540000,
+   "difference_eur": 227540000
+  },
+  {
+   "land": "NW",
+   "item": "Municipal VAT share used in the FKA (row 14.5)",
+   "destatis_position": "STEUERNVG40",
+   "bmf_eur": 2068153000,
+   "destatis_eur": 2023260000,
+   "difference_eur": -44893000
+  },
+  {
+   "land": "RP",
+   "item": "VAT share of the Land (row 10.3)",
+   "destatis_position": "STEUERNVL40",
+   "bmf_eur": 7483044000,
+   "destatis_eur": 7483044000,
+   "difference_eur": 0
+  },
+  {
+   "land": "RP",
+   "item": "Finanzkraftausgleich (row 15.10)",
+   "destatis_position": "STEUERNVL71",
+   "bmf_eur": 755700000,
+   "destatis_eur": 755700000,
+   "difference_eur": 0
+  },
+  {
+   "land": "RP",
+   "item": "All BEZ incl. SoBEZ (Monatsbericht Tab. 2+3, Mio EUR rounded)",
+   "destatis_position": "STEUERNVL66",
+   "bmf_eur": 448000000,
+   "destatis_eur": 529812000,
+   "difference_eur": 81812000
+  },
+  {
+   "land": "RP",
+   "item": "Municipal VAT share used in the FKA (row 14.5)",
+   "destatis_position": "STEUERNVG40",
+   "bmf_eur": 363321000,
+   "destatis_eur": 345779000,
+   "difference_eur": -17542000
+  },
+  {
+   "land": "SL",
+   "item": "VAT share of the Land (row 10.3)",
+   "destatis_position": "STEUERNVL40",
+   "bmf_eur": 1831437000,
+   "destatis_eur": 1831437000,
+   "difference_eur": 0
+  },
+  {
+   "land": "SL",
+   "item": "Finanzkraftausgleich (row 15.10)",
+   "destatis_position": "STEUERNVL71",
+   "bmf_eur": 699374000,
+   "destatis_eur": 699374000,
+   "difference_eur": 0
+  },
+  {
+   "land": "SL",
+   "item": "All BEZ incl. SoBEZ (Monatsbericht Tab. 2+3, Mio EUR rounded)",
+   "destatis_position": "STEUERNVL66",
+   "bmf_eur": 491000000,
+   "destatis_eur": 536639000,
+   "difference_eur": 45639000
+  },
+  {
+   "land": "SL",
+   "item": "Municipal VAT share used in the FKA (row 14.5)",
+   "destatis_position": "STEUERNVG40",
+   "bmf_eur": 101795000,
+   "destatis_eur": 100733000,
+   "difference_eur": -1062000
+  },
+  {
+   "land": "SN",
+   "item": "VAT share of the Land (row 10.3)",
+   "destatis_position": "STEUERNVL40",
+   "bmf_eur": 7308581000,
+   "destatis_eur": 7308581000,
+   "difference_eur": 0
+  },
+  {
+   "land": "SN",
+   "item": "Finanzkraftausgleich (row 15.10)",
+   "destatis_position": "STEUERNVL71",
+   "bmf_eur": 3498567000,
+   "destatis_eur": 3498567000,
+   "difference_eur": 0
+  },
+  {
+   "land": "SN",
+   "item": "All BEZ incl. SoBEZ (Monatsbericht Tab. 2+3, Mio EUR rounded)",
+   "destatis_position": "STEUERNVL66",
+   "bmf_eur": 2128000000,
+   "destatis_eur": 2215724000,
+   "difference_eur": 87724000
+  },
+  {
+   "land": "SN",
+   "item": "Municipal VAT share used in the FKA (row 14.5)",
+   "destatis_position": "STEUERNVG40",
+   "bmf_eur": 370932000,
+   "destatis_eur": 361621000,
+   "difference_eur": -9311000
+  },
+  {
+   "land": "ST",
+   "item": "VAT share of the Land (row 10.3)",
+   "destatis_position": "STEUERNVL40",
+   "bmf_eur": 3857115000,
+   "destatis_eur": 3857115000,
+   "difference_eur": 0
+  },
+  {
+   "land": "ST",
+   "item": "Finanzkraftausgleich (row 15.10)",
+   "destatis_position": "STEUERNVL71",
+   "bmf_eur": 1949630000,
+   "destatis_eur": 1949630000,
+   "difference_eur": 0
+  },
+  {
+   "land": "ST",
+   "item": "All BEZ incl. SoBEZ (Monatsbericht Tab. 2+3, Mio EUR rounded)",
+   "destatis_position": "STEUERNVL66",
+   "bmf_eur": 1284000000,
+   "destatis_eur": 1310185000,
+   "difference_eur": 26185000
+  },
+  {
+   "land": "ST",
+   "item": "Municipal VAT share used in the FKA (row 14.5)",
+   "destatis_position": "STEUERNVG40",
+   "bmf_eur": 171845000,
+   "destatis_eur": 168783000,
+   "difference_eur": -3062000
+  },
+  {
+   "land": "SH",
+   "item": "VAT share of the Land (row 10.3)",
+   "destatis_position": "STEUERNVL40",
+   "bmf_eur": 5369277000,
+   "destatis_eur": 5369277000,
+   "difference_eur": 0
+  },
+  {
+   "land": "SH",
+   "item": "Finanzkraftausgleich (row 15.10)",
+   "destatis_position": "STEUERNVL71",
+   "bmf_eur": 337269000,
+   "destatis_eur": 337269000,
+   "difference_eur": 0
+  },
+  {
+   "land": "SH",
+   "item": "All BEZ incl. SoBEZ (Monatsbericht Tab. 2+3, Mio EUR rounded)",
+   "destatis_position": "STEUERNVL66",
+   "bmf_eur": 209000000,
+   "destatis_eur": 225347000,
+   "difference_eur": 16347000
+  },
+  {
+   "land": "SH",
+   "item": "Municipal VAT share used in the FKA (row 14.5)",
+   "destatis_position": "STEUERNVG40",
+   "bmf_eur": 247343000,
+   "destatis_eur": 243040000,
+   "difference_eur": -4303000
+  },
+  {
+   "land": "TH",
+   "item": "VAT share of the Land (row 10.3)",
+   "destatis_position": "STEUERNVL40",
+   "bmf_eur": 3790631000,
+   "destatis_eur": 3790631000,
+   "difference_eur": 0
+  },
+  {
+   "land": "TH",
+   "item": "Finanzkraftausgleich (row 15.10)",
+   "destatis_position": "STEUERNVL71",
+   "bmf_eur": 2208032000,
+   "destatis_eur": 2208032000,
+   "difference_eur": 0
+  },
+  {
+   "land": "TH",
+   "item": "All BEZ incl. SoBEZ (Monatsbericht Tab. 2+3, Mio EUR rounded)",
+   "destatis_position": "STEUERNVL66",
+   "bmf_eur": 1507000000,
+   "destatis_eur": 1562366000,
+   "difference_eur": 55366000
+  },
+  {
+   "land": "TH",
+   "item": "Municipal VAT share used in the FKA (row 14.5)",
+   "destatis_position": "STEUERNVG40",
+   "bmf_eur": 180998000,
+   "destatis_eur": 176091000,
+   "difference_eur": -4907000
+  },
+  {
+   "land": null,
+   "item": "Länder VAT pool (row 10.3 Insgesamt)",
+   "destatis_position": "STEUERNVL40",
+   "bmf_eur": 151520450000,
+   "destatis_eur": 151520450000,
+   "difference_eur": 0
+  },
+  {
+   "land": null,
+   "item": "Municipal VAT (row 14.5 Insgesamt)",
+   "destatis_position": "STEUERNVG40",
+   "bmf_eur": 8839535000,
+   "destatis_eur": 8668318000,
+   "difference_eur": -171217000
+  },
+  {
+   "land": null,
+   "item": "All BEZ incl. SoBEZ (sum of Monatsbericht totals)",
+   "destatis_position": "STEUERNVL66",
+   "bmf_eur": 11297000000,
+   "destatis_eur": 11781429000,
+   "difference_eur": 484429000
+  }
+ ]
+}

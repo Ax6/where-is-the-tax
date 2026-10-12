@@ -1,83 +1,83 @@
-import { STATUS_LABELS, type EvidenceStatus } from "../routes/data.ts";
+/** One shared tooltip. Content is set with textContent only (labels come from data files). */
+import type { Status } from "../data/model.ts";
+import { t, type Lang } from "../i18n.ts";
 
 export interface TooltipContent {
+  value?: string;
   title: string;
-  official?: string;
-  meta?: string;
-  kind?: string;
-  status: EvidenceStatus;
-  description: string;
-  amountNote?: string;
+  lines?: string[];
+  status?: Status;
+  /** the pro rata* line, drawn with the hatch key */
+  prorata?: string;
+  body?: string;
+  hint?: boolean;
 }
 
 let element: HTMLDivElement | null = null;
 
-function ensureElement(): HTMLDivElement {
-  if (element) {
-    return element;
+function ensure(): HTMLDivElement {
+  if (!element) {
+    element = document.createElement("div");
+    element.className = "tip";
+    element.setAttribute("role", "tooltip");
+    element.hidden = true;
+    document.body.append(element);
   }
-  element = document.createElement("div");
-  element.className = "fg-tooltip";
-  element.setAttribute("role", "status");
-  element.hidden = true;
-  document.body.append(element);
   return element;
 }
 
-function escapeHtml(value: string): string {
-  return value
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#039;");
+const STATUS_KEY = { law: "statusLaw", official: "statusOfficial", provisional: "statusProvisional", assumption: "statusAssumption", estimate: "statusEstimate" } as const;
+
+export function statusLabel(status: Status, lang: Lang): string {
+  return t(STATUS_KEY[status], lang);
 }
 
-export function tooltipText(content: TooltipContent): string {
-  const parts = [content.title];
-  if (content.official) {
-    parts.push(`officially ${content.official}`);
-  }
-  if (content.meta) {
-    parts.push(content.meta);
-  }
-  if (content.kind) {
-    parts.push(content.kind);
-  }
-  parts.push(STATUS_LABELS[content.status]);
-  parts.push(content.description);
-  if (content.amountNote) {
-    parts.push(content.amountNote);
-  }
-  return parts.join(". ");
+export function tooltipText(content: TooltipContent, lang: Lang): string {
+  return [content.value, content.title, ...(content.lines ?? []), content.prorata ?? "", content.status ? statusLabel(content.status, lang) : "", content.body ?? ""]
+    .filter(Boolean)
+    .join(". ");
 }
 
-export function showTooltip(content: TooltipContent, anchor: { x: number; y: number }): void {
-  const tip = ensureElement();
-  tip.innerHTML = `
-    <p class="fg-tooltip-title">${escapeHtml(content.title)}${
-      content.official ? ` <em>· ${escapeHtml(content.official)}</em>` : ""
-    }</p>
-    ${content.meta ? `<p class="fg-tooltip-meta">${escapeHtml(content.meta)}</p>` : ""}
-    <p class="fg-tooltip-badges">${
-      content.kind ? `<span class="fg-badge fg-badge-kind">${escapeHtml(content.kind)}</span>` : ""
-    }<span class="fg-badge fg-badge-status" data-status="${escapeHtml(content.status)}">${escapeHtml(
-      STATUS_LABELS[content.status],
-    )}</span></p>
-    <p class="fg-tooltip-body">${escapeHtml(content.description)}</p>
-    ${content.amountNote ? `<p class="fg-tooltip-note">${escapeHtml(content.amountNote)}</p>` : ""}
-    <p class="fg-tooltip-hint">Click for sources &amp; caveats</p>`;
+function add(parent: HTMLElement, tag: string, className: string, text: string): HTMLElement {
+  const el = document.createElement(tag);
+  el.className = className;
+  el.textContent = text;
+  parent.append(el);
+  return el;
+}
+
+export function showTooltip(content: TooltipContent, anchor: { x: number; y: number }, lang: Lang): void {
+  const tip = ensure();
+  tip.replaceChildren();
+  if (content.value) {
+    add(tip, "p", "tip-value", content.value);
+  }
+  add(tip, "p", "tip-title", content.title);
+  for (const line of content.lines ?? []) {
+    add(tip, "p", "tip-line", line);
+  }
+  if (content.prorata) {
+    add(tip, "p", "tip-line tip-prorata", content.prorata);
+  }
+  if (content.status) {
+    const badge = add(tip, "span", "badge", statusLabel(content.status, lang));
+    badge.dataset.status = content.status;
+  }
+  if (content.body) {
+    add(tip, "p", "tip-body", content.body);
+  }
+  if (content.hint) {
+    add(tip, "p", "tip-hint", t("clickForDetails", lang));
+  }
   tip.hidden = false;
-
   const margin = 14;
-  const { innerWidth, innerHeight } = window;
   const rect = tip.getBoundingClientRect();
   let x = anchor.x + margin;
   let y = anchor.y + margin;
-  if (x + rect.width + margin > innerWidth) {
+  if (x + rect.width + margin > window.innerWidth) {
     x = Math.max(margin, anchor.x - rect.width - margin);
   }
-  if (y + rect.height + margin > innerHeight) {
+  if (y + rect.height + margin > window.innerHeight) {
     y = Math.max(margin, anchor.y - rect.height - margin);
   }
   tip.style.transform = `translate(${Math.round(x)}px, ${Math.round(y)}px)`;

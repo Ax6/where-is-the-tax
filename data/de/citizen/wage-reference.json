@@ -1,0 +1,317 @@
+{
+ "schema_version": 2,
+ "id": "de.citizen.wage_reference",
+ "title": {
+  "de": "Lohn-Referenzpunkte: Mindestlohn, Median- und Durchschnittsverdienst",
+  "en": "Wage reference points: minimum wage, median and average earnings"
+ },
+ "unit": "EUR",
+ "basis": "Statute (minimum wage), Destatis Verdiensterhebung (full-time employees), Anlage 1 SGB VI (pension-law average). Annual minimum-wage figure is derived* from an hours assumption.",
+ "generated": "2026-10-12",
+ "generated_by": "scripts/research/build_wages.py",
+ "assumptions": [
+  "Annual minimum wage = hourly rate × 40 h × 52 weeks (marked derived*); a second figure uses Destatis' average paid full-time week (39.1 h, April 2025)",
+  "Median monthly × 12 ignores special payments (13th salary etc.); the annual series includes them, which is why annual median > 12 × monthly median"
+ ],
+ "years": {
+  "2024": {
+   "minimum_wage": {
+    "hourly_eur": 12.41,
+    "status": "statute",
+    "legal_basis": "§ 1 Nr. 1 MiLoV4 (§ 1 (2) MiLoG)",
+    "annual_full_time_eur": 25812.8,
+    "annual_status": "derived*",
+    "annual_assumption": "40 h/week × 52 weeks = 2080 paid hours; collectively agreed full-time weeks are often 35-39 h, which gives a lower annual figure",
+    "monthly_full_time_eur": 2151.07,
+    "source": {
+     "source_id": "gesetze_im_internet_wages",
+     "file": "milov4_1.html",
+     "path": "research/raw/gesetze_im_internet_wages/milov4_1.html",
+     "url": "https://www.gesetze-im-internet.de/milov4/__1.html",
+     "retrieved": "2026-10-12T08:24:04Z",
+     "sha256": "039fcf1ab32526de2a87a109bf9ad8ed210c735fd809559d88e0f7580e7a2185",
+     "licence": "Official works (§ 5 UrhG)",
+     "coordinates": "text contains: ab 1, Januar 2024 12,41 Euro brutto je Zeitstunde"
+    },
+    "annual_full_time_at_destatis_hours_eur": 25232.01,
+    "destatis_hours_assumption": {
+     "paid_hours_per_week": 39.1,
+     "definition": "Durchschnittliche bezahlte Wochenarbeitszeit inkl. Überstunden, Vollzeitbeschäftigte, Gesamtwirtschaft, April 2025",
+     "source": {
+      "source_id": "destatis_verdienste_bericht",
+      "file": "verdienste-2025-q4.xlsx",
+      "path": "research/cache/destatis_verdienste_bericht/verdienste-2025-q4.xlsx",
+      "url": "https://www.destatis.de/DE/Themen/Arbeit/Verdienste/Verdienste-Branche-Berufe/Publikationen/Downloads/statistischer-bericht-verdienste-5623601253245.xlsx?__blob=publicationFile&v=2",
+      "retrieved": "2026-10-12T08:24:05Z",
+      "sha256": "12f1864360af1afb3d7434c417ce9118715a10c07499037c9bd2a3bf25d1775a",
+      "licence": "DL-DE-BY-2.0 (workbook Impressum sheet)",
+      "coordinates": "sheet csv-62361-04_1, row Gesamtwirtschaft, column WZT002"
+     }
+    }
+   },
+   "full_time_earnings": {
+    "monthly_april": {
+     "median_gross_monthly_eur": 3978.0,
+     "average_gross_monthly_eur": 4634.0,
+     "median_gross_hourly_eur": 23.49,
+     "definition": {
+      "de": "Bruttomonatsverdienst ohne Sonderzahlungen, Vollzeitbeschäftigte, Stichmonat April",
+      "en": "Gross monthly earnings without special payments, full-time employees, reference month April"
+     },
+     "status": "final",
+     "source": {
+      "source_id": "destatis_genesis_62361",
+      "file": "62361-0031.json",
+      "path": "research/raw/destatis_genesis_62361/62361-0031.json",
+      "url": "https://genesis.destatis.de/genesis/api/rest/tables/62361-0031/data",
+      "retrieved": "2026-10-12T08:24:04Z",
+      "sha256": "41e5c977d5b26f5749a2859480556d61acf4759aa812f24057ce3df998ce2e92",
+      "licence": "DL-DE-BY-2.0; attribution: Statistisches Bundesamt (Destatis), GENESIS-Online",
+      "coordinates": "SMONAT=2024-04P1M, GES=%TOTAL%, ALT035=%TOTAL%, content VST052 (Mittlere = median) / VST047 (Durchschn.) / VST051",
+      "note": "The GENESIS table title does not say 'Vollzeit'; the identically coded tables 62361-03/-05 of the Statistischer Bericht Verdienste are titled 'Vollzeitbeschäftigte' (research/cache/destatis_verdienste_bericht)"
+     },
+     "median_x12_eur": 47736
+    },
+    "annual": {
+     "median_gross_annual_eur": 52159.0,
+     "average_gross_annual_eur": 62235.0,
+     "definition": {
+      "de": "Bruttojahresverdienst mit Sonderzahlungen, Vollzeitbeschäftigte",
+      "en": "Gross annual earnings including special payments, full-time employees"
+     },
+     "status": "final",
+     "source": {
+      "source_id": "destatis_genesis_62361",
+      "file": "62361-0035.json",
+      "path": "research/raw/destatis_genesis_62361/62361-0035.json",
+      "url": "https://genesis.destatis.de/genesis/api/rest/tables/62361-0035/data",
+      "retrieved": "2026-10-12T08:24:05Z",
+      "sha256": "6a0ca1ae2f18ea97474f05f373aba262f50aaa666db579b95fbb692c03008801",
+      "licence": "DL-DE-BY-2.0; attribution: Statistisches Bundesamt (Destatis), GENESIS-Online",
+      "coordinates": "JAHR=2024, GES=%TOTAL%, ALT035=%TOTAL%, content VST053 (median) / VST050 (average)"
+     }
+    }
+   },
+   "pension_average_earnings": {
+    "durchschnittsentgelt_eur": 47085,
+    "status": "final",
+    "label": {
+     "de": "Durchschnittsentgelt der Rentenversicherung (Anlage 1 SGB VI)",
+     "en": "Average earnings of insured persons used by pension law (Anlage 1 SGB VI)"
+    },
+    "definition": {
+     "de": "Durchschnittliches Bruttojahresarbeitsentgelt aller Versicherten der gesetzlichen Rentenversicherung (inkl. Teilzeit)",
+     "en": "Average gross annual earnings of all persons insured in the statutory pension insurance (incl. part-time)"
+    },
+    "source": {
+     "source_id": "gesetze_im_internet_wages",
+     "file": "sgb6_anlage_1.html",
+     "path": "research/raw/gesetze_im_internet_wages/sgb6_anlage_1.html",
+     "url": "https://www.gesetze-im-internet.de/sgb_6/anlage_1.html",
+     "retrieved": "2026-10-12T08:24:04Z",
+     "sha256": "1be51ea98688880833fc8f7e40f47ba7555aa3f61bb4606c3e419a88def03b0d",
+     "licence": "Official works (§ 5 UrhG)",
+     "coordinates": "Anlage 1 row '2024'"
+    }
+   }
+  },
+  "2025": {
+   "minimum_wage": {
+    "hourly_eur": 12.82,
+    "status": "statute",
+    "legal_basis": "§ 1 Nr. 2 MiLoV4 (§ 1 (2) MiLoG)",
+    "annual_full_time_eur": 26665.6,
+    "annual_status": "derived*",
+    "annual_assumption": "40 h/week × 52 weeks = 2080 paid hours; collectively agreed full-time weeks are often 35-39 h, which gives a lower annual figure",
+    "monthly_full_time_eur": 2222.13,
+    "source": {
+     "source_id": "gesetze_im_internet_wages",
+     "file": "milov4_1.html",
+     "path": "research/raw/gesetze_im_internet_wages/milov4_1.html",
+     "url": "https://www.gesetze-im-internet.de/milov4/__1.html",
+     "retrieved": "2026-10-12T08:24:04Z",
+     "sha256": "039fcf1ab32526de2a87a109bf9ad8ed210c735fd809559d88e0f7580e7a2185",
+     "licence": "Official works (§ 5 UrhG)",
+     "coordinates": "text contains: ab 1, Januar 2025 12,82 Euro brutto je Zeitstunde"
+    },
+    "annual_full_time_at_destatis_hours_eur": 26065.62,
+    "destatis_hours_assumption": {
+     "paid_hours_per_week": 39.1,
+     "definition": "Durchschnittliche bezahlte Wochenarbeitszeit inkl. Überstunden, Vollzeitbeschäftigte, Gesamtwirtschaft, April 2025",
+     "source": {
+      "source_id": "destatis_verdienste_bericht",
+      "file": "verdienste-2025-q4.xlsx",
+      "path": "research/cache/destatis_verdienste_bericht/verdienste-2025-q4.xlsx",
+      "url": "https://www.destatis.de/DE/Themen/Arbeit/Verdienste/Verdienste-Branche-Berufe/Publikationen/Downloads/statistischer-bericht-verdienste-5623601253245.xlsx?__blob=publicationFile&v=2",
+      "retrieved": "2026-10-12T08:24:05Z",
+      "sha256": "12f1864360af1afb3d7434c417ce9118715a10c07499037c9bd2a3bf25d1775a",
+      "licence": "DL-DE-BY-2.0 (workbook Impressum sheet)",
+      "coordinates": "sheet csv-62361-04_1, row Gesamtwirtschaft, column WZT002"
+     }
+    }
+   },
+   "full_time_earnings": {
+    "monthly_april": {
+     "median_gross_monthly_eur": 4123.0,
+     "average_gross_monthly_eur": 4784.0,
+     "median_gross_hourly_eur": 24.38,
+     "definition": {
+      "de": "Bruttomonatsverdienst ohne Sonderzahlungen, Vollzeitbeschäftigte, Stichmonat April",
+      "en": "Gross monthly earnings without special payments, full-time employees, reference month April"
+     },
+     "status": "final",
+     "source": {
+      "source_id": "destatis_genesis_62361",
+      "file": "62361-0031.json",
+      "path": "research/raw/destatis_genesis_62361/62361-0031.json",
+      "url": "https://genesis.destatis.de/genesis/api/rest/tables/62361-0031/data",
+      "retrieved": "2026-10-12T08:24:04Z",
+      "sha256": "41e5c977d5b26f5749a2859480556d61acf4759aa812f24057ce3df998ce2e92",
+      "licence": "DL-DE-BY-2.0; attribution: Statistisches Bundesamt (Destatis), GENESIS-Online",
+      "coordinates": "SMONAT=2025-04P1M, GES=%TOTAL%, ALT035=%TOTAL%, content VST052 (Mittlere = median) / VST047 (Durchschn.) / VST051",
+      "note": "The GENESIS table title does not say 'Vollzeit'; the identically coded tables 62361-03/-05 of the Statistischer Bericht Verdienste are titled 'Vollzeitbeschäftigte' (research/cache/destatis_verdienste_bericht)"
+     },
+     "median_x12_eur": 49476
+    },
+    "annual": {
+     "median_gross_annual_eur": 54066.0,
+     "average_gross_annual_eur": 64441.0,
+     "definition": {
+      "de": "Bruttojahresverdienst mit Sonderzahlungen, Vollzeitbeschäftigte",
+      "en": "Gross annual earnings including special payments, full-time employees"
+     },
+     "status": "final",
+     "source": {
+      "source_id": "destatis_genesis_62361",
+      "file": "62361-0035.json",
+      "path": "research/raw/destatis_genesis_62361/62361-0035.json",
+      "url": "https://genesis.destatis.de/genesis/api/rest/tables/62361-0035/data",
+      "retrieved": "2026-10-12T08:24:05Z",
+      "sha256": "6a0ca1ae2f18ea97474f05f373aba262f50aaa666db579b95fbb692c03008801",
+      "licence": "DL-DE-BY-2.0; attribution: Statistisches Bundesamt (Destatis), GENESIS-Online",
+      "coordinates": "JAHR=2025, GES=%TOTAL%, ALT035=%TOTAL%, content VST053 (median) / VST050 (average)"
+     }
+    }
+   },
+   "pension_average_earnings": {
+    "durchschnittsentgelt_eur": 50493,
+    "status": "provisional (vorläufig, § 69 (2) SGB VI)",
+    "label": {
+     "de": "Durchschnittsentgelt der Rentenversicherung (Anlage 1 SGB VI)",
+     "en": "Average earnings of insured persons used by pension law (Anlage 1 SGB VI)"
+    },
+    "definition": {
+     "de": "Durchschnittliches Bruttojahresarbeitsentgelt aller Versicherten der gesetzlichen Rentenversicherung (inkl. Teilzeit)",
+     "en": "Average gross annual earnings of all persons insured in the statutory pension insurance (incl. part-time)"
+    },
+    "source": {
+     "source_id": "gesetze_im_internet_wages",
+     "file": "sgb6_anlage_1.html",
+     "path": "research/raw/gesetze_im_internet_wages/sgb6_anlage_1.html",
+     "url": "https://www.gesetze-im-internet.de/sgb_6/anlage_1.html",
+     "retrieved": "2026-10-12T08:24:04Z",
+     "sha256": "1be51ea98688880833fc8f7e40f47ba7555aa3f61bb4606c3e419a88def03b0d",
+     "licence": "Official works (§ 5 UrhG)",
+     "coordinates": "Anlage 1 row '2025'"
+    }
+   }
+  },
+  "2026": {
+   "minimum_wage": {
+    "hourly_eur": 13.9,
+    "status": "statute",
+    "legal_basis": "§ 1 Nr. 1 MiLoV5 (§ 1 (2) MiLoG)",
+    "annual_full_time_eur": 28912.0,
+    "annual_status": "derived*",
+    "annual_assumption": "40 h/week × 52 weeks = 2080 paid hours; collectively agreed full-time weeks are often 35-39 h, which gives a lower annual figure",
+    "monthly_full_time_eur": 2409.33,
+    "source": {
+     "source_id": "gesetze_im_internet_wages",
+     "file": "milov5_1.html",
+     "path": "research/raw/gesetze_im_internet_wages/milov5_1.html",
+     "url": "https://www.gesetze-im-internet.de/milov5/__1.html",
+     "retrieved": "2026-10-12T08:24:04Z",
+     "sha256": "486c1093af7fa7b7f0e66b75a0967f91c773aaafe38460d9e0810cc996a0a11b",
+     "licence": "Official works (§ 5 UrhG)",
+     "coordinates": "text contains: ab 1, Januar 2026 13,90 Euro brutto je Zeitstunde"
+    },
+    "annual_full_time_at_destatis_hours_eur": 28261.48,
+    "destatis_hours_assumption": {
+     "paid_hours_per_week": 39.1,
+     "definition": "Durchschnittliche bezahlte Wochenarbeitszeit inkl. Überstunden, Vollzeitbeschäftigte, Gesamtwirtschaft, April 2025",
+     "source": {
+      "source_id": "destatis_verdienste_bericht",
+      "file": "verdienste-2025-q4.xlsx",
+      "path": "research/cache/destatis_verdienste_bericht/verdienste-2025-q4.xlsx",
+      "url": "https://www.destatis.de/DE/Themen/Arbeit/Verdienste/Verdienste-Branche-Berufe/Publikationen/Downloads/statistischer-bericht-verdienste-5623601253245.xlsx?__blob=publicationFile&v=2",
+      "retrieved": "2026-10-12T08:24:05Z",
+      "sha256": "12f1864360af1afb3d7434c417ce9118715a10c07499037c9bd2a3bf25d1775a",
+      "licence": "DL-DE-BY-2.0 (workbook Impressum sheet)",
+      "coordinates": "sheet csv-62361-04_1, row Gesamtwirtschaft, column WZT002"
+     }
+    }
+   },
+   "full_time_earnings": null,
+   "pension_average_earnings": {
+    "durchschnittsentgelt_eur": 51944,
+    "status": "provisional (vorläufig, § 69 (2) SGB VI)",
+    "label": {
+     "de": "Durchschnittsentgelt der Rentenversicherung (Anlage 1 SGB VI)",
+     "en": "Average earnings of insured persons used by pension law (Anlage 1 SGB VI)"
+    },
+    "definition": {
+     "de": "Durchschnittliches Bruttojahresarbeitsentgelt aller Versicherten der gesetzlichen Rentenversicherung (inkl. Teilzeit)",
+     "en": "Average gross annual earnings of all persons insured in the statutory pension insurance (incl. part-time)"
+    },
+    "source": {
+     "source_id": "gesetze_im_internet_wages",
+     "file": "sgb6_anlage_1.html",
+     "path": "research/raw/gesetze_im_internet_wages/sgb6_anlage_1.html",
+     "url": "https://www.gesetze-im-internet.de/sgb_6/anlage_1.html",
+     "retrieved": "2026-10-12T08:24:04Z",
+     "sha256": "1be51ea98688880833fc8f7e40f47ba7555aa3f61bb4606c3e419a88def03b0d",
+     "licence": "Official works (§ 5 UrhG)",
+     "coordinates": "Anlage 1 row '2026'"
+    }
+   }
+  },
+  "2027": {
+   "minimum_wage": {
+    "hourly_eur": 14.6,
+    "status": "statute",
+    "legal_basis": "§ 1 Nr. 2 MiLoV5 (§ 1 (2) MiLoG)",
+    "annual_full_time_eur": 30368.0,
+    "annual_status": "derived*",
+    "annual_assumption": "40 h/week × 52 weeks = 2080 paid hours; collectively agreed full-time weeks are often 35-39 h, which gives a lower annual figure",
+    "monthly_full_time_eur": 2530.67,
+    "source": {
+     "source_id": "gesetze_im_internet_wages",
+     "file": "milov5_1.html",
+     "path": "research/raw/gesetze_im_internet_wages/milov5_1.html",
+     "url": "https://www.gesetze-im-internet.de/milov5/__1.html",
+     "retrieved": "2026-10-12T08:24:04Z",
+     "sha256": "486c1093af7fa7b7f0e66b75a0967f91c773aaafe38460d9e0810cc996a0a11b",
+     "licence": "Official works (§ 5 UrhG)",
+     "coordinates": "text contains: ab 1, Januar 2027 14,60 Euro brutto je Zeitstunde"
+    },
+    "annual_full_time_at_destatis_hours_eur": 29684.72,
+    "destatis_hours_assumption": {
+     "paid_hours_per_week": 39.1,
+     "definition": "Durchschnittliche bezahlte Wochenarbeitszeit inkl. Überstunden, Vollzeitbeschäftigte, Gesamtwirtschaft, April 2025",
+     "source": {
+      "source_id": "destatis_verdienste_bericht",
+      "file": "verdienste-2025-q4.xlsx",
+      "path": "research/cache/destatis_verdienste_bericht/verdienste-2025-q4.xlsx",
+      "url": "https://www.destatis.de/DE/Themen/Arbeit/Verdienste/Verdienste-Branche-Berufe/Publikationen/Downloads/statistischer-bericht-verdienste-5623601253245.xlsx?__blob=publicationFile&v=2",
+      "retrieved": "2026-10-12T08:24:05Z",
+      "sha256": "12f1864360af1afb3d7434c417ce9118715a10c07499037c9bd2a3bf25d1775a",
+      "licence": "DL-DE-BY-2.0 (workbook Impressum sheet)",
+      "coordinates": "sheet csv-62361-04_1, row Gesamtwirtschaft, column WZT002"
+     }
+    }
+   },
+   "full_time_earnings": null,
+   "pension_average_earnings": null
+  }
+ }
+}

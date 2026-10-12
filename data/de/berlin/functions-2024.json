@@ -1,0 +1,289 @@
+{
+ "schema_version": 2,
+ "id": "de.berlin.functions_2024",
+ "title": {
+  "de": "Ausgaben Berlins nach Funktionen 2024 (Haushaltsrechnung)",
+  "en": "Berlin expenditure by function 2024 (annual account)"
+ },
+ "unit": "EUR",
+ "basis": "Cash (cameral) actuals from Berlin's 2024 annual account (Abgeordnetenhaus Drucksache 19/2681), whole Berlin budget including boroughs; Hauptfunktionen (1 digit) and Oberfunktionen (2 digits) of the Funktionenplan",
+ "generated": "2026-10-12",
+ "generated_by": "scripts/research/build_berlin.py",
+ "year": 2024,
+ "status": "final",
+ "total_eur": 40463642070.51,
+ "groups": [
+  {
+   "code": "2",
+   "label": {
+    "de": "Soziale Sicherung, Familie und Jugend, Arbeitsmarktpolitik",
+    "en": "Social security, family and youth, labour market"
+   },
+   "amount_eur": 12237400330.87,
+   "children": [
+    {
+     "code": "21",
+     "label": {
+      "de": "Verwaltung für soziale Angelegenheiten",
+      "en": "Social administration"
+     },
+     "amount_eur": 576623426.07
+    },
+    {
+     "code": "22",
+     "label": {
+      "de": "Sozialversicherung einschließlich Arbeitslosenversicherung",
+      "en": "Social insurance incl. unemployment insurance"
+     },
+     "amount_eur": 264391724.86
+    },
+    {
+     "code": "23",
+     "label": {
+      "de": "Familienhilfe, Wohlfahrtspflege und Ähnliches",
+      "en": "Family assistance, welfare and similar"
+     },
+     "amount_eur": 1048619411.59
+    },
+    {
+     "code": "24",
+     "label": {
+      "de": "Soziale Leistungen für Folgen von Krieg und politischen Ereignissen",
+      "en": "Social compensation benefits (SGB XIV) and benefits for consequences of political events"
+     },
+     "amount_eur": 82693584.52
+    },
+    {
+     "code": "25",
+     "label": {
+      "de": "Arbeitsmarktpolitik",
+      "en": "Labour-market policy"
+     },
+     "amount_eur": 2113931568.29
+    },
+    {
+     "code": "26",
+     "label": {
+      "de": "Kinder- und Jugendhilfe nach dem SGB VIII",
+      "en": "Child and youth welfare (SGB VIII)"
+     },
+     "amount_eur": 1313682878.17
+    },
+    {
+     "code": "27",
+     "label": {
+      "de": "Kindertagesbetreuung nach dem SGB VIII",
+      "en": "Day care for children (SGB VIII)"
+     },
+     "amount_eur": 2753866848.23
+    },
+    {
+     "code": "28",
+     "label": {
+      "de": "Soziale Leistungen nach dem SGB XII und dem AsylbLG, Eingliederungshilfe",
+      "en": "Social assistance (SGB XII), asylum-seeker benefits, integration assistance"
+     },
+     "amount_eur": 3507108567.35
+    },
+    {
+     "code": "29",
+     "label": {
+      "de": "Sonstige soziale Angelegenheiten",
+      "en": "Other social affairs"
+     },
+     "amount_eur": 576482321.79
+    }
+   ]
+  },
+  {
+   "code": "1",
+   "label": {
+    "de": "Bildungswesen, Wissenschaft, Forschung, kulturelle Angelegenheiten",
+    "en": "Education, science, research, cultural affairs"
+   },
+   "amount_eur": 11486353907.68,
+   "children": [
+    {
+     "code": "11",
+     "label": {
+      "de": "Allgemeinbildende und berufliche Schulen (öffentlich)",
+      "en": "General and vocational schools (joint heading 11/12)"
+     },
+     "amount_eur": 5060308838.36
+    },
+    {
+     "code": "12",
+     "label": {
+      "de": "Allgemeinbildende und berufliche Schulen (Sonder-, Privat-, Berufsschulen)",
+      "en": "General and vocational schools (joint heading 11/12)"
+     },
+     "amount_eur": 2121601166.64
+    },
+    {
+     "code": "13",
+     "label": {
+      "de": "Hochschulen",
+      "en": "Higher education"
+     },
+     "amount_eur": 2235130739.59
+    },
+    {
+     "code": "14",
+     "label": {
+      "de": "Förderung für Schülerinnen und Schüler, Studierende",
+      "en": "Support for pupils, students and trainees"
+     },
+     "amount_eur": 341526221.06
+    },
+    {
+     "code": "15",
+     "label": {
+      "de": "Sonstiges Bildungswesen",
+      "en": "Other education"
+     },
+     "amount_eur": 100732274.93
+    },
+    {
+     "code": "16",
+     "label": {
+      "de": "Wissenschaft, Forschung außerhalb der Hochschulen",
+      "en": "Science, research and development outside universities"
+     },
+     "amount_eur": 430727119.63
+    },
+    {
+     "code": "18",
+     "label": {
+      "de": "Kultur und Religion (Kultureinrichtungen)",
+      "en": "Culture and religion (joint heading 18/19)"
+     },
+     "amount_eur": 1018429084.99
+    },
+    {
+     "code": "19",
+     "label": {
+      "de": "Kultur und Religion (Denkmalschutz, kirchliche Angelegenheiten)",
+      "en": "Culture and religion (joint heading 18/19)"
+     },
+     "amount_eur": 177898462.48
+    }
+   ]
+  },
+  {
+   "code": "0",
+   "label": {
+    "de": "Allgemeine Dienste",
+    "en": "General public services"
+   },
+   "amount_eur": 8184947117.33,
+   "children": [
+    {
+     "code": "01",
+     "label": {
+      "de": "Politische Führung und zentrale Verwaltung",
+      "en": "Political leadership and central administration"
+     },
+     "amount_eur": 2633556168.81
+    },
+    {
+     "code": "02",
+     "label": {
+      "de": "Auswärtige Angelegenheiten",
+      "en": "Foreign affairs"
+     },
+     "amount_eur": 8476394.4
+    },
+    {
+     "code": "04",
+     "label": {
+      "de": "Öffentliche Sicherheit und Ordnung",
+      "en": "Public security and order"
+     },
+     "amount_eur": 3431223283.6
+    },
+    {
+     "code": "05",
+     "label": {
+      "de": "Rechtsschutz",
+      "en": "Legal protection (courts)"
+     },
+     "amount_eur": 1433347657.67
+    },
+    {
+     "code": "06",
+     "label": {
+      "de": "Finanzverwaltung",
+      "en": "Financial administration"
+     },
+     "amount_eur": 678343612.85
+    }
+   ]
+  },
+  {
+   "code": "7",
+   "label": {
+    "de": "Verkehrs- und Nachrichtenwesen",
+    "en": "Transport and communications"
+   },
+   "amount_eur": 2366087450.5,
+   "children": []
+  },
+  {
+   "code": "6",
+   "label": {
+    "de": "Energie- und Wasserwirtschaft, Gewerbe, Dienstleistungen",
+    "en": "Energy and water, trade and services"
+   },
+   "amount_eur": 2298456893.9,
+   "children": []
+  },
+  {
+   "code": "8",
+   "label": {
+    "de": "Finanzwirtschaft",
+    "en": "General financial management"
+   },
+   "amount_eur": 1817608671.9,
+   "children": []
+  },
+  {
+   "code": "3",
+   "label": {
+    "de": "Gesundheit, Umwelt, Sport und Erholung",
+    "en": "Health, environment, sport and recreation"
+   },
+   "amount_eur": 1317065860.72,
+   "children": []
+  },
+  {
+   "code": "4",
+   "label": {
+    "de": "Wohnungswesen, Städtebau, Raumordnung und kommunale Gemeinschaftsdienste",
+    "en": "Housing, urban development, regional planning, community services"
+   },
+   "amount_eur": 726239037.23,
+   "children": []
+  },
+  {
+   "code": "5",
+   "label": {
+    "de": "Ernährung, Landwirtschaft und Forsten",
+    "en": "Food, agriculture and forestry"
+   },
+   "amount_eur": 29482800.38,
+   "children": []
+  }
+ ],
+ "source": {
+  "source_id": "berlin_jahresrechnung_2024",
+  "file": "d19-2681.pdf",
+  "path": "research/cache/berlin_jahresrechnung_2024/d19-2681.pdf",
+  "url": "https://www.parlament-berlin.de/ados/19/IIIPlen/vorgang/d19-2681.pdf",
+  "retrieved": "2026-10-09T12:45:36Z",
+  "sha256": "4636e2b4a795580e0e7fade59048d676aa2858f2a6aa56068b9ae701be0ad8c5",
+  "licence": "unverified (parliamentary document; cite 'AGH Berlin, Drucksache 19/2681'; PDF not redistributed)",
+  "coordinates": "Funktionenübersicht, PDF pages 79-88 (rotated table), column 'Ist'; rows in research/extracts/berlin_jahresrechnung_2024/funktionen-2024.csv",
+  "note": "Geometric word-level extraction 2026-08-06, validated by cent-exact child-to-parent sums and the table total; independently re-derived from the PDF on 2026-10-12 (review D: 31 of 33 amounts verbatim, 2 via Rechnungssoll − Reste, total exact)"
+ },
+ "label_source": "The PDF table prints codes and amounts only: German names (incl. the bracketed glosses on 11/12/18/19) are editorial, based on the Funktionenplan; English labels via data/de/federal/funktionenplan.json (editorial)"
+}

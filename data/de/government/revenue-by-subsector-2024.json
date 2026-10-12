@@ -1,0 +1,322 @@
+{
+ "schema_version": 2,
+ "id": "de.government.revenue_by_subsector_2024",
+ "title": {
+  "de": "Steuern und Sozialbeiträge 2024 nach empfangendem Teilsektor (inkl. EU)",
+  "en": "Taxes and social contributions 2024 by receiving subsector (incl. EU institutions)"
+ },
+ "unit": "MEUR",
+ "basis": "ESA 2010 accrual; S13_S212 = general government plus EU institutions; S212 = EU institutions' share collected in Germany",
+ "generated": "2026-10-12",
+ "generated_by": "scripts/research/build_government.py",
+ "sectors": {
+  "S13": {
+   "de": "Staat (konsolidiert)",
+   "en": "General government (consolidated)"
+  },
+  "S1311": {
+   "de": "Bund",
+   "en": "Central government"
+  },
+  "S1312": {
+   "de": "Länder",
+   "en": "State government (Länder)"
+  },
+  "S1313": {
+   "de": "Gemeinden",
+   "en": "Local government"
+  },
+  "S1314": {
+   "de": "Sozialversicherung",
+   "en": "Social security funds"
+  },
+  "S13_S212": {
+   "de": "Staat und EU-Institutionen",
+   "en": "General government and EU institutions"
+  },
+  "S212": {
+   "de": "EU-Institutionen",
+   "en": "EU institutions"
+  }
+ },
+ "source": {
+  "source_id": "eurostat_gov",
+  "file": "gov_10a_taxag_DE_2024.json",
+  "path": "research/raw/eurostat_gov/gov_10a_taxag_DE_2024.json",
+  "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_taxag?geo=DE&unit=MIO_EUR&time=2024&lang=en",
+  "retrieved": "2026-10-09T12:45:31Z",
+  "sha256": "44a93c3b7bc794c439f1d07d1cc6355053362f003ea1158340da03e0c631b809",
+  "licence": "CC BY 4.0 (Eurostat copyright notice: reuse of statistical data permitted with source acknowledgement: 'Source: Eurostat')",
+  "coordinates": "na_item × sector, time 2024"
+ },
+ "rows": [
+  {
+   "id": "D2",
+   "label": {
+    "de": "Produktions- und Importabgaben",
+    "en": "Taxes on production and imports"
+   },
+   "by_sector": {
+    "S13_S212": {
+     "value_meur": 449362.0,
+     "status": "provisional"
+    },
+    "S13": {
+     "value_meur": 443779.0,
+     "status": "provisional"
+    },
+    "S1311": {
+     "value_meur": 250880.0,
+     "status": "provisional"
+    },
+    "S1312": {
+     "value_meur": 169281.0,
+     "status": "provisional"
+    },
+    "S1313": {
+     "value_meur": 23618.0,
+     "status": "provisional"
+    },
+    "S212": {
+     "value_meur": 5583.0,
+     "status": "provisional"
+    }
+   }
+  },
+  {
+   "id": "D211",
+   "label": {
+    "de": "Mehrwertsteuer",
+    "en": "VAT"
+   },
+   "by_sector": {
+    "S13_S212": {
+     "value_meur": 298764.0,
+     "status": "provisional"
+    },
+    "S13": {
+     "value_meur": 298764.0,
+     "status": "provisional"
+    },
+    "S1311": {
+     "value_meur": 143609.0,
+     "status": "provisional"
+    },
+    "S1312": {
+     "value_meur": 147568.0,
+     "status": "provisional"
+    },
+    "S1313": {
+     "value_meur": 7587.0,
+     "status": "provisional"
+    },
+    "S212": {
+     "value_meur": 0.0,
+     "status": "provisional"
+    }
+   }
+  },
+  {
+   "id": "D5",
+   "label": {
+    "de": "Einkommen- und Vermögensteuern",
+    "en": "Current taxes on income and wealth"
+   },
+   "by_sector": {
+    "S13_S212": {
+     "value_meur": 552833.0,
+     "status": "provisional"
+    },
+    "S13": {
+     "value_meur": 552833.0,
+     "status": "provisional"
+    },
+    "S1311": {
+     "value_meur": 220580.0,
+     "status": "provisional"
+    },
+    "S1312": {
+     "value_meur": 218333.0,
+     "status": "provisional"
+    },
+    "S1313": {
+     "value_meur": 113920.0,
+     "status": "provisional"
+    },
+    "S212": {
+     "value_meur": 0.0,
+     "status": "provisional"
+    }
+   }
+  },
+  {
+   "id": "D51",
+   "label": {
+    "de": "Einkommensteuern",
+    "en": "Taxes on income"
+   },
+   "by_sector": {
+    "S13_S212": {
+     "value_meur": 536831.0,
+     "status": "provisional"
+    },
+    "S13": {
+     "value_meur": 536831.0,
+     "status": "provisional"
+    },
+    "S1311": {
+     "value_meur": 213222.0,
+     "status": "provisional"
+    },
+    "S1312": {
+     "value_meur": 210565.0,
+     "status": "provisional"
+    },
+    "S1313": {
+     "value_meur": 113044.0,
+     "status": "provisional"
+    },
+    "S212": {
+     "value_meur": 0.0,
+     "status": "provisional"
+    }
+   }
+  },
+  {
+   "id": "D91",
+   "label": {
+    "de": "Vermögenswirksame Steuern",
+    "en": "Capital taxes"
+   },
+   "by_sector": {
+    "S13_S212": {
+     "value_meur": 9991.0,
+     "status": "provisional"
+    },
+    "S13": {
+     "value_meur": 9991.0,
+     "status": "provisional"
+    },
+    "S1311": {
+     "value_meur": 0.0,
+     "status": "provisional"
+    },
+    "S1312": {
+     "value_meur": 9991.0,
+     "status": "provisional"
+    },
+    "S1313": {
+     "value_meur": 0.0,
+     "status": "provisional"
+    },
+    "S212": {
+     "value_meur": 0.0,
+     "status": "provisional"
+    }
+   }
+  },
+  {
+   "id": "D61",
+   "label": {
+    "de": "Nettosozialbeiträge",
+    "en": "Net social contributions"
+   },
+   "by_sector": {
+    "S13_S212": {
+     "value_meur": 756551.0,
+     "status": "provisional"
+    },
+    "S13": {
+     "value_meur": 756551.0,
+     "status": "provisional"
+    },
+    "S1311": {
+     "value_meur": 8782.0,
+     "status": "provisional"
+    },
+    "S1312": {
+     "value_meur": 31979.0,
+     "status": "provisional"
+    },
+    "S1313": {
+     "value_meur": 4905.0,
+     "status": "provisional"
+    },
+    "S1314": {
+     "value_meur": 710885.0,
+     "status": "provisional"
+    }
+   }
+  },
+  {
+   "id": "D2_D5_D91",
+   "label": {
+    "de": "Steuern insgesamt",
+    "en": "Total taxes"
+   },
+   "by_sector": {
+    "S13_S212": {
+     "value_meur": 1012186.0,
+     "status": "provisional"
+    },
+    "S13": {
+     "value_meur": 1006603.0,
+     "status": "provisional"
+    },
+    "S1311": {
+     "value_meur": 471460.0,
+     "status": "provisional"
+    },
+    "S1312": {
+     "value_meur": 397605.0,
+     "status": "provisional"
+    },
+    "S1313": {
+     "value_meur": 137538.0,
+     "status": "provisional"
+    },
+    "S212": {
+     "value_meur": 5583.0,
+     "status": "provisional"
+    }
+   }
+  },
+  {
+   "id": "D2_D5_D91_D61_M_D995",
+   "label": {
+    "de": "Steuern und Sozialbeiträge insgesamt (nach Abzug D.995)",
+    "en": "Total receipts from taxes and social contributions (after D.995)"
+   },
+   "by_sector": {
+    "S13_S212": {
+     "value_meur": 1768737.0,
+     "status": "provisional"
+    },
+    "S13": {
+     "value_meur": 1763154.0,
+     "status": "provisional"
+    },
+    "S1311": {
+     "value_meur": 480242.0,
+     "status": "provisional"
+    },
+    "S1312": {
+     "value_meur": 429584.0,
+     "status": "provisional"
+    },
+    "S1313": {
+     "value_meur": 142443.0,
+     "status": "provisional"
+    },
+    "S1314": {
+     "value_meur": 710885.0,
+     "status": "provisional"
+    },
+    "S212": {
+     "value_meur": 5583.0,
+     "status": "provisional"
+    }
+   }
+  }
+ ]
+}
