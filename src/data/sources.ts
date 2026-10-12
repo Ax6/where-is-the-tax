@@ -4,6 +4,9 @@
  */
 import payslipParameters from "../../data/de/citizen/payslip-parameters.json" with { type: "json" };
 import purchaseTaxes from "../../data/de/citizen/purchase-taxes.json" with { type: "json" };
+import wageReference from "../../data/de/citizen/wage-reference.json" with { type: "json" };
+import householdIndirectTaxes from "../../data/de/citizen/household-indirect-taxes.json" with { type: "json" };
+import funktionenplan from "../../data/de/federal/funktionenplan.json" with { type: "json" };
 import legalAllocation from "../../data/de/taxes/legal-allocation.json" with { type: "json" };
 import byTax from "../../data/de/taxes/by-tax.json" with { type: "json" };
 import byRecipient from "../../data/de/taxes/by-recipient.json" with { type: "json" };
@@ -24,6 +27,9 @@ import laenderGeo from "../../data/geo/de-laender.json" with { type: "json" };
 export const raw = {
   payslipParameters,
   purchaseTaxes,
+  wageReference,
+  householdIndirectTaxes,
+  funktionenplan,
   legalAllocation,
   byTax,
   byRecipient,
@@ -47,6 +53,9 @@ export const files = {
   payslipParameters: "data/de/citizen/payslip-parameters.json",
   payslipExamples: "data/de/citizen/payslip-examples.json",
   purchaseTaxes: "data/de/citizen/purchase-taxes.json",
+  wageReference: "data/de/citizen/wage-reference.json",
+  householdIndirectTaxes: "data/de/citizen/household-indirect-taxes.json",
+  funktionenplan: "data/de/federal/funktionenplan.json",
   legalAllocation: "data/de/taxes/legal-allocation.json",
   byTax: "data/de/taxes/by-tax.json",
   byRecipient: "data/de/taxes/by-recipient.json",

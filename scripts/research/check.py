@@ -120,6 +120,18 @@ def main():
                 s = sum(c["value_eur"] for c in comps if isinstance(c, dict) and c.get("value_eur") is not None)
                 hard(abs(s - tot) <= max(1, 0.001 * tot), f"payroll view {y}: {len(comps)} components {s/1e9:,.1f} bn vs total {tot/1e9:,.1f} bn")
 
+    # 11. wage reference and household estimate
+    w = load("de/citizen/wage-reference.json")
+    if w:
+        y26 = w["years"]["2026"]["minimum_wage"]
+        hard(abs(y26["annual_full_time_eur"] - 13.90 * 2080) < 0.01, f"minimum wage 2026 annual {y26['annual_full_time_eur']} = 13.90 × 2080")
+        y24 = w["years"]["2024"]["full_time_earnings"]
+        hard(y24["monthly_april"]["median_gross_monthly_eur"] == 3978 and y24["annual"]["median_gross_annual_eur"] == 52159, "full-time median 2024: 3,978 EUR/month (April), 52,159 EUR/year incl. special payments")
+    h = load("de/citizen/household-indirect-taxes.json")
+    if h:
+        for c, blk in h["classes"].items():
+            hard(abs(blk["recipients_year_eur"]["bund"] + blk["recipients_year_eur"]["laender"] + blk["recipients_year_eur"]["gemeinden"] - blk["indirect_taxes_year_eur"]) <= 2, f"household estimate {c}: recipients sum to total {blk['indirect_taxes_year_eur']} EUR/yr")
+        hard(0.05 < h["classes"]["Haushalte insgesamt"]["share_of_consumption"] < 0.2, f"household estimate: {h['classes']['Haushalte insgesamt']['share_of_consumption']*100:.1f} % of consumption is in a plausible band")
     print(f"\n{FAIL} hard failures")
     return 1 if FAIL else 0
 

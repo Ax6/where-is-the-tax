@@ -1,0 +1,136 @@
+{
+  "sources": [
+    {
+      "id": "gesetze_im_internet_wages",
+      "institution": "gesetze-im-internet.de",
+      "title": "Minimum wage statutes and the pension insurance's average earnings table",
+      "licence": "Official works (§ 5 UrhG)",
+      "licence_evidence": "https://www.gesetze-im-internet.de/hinweise.html",
+      "redistribution": "allowed",
+      "store": "raw",
+      "basis": "Statute text in force at retrieval",
+      "files": [
+        {
+          "file": "milog_1.html",
+          "url": "https://www.gesetze-im-internet.de/milog/__1.html",
+          "description": "§ 1 MiLoG: minimum wage and its adjustment by ordinance"
+        },
+        {
+          "file": "milov4_1.html",
+          "url": "https://www.gesetze-im-internet.de/milov4/__1.html",
+          "description": "Vierte Mindestlohnanpassungsverordnung § 1: 12.41 EUR (2024), 12.82 EUR (2025)"
+        },
+        {
+          "file": "milov5_1.html",
+          "url": "https://www.gesetze-im-internet.de/milov5/__1.html",
+          "description": "Fünfte Mindestlohnanpassungsverordnung § 1: 2026 and 2027 rates"
+        },
+        {
+          "file": "sgb6_anlage_1.html",
+          "url": "https://www.gesetze-im-internet.de/sgb_6/anlage_1.html",
+          "description": "Anlage 1 SGB VI: Durchschnittsentgelt (average annual earnings of insured persons) by year"
+        }
+      ]
+    },
+    {
+      "id": "destatis_genesis_62361",
+      "institution": "Statistisches Bundesamt (Destatis), GENESIS-Online",
+      "title": "Verdiensterhebung (62361): median and average gross monthly/annual earnings",
+      "licence": "DL-DE-BY-2.0; attribution: Statistisches Bundesamt (Destatis), GENESIS-Online",
+      "licence_evidence": "https://www.destatis.de/DE/Service/Impressum/_inhalt.html",
+      "redistribution": "allowed",
+      "store": "raw",
+      "basis": "Verdiensterhebung, reference month April (monthly) / year (annual incl. special payments); all employees unless stated",
+      "files": [
+        {
+          "file": "62361-0031.json",
+          "url": "https://genesis.destatis.de/genesis/api/rest/tables/62361-0031/data",
+          "description": "April 2022-2025: median/average gross hourly and monthly earnings without special payments by personal characteristics"
+        },
+        {
+          "file": "62361-0035.json",
+          "url": "https://genesis.destatis.de/genesis/api/rest/tables/62361-0035/data",
+          "description": "Years: median/average gross annual earnings incl. special payments by personal characteristics"
+        },
+        {
+          "file": "statistic-62361-tables.json",
+          "url": "https://genesis.destatis.de/genesis/api/rest/statistics/62361/tables",
+          "description": "Table list with variable names (labels for VST051/052/045/047/050/053)"
+        }
+      ]
+    },
+    {
+      "id": "destatis_verdienste_bericht",
+      "institution": "Statistisches Bundesamt (Destatis)",
+      "title": "Statistischer Bericht – Verdienste (Verdiensterhebung), quarterly report workbook",
+      "licence": "DL-DE-BY-2.0 (workbook Impressum sheet)",
+      "licence_evidence": "Impressum sheet inside the workbook",
+      "redistribution": "allowed",
+      "store": "cache",
+      "basis": "Verdiensterhebung; full-time employees' median and average earnings tables",
+      "files": [
+        {
+          "file": "verdienste-2025-q4.xlsx",
+          "url": "https://www.destatis.de/DE/Themen/Arbeit/Verdienste/Verdienste-Branche-Berufe/Publikationen/Downloads/statistischer-bericht-verdienste-5623601253245.xlsx?__blob=publicationFile&v=2",
+          "description": "Report with April 2025 reference-month tables"
+        },
+        {
+          "file": "arbeitnehmerverdienste-jahr-2024.xlsx",
+          "url": "https://www.destatis.de/DE/Themen/Arbeit/Verdienste/Verdienste-Branche-Berufe/Publikationen/Downloads/arbeitnehmerverdienste-jahr-2160230217005.xlsx?__blob=publicationFile&v=4",
+          "description": "Arbeitnehmerverdienste annual report (full-time averages)"
+        }
+      ]
+    },
+    {
+      "id": "destatis_lwr_2024",
+      "institution": "Statistisches Bundesamt (Destatis)",
+      "title": "Statistischer Bericht – Laufende Wirtschaftsrechnungen (LWR) 2024: income, consumption expenditure of private households by household net income class",
+      "licence": "DL-DE-BY-2.0 (workbook Impressum sheet)",
+      "licence_evidence": "Impressum sheet inside the workbook",
+      "redistribution": "allowed",
+      "store": "cache",
+      "basis": "LWR 2024 sample survey; monthly EUR per household; consumption by COICOP purpose and by household net income class",
+      "files": [
+        {
+          "file": "lwr-2024.xlsx",
+          "url": "https://www.destatis.de/DE/Themen/Gesellschaft-Umwelt/Einkommen-Konsum-Lebensbedingungen/Konsumausgaben-Lebenshaltungskosten/Publikationen/Downloads-Konsumausgaben/statistischer-bericht-laufende-wirtschaftsrechnungen-2150100247005.xlsx?__blob=publicationFile&v=8",
+          "description": "LWR 2024 workbook"
+        }
+      ]
+    },
+    {
+      "id": "bmf_funktionenplan",
+      "institution": "Bundesministerium der Finanzen",
+      "title": "Funktionenplan mit allgemeinen Vorschriften (Stand 12. November 2024)",
+      "licence": "BMF document; the Funktionenplan is an official classification (Haushaltssystematik, § 10 HGrG) — names of functions are facts; PDF not redistributed",
+      "licence_evidence": "https://www.bundesfinanzministerium.de/Web/DE/Service/Impressum/impressum.html",
+      "redistribution": "not_allowed",
+      "store": "cache",
+      "basis": "Official function codes and names (1-, 2-, 3-digit)",
+      "files": [
+        {
+          "file": "funktionenplan.pdf",
+          "url": "https://www.bundesfinanzministerium.de/Content/DE/Downloads/Oeffentliche-Finanzen/Haushaltsrecht-und-Haushaltssystematik/funktionenplan.pdf?__blob=publicationFile&v=4",
+          "description": "38 pages; code + name lines"
+        }
+      ]
+    },
+    {
+      "id": "destatis_evs_2023_feinanschreibung",
+      "institution": "Statistisches Bundesamt (Destatis)",
+      "title": "Statistischer Bericht – EVS 2023 Feinanschreibung: Nahrungsmittel, Getränke, Tabakwaren (detailed food, drink and tobacco spending)",
+      "licence": "DL-DE-BY-2.0 (workbook Impressum sheet)",
+      "licence_evidence": "Impressum sheet inside the workbook",
+      "redistribution": "allowed",
+      "store": "cache",
+      "basis": "EVS 2023 detailed diary; monthly EUR per household, Germany",
+      "files": [
+        {
+          "file": "evs-2023-feinanschreibung.xlsx",
+          "url": "https://www.destatis.de/DE/Themen/Gesellschaft-Umwelt/Einkommen-Konsum-Lebensbedingungen/Konsumausgaben-Lebenshaltungskosten/Publikationen/Downloads-Konsumausgaben/statistischer-bericht-evs-feinanschreibung-nahrungsmittel-getraenke-tabakwaren-2152603239005.xlsx?__blob=publicationFile&v=2",
+          "description": "Used only for the split of alcoholic drinks vs tobacco inside the combined LWR item"
+        }
+      ]
+    }
+  ]
+}

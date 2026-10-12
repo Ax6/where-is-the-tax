@@ -7,7 +7,7 @@
  },
  "unit": "MEUR",
  "basis": "Commission budget implementation (accrual-free, by year of booking) for both sides; Destatis cash positions (EUR) added for comparison: the two sources differ in timing and in the treatment of the GNI reduction and balances. No net balance is computed (see file notes).",
- "generated": "2026-10-09",
+ "generated": "2026-10-12",
  "generated_by": "scripts/research/build_eu.py",
  "headings": {
   "single_market": {

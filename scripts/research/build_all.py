@@ -13,8 +13,8 @@ HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[1]
 ORDER = [
     "build_taxes.py", "build_population.py", "build_government.py", "build_cash_levels.py", "build_laender.py",
-    "build_municipal.py", "build_berlin.py", "build_eu.py", "build_legal.py", "build_purchases.py",
-    "build_equalisation.py", "build_federal.py", "build_social.py", "build_payslip.py", "build_docs.py", "check.py",
+    "build_municipal.py", "build_eu.py", "build_legal.py", "build_purchases.py",
+    "build_equalisation.py", "build_funktionenplan.py", "build_federal.py", "build_wages.py", "build_household_taxes.py", "build_social.py", "build_payslip.py", "build_berlin.py", "build_docs.py", "check.py",
 ]
 
 

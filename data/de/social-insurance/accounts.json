@@ -7,7 +7,7 @@
  },
  "unit": "EUR",
  "basis": "Annual accounts of the four statutory systems as published by DRV (Mrd, 1 decimal), BMG KJ1 (EUR, cents), BMG SPV table (Mrd, 2 decimals), BA (Mrd 2 decimals / Mio 1 decimal). Each figure carries precision_eur = the source's rounding unit. Systems are not summed except in payroll_view and contributions_by_payer_all_systems.",
- "generated": "2026-10-09",
+ "generated": "2026-10-12",
  "generated_by": "scripts/research/build_social.py",
  "years": [
   "2024",

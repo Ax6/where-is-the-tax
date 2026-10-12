@@ -7,7 +7,7 @@
  },
  "unit": "MEUR",
  "basis": "ESA 2010 accrual, general government S13 consolidated; debt = Maastricht gross debt at year end; 'p' = provisional, 'unflagged' = no Eurostat flag",
- "generated": "2026-10-09",
+ "generated": "2026-10-12",
  "generated_by": "scripts/research/build_government.py",
  "years": [
   "1975",

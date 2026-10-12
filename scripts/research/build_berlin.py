@@ -3,8 +3,7 @@
 
 - tax-receipts.json   Berlin's own tax account 2024 and 2025 (Senatsverwaltung für Finanzen CSV, CC BY),
                       Land shares, Land taxes, municipal taxes, municipal shares; EUR
-- functions-2024.json the Berlin 2024 annual account by function (re-homed from data/de/2024/accounts/
-                      berlin-functions.json with provenance pointing at the cached Drucksache 19/2681)
+- functions-2024.json the Berlin 2024 annual account by function (from the committed extract of Drucksache 19/2681)
 """
 from __future__ import annotations
 
@@ -82,12 +81,40 @@ def build_taxes():
 
 
 def rehome_functions():
-    old = json.loads((DATA / "de" / "2024" / "accounts" / "berlin-functions.json").read_text(encoding="utf-8"))
+    """Berlin 2024 expenditure by function from the committed extract (geometric extraction of the Drucksache table,
+    2026-08-06); English labels from the federal Funktionenplan (Berlin uses the same codes)."""
+    fp_path = DATA / "de" / "federal" / "funktionenplan.json"
+    fp = {r["code"]: r["label"] for r in json.loads(fp_path.read_text(encoding="utf-8"))["rows"]} if fp_path.exists() else {}
+    rows = list(csv.DictReader((EXTRACTS / "berlin_jahresrechnung_2024" / "funktionen-2024.csv").open(encoding="utf-8")))
+    total = next(float(r["amount_eur"]) for r in rows if r["code"] == "total")
+    groups, cur = [], None
+    for r in rows:
+        if r["code"] == "total":
+            continue
+        entry = {"code": r["code"], "label": {"de": r["name_de"], "en": (fp.get(r["code"]) or {}).get("en")}, "amount_eur": float(r["amount_eur"])}
+        if len(r["code"]) == 1:
+            cur = {**entry, "children": []}
+            groups.append(cur)
+        else:
+            cur["children"].append(entry)
+    for g in groups:
+        if g["children"]:
+            diff = g["amount_eur"] - sum(c["amount_eur"] for c in g["children"])
+            if abs(diff) > 0.01:
+                raise SystemExit(f"Berlin group {g['code']}: children differ by {diff}")
+    if abs(sum(g["amount_eur"] for g in groups) - total) > 0.01:
+        raise SystemExit("Berlin groups do not sum to the total")
+    missing = [g["code"] for g in groups if g["label"]["en"] is None] + [c["code"] for g in groups for c in g["children"] if c["label"]["en"] is None]
+    if missing:
+        raise SystemExit(f"Berlin functions without English label: {missing}")
+    groups.sort(key=lambda g: -g["amount_eur"])
+    print(f"Berlin functions 2024: {len(groups)} groups, total {total/1e9:.3f} bn EUR, sums verified")
     payload = envelope(
         "de.berlin.functions_2024", "Ausgaben Berlins nach Funktionen 2024 (Haushaltsrechnung)", "Berlin expenditure by function 2024 (annual account)",
-        "EUR", old["basis"], SCRIPT, year=2024, status="final",
-        method=old["method"], total_eur=old["total_eur"], groups=old["groups"],
-        source=source_ref("berlin_jahresrechnung_2024", "d19-2681.pdf", "Funktionenübersicht, PDF pages 79-88 (rotated table); group rows and total", "Extraction done 2026-08-06 (see data/de/2024/accounts/berlin-functions.json history); independent re-verification pending in the 2026-10-09 review log"),
+        "EUR", "Cash (cameral) actuals from Berlin's 2024 annual account (Abgeordnetenhaus Drucksache 19/2681), whole Berlin budget including boroughs; Hauptfunktionen (1 digit) and Oberfunktionen (2 digits) of the Funktionenplan", SCRIPT, year=2024, status="final",
+        total_eur=total, groups=groups,
+        source=source_ref("berlin_jahresrechnung_2024", "d19-2681.pdf", "Funktionenübersicht, PDF pages 79-88 (rotated table), column 'Ist'; rows in research/extracts/berlin_jahresrechnung_2024/funktionen-2024.csv", "Geometric word-level extraction 2026-08-06, validated by cent-exact child-to-parent sums and the table total; independently re-derived from the PDF on 2026-10-12 (review D: 31 of 33 amounts verbatim, 2 via Rechnungssoll − Reste, total exact)"),
+        label_source="The PDF table prints codes and amounts only: German names (incl. the bracketed glosses on 11/12/18/19) are editorial, based on the Funktionenplan; English labels via data/de/federal/funktionenplan.json (editorial)",
     )
     write_json("de/berlin/functions-2024.json", payload)
 

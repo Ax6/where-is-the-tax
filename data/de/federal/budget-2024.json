@@ -7,7 +7,7 @@
  },
  "unit": "EUR",
  "basis": "Kernhaushalt des Bundes, kassenmäßiges Ist je Titel (Haushaltsrechnung XML). 'Official basis' = BMF definition of Ausgaben: without Obergruppen 59 (Tilgung), 91 (Zuführung an Rücklagen), 96 (kassenmäßiger Fehlbetrag) and 98 (haushaltstechnische Verrechnungen)",
- "generated": "2026-10-09",
+ "generated": "2026-10-12",
  "generated_by": "scripts/research/build_federal.py",
  "year": 2024,
  "status": "provisional (vorläufiger Abschluss)",
@@ -149,32 +149,47 @@
       },
       {
        "code": "012",
-       "label": null,
-       "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+       "label": {
+        "de": "Innere Verwaltung",
+        "en": "Internal administration"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
        "amount_eur": 630754719.64
       },
       {
        "code": "013",
-       "label": null,
-       "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+       "label": {
+        "de": "Informationswesen",
+        "en": "Information services"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
        "amount_eur": 47259652.07
       },
       {
        "code": "014",
-       "label": null,
-       "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+       "label": {
+        "de": "Statistischer Dienst",
+        "en": "Statistical service"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
        "amount_eur": 350287476.98
       },
       {
        "code": "015",
-       "label": null,
-       "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+       "label": {
+        "de": "Zivildienst",
+        "en": "Civilian service"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
        "amount_eur": -576.2
       },
       {
        "code": "016",
-       "label": null,
-       "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+       "label": {
+        "de": "Hochbauverwaltung",
+        "en": "Building administration"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
        "amount_eur": 321915417.05
       },
       {
@@ -188,8 +203,11 @@
       },
       {
        "code": "019",
-       "label": null,
-       "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+       "label": {
+        "de": "Sonstige allgemeine Staatsaufgaben",
+        "en": "Other general state tasks"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
        "amount_eur": 1483518122.3
       }
      ]
@@ -232,8 +250,11 @@
       },
       {
        "code": "024",
-       "label": null,
-       "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+       "label": {
+        "de": "Auslandsschulwesen und kulturelle Angelegenheiten im Ausland",
+        "en": "German schools abroad and cultural affairs"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
        "amount_eur": 925512972.52
       },
       {
@@ -258,44 +279,65 @@
      "funktionen": [
       {
        "code": "031",
-       "label": null,
-       "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+       "label": {
+        "de": "Bundeswehrverwaltung",
+        "en": "Bundeswehr administration"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
        "amount_eur": 7526323663.41
       },
       {
        "code": "032",
-       "label": null,
-       "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+       "label": {
+        "de": "Deutsche Verteidigungsstreitkräfte",
+        "en": "German armed forces"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
        "amount_eur": 41370980912.21
       },
       {
        "code": "033",
-       "label": null,
-       "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+       "label": {
+        "de": "Verteidigungslasten im Zusammenhang mit dem Aufenthalt ausländischer Streitkräfte",
+        "en": "Defence burdens linked to the stationing of foreign forces"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
        "amount_eur": 21582649.6
       },
       {
        "code": "036",
-       "label": null,
-       "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+       "label": {
+        "de": "Wehrforschung und wehrtechnische Entwicklung",
+        "en": "Defence research and development"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
        "amount_eur": 878421012.6
       },
       {
        "code": "037",
-       "label": null,
-       "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+       "label": {
+        "de": "Unterhaltssicherung",
+        "en": "Income support for conscripts"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
        "amount_eur": 204202760.25
       },
       {
        "code": "038",
-       "label": null,
-       "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+       "label": {
+        "de": "Versorgung einschließlich Beihilfen für Versorgungsempfängerinnen und Versorgungsempfänger im Bereich der Bundeswehrverwaltung",
+        "en": "Pensions incl. allowances for civil servants of the defence administration"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
        "amount_eur": 1252996708.35
       },
       {
        "code": "039",
-       "label": null,
-       "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+       "label": {
+        "de": "Versorgung einschließlich Beihilfen der Soldatinnen und Soldaten der Bundeswehr",
+        "en": "Pensions incl. allowances for soldiers"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
        "amount_eur": 5810498621.68
       }
      ]
@@ -320,46 +362,67 @@
       },
       {
        "code": "043",
-       "label": null,
-       "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+       "label": {
+        "de": "Öffentliche Ordnung",
+        "en": "Public order"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
        "amount_eur": 379144379.84
       },
       {
        "code": "045",
-       "label": null,
-       "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+       "label": {
+        "de": "Bevölkerungs- und Katastrophenschutz",
+        "en": "Civil protection and disaster control"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
        "amount_eur": 879922714.31
       },
       {
        "code": "046",
-       "label": null,
-       "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+       "label": {
+        "de": "Wetterdienst",
+        "en": "Meteorological service"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
        "amount_eur": 391560281.78
       },
       {
        "code": "047",
-       "label": null,
-       "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+       "label": {
+        "de": "Schutz der Verfassung",
+        "en": "Protection of the constitution"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
        "amount_eur": 504339688.04
       }
      ]
     },
     {
      "code": "05",
-     "label": null,
-     "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+     "label": {
+      "de": "Rechtsschutz",
+      "en": "Legal protection (courts)"
+     },
+     "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
      "amount_eur": 726094594.72,
      "funktionen": [
       {
        "code": "051",
-       "label": null,
-       "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+       "label": {
+        "de": "Gerichte und Staatsanwaltschaften",
+        "en": "Courts and public prosecutors"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
        "amount_eur": 260604850.28
       },
       {
        "code": "059",
-       "label": null,
-       "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+       "label": {
+        "de": "Sonstige Rechtsschutzaufgaben",
+        "en": "Other legal protection tasks"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
        "amount_eur": 465489744.44
       }
      ]
@@ -375,20 +438,29 @@
      "funktionen": [
       {
        "code": "061",
-       "label": null,
-       "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+       "label": {
+        "de": "Steuer- und Zollverwaltung",
+        "en": "Tax and customs administration"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
        "amount_eur": 5974556104.11
       },
       {
        "code": "062",
-       "label": null,
-       "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+       "label": {
+        "de": "Schulden-, Vermögens- und sonstige Finanzverwaltung",
+        "en": "Debt, asset and other financial administration"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
        "amount_eur": 48415515.95
       },
       {
        "code": "068",
-       "label": null,
-       "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+       "label": {
+        "de": "Versorgung einschließlich Beihilfen für Versorgungsempfängerinnen und Versorgungsempfänger im Bereich der Finanzverwaltung",
+        "en": "Pensions incl. allowances for civil servants of the financial administration"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
        "amount_eur": 1256298755.61
       }
      ]
@@ -409,28 +481,40 @@
    "funktionen": [
     {
      "code": "11",
-     "label": null,
-     "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+     "label": {
+      "de": "Allgemeinbildende und berufliche Schulen",
+      "en": "General and vocational schools (joint heading 11/12)"
+     },
+     "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
      "amount_eur": 23549893.97,
      "funktionen": [
       {
        "code": "114",
-       "label": null,
-       "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+       "label": {
+        "de": "Öffentliche weiterführende allgemeinbildende Schulen (ohne Sonderschulen/Förderschulen)",
+        "en": "Public secondary general schools"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
        "amount_eur": 23549893.97
       }
      ]
     },
     {
      "code": "12",
-     "label": null,
-     "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+     "label": {
+      "de": "Allgemeinbildende und berufliche Schulen",
+      "en": "General and vocational schools (joint heading 11/12)"
+     },
+     "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
      "amount_eur": 1464806925.4,
      "funktionen": [
       {
        "code": "129",
-       "label": null,
-       "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+       "label": {
+        "de": "Sonstige schulische Aufgaben",
+        "en": "Other school tasks"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
        "amount_eur": 1464806925.4
       }
      ]
@@ -446,26 +530,38 @@
      "funktionen": [
       {
        "code": "133",
-       "label": null,
-       "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+       "label": {
+        "de": "Öffentliche Hochschulen und Berufsakademien",
+        "en": "Public universities and universities of cooperative education"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
        "amount_eur": 114761334.33
       },
       {
        "code": "134",
-       "label": null,
-       "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+       "label": {
+        "de": "Private Hochschulen und Berufsakademien",
+        "en": "Private universities"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
        "amount_eur": 480000.0
       },
       {
        "code": "137",
-       "label": null,
-       "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+       "label": {
+        "de": "Deutsche Forschungsgemeinschaft",
+        "en": "German Research Foundation (DFG)"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
        "amount_eur": 2476406279.71
       },
       {
        "code": "139",
-       "label": null,
-       "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+       "label": {
+        "de": "Sonstige Hochschulaufgaben",
+        "en": "Other higher-education tasks"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
        "amount_eur": 2643578640.59
       }
      ]
@@ -481,40 +577,58 @@
      "funktionen": [
       {
        "code": "141",
-       "label": null,
-       "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+       "label": {
+        "de": "Förderung für Schülerinnen und Schüler",
+        "en": "Support for pupils"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
        "amount_eur": 508474941.16
       },
       {
        "code": "142",
-       "label": null,
-       "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+       "label": {
+        "de": "Förderung für Studierende und wissenschaftlichen Nachwuchs",
+        "en": "Support for students and young researchers"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
        "amount_eur": 2104595793.22
       },
       {
        "code": "144",
-       "label": null,
-       "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+       "label": {
+        "de": "Förderung für Weiterbildungsteilnehmende",
+        "en": "Support for continuing-education participants"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
        "amount_eur": 1252545727.74
       }
      ]
     },
     {
      "code": "15",
-     "label": null,
-     "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+     "label": {
+      "de": "Sonstiges Bildungswesen",
+      "en": "Other education"
+     },
+     "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
      "amount_eur": 546730994.94,
      "funktionen": [
       {
        "code": "153",
-       "label": null,
-       "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+       "label": {
+        "de": "Sonstige Weiterbildung (ohne Förderung für Teilnehmende)",
+        "en": "Other continuing education"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
        "amount_eur": 496501200.7
       },
       {
        "code": "154",
-       "label": null,
-       "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+       "label": {
+        "de": "Ausbildung der Lehrkräfte",
+        "en": "Teacher training"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
        "amount_eur": 50229794.24
       }
      ]
@@ -530,8 +644,11 @@
      "funktionen": [
       {
        "code": "162",
-       "label": null,
-       "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+       "label": {
+        "de": "Wissenschaftliche Bibliotheken, Archive, Fachinformationszentren",
+        "en": "Scientific libraries, archives, documentation"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
        "amount_eur": 293306278.15
       },
       {
@@ -554,66 +671,96 @@
       },
       {
        "code": "167",
-       "label": null,
-       "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+       "label": {
+        "de": "Zuschüsse an internationale wissenschaftliche Organisationen und zwischenstaatliche Forschungseinrichtungen",
+        "en": "Grants to international scientific organisations"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
        "amount_eur": 578631379.93
       }
      ]
     },
     {
      "code": "18",
-     "label": null,
-     "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+     "label": {
+      "de": "Kultur und Religion",
+      "en": "Culture and religion (joint heading 18/19)"
+     },
+     "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
      "amount_eur": 1459001329.26,
      "funktionen": [
       {
        "code": "181",
-       "label": null,
-       "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+       "label": {
+        "de": "Theater",
+        "en": "Theatres"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
        "amount_eur": 0.0
       },
       {
        "code": "182",
-       "label": null,
-       "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+       "label": {
+        "de": "Musikpflege",
+        "en": "Music"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
        "amount_eur": 106490590.72
       },
       {
        "code": "183",
-       "label": null,
-       "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+       "label": {
+        "de": "Museen, Sammlungen, Ausstellungen",
+        "en": "Museums, collections, exhibitions"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
        "amount_eur": 817910583.17
       },
       {
        "code": "186",
-       "label": null,
-       "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+       "label": {
+        "de": "Nichtwissenschaftliche Bibliotheken",
+        "en": "Non-scientific libraries"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
        "amount_eur": 0.0
       },
       {
        "code": "187",
-       "label": null,
-       "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+       "label": {
+        "de": "Sonstige Kulturpflege",
+        "en": "Other cultural promotion"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
        "amount_eur": 534600155.37
       }
      ]
     },
     {
      "code": "19",
-     "label": null,
-     "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+     "label": {
+      "de": "Kultur und Religion",
+      "en": "Culture and religion (joint heading 18/19)"
+     },
+     "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
      "amount_eur": 147773296.26,
      "funktionen": [
       {
        "code": "195",
-       "label": null,
-       "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+       "label": {
+        "de": "Denkmalschutz und -pflege",
+        "en": "Heritage protection and preservation"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
        "amount_eur": 146760171.26
       },
       {
        "code": "199",
-       "label": null,
-       "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+       "label": {
+        "de": "Kirchliche Angelegenheiten",
+        "en": "Church affairs"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
        "amount_eur": 1013125.0
       }
      ]
@@ -634,14 +781,20 @@
    "funktionen": [
     {
      "code": "21",
-     "label": null,
-     "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+     "label": {
+      "de": "Verwaltung für soziale Angelegenheiten",
+      "en": "Social administration"
+     },
+     "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
      "amount_eur": 3522430815.94,
      "funktionen": [
       {
        "code": "219",
-       "label": null,
-       "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+       "label": {
+        "de": "Sonstige Verwaltung für soziale Angelegenheiten",
+        "en": "Other social administration"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
        "amount_eur": 3522430815.94
       }
      ]
@@ -675,8 +828,11 @@
       },
       {
        "code": "223",
-       "label": null,
-       "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+       "label": {
+        "de": "Unfallversicherung",
+        "en": "Accident insurance"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
        "amount_eur": 273100510.18
       },
       {
@@ -690,8 +846,11 @@
       },
       {
        "code": "225",
-       "label": null,
-       "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+       "label": {
+        "de": "Arbeitslosenversicherung (nur Bund)",
+        "en": "Unemployment insurance (federal only)"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
        "amount_eur": 0.0
       },
       {
@@ -705,8 +864,11 @@
       },
       {
        "code": "227",
-       "label": null,
-       "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+       "label": {
+        "de": "Pflegeversicherung",
+        "en": "Long-term care insurance"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
        "amount_eur": 0.0
       },
       {
@@ -731,8 +893,11 @@
      "funktionen": [
       {
        "code": "231",
-       "label": null,
-       "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+       "label": {
+        "de": "Kindergeld, Kinderzuschlag",
+        "en": "Child benefit, child supplement"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
        "amount_eur": 3179337138.16
       },
       {
@@ -746,26 +911,38 @@
       },
       {
        "code": "233",
-       "label": null,
-       "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+       "label": {
+        "de": "Wohngeld",
+        "en": "Housing benefit"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
        "amount_eur": 2347166633.31
       },
       {
        "code": "235",
-       "label": null,
-       "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+       "label": {
+        "de": "Soziale Einrichtungen",
+        "en": "Social institutions"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
        "amount_eur": 224592546.51
       },
       {
        "code": "236",
-       "label": null,
-       "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+       "label": {
+        "de": "Förderung der Wohlfahrtspflege",
+        "en": "Promotion of welfare organisations"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
        "amount_eur": 203156804.05
       },
       {
        "code": "237",
-       "label": null,
-       "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+       "label": {
+        "de": "Leistungen nach dem Unterhaltsvorschussgesetz",
+        "en": "Maintenance-advance benefits"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
        "amount_eur": 1295047146.45
       }
      ]
@@ -781,32 +958,47 @@
      "funktionen": [
       {
        "code": "241",
-       "label": null,
-       "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+       "label": {
+        "de": "Leistungen der Sozialen Entschädigung",
+        "en": "Social compensation benefits (SGB XIV)"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
        "amount_eur": 436481105.34
       },
       {
        "code": "243",
-       "label": null,
-       "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+       "label": {
+        "de": "Lastenausgleich",
+        "en": "Burden equalisation"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
        "amount_eur": 3281465.21
       },
       {
        "code": "244",
-       "label": null,
-       "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+       "label": {
+        "de": "Wiedergutmachung",
+        "en": "Restitution"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
        "amount_eur": 214512869.16
       },
       {
        "code": "246",
-       "label": null,
-       "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+       "label": {
+        "de": "Vertriebene und Spätaussiedlerinnen und Spätaussiedler",
+        "en": "Expellees and ethnic German resettlers"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
        "amount_eur": 26467599.48
       },
       {
        "code": "249",
-       "label": null,
-       "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+       "label": {
+        "de": "Sonstige Leistungen für Folgen von Krieg und politischen Ereignissen",
+        "en": "Other benefits for consequences of war and political events"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
        "amount_eur": 1580078667.14
       }
      ]
@@ -860,34 +1052,49 @@
     },
     {
      "code": "26",
-     "label": null,
-     "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+     "label": {
+      "de": "Kinder- und Jugendhilfe nach dem SGB VIII (ohne Kindertagesbetreuung)",
+      "en": "Child and youth welfare (SGB VIII)"
+     },
+     "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
      "amount_eur": 396395793.7,
      "funktionen": [
       {
        "code": "261",
-       "label": null,
-       "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+       "label": {
+        "de": "Jugendarbeit und Jugendverbandsarbeit",
+        "en": "Youth work and youth associations"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
        "amount_eur": 343193005.9
       },
       {
        "code": "265",
-       "label": null,
-       "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+       "label": {
+        "de": "Hilfen zur Erziehung und Eingliederungshilfen",
+        "en": "Educational and integration assistance"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
        "amount_eur": 53202787.8
       }
      ]
     },
     {
      "code": "28",
-     "label": null,
-     "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+     "label": {
+      "de": "Soziale Leistungen nach dem SGB XII und dem Asylbewerberleistungsgesetz, Eingliederungshilfe für Menschen mit Behinderungen nach dem SGB IX",
+      "en": "Social assistance (SGB XII), asylum-seeker benefits, integration assistance"
+     },
+     "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
      "amount_eur": 11106865594.77,
      "funktionen": [
       {
        "code": "281",
-       "label": null,
-       "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+       "label": {
+        "de": "Hilfe zum Lebensunterhalt nach dem SGB XII",
+        "en": "Subsistence assistance (SGB XII)"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
        "amount_eur": 37203492.78
       },
       {
@@ -901,22 +1108,31 @@
       },
       {
        "code": "287",
-       "label": null,
-       "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+       "label": {
+        "de": "Leistungen nach dem Asylbewerberleistungsgesetz",
+        "en": "Asylum-seeker benefits"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
        "amount_eur": 9719244.96
       }
      ]
     },
     {
      "code": "29",
-     "label": null,
-     "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+     "label": {
+      "de": "Sonstige soziale Angelegenheiten",
+      "en": "Other social affairs"
+     },
+     "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
      "amount_eur": 1322481973.53,
      "funktionen": [
       {
        "code": "290",
-       "label": null,
-       "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+       "label": {
+        "de": "Sonstige soziale Angelegenheiten",
+        "en": "Other social affairs (total)"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
        "amount_eur": 1322481973.53
       }
      ]
@@ -937,74 +1153,107 @@
    "funktionen": [
     {
      "code": "31",
-     "label": null,
-     "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+     "label": {
+      "de": "Gesundheitswesen",
+      "en": "Health"
+     },
+     "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
      "amount_eur": 2279498966.64,
      "funktionen": [
       {
        "code": "313",
-       "label": null,
-       "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+       "label": {
+        "de": "Arbeitsschutz",
+        "en": "Occupational safety"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
        "amount_eur": 227264732.94
       },
       {
        "code": "314",
-       "label": null,
-       "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+       "label": {
+        "de": "Gesundheitsschutz",
+        "en": "Health protection"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
        "amount_eur": 2052234233.7
       }
      ]
     },
     {
      "code": "32",
-     "label": null,
-     "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+     "label": {
+      "de": "Sport und Erholung",
+      "en": "Sport and recreation"
+     },
+     "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
      "amount_eur": 263475256.55,
      "funktionen": [
       {
        "code": "322",
-       "label": null,
-       "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+       "label": {
+        "de": "Sport",
+        "en": "Sport"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
        "amount_eur": 263475256.55
       }
      ]
     },
     {
      "code": "33",
-     "label": null,
-     "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+     "label": {
+      "de": "Umwelt- und Naturschutz",
+      "en": "Environmental and nature protection"
+     },
+     "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
      "amount_eur": 1903077808.7,
      "funktionen": [
       {
        "code": "331",
-       "label": null,
-       "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+       "label": {
+        "de": "Umwelt- und Naturschutzverwaltung",
+        "en": "Environmental administration"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
        "amount_eur": 282701536.48
       },
       {
        "code": "332",
-       "label": null,
-       "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+       "label": {
+        "de": "Maßnahmen des Umwelt- und Naturschutzes",
+        "en": "Environmental and nature-protection measures"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
        "amount_eur": 1620376272.22
       }
      ]
     },
     {
      "code": "34",
-     "label": null,
-     "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+     "label": {
+      "de": "Nukleare Sicherheit und Strahlenschutz",
+      "en": "Nuclear safety and radiation protection"
+     },
+     "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
      "amount_eur": 1674648264.36,
      "funktionen": [
       {
        "code": "341",
-       "label": null,
-       "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+       "label": {
+        "de": "Verwaltung für nukleare Sicherheit und Strahlenschutz",
+        "en": "Administration for nuclear safety and radiation protection"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
        "amount_eur": 133166085.1
       },
       {
        "code": "342",
-       "label": null,
-       "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+       "label": {
+        "de": "Maßnahmen der nuklearen Sicherheit und des Strahlenschutzes",
+        "en": "Nuclear safety and radiation-protection measures"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
        "amount_eur": 1541482179.26
       }
      ]
@@ -1025,46 +1274,67 @@
    "funktionen": [
     {
      "code": "41",
-     "label": null,
-     "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+     "label": {
+      "de": "Wohnungswesen, Wohnungsbauprämie",
+      "en": "Housing, housing-construction premium"
+     },
+     "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
      "amount_eur": 2759186126.38,
      "funktionen": [
       {
        "code": "411",
-       "label": null,
-       "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+       "label": {
+        "de": "Förderung des Wohnungsbaues",
+        "en": "Housing-construction promotion"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
        "amount_eur": 2445621699.98
       },
       {
        "code": "412",
-       "label": null,
-       "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+       "label": {
+        "de": "Wohnungsbauprämie/Vermögensbildung (nur Bund)",
+        "en": "Housing-construction premium / wealth formation (federal only)"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
        "amount_eur": 218040968.2
       },
       {
        "code": "419",
-       "label": null,
-       "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+       "label": {
+        "de": "Sonstiges Wohnungswesen",
+        "en": "Other housing"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
        "amount_eur": 95523458.2
       }
      ]
     },
     {
      "code": "42",
-     "label": null,
-     "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+     "label": {
+      "de": "Geoinformation, Raumordnung und Landesplanung, Städtebauförderung",
+      "en": "Geo-information, regional and state planning, urban development funding"
+     },
+     "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
      "amount_eur": 1324865671.6,
      "funktionen": [
       {
        "code": "422",
-       "label": null,
-       "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+       "label": {
+        "de": "Raumordnung und Landesplanung",
+        "en": "Regional and state planning"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
        "amount_eur": 1427009.39
       },
       {
        "code": "423",
-       "label": null,
-       "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+       "label": {
+        "de": "Städtebauförderung",
+        "en": "Urban development funding"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
        "amount_eur": 1323438662.21
       }
      ]
@@ -1085,54 +1355,78 @@
    "funktionen": [
     {
      "code": "51",
-     "label": null,
-     "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+     "label": {
+      "de": "Verwaltung für Ernährung, Landwirtschaft und Forsten (ohne Betriebsverwaltung)",
+      "en": "Administration for food, agriculture and forestry"
+     },
+     "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
      "amount_eur": 28896810.4,
      "funktionen": [
       {
        "code": "511",
-       "label": null,
-       "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+       "label": {
+        "de": "Verwaltung für Ernährung und Landwirtschaft",
+        "en": "Administration for food and agriculture"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
        "amount_eur": 28896810.4
       }
      ]
     },
     {
      "code": "52",
-     "label": null,
-     "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+     "label": {
+      "de": "Landwirtschaft und Ernährung",
+      "en": "Agriculture and food"
+     },
+     "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
      "amount_eur": 1411432585.72,
      "funktionen": [
       {
        "code": "521",
-       "label": null,
-       "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+       "label": {
+        "de": "Agrarstruktur und ländlicher Raum",
+        "en": "Agricultural structure and rural areas"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
        "amount_eur": 645777776.05
       },
       {
        "code": "522",
-       "label": null,
-       "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+       "label": {
+        "de": "Einkommenstabilisierende Maßnahmen",
+        "en": "Income-stabilising measures"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
        "amount_eur": 206489388.51
       },
       {
        "code": "523",
-       "label": null,
-       "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+       "label": {
+        "de": "Landwirtschaftliche Produktion, Tiergesundheit und Ernährung",
+        "en": "Agricultural production, animal health and food"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
        "amount_eur": 559165421.16
       }
      ]
     },
     {
      "code": "53",
-     "label": null,
-     "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+     "label": {
+      "de": "Forstwirtschaft und Jagd, Fischerei",
+      "en": "Forestry, fishing and hunting"
+     },
+     "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
      "amount_eur": 6972003.53,
      "funktionen": [
       {
        "code": "532",
-       "label": null,
-       "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+       "label": {
+        "de": "Fischerei",
+        "en": "Fisheries"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
        "amount_eur": 6972003.53
       }
      ]
@@ -1153,60 +1447,87 @@
    "funktionen": [
     {
      "code": "61",
-     "label": null,
-     "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+     "label": {
+      "de": "Verwaltung für Energie- und Wasserwirtschaft, Gewerbe und Dienstleistungen",
+      "en": "Administration for energy, water, trade and services"
+     },
+     "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
      "amount_eur": 189802507.76,
      "funktionen": [
       {
        "code": "610",
-       "label": null,
-       "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+       "label": {
+        "de": "Verwaltung für Energie- und Wasserwirtschaft, Gewerbe und Dienstleistungen",
+        "en": "Administration for energy, water, trade and services (total)"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
        "amount_eur": 189802507.76
       }
      ]
     },
     {
      "code": "62",
-     "label": null,
-     "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+     "label": {
+      "de": "Wasserwirtschaft, Hochwasser- und Küstenschutz",
+      "en": "Water management, flood and coastal protection"
+     },
+     "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
      "amount_eur": 192155268.53,
      "funktionen": [
       {
        "code": "623",
-       "label": null,
-       "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+       "label": {
+        "de": "Wasserwirtschaft und Kulturbau",
+        "en": "Water management and land improvement"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
        "amount_eur": 65016230.92
       },
       {
        "code": "625",
-       "label": null,
-       "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+       "label": {
+        "de": "Küstenschutz",
+        "en": "Coastal protection"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
        "amount_eur": 127139037.61
       }
      ]
     },
     {
      "code": "63",
-     "label": null,
-     "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+     "label": {
+      "de": "Bergbau, verarbeitendes Gewerbe und Baugewerbe",
+      "en": "Mining, manufacturing and construction"
+     },
+     "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
      "amount_eur": 871786315.84,
      "funktionen": [
       {
        "code": "631",
-       "label": null,
-       "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+       "label": {
+        "de": "Kohlenbergbau",
+        "en": "Coal mining"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
        "amount_eur": 195114862.15
       },
       {
        "code": "632",
-       "label": null,
-       "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+       "label": {
+        "de": "Sonstiger Bergbau",
+        "en": "Other mining"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
        "amount_eur": 138121336.81
       },
       {
        "code": "634",
-       "label": null,
-       "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+       "label": {
+        "de": "Verarbeitende Industrie",
+        "en": "Manufacturing industry"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
        "amount_eur": 538550116.88
       }
      ]
@@ -1222,46 +1543,67 @@
      "funktionen": [
       {
        "code": "641",
-       "label": null,
-       "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+       "label": {
+        "de": "Kernenergie",
+        "en": "Nuclear energy"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
        "amount_eur": 285487946.93
       },
       {
        "code": "642",
-       "label": null,
-       "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+       "label": {
+        "de": "Erneuerbare Energieformen",
+        "en": "Renewable energy"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
        "amount_eur": 156380549.81
       },
       {
        "code": "643",
-       "label": null,
-       "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+       "label": {
+        "de": "Elektrizitätsversorgung",
+        "en": "Electricity supply"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
        "amount_eur": 234754279.11
       },
       {
        "code": "649",
-       "label": null,
-       "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+       "label": {
+        "de": "Sonstige Energie- und Wasserversorgung",
+        "en": "Other energy and water supply"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
        "amount_eur": 647774555.5
       }
      ]
     },
     {
      "code": "65",
-     "label": null,
-     "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+     "label": {
+      "de": "Handel und Tourismus",
+      "en": "Trade and tourism"
+     },
+     "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
      "amount_eur": 163539483.42,
      "funktionen": [
       {
        "code": "651",
-       "label": null,
-       "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+       "label": {
+        "de": "Handel",
+        "en": "Trade"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
        "amount_eur": 122941483.42
       },
       {
        "code": "652",
-       "label": null,
-       "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+       "label": {
+        "de": "Tourismus",
+        "en": "Tourism"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
        "amount_eur": 40598000.0
       }
      ]
@@ -1277,28 +1619,40 @@
      "funktionen": [
       {
        "code": "661",
-       "label": null,
-       "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+       "label": {
+        "de": "Banken und Kreditinstitute",
+        "en": "Banks and credit institutions"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
        "amount_eur": 748476213.2
       },
       {
        "code": "669",
-       "label": null,
-       "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+       "label": {
+        "de": "Sonstiges Geld- und Versicherungswesen",
+        "en": "Other banking and insurance"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
        "amount_eur": 10077300.0
       }
      ]
     },
     {
      "code": "68",
-     "label": null,
-     "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+     "label": {
+      "de": "Sonstiges im Bereich Gewerbe und Dienstleistungen",
+      "en": "Other trade and services"
+     },
+     "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
      "amount_eur": 2170531987.33,
      "funktionen": [
       {
        "code": "680",
-       "label": null,
-       "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+       "label": {
+        "de": "Sonstiges im Bereich Gewerbe und Dienstleistungen",
+        "en": "Other trade and services (total)"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
        "amount_eur": 2170531987.33
       }
      ]
@@ -1314,14 +1668,20 @@
      "funktionen": [
       {
        "code": "691",
-       "label": null,
-       "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+       "label": {
+        "de": "Betriebliche Investitionen",
+        "en": "Business investment"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
        "amount_eur": 732678246.6
       },
       {
        "code": "692",
-       "label": null,
-       "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+       "label": {
+        "de": "Verbesserung der Wirtschafts- und Infrastruktur",
+        "en": "Improvement of economic and infrastructure conditions"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
        "amount_eur": 2043545222.25
       }
      ]
@@ -1342,20 +1702,29 @@
    "funktionen": [
     {
      "code": "71",
-     "label": null,
-     "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+     "label": {
+      "de": "Verwaltung des Verkehrs- und Nachrichtenwesens",
+      "en": "Administration of transport and communications"
+     },
+     "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
      "amount_eur": 1536319871.24,
      "funktionen": [
       {
        "code": "712",
-       "label": null,
-       "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+       "label": {
+        "de": "Verwaltung für Wasserstraßen und Häfen",
+        "en": "Waterways and ports administration"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
        "amount_eur": 897894801.2
       },
       {
        "code": "719",
-       "label": null,
-       "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+       "label": {
+        "de": "Sonstige Verkehrs- und Nachrichtenverwaltung",
+        "en": "Other transport and communications administration"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
        "amount_eur": 638425070.04
       }
      ]
@@ -1389,20 +1758,29 @@
       },
       {
        "code": "723",
-       "label": null,
-       "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+       "label": {
+        "de": "Landesstraßen",
+        "en": "State roads"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
        "amount_eur": 15719620.41
       },
       {
        "code": "725",
-       "label": null,
-       "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+       "label": {
+        "de": "Gemeindestraßen",
+        "en": "Municipal roads"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
        "amount_eur": 142418990.6
       },
       {
        "code": "729",
-       "label": null,
-       "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+       "label": {
+        "de": "Sonstiger Straßenverkehr",
+        "en": "Other road transport"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
        "amount_eur": 64301536.96
       }
      ]
@@ -1418,14 +1796,20 @@
      "funktionen": [
       {
        "code": "731",
-       "label": null,
-       "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+       "label": {
+        "de": "Wasserstraßen und Häfen",
+        "en": "Waterways and ports"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
        "amount_eur": 2092714461.26
       },
       {
        "code": "732",
-       "label": null,
-       "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+       "label": {
+        "de": "Förderung der Schifffahrt",
+        "en": "Shipping support"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
        "amount_eur": 72417434.64
       }
      ]
@@ -1441,56 +1825,80 @@
      "funktionen": [
       {
        "code": "741",
-       "label": null,
-       "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+       "label": {
+        "de": "Öffentlicher Personennahverkehr",
+        "en": "Local public transport"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
        "amount_eur": 992681022.06
       },
       {
        "code": "742",
-       "label": null,
-       "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+       "label": {
+        "de": "Eisenbahnen",
+        "en": "Railways"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
        "amount_eur": 16647580701.29
       }
      ]
     },
     {
      "code": "75",
-     "label": null,
-     "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+     "label": {
+      "de": "Luftfahrt",
+      "en": "Aviation"
+     },
+     "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
      "amount_eur": 342255771.3,
      "funktionen": [
       {
        "code": "750",
-       "label": null,
-       "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+       "label": {
+        "de": "Luftfahrt",
+        "en": "Aviation (total)"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
        "amount_eur": 342255771.3
       }
      ]
     },
     {
      "code": "77",
-     "label": null,
-     "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+     "label": {
+      "de": "Nachrichtenwesen",
+      "en": "Communications"
+     },
+     "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
      "amount_eur": 418007465.66,
      "funktionen": [
       {
        "code": "772",
-       "label": null,
-       "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+       "label": {
+        "de": "Rundfunk und Fernsehen",
+        "en": "Broadcasting and television"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
        "amount_eur": 418007465.66
       }
      ]
     },
     {
      "code": "79",
-     "label": null,
-     "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+     "label": {
+      "de": "Sonstiges Verkehrswesen",
+      "en": "Other transport"
+     },
+     "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
      "amount_eur": 3555812672.31,
      "funktionen": [
       {
        "code": "790",
-       "label": null,
-       "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+       "label": {
+        "de": "Sonstiges Verkehrswesen",
+        "en": "Other transport (total)"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
        "amount_eur": 3555812672.31
       }
      ]
@@ -1511,40 +1919,58 @@
    "funktionen": [
     {
      "code": "81",
-     "label": null,
-     "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+     "label": {
+      "de": "Grund- und Kapitalvermögen, Sondervermögen",
+      "en": "Real and financial assets, special funds"
+     },
+     "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
      "amount_eur": 7472349623.79,
      "funktionen": [
       {
        "code": "811",
-       "label": null,
-       "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+       "label": {
+        "de": "Grundvermögen",
+        "en": "Real estate"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
        "amount_eur": 0.0
       },
       {
        "code": "812",
-       "label": null,
-       "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+       "label": {
+        "de": "Kapitalvermögen",
+        "en": "Financial assets"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
        "amount_eur": 0.0
       },
       {
        "code": "813",
-       "label": null,
-       "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+       "label": {
+        "de": "Sondervermögen",
+        "en": "Special funds"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
        "amount_eur": 7472349623.79
       }
      ]
     },
     {
      "code": "82",
-     "label": null,
-     "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+     "label": {
+      "de": "Steuern und Finanzzuweisungen",
+      "en": "Taxes and financial allocations"
+     },
+     "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
      "amount_eur": 42850815.78,
      "funktionen": [
       {
        "code": "820",
-       "label": null,
-       "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+       "label": {
+        "de": "Steuern und Finanzzuweisungen",
+        "en": "Taxes and financial allocations (total)"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
        "amount_eur": 42850815.78
       }
      ]
@@ -1560,50 +1986,71 @@
      "funktionen": [
       {
        "code": "830",
-       "label": null,
-       "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+       "label": {
+        "de": "Schulden",
+        "en": "Debt (total)"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
        "amount_eur": 34260887126.89
       }
      ]
     },
     {
      "code": "84",
-     "label": null,
-     "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+     "label": {
+      "de": "Beihilfen, Unterstützungen u. Ä.",
+      "en": "Allowances and support"
+     },
+     "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
      "amount_eur": 959008140.78,
      "funktionen": [
       {
        "code": "840",
-       "label": null,
-       "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+       "label": {
+        "de": "Beihilfen, Unterstützungen u. Ä.",
+        "en": "Allowances and support (total)"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
        "amount_eur": 959008140.78
       }
      ]
     },
     {
      "code": "86",
-     "label": null,
-     "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+     "label": {
+      "de": "Sonstiges",
+      "en": "Other"
+     },
+     "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
      "amount_eur": 216948969.88,
      "funktionen": [
       {
        "code": "860",
-       "label": null,
-       "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+       "label": {
+        "de": "Sonstiges",
+        "en": "Other (total)"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
        "amount_eur": 216948969.88
       }
      ]
     },
     {
      "code": "88",
-     "label": null,
-     "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+     "label": {
+      "de": "Globalposten",
+      "en": "Global items"
+     },
+     "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
      "amount_eur": 0.0,
      "funktionen": [
       {
        "code": "880",
-       "label": null,
-       "label_source": "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is",
+       "label": {
+        "de": "Globalposten",
+        "en": "Global items (total)"
+       },
+       "label_source": "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF",
        "amount_eur": 0.0
       }
      ]
@@ -1611,7 +2058,7 @@
    ]
   }
  ],
- "hauptfunktionen_note": "The federal Funktionenplan has Hauptfunktionen 0–8 only (no 9). Sub-function labels are taken from BMF's table rows where a row corresponds to exactly one code and the XML sum matches it; all other codes carry label null.",
+ "hauptfunktionen_note": "The federal Funktionenplan has Hauptfunktionen 0–8 only (no 9). Sub-function labels come from BMF's closing-table rows where a row corresponds to exactly one code and the XML sum matches it (label_source says so); all other codes are labelled from the BMF Funktionenplan (data/de/federal/funktionenplan.json, German verbatim, English editorial); label null only if a code is in neither.",
  "bmf_combined_rows_checked": {
   "Luftfahrt, Nachrichtenwesen, sonstiges Verkehrswesen": {
    "codes": [

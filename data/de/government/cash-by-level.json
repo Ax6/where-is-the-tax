@@ -7,7 +7,7 @@
  },
  "unit": "MEUR",
  "basis": "Cash statistics (Kassenstatistik), core and extra budgets, calendar year (1st-4th quarter); 'bereinigt' = net of payments within the same level; the Gesamthaushalt column is consolidated across levels",
- "generated": "2026-10-09",
+ "generated": "2026-10-12",
  "generated_by": "scripts/research/build_cash_levels.py",
  "years": [
   2024,

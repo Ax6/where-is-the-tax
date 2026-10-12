@@ -7,7 +7,7 @@
  },
  "unit": "EUR",
  "basis": "Cash receipts Jan-Dec as published monthly by the Senatsverwaltung für Finanzen; Berlin is Land and municipality at once, so both roles appear. Gross trade tax is shown with the levy paid to the Federation/Land as a negative line.",
- "generated": "2026-10-09",
+ "generated": "2026-10-12",
  "generated_by": "scripts/research/build_berlin.py",
  "groups": {
   "land_share_joint": {

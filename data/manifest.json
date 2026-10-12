@@ -3,16 +3,6 @@
  "generated": "2026-10-12",
  "datasets": [
   {
-   "path": "data/de/2024/accounts/berlin-functions.json",
-   "id": "de_berlin_budget",
-   "title": {
-    "de": "Berlin budget — actual spending 2024",
-    "en": "Berlin budget — actual spending 2024"
-   },
-   "status": "legacy (superseded, kept until the front end is rewired)",
-   "superseded_by": "data/de/berlin/functions-2024.json"
-  },
-  {
    "path": "data/de/berlin/functions-2024.json",
    "id": "de.berlin.functions_2024",
    "title": {
@@ -23,9 +13,9 @@
    "years": [
     2024
    ],
-   "basis": "Cash (cameral) actuals from Berlin's audited 2024 annual account (Abgeordnetenhaus Drucksache 19/2681), whole Berlin budget including boroughs.",
+   "basis": "Cash (cameral) actuals from Berlin's 2024 annual account (Abgeordnetenhaus Drucksache 19/2681), whole Berlin budget including boroughs; Hauptfunktionen (1 digit) and Oberfunktionen (2 digits) of the Funktionenplan",
    "generated_by": "scripts/research/build_berlin.py",
-   "generated": "2026-10-09"
+   "generated": "2026-10-12"
   },
   {
    "path": "data/de/berlin/tax-receipts.json",
@@ -563,7 +553,20 @@
    },
    "basis": "Cash receipts Jan-Dec as published monthly by the Senatsverwaltung für Finanzen; Berlin is Land and municipality at once, so both roles appear. Gross trade tax is shown with the levy paid to the Federation/Land as a negative line.",
    "generated_by": "scripts/research/build_berlin.py",
-   "generated": "2026-10-09"
+   "generated": "2026-10-12"
+  },
+  {
+   "path": "data/de/citizen/household-indirect-taxes.json",
+   "id": "de.citizen.household_indirect_taxes",
+   "title": {
+    "de": "Indirekte Steuern eines Haushalts (Schätzung ≈): Umsatzsteuer und Verbrauchsteuern nach Haushaltsnettoeinkommen",
+    "en": "A household's indirect taxes (estimate ≈): VAT and excises by household net income class"
+   },
+   "unit": "EUR per household per year",
+   "years": null,
+   "basis": "ESTIMATE*: LWR 2024 monthly consumption per household (Destatis, all household sizes) × statutory VAT rates per purpose × 12, plus excise shares for energy, fuel, tobacco, alcohol and insurance from price assumptions. Not a measurement; quality flags of the LWR cells not propagated.",
+   "generated_by": "scripts/research/build_household_taxes.py",
+   "generated": "2026-10-12"
   },
   {
    "path": "data/de/citizen/payslip-examples.json",
@@ -2779,7 +2782,7 @@
    },
    "basis": "ANNUAL WAGE-TAX WITHHOLDING for Steuerklasse I (identical to IV without children), no church tax, no children, no Freibeträge, employee compulsorily insured in all four social-insurance branches (West ceilings, statutory average Zusatzbeitrag, outside Saxony). This is what the employer withholds over a year under the Programmablaufplan; the income-tax ASSESSMENT (Veranlagung) can differ (actual Werbungskosten, Sonderausgaben, the real Zusatzbeitrag of the Krankenkasse, other income). 'childless' = with the PV childless surcharge (age 23+, no children); 'with_child' = one child (surcharge off, no abatement).",
    "generated_by": "scripts/research/build_payslip.py",
-   "generated": "2026-10-09"
+   "generated": "2026-10-12"
   },
   {
    "path": "data/de/citizen/payslip-parameters.json",
@@ -4532,7 +4535,7 @@
    },
    "basis": "Statutory values for the annual wage-tax withholding (Steuerklasse I/IV, no children, no church tax) and the statutory social contributions of an employee insured in all branches. Values are the law of the year; 2024 tariff = after the retroactive Grundfreibetrag increase.",
    "generated_by": "scripts/research/build_payslip.py",
-   "generated": "2026-10-09"
+   "generated": "2026-10-12"
   },
   {
    "path": "data/de/citizen/purchase-taxes.json",
@@ -4545,7 +4548,320 @@
    "years": null,
    "basis": "Statutory rates (exact); worked examples use illustrative prices marked as assumptions; recipients follow data/de/taxes/legal-allocation.json",
    "generated_by": "scripts/research/build_purchases.py",
-   "generated": "2026-10-09"
+   "generated": "2026-10-12"
+  },
+  {
+   "path": "data/de/citizen/wage-reference.json",
+   "id": "de.citizen.wage_reference",
+   "title": {
+    "de": "Lohn-Referenzpunkte: Mindestlohn, Median- und Durchschnittsverdienst",
+    "en": "Wage reference points: minimum wage, median and average earnings"
+   },
+   "unit": "EUR",
+   "years": {
+    "2024": {
+     "minimum_wage": {
+      "hourly_eur": 12.41,
+      "status": "statute",
+      "legal_basis": "§ 1 Nr. 1 MiLoV4 (§ 1 (2) MiLoG)",
+      "annual_full_time_eur": 25812.8,
+      "annual_status": "derived*",
+      "annual_assumption": "40 h/week × 52 weeks = 2080 paid hours; collectively agreed full-time weeks are often 35-39 h, which gives a lower annual figure",
+      "monthly_full_time_eur": 2151.07,
+      "source": {
+       "source_id": "gesetze_im_internet_wages",
+       "file": "milov4_1.html",
+       "path": "research/raw/gesetze_im_internet_wages/milov4_1.html",
+       "url": "https://www.gesetze-im-internet.de/milov4/__1.html",
+       "retrieved": "2026-10-12T08:24:04Z",
+       "sha256": "039fcf1ab32526de2a87a109bf9ad8ed210c735fd809559d88e0f7580e7a2185",
+       "licence": "Official works (§ 5 UrhG)",
+       "coordinates": "text contains: ab 1, Januar 2024 12,41 Euro brutto je Zeitstunde"
+      },
+      "annual_full_time_at_destatis_hours_eur": 25232.01,
+      "destatis_hours_assumption": {
+       "paid_hours_per_week": 39.1,
+       "definition": "Durchschnittliche bezahlte Wochenarbeitszeit inkl. Überstunden, Vollzeitbeschäftigte, Gesamtwirtschaft, April 2025",
+       "source": {
+        "source_id": "destatis_verdienste_bericht",
+        "file": "verdienste-2025-q4.xlsx",
+        "path": "research/cache/destatis_verdienste_bericht/verdienste-2025-q4.xlsx",
+        "url": "https://www.destatis.de/DE/Themen/Arbeit/Verdienste/Verdienste-Branche-Berufe/Publikationen/Downloads/statistischer-bericht-verdienste-5623601253245.xlsx?__blob=publicationFile&v=2",
+        "retrieved": "2026-10-12T08:24:05Z",
+        "sha256": "12f1864360af1afb3d7434c417ce9118715a10c07499037c9bd2a3bf25d1775a",
+        "licence": "DL-DE-BY-2.0 (workbook Impressum sheet)",
+        "coordinates": "sheet csv-62361-04_1, row Gesamtwirtschaft, column WZT002"
+       }
+      }
+     },
+     "full_time_earnings": {
+      "monthly_april": {
+       "median_gross_monthly_eur": 3978.0,
+       "average_gross_monthly_eur": 4634.0,
+       "median_gross_hourly_eur": 23.49,
+       "definition": {
+        "de": "Bruttomonatsverdienst ohne Sonderzahlungen, Vollzeitbeschäftigte, Stichmonat April",
+        "en": "Gross monthly earnings without special payments, full-time employees, reference month April"
+       },
+       "status": "final",
+       "source": {
+        "source_id": "destatis_genesis_62361",
+        "file": "62361-0031.json",
+        "path": "research/raw/destatis_genesis_62361/62361-0031.json",
+        "url": "https://genesis.destatis.de/genesis/api/rest/tables/62361-0031/data",
+        "retrieved": "2026-10-12T08:24:04Z",
+        "sha256": "41e5c977d5b26f5749a2859480556d61acf4759aa812f24057ce3df998ce2e92",
+        "licence": "DL-DE-BY-2.0; attribution: Statistisches Bundesamt (Destatis), GENESIS-Online",
+        "coordinates": "SMONAT=2024-04P1M, GES=%TOTAL%, ALT035=%TOTAL%, content VST052 (Mittlere = median) / VST047 (Durchschn.) / VST051",
+        "note": "The GENESIS table title does not say 'Vollzeit'; the identically coded tables 62361-03/-05 of the Statistischer Bericht Verdienste are titled 'Vollzeitbeschäftigte' (research/cache/destatis_verdienste_bericht)"
+       },
+       "median_x12_eur": 47736
+      },
+      "annual": {
+       "median_gross_annual_eur": 52159.0,
+       "average_gross_annual_eur": 62235.0,
+       "definition": {
+        "de": "Bruttojahresverdienst mit Sonderzahlungen, Vollzeitbeschäftigte",
+        "en": "Gross annual earnings including special payments, full-time employees"
+       },
+       "status": "final",
+       "source": {
+        "source_id": "destatis_genesis_62361",
+        "file": "62361-0035.json",
+        "path": "research/raw/destatis_genesis_62361/62361-0035.json",
+        "url": "https://genesis.destatis.de/genesis/api/rest/tables/62361-0035/data",
+        "retrieved": "2026-10-12T08:24:05Z",
+        "sha256": "6a0ca1ae2f18ea97474f05f373aba262f50aaa666db579b95fbb692c03008801",
+        "licence": "DL-DE-BY-2.0; attribution: Statistisches Bundesamt (Destatis), GENESIS-Online",
+        "coordinates": "JAHR=2024, GES=%TOTAL%, ALT035=%TOTAL%, content VST053 (median) / VST050 (average)"
+       }
+      }
+     },
+     "pension_average_earnings": {
+      "durchschnittsentgelt_eur": 47085,
+      "status": "final",
+      "label": {
+       "de": "Durchschnittsentgelt der Rentenversicherung (Anlage 1 SGB VI)",
+       "en": "Average earnings of insured persons used by pension law (Anlage 1 SGB VI)"
+      },
+      "definition": {
+       "de": "Durchschnittliches Bruttojahresarbeitsentgelt aller Versicherten der gesetzlichen Rentenversicherung (inkl. Teilzeit)",
+       "en": "Average gross annual earnings of all persons insured in the statutory pension insurance (incl. part-time)"
+      },
+      "source": {
+       "source_id": "gesetze_im_internet_wages",
+       "file": "sgb6_anlage_1.html",
+       "path": "research/raw/gesetze_im_internet_wages/sgb6_anlage_1.html",
+       "url": "https://www.gesetze-im-internet.de/sgb_6/anlage_1.html",
+       "retrieved": "2026-10-12T08:24:04Z",
+       "sha256": "1be51ea98688880833fc8f7e40f47ba7555aa3f61bb4606c3e419a88def03b0d",
+       "licence": "Official works (§ 5 UrhG)",
+       "coordinates": "Anlage 1 row '2024'"
+      }
+     }
+    },
+    "2025": {
+     "minimum_wage": {
+      "hourly_eur": 12.82,
+      "status": "statute",
+      "legal_basis": "§ 1 Nr. 2 MiLoV4 (§ 1 (2) MiLoG)",
+      "annual_full_time_eur": 26665.6,
+      "annual_status": "derived*",
+      "annual_assumption": "40 h/week × 52 weeks = 2080 paid hours; collectively agreed full-time weeks are often 35-39 h, which gives a lower annual figure",
+      "monthly_full_time_eur": 2222.13,
+      "source": {
+       "source_id": "gesetze_im_internet_wages",
+       "file": "milov4_1.html",
+       "path": "research/raw/gesetze_im_internet_wages/milov4_1.html",
+       "url": "https://www.gesetze-im-internet.de/milov4/__1.html",
+       "retrieved": "2026-10-12T08:24:04Z",
+       "sha256": "039fcf1ab32526de2a87a109bf9ad8ed210c735fd809559d88e0f7580e7a2185",
+       "licence": "Official works (§ 5 UrhG)",
+       "coordinates": "text contains: ab 1, Januar 2025 12,82 Euro brutto je Zeitstunde"
+      },
+      "annual_full_time_at_destatis_hours_eur": 26065.62,
+      "destatis_hours_assumption": {
+       "paid_hours_per_week": 39.1,
+       "definition": "Durchschnittliche bezahlte Wochenarbeitszeit inkl. Überstunden, Vollzeitbeschäftigte, Gesamtwirtschaft, April 2025",
+       "source": {
+        "source_id": "destatis_verdienste_bericht",
+        "file": "verdienste-2025-q4.xlsx",
+        "path": "research/cache/destatis_verdienste_bericht/verdienste-2025-q4.xlsx",
+        "url": "https://www.destatis.de/DE/Themen/Arbeit/Verdienste/Verdienste-Branche-Berufe/Publikationen/Downloads/statistischer-bericht-verdienste-5623601253245.xlsx?__blob=publicationFile&v=2",
+        "retrieved": "2026-10-12T08:24:05Z",
+        "sha256": "12f1864360af1afb3d7434c417ce9118715a10c07499037c9bd2a3bf25d1775a",
+        "licence": "DL-DE-BY-2.0 (workbook Impressum sheet)",
+        "coordinates": "sheet csv-62361-04_1, row Gesamtwirtschaft, column WZT002"
+       }
+      }
+     },
+     "full_time_earnings": {
+      "monthly_april": {
+       "median_gross_monthly_eur": 4123.0,
+       "average_gross_monthly_eur": 4784.0,
+       "median_gross_hourly_eur": 24.38,
+       "definition": {
+        "de": "Bruttomonatsverdienst ohne Sonderzahlungen, Vollzeitbeschäftigte, Stichmonat April",
+        "en": "Gross monthly earnings without special payments, full-time employees, reference month April"
+       },
+       "status": "final",
+       "source": {
+        "source_id": "destatis_genesis_62361",
+        "file": "62361-0031.json",
+        "path": "research/raw/destatis_genesis_62361/62361-0031.json",
+        "url": "https://genesis.destatis.de/genesis/api/rest/tables/62361-0031/data",
+        "retrieved": "2026-10-12T08:24:04Z",
+        "sha256": "41e5c977d5b26f5749a2859480556d61acf4759aa812f24057ce3df998ce2e92",
+        "licence": "DL-DE-BY-2.0; attribution: Statistisches Bundesamt (Destatis), GENESIS-Online",
+        "coordinates": "SMONAT=2025-04P1M, GES=%TOTAL%, ALT035=%TOTAL%, content VST052 (Mittlere = median) / VST047 (Durchschn.) / VST051",
+        "note": "The GENESIS table title does not say 'Vollzeit'; the identically coded tables 62361-03/-05 of the Statistischer Bericht Verdienste are titled 'Vollzeitbeschäftigte' (research/cache/destatis_verdienste_bericht)"
+       },
+       "median_x12_eur": 49476
+      },
+      "annual": {
+       "median_gross_annual_eur": 54066.0,
+       "average_gross_annual_eur": 64441.0,
+       "definition": {
+        "de": "Bruttojahresverdienst mit Sonderzahlungen, Vollzeitbeschäftigte",
+        "en": "Gross annual earnings including special payments, full-time employees"
+       },
+       "status": "final",
+       "source": {
+        "source_id": "destatis_genesis_62361",
+        "file": "62361-0035.json",
+        "path": "research/raw/destatis_genesis_62361/62361-0035.json",
+        "url": "https://genesis.destatis.de/genesis/api/rest/tables/62361-0035/data",
+        "retrieved": "2026-10-12T08:24:05Z",
+        "sha256": "6a0ca1ae2f18ea97474f05f373aba262f50aaa666db579b95fbb692c03008801",
+        "licence": "DL-DE-BY-2.0; attribution: Statistisches Bundesamt (Destatis), GENESIS-Online",
+        "coordinates": "JAHR=2025, GES=%TOTAL%, ALT035=%TOTAL%, content VST053 (median) / VST050 (average)"
+       }
+      }
+     },
+     "pension_average_earnings": {
+      "durchschnittsentgelt_eur": 50493,
+      "status": "provisional (vorläufig, § 69 (2) SGB VI)",
+      "label": {
+       "de": "Durchschnittsentgelt der Rentenversicherung (Anlage 1 SGB VI)",
+       "en": "Average earnings of insured persons used by pension law (Anlage 1 SGB VI)"
+      },
+      "definition": {
+       "de": "Durchschnittliches Bruttojahresarbeitsentgelt aller Versicherten der gesetzlichen Rentenversicherung (inkl. Teilzeit)",
+       "en": "Average gross annual earnings of all persons insured in the statutory pension insurance (incl. part-time)"
+      },
+      "source": {
+       "source_id": "gesetze_im_internet_wages",
+       "file": "sgb6_anlage_1.html",
+       "path": "research/raw/gesetze_im_internet_wages/sgb6_anlage_1.html",
+       "url": "https://www.gesetze-im-internet.de/sgb_6/anlage_1.html",
+       "retrieved": "2026-10-12T08:24:04Z",
+       "sha256": "1be51ea98688880833fc8f7e40f47ba7555aa3f61bb4606c3e419a88def03b0d",
+       "licence": "Official works (§ 5 UrhG)",
+       "coordinates": "Anlage 1 row '2025'"
+      }
+     }
+    },
+    "2026": {
+     "minimum_wage": {
+      "hourly_eur": 13.9,
+      "status": "statute",
+      "legal_basis": "§ 1 Nr. 1 MiLoV5 (§ 1 (2) MiLoG)",
+      "annual_full_time_eur": 28912.0,
+      "annual_status": "derived*",
+      "annual_assumption": "40 h/week × 52 weeks = 2080 paid hours; collectively agreed full-time weeks are often 35-39 h, which gives a lower annual figure",
+      "monthly_full_time_eur": 2409.33,
+      "source": {
+       "source_id": "gesetze_im_internet_wages",
+       "file": "milov5_1.html",
+       "path": "research/raw/gesetze_im_internet_wages/milov5_1.html",
+       "url": "https://www.gesetze-im-internet.de/milov5/__1.html",
+       "retrieved": "2026-10-12T08:24:04Z",
+       "sha256": "486c1093af7fa7b7f0e66b75a0967f91c773aaafe38460d9e0810cc996a0a11b",
+       "licence": "Official works (§ 5 UrhG)",
+       "coordinates": "text contains: ab 1, Januar 2026 13,90 Euro brutto je Zeitstunde"
+      },
+      "annual_full_time_at_destatis_hours_eur": 28261.48,
+      "destatis_hours_assumption": {
+       "paid_hours_per_week": 39.1,
+       "definition": "Durchschnittliche bezahlte Wochenarbeitszeit inkl. Überstunden, Vollzeitbeschäftigte, Gesamtwirtschaft, April 2025",
+       "source": {
+        "source_id": "destatis_verdienste_bericht",
+        "file": "verdienste-2025-q4.xlsx",
+        "path": "research/cache/destatis_verdienste_bericht/verdienste-2025-q4.xlsx",
+        "url": "https://www.destatis.de/DE/Themen/Arbeit/Verdienste/Verdienste-Branche-Berufe/Publikationen/Downloads/statistischer-bericht-verdienste-5623601253245.xlsx?__blob=publicationFile&v=2",
+        "retrieved": "2026-10-12T08:24:05Z",
+        "sha256": "12f1864360af1afb3d7434c417ce9118715a10c07499037c9bd2a3bf25d1775a",
+        "licence": "DL-DE-BY-2.0 (workbook Impressum sheet)",
+        "coordinates": "sheet csv-62361-04_1, row Gesamtwirtschaft, column WZT002"
+       }
+      }
+     },
+     "full_time_earnings": null,
+     "pension_average_earnings": {
+      "durchschnittsentgelt_eur": 51944,
+      "status": "provisional (vorläufig, § 69 (2) SGB VI)",
+      "label": {
+       "de": "Durchschnittsentgelt der Rentenversicherung (Anlage 1 SGB VI)",
+       "en": "Average earnings of insured persons used by pension law (Anlage 1 SGB VI)"
+      },
+      "definition": {
+       "de": "Durchschnittliches Bruttojahresarbeitsentgelt aller Versicherten der gesetzlichen Rentenversicherung (inkl. Teilzeit)",
+       "en": "Average gross annual earnings of all persons insured in the statutory pension insurance (incl. part-time)"
+      },
+      "source": {
+       "source_id": "gesetze_im_internet_wages",
+       "file": "sgb6_anlage_1.html",
+       "path": "research/raw/gesetze_im_internet_wages/sgb6_anlage_1.html",
+       "url": "https://www.gesetze-im-internet.de/sgb_6/anlage_1.html",
+       "retrieved": "2026-10-12T08:24:04Z",
+       "sha256": "1be51ea98688880833fc8f7e40f47ba7555aa3f61bb4606c3e419a88def03b0d",
+       "licence": "Official works (§ 5 UrhG)",
+       "coordinates": "Anlage 1 row '2026'"
+      }
+     }
+    },
+    "2027": {
+     "minimum_wage": {
+      "hourly_eur": 14.6,
+      "status": "statute",
+      "legal_basis": "§ 1 Nr. 2 MiLoV5 (§ 1 (2) MiLoG)",
+      "annual_full_time_eur": 30368.0,
+      "annual_status": "derived*",
+      "annual_assumption": "40 h/week × 52 weeks = 2080 paid hours; collectively agreed full-time weeks are often 35-39 h, which gives a lower annual figure",
+      "monthly_full_time_eur": 2530.67,
+      "source": {
+       "source_id": "gesetze_im_internet_wages",
+       "file": "milov5_1.html",
+       "path": "research/raw/gesetze_im_internet_wages/milov5_1.html",
+       "url": "https://www.gesetze-im-internet.de/milov5/__1.html",
+       "retrieved": "2026-10-12T08:24:04Z",
+       "sha256": "486c1093af7fa7b7f0e66b75a0967f91c773aaafe38460d9e0810cc996a0a11b",
+       "licence": "Official works (§ 5 UrhG)",
+       "coordinates": "text contains: ab 1, Januar 2027 14,60 Euro brutto je Zeitstunde"
+      },
+      "annual_full_time_at_destatis_hours_eur": 29684.72,
+      "destatis_hours_assumption": {
+       "paid_hours_per_week": 39.1,
+       "definition": "Durchschnittliche bezahlte Wochenarbeitszeit inkl. Überstunden, Vollzeitbeschäftigte, Gesamtwirtschaft, April 2025",
+       "source": {
+        "source_id": "destatis_verdienste_bericht",
+        "file": "verdienste-2025-q4.xlsx",
+        "path": "research/cache/destatis_verdienste_bericht/verdienste-2025-q4.xlsx",
+        "url": "https://www.destatis.de/DE/Themen/Arbeit/Verdienste/Verdienste-Branche-Berufe/Publikationen/Downloads/statistischer-bericht-verdienste-5623601253245.xlsx?__blob=publicationFile&v=2",
+        "retrieved": "2026-10-12T08:24:05Z",
+        "sha256": "12f1864360af1afb3d7434c417ce9118715a10c07499037c9bd2a3bf25d1775a",
+        "licence": "DL-DE-BY-2.0 (workbook Impressum sheet)",
+        "coordinates": "sheet csv-62361-04_1, row Gesamtwirtschaft, column WZT002"
+       }
+      }
+     },
+     "full_time_earnings": null,
+     "pension_average_earnings": null
+    }
+   },
+   "basis": "Statute (minimum wage), Destatis Verdiensterhebung (full-time employees), Anlage 1 SGB VI (pension-law average). Annual minimum-wage figure is derived* from an hours assumption.",
+   "generated_by": "scripts/research/build_wages.py",
+   "generated": "2026-10-12"
   },
   {
    "path": "data/de/equalisation/2024.json",
@@ -4560,7 +4876,7 @@
    ],
    "basis": "BMF Abrechnung Ausgleichsjahr 2024 (Anlage 1, in 1.000 Euro, converted ×1000) and BMF Monatsbericht tables (in Mio. Euro, converted ×1,000,000; BEZ values are therefore rounded to the million). Population: residents on 30.06.2024.",
    "generated_by": "scripts/research/build_equalisation.py",
-   "generated": "2026-10-09"
+   "generated": "2026-10-12"
   },
   {
    "path": "data/de/equalisation/2025.json",
@@ -4575,7 +4891,7 @@
    ],
    "basis": "BMF Abrechnung Ausgleichsjahr 2025 (Anlage 1, in 1.000 Euro, converted ×1000) and BMF Monatsbericht tables (in Mio. Euro, converted ×1,000,000; BEZ values are therefore rounded to the million). Population: residents on 30.06.2025.",
    "generated_by": "scripts/research/build_equalisation.py",
-   "generated": "2026-10-09"
+   "generated": "2026-10-12"
   },
   {
    "path": "data/de/equalisation/laender-meta.json",
@@ -4588,7 +4904,7 @@
    "years": null,
    "basis": "Static attributes used to read the equalisation files",
    "generated_by": "scripts/research/build_equalisation.py",
-   "generated": "2026-10-09"
+   "generated": "2026-10-12"
   },
   {
    "path": "data/de/eu/round-trip.json",
@@ -4757,7 +5073,7 @@
    },
    "basis": "Commission budget implementation (accrual-free, by year of booking) for both sides; Destatis cash positions (EUR) added for comparison: the two sources differ in timing and in the treatment of the GNI reduction and balances. No net balance is computed (see file notes).",
    "generated_by": "scripts/research/build_eu.py",
-   "generated": "2026-10-09"
+   "generated": "2026-10-12"
   },
   {
    "path": "data/de/federal/budget-2024.json",
@@ -4772,7 +5088,7 @@
    ],
    "basis": "Kernhaushalt des Bundes, kassenmäßiges Ist je Titel (Haushaltsrechnung XML). 'Official basis' = BMF definition of Ausgaben: without Obergruppen 59 (Tilgung), 91 (Zuführung an Rücklagen), 96 (kassenmäßiger Fehlbetrag) and 98 (haushaltstechnische Verrechnungen)",
    "generated_by": "scripts/research/build_federal.py",
-   "generated": "2026-10-09"
+   "generated": "2026-10-12"
   },
   {
    "path": "data/de/federal/budget-2025.json",
@@ -4787,7 +5103,20 @@
    ],
    "basis": "Kernhaushalt des Bundes, kassenmäßiges Ist je Titel (Haushaltsrechnung XML). 'Official basis' = BMF definition of Ausgaben: without Obergruppen 59 (Tilgung), 91 (Zuführung an Rücklagen), 96 (kassenmäßiger Fehlbetrag) and 98 (haushaltstechnische Verrechnungen); annexed Wirtschaftspläne (Kapitel xx9y: Sondervermögen, EU-Eigenmittel-Durchleitung, Bundesanstalten) removed first",
    "generated_by": "scripts/research/build_federal.py",
-   "generated": "2026-10-09"
+   "generated": "2026-10-12"
+  },
+  {
+   "path": "data/de/federal/funktionenplan.json",
+   "id": "de.federal.funktionenplan",
+   "title": {
+    "de": "Funktionenplan des Bundes: Haupt-, Ober- und Funktionen",
+    "en": "Federal functional classification (Funktionenplan): main, upper and detailed functions"
+   },
+   "unit": "labels",
+   "years": null,
+   "basis": "Official classification per § 10 HGrG as published by BMF (Stand 12 November 2024); German names verbatim, English names editorial",
+   "generated_by": "scripts/research/build_funktionenplan.py",
+   "generated": "2026-10-12"
   },
   {
    "path": "data/de/federal/overview.json",
@@ -4804,7 +5133,7 @@
    ],
    "basis": "BMF Monatsbericht provisional closings (Jan 2025 for 2024 with Ist 2023 column; Jan 2026 for 2025). Figures in Mio EUR in the source, multiplied by 1,000,000; KTF/SVIK figures from the article text in Mrd EUR (one decimal).",
    "generated_by": "scripts/research/build_federal.py",
-   "generated": "2026-10-09"
+   "generated": "2026-10-12"
   },
   {
    "path": "data/de/government/aggregates.json",
@@ -4869,7 +5198,7 @@
    ],
    "basis": "ESA 2010 accrual, general government S13 consolidated; debt = Maastricht gross debt at year end; 'p' = provisional, 'unflagged' = no Eurostat flag",
    "generated_by": "scripts/research/build_government.py",
-   "generated": "2026-10-09"
+   "generated": "2026-10-12"
   },
   {
    "path": "data/de/government/cash-by-level.json",
@@ -4885,7 +5214,7 @@
    ],
    "basis": "Cash statistics (Kassenstatistik), core and extra budgets, calendar year (1st-4th quarter); 'bereinigt' = net of payments within the same level; the Gesamthaushalt column is consolidated across levels",
    "generated_by": "scripts/research/build_cash_levels.py",
-   "generated": "2026-10-09"
+   "generated": "2026-10-12"
   },
   {
    "path": "data/de/government/cofog.json",
@@ -4935,7 +5264,7 @@
    ],
    "basis": "ESA 2010 accrual; general government S13 consolidated (transfers between levels eliminated) and subsectors S1311-S1314 (not consolidated with each other, do not add subsectors to S13); 'p' = provisional per Eurostat; 'unflagged' = Eurostat sets no flag (not an assertion of finality)",
    "generated_by": "scripts/research/build_government.py",
-   "generated": "2026-10-09"
+   "generated": "2026-10-12"
   },
   {
    "path": "data/de/government/revenue-by-subsector-2024.json",
@@ -4948,7 +5277,7 @@
    "years": null,
    "basis": "ESA 2010 accrual; S13_S212 = general government plus EU institutions; S212 = EU institutions' share collected in Germany",
    "generated_by": "scripts/research/build_government.py",
-   "generated": "2026-10-09"
+   "generated": "2026-10-12"
   },
   {
    "path": "data/de/laender/functions-2022.json",
@@ -4963,7 +5292,7 @@
    ],
    "basis": "Jahresrechnungsstatistik 2022 (final), core and extra budgets; Bereinigte Ausgaben = total net of payments within the same level; Nettoausgaben = financed by the level itself; Personalausgaben = staff. Versorgung (V) is a Destatis carve-out spanning functions of groups 0 and 1 and must be shown as its own tile.",
    "generated_by": "scripts/research/build_laender.py",
-   "generated": "2026-10-09"
+   "generated": "2026-10-12"
   },
   {
    "path": "data/de/municipal/functions-2024.json",
@@ -4976,7 +5305,7 @@
    "years": null,
    "basis": "Jahresrechnungsstatistik der kommunalen Kernhaushalte (core budgets only, no Extrahaushalte); Flächenländer only (Berlin, Hamburg, Bremen municipal tasks are inside the Land budgets)",
    "generated_by": "scripts/research/build_municipal.py",
-   "generated": "2026-10-09"
+   "generated": "2026-10-12"
   },
   {
    "path": "data/de/population.json",
@@ -4989,7 +5318,7 @@
    "years": null,
    "basis": "Fortschreibung des Bevölkerungsstandes auf Basis des Zensus 2022; status flags per GENESIS ('e' = final)",
    "generated_by": "scripts/research/build_population.py",
-   "generated": "2026-10-09"
+   "generated": "2026-10-12"
   },
   {
    "path": "data/de/social-insurance/accounts.json",
@@ -5005,7 +5334,7 @@
    ],
    "basis": "Annual accounts of the four statutory systems as published by DRV (Mrd, 1 decimal), BMG KJ1 (EUR, cents), BMG SPV table (Mrd, 2 decimals), BA (Mrd 2 decimals / Mio 1 decimal). Each figure carries precision_eur = the source's rounding unit. Systems are not summed except in payroll_view and contributions_by_payer_all_systems.",
    "generated_by": "scripts/research/build_social.py",
-   "generated": "2026-10-09"
+   "generated": "2026-10-12"
   },
   {
    "path": "data/de/taxes/by-land.json",
@@ -5023,7 +5352,7 @@
    ],
    "basis": "Cash receipts by Land, calendar year. 'Before distribution' = taxes collected in the Land (Aufkommen); 'after distribution' = what the Land, its municipalities, the Federation and the EU receive out of that Land's table after legal shares, equalisation and grants.",
    "generated_by": "scripts/research/build_taxes.py",
-   "generated": "2026-10-09"
+   "generated": "2026-10-12"
   },
   {
    "path": "data/de/taxes/by-recipient.json",
@@ -5064,7 +5393,7 @@
    ],
    "basis": "Kassenmäßige Steuereinnahmen (cash receipts), calendar year, Germany; GENESIS unit 'Tsd. EUR' multiplied by 1000",
    "generated_by": "scripts/research/build_taxes.py",
-   "generated": "2026-10-09"
+   "generated": "2026-10-12"
   },
   {
    "path": "data/de/taxes/by-tax.json",
@@ -5105,7 +5434,7 @@
    ],
    "basis": "Kassenmäßige Steuereinnahmen (cash receipts), calendar year, Germany; GENESIS unit 'Tsd. EUR' multiplied by 1000",
    "generated_by": "scripts/research/build_taxes.py",
-   "generated": "2026-10-09"
+   "generated": "2026-10-12"
   },
   {
    "path": "data/de/taxes/legal-allocation.json",
@@ -5118,7 +5447,7 @@
    "years": null,
    "basis": "Statute (Art. 106 GG, FAG, GemFinRefG) in force at retrieval; shares applied to Destatis cash receipts give the statutory split before decomposition, equalisation and grants. The statutory split is a derived figure, not an observation.",
    "generated_by": "scripts/research/build_legal.py",
-   "generated": "2026-10-09"
+   "generated": "2026-10-12"
   }
  ]
 }

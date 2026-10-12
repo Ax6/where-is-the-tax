@@ -7,7 +7,7 @@
  },
  "unit": "EUR",
  "basis": "BMF Abrechnung Ausgleichsjahr 2025 (Anlage 1, in 1.000 Euro, converted ×1000) and BMF Monatsbericht tables (in Mio. Euro, converted ×1,000,000; BEZ values are therefore rounded to the million). Population: residents on 30.06.2025.",
- "generated": "2026-10-09",
+ "generated": "2026-10-12",
  "generated_by": "scripts/research/build_equalisation.py",
  "year": 2025,
  "status": "provisional (BMF: based on the vorläufige Jahresrechnung)",

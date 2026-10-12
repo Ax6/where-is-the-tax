@@ -89,7 +89,8 @@ export function multiline(
 ): SVGTextElement {
   const text = svgEl(parent, "text", attrs);
   lines.forEach((line, index) => {
-    svgEl(text, "tspan", { x: attrs.x, dy: index === 0 ? 0 : lineHeight, class: lineClass(index) }, line);
+    // trailing space keeps words apart when assistive tech joins the lines
+    svgEl(text, "tspan", { x: attrs.x, dy: index === 0 ? 0 : lineHeight, class: lineClass(index) }, index < lines.length - 1 ? `${line} ` : line);
   });
   return text;
 }

@@ -1,6 +1,6 @@
 {
   "schema_version": 2,
-  "generated": "2026-10-09T18:12:47Z",
+  "generated": "2026-10-12T08:26:25Z",
   "files": [
     {
       "source_id": "ba_finanzentwicklung",
@@ -131,6 +131,19 @@
       "redistribution": "unverified",
       "committed": false,
       "description": "2025 calculation, all Länder"
+    },
+    {
+      "source_id": "bmf_funktionenplan",
+      "file": "funktionenplan.pdf",
+      "url": "https://www.bundesfinanzministerium.de/Content/DE/Downloads/Oeffentliche-Finanzen/Haushaltsrecht-und-Haushaltssystematik/funktionenplan.pdf?__blob=publicationFile&v=4",
+      "path": "research/cache/bmf_funktionenplan/funktionenplan.pdf",
+      "retrieved": "2026-10-12T08:24:06Z",
+      "bytes": 367781,
+      "sha256": "6426ad252fd50d376b628e1e7e3d147611b1e20ac365f2e21c49b51e100ed026",
+      "licence": "BMF document; the Funktionenplan is an official classification (Haushaltssystematik, § 10 HGrG) — names of functions are facts; PDF not redistributed",
+      "redistribution": "not_allowed",
+      "committed": false,
+      "description": "38 pages; code + name lines"
     },
     {
       "source_id": "bmf_monatsbericht",
@@ -497,6 +510,19 @@
       "description": "Actual account 2023"
     },
     {
+      "source_id": "destatis_evs_2023_feinanschreibung",
+      "file": "evs-2023-feinanschreibung.xlsx",
+      "url": "https://www.destatis.de/DE/Themen/Gesellschaft-Umwelt/Einkommen-Konsum-Lebensbedingungen/Konsumausgaben-Lebenshaltungskosten/Publikationen/Downloads-Konsumausgaben/statistischer-bericht-evs-feinanschreibung-nahrungsmittel-getraenke-tabakwaren-2152603239005.xlsx?__blob=publicationFile&v=2",
+      "path": "research/cache/destatis_evs_2023_feinanschreibung/evs-2023-feinanschreibung.xlsx",
+      "retrieved": "2026-10-12T08:26:25Z",
+      "bytes": 248947,
+      "sha256": "7511a6c997cadbd66b03119d4fc096f05c3b92e32720c17f9cbff804f83910f4",
+      "licence": "DL-DE-BY-2.0 (workbook Impressum sheet)",
+      "redistribution": "allowed",
+      "committed": false,
+      "description": "Used only for the split of alcoholic drinks vs tobacco inside the combined LWR item"
+    },
+    {
       "source_id": "destatis_genesis_12411",
       "file": "12411-0001.json",
       "url": "https://genesis.destatis.de/genesis/api/rest/tables/12411-0001/data",
@@ -521,6 +547,45 @@
       "redistribution": "allowed",
       "committed": true,
       "description": "Länder, population at 31.12., 1958-2025"
+    },
+    {
+      "source_id": "destatis_genesis_62361",
+      "file": "62361-0031.json",
+      "url": "https://genesis.destatis.de/genesis/api/rest/tables/62361-0031/data",
+      "path": "research/raw/destatis_genesis_62361/62361-0031.json",
+      "retrieved": "2026-10-12T08:24:04Z",
+      "bytes": 6249,
+      "sha256": "41e5c977d5b26f5749a2859480556d61acf4759aa812f24057ce3df998ce2e92",
+      "licence": "DL-DE-BY-2.0; attribution: Statistisches Bundesamt (Destatis), GENESIS-Online",
+      "redistribution": "allowed",
+      "committed": true,
+      "description": "April 2022-2025: median/average gross hourly and monthly earnings without special payments by personal characteristics"
+    },
+    {
+      "source_id": "destatis_genesis_62361",
+      "file": "62361-0035.json",
+      "url": "https://genesis.destatis.de/genesis/api/rest/tables/62361-0035/data",
+      "path": "research/raw/destatis_genesis_62361/62361-0035.json",
+      "retrieved": "2026-10-12T08:24:05Z",
+      "bytes": 3845,
+      "sha256": "6a0ca1ae2f18ea97474f05f373aba262f50aaa666db579b95fbb692c03008801",
+      "licence": "DL-DE-BY-2.0; attribution: Statistisches Bundesamt (Destatis), GENESIS-Online",
+      "redistribution": "allowed",
+      "committed": true,
+      "description": "Years: median/average gross annual earnings incl. special payments by personal characteristics"
+    },
+    {
+      "source_id": "destatis_genesis_62361",
+      "file": "statistic-62361-tables.json",
+      "url": "https://genesis.destatis.de/genesis/api/rest/statistics/62361/tables",
+      "path": "research/raw/destatis_genesis_62361/statistic-62361-tables.json",
+      "retrieved": "2026-10-12T08:24:05Z",
+      "bytes": 45385,
+      "sha256": "a63d14a4ae5718b7e442cae0c067a88812718bc1b5823164dc8f5cdb6a91320a",
+      "licence": "DL-DE-BY-2.0; attribution: Statistisches Bundesamt (Destatis), GENESIS-Online",
+      "redistribution": "allowed",
+      "committed": true,
+      "description": "Table list with variable names (labels for VST051/052/045/047/050/053)"
     },
     {
       "source_id": "destatis_genesis_71211",
@@ -679,6 +744,19 @@
       "description": "Full-year 2025 cash results, all levels; sheet csv-71511-01 used"
     },
     {
+      "source_id": "destatis_lwr_2024",
+      "file": "lwr-2024.xlsx",
+      "url": "https://www.destatis.de/DE/Themen/Gesellschaft-Umwelt/Einkommen-Konsum-Lebensbedingungen/Konsumausgaben-Lebenshaltungskosten/Publikationen/Downloads-Konsumausgaben/statistischer-bericht-laufende-wirtschaftsrechnungen-2150100247005.xlsx?__blob=publicationFile&v=8",
+      "path": "research/cache/destatis_lwr_2024/lwr-2024.xlsx",
+      "retrieved": "2026-10-12T08:24:06Z",
+      "bytes": 339363,
+      "sha256": "4b40d036a70f1045b89f1793759c8cc4e559eebee89744766250be688a87f23b",
+      "licence": "DL-DE-BY-2.0 (workbook Impressum sheet)",
+      "redistribution": "allowed",
+      "committed": false,
+      "description": "LWR 2024 workbook"
+    },
+    {
       "source_id": "destatis_rechnungsergebnisse_2022",
       "file": "rechnungsergebnisse-2022.xlsx",
       "url": "https://www.destatis.de/DE/Themen/Staat/Oeffentliche-Finanzen/Ausgaben-Einnahmen/Publikationen/Downloads-Ausgaben-und-Einnahmen/statistischer-bericht-rechnungsergebnis-oeffentlicher-haushalt-2140310227015.xlsx?__blob=publicationFile",
@@ -703,6 +781,32 @@
       "redistribution": "allowed",
       "committed": false,
       "description": "Sheets csv-71717-b01 (time series 2011-2024 by product area) and csv-71717-20 (2024 by Land and product area) used"
+    },
+    {
+      "source_id": "destatis_verdienste_bericht",
+      "file": "arbeitnehmerverdienste-jahr-2024.xlsx",
+      "url": "https://www.destatis.de/DE/Themen/Arbeit/Verdienste/Verdienste-Branche-Berufe/Publikationen/Downloads/arbeitnehmerverdienste-jahr-2160230217005.xlsx?__blob=publicationFile&v=4",
+      "path": "research/cache/destatis_verdienste_bericht/arbeitnehmerverdienste-jahr-2024.xlsx",
+      "retrieved": "2026-10-12T08:24:05Z",
+      "bytes": 2095556,
+      "sha256": "5f22ea8f6f291717366b37b12712fd37396e4278087fc2068f304d4a03776071",
+      "licence": "DL-DE-BY-2.0 (workbook Impressum sheet)",
+      "redistribution": "allowed",
+      "committed": false,
+      "description": "Arbeitnehmerverdienste annual report (full-time averages)"
+    },
+    {
+      "source_id": "destatis_verdienste_bericht",
+      "file": "verdienste-2025-q4.xlsx",
+      "url": "https://www.destatis.de/DE/Themen/Arbeit/Verdienste/Verdienste-Branche-Berufe/Publikationen/Downloads/statistischer-bericht-verdienste-5623601253245.xlsx?__blob=publicationFile&v=2",
+      "path": "research/cache/destatis_verdienste_bericht/verdienste-2025-q4.xlsx",
+      "retrieved": "2026-10-12T08:24:05Z",
+      "bytes": 906478,
+      "sha256": "12f1864360af1afb3d7434c417ce9118715a10c07499037c9bd2a3bf25d1775a",
+      "licence": "DL-DE-BY-2.0 (workbook Impressum sheet)",
+      "redistribution": "allowed",
+      "committed": false,
+      "description": "Report with April 2025 reference-month tables"
     },
     {
       "source_id": "drv_finanzen",
@@ -1496,6 +1600,58 @@
       "redistribution": "allowed",
       "committed": true,
       "description": "§ 2 SVBezGrV 2025: Jahresarbeitsentgeltgrenzen 2025 (KV/PV contribution ceiling = § 6(7) SGB V)"
+    },
+    {
+      "source_id": "gesetze_im_internet_wages",
+      "file": "milog_1.html",
+      "url": "https://www.gesetze-im-internet.de/milog/__1.html",
+      "path": "research/raw/gesetze_im_internet_wages/milog_1.html",
+      "retrieved": "2026-10-12T08:24:04Z",
+      "bytes": 4585,
+      "sha256": "3c3bf22d6452b018f636910b4921ff5b135b0f92c068f1e231af2b9a3b6bafc8",
+      "licence": "Official works (§ 5 UrhG)",
+      "redistribution": "allowed",
+      "committed": true,
+      "description": "§ 1 MiLoG: minimum wage and its adjustment by ordinance"
+    },
+    {
+      "source_id": "gesetze_im_internet_wages",
+      "file": "milov4_1.html",
+      "url": "https://www.gesetze-im-internet.de/milov4/__1.html",
+      "path": "research/raw/gesetze_im_internet_wages/milov4_1.html",
+      "retrieved": "2026-10-12T08:24:04Z",
+      "bytes": 4175,
+      "sha256": "039fcf1ab32526de2a87a109bf9ad8ed210c735fd809559d88e0f7580e7a2185",
+      "licence": "Official works (§ 5 UrhG)",
+      "redistribution": "allowed",
+      "committed": true,
+      "description": "Vierte Mindestlohnanpassungsverordnung § 1: 12.41 EUR (2024), 12.82 EUR (2025)"
+    },
+    {
+      "source_id": "gesetze_im_internet_wages",
+      "file": "milov5_1.html",
+      "url": "https://www.gesetze-im-internet.de/milov5/__1.html",
+      "path": "research/raw/gesetze_im_internet_wages/milov5_1.html",
+      "retrieved": "2026-10-12T08:24:04Z",
+      "bytes": 4080,
+      "sha256": "486c1093af7fa7b7f0e66b75a0967f91c773aaafe38460d9e0810cc996a0a11b",
+      "licence": "Official works (§ 5 UrhG)",
+      "redistribution": "allowed",
+      "committed": true,
+      "description": "Fünfte Mindestlohnanpassungsverordnung § 1: 2026 and 2027 rates"
+    },
+    {
+      "source_id": "gesetze_im_internet_wages",
+      "file": "sgb6_anlage_1.html",
+      "url": "https://www.gesetze-im-internet.de/sgb_6/anlage_1.html",
+      "path": "research/raw/gesetze_im_internet_wages/sgb6_anlage_1.html",
+      "retrieved": "2026-10-12T08:24:04Z",
+      "bytes": 39177,
+      "sha256": "1be51ea98688880833fc8f7e40f47ba7555aa3f61bb4606c3e419a88def03b0d",
+      "licence": "Official works (§ 5 UrhG)",
+      "redistribution": "allowed",
+      "committed": true,
+      "description": "Anlage 1 SGB VI: Durchschnittsentgelt (average annual earnings of insured persons) by year"
     },
     {
       "source_id": "gkv_spitzenverband_zusatzbeitrag",

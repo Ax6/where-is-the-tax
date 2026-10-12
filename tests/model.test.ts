@@ -128,17 +128,66 @@ test("wage tax goes 42.5 / 42.5 / 15; Berlin and Hamburg take Land and municipal
   assert.equal(buildYou(2024, 60_000, "NW").pots.find((p) => p.id === "pot-land")!.year, 2022);
 });
 
-test("slider ticks come from data: average earnings and contribution ceilings", () => {
-  const ticks = wageTicks(2024);
+test("slider ticks come from wage-reference.json: minimum wage*, full-time median, average, 2× average", () => {
   assert.deepEqual(
-    ticks.map((tick) => [tick.id, tick.value]),
+    wageTicks(2024).map((tick) => [tick.id, tick.value, tick.fromYear ?? null]),
     [
-      ["average", 45_358],
-      ["kv", 62_100],
-      ["rv", 90_600],
-      ["double", 90_716],
+      ["minimum", 25_812.8, null],
+      ["median", 52_159, null],
+      ["average", 62_235, null],
+      ["double", 124_470, null],
     ],
   );
+  // 2026 earnings are not published yet: the ticks say they come from 2025
+  const t2026 = wageTicks(2026);
+  assert.equal(t2026.find((tick) => tick.id === "minimum")?.value, 28_912);
+  assert.equal(t2026.find((tick) => tick.id === "median")?.fromYear, 2025);
+  assert.equal(defaultWage(2024), 52_159);
+});
+
+test("household estimate (≈*): class from net ÷ 12, file's recipient split, never inside the exact payslip", () => {
+  for (const [gross, classId] of [
+    [30_000, "1300 bis unter 2600 Euro"],
+    [52_159, "2600 bis unter 3600 Euro"],
+    [150_000, "5000 und mehr Euro"],
+  ] as const) {
+    const you = buildYou(2024, gross, "BY", { estimate: true });
+    const e = you.estimate!;
+    assert.equal(e.classId, classId, `gross ${gross}`);
+    // the file rounds each recipient to whole euros: the split may differ from the total by €1
+    const split = e.recipients.fed + e.recipients.land + e.recipients.muni;
+    close(split, e.total, 1, "recipient split vs total");
+    const est = you.flow.edges.filter((edge) => edge.estimate);
+    close(est.reduce((sum, edge) => sum + edge.value, 0), split, 1e-9);
+    assert.ok(est.every((edge) => edge.from === "net" && edge.status === "estimate"));
+    // exact euros reaching the recipients and the pots are unchanged by the estimate
+    const exact = buildYou(2024, gross, "BY");
+    for (const node of you.flow.nodes.filter((n) => n.stage === 2)) {
+      const twin = exact.flow.nodes.find((n) => n.id === node.id)!;
+      close(node.value - (node.estimate ?? 0), twin.value, 1e-9, node.id);
+    }
+    assert.deepEqual(you.inflow, exact.inflow);
+    assert.deepEqual(you.payslip, exact.payslip);
+  }
+  // Berlin: Land and municipal shares of the estimate go to the one merged node
+  const berlin = buildYou(2024, 52_159, "BE", { estimate: true });
+  assert.equal(berlin.flow.edges.filter((edge) => edge.estimate).length, 2);
+});
+
+test("trade tax: legal-allocation.json levy block (2024 outcome), the same split in table and Germany view", () => {
+  const row = taxTable().find((r) => r.id === "STEUERARTK30")!;
+  const split = Object.fromEntries(row.shares!.map((s) => [s.entity, Math.round(s.share * 1000) / 10]));
+  assert.deepEqual(split, { muni: 91.2, fed: 3.7, land: 5.2 });
+  const g = buildGermany();
+  const node = g.flow.nodes.find((n) => n.id === "t-STEUERARTK30")!;
+  close(node.value, 75_293_525_000 - 6_642_096_000 + 2_753_363_000 + 3_892_030_000 + 1_789_000, 1);
+});
+
+test("federal function names come from the Funktionenplan", () => {
+  const fed = buildYou(2024, 52_159, "DE").pots.find((p) => p.id === "pot-fed")!;
+  const names = fed.categories.flatMap((c) => (c.children ?? []).map((child) => child.label.en));
+  assert.ok(names.some((name) => name.startsWith("Defence")));
+  assert.ok(!names.some((name) => /^Function \d/.test(name)), names.join(", "));
 });
 
 test("equalisation per resident includes all supplementary federal grants (Berlin +€1,578.82)", () => {
@@ -163,6 +212,19 @@ test("all-taxes table: every named tax with receipts, shares sum to one", () => 
   for (const row of rows) {
     if (row.shares) {
       close(row.shares.reduce((sum, s) => sum + s.share, 0), 1, 1e-9, row.id);
+    }
+  }
+});
+
+test("every pot category and sub-category has a German and an English label", () => {
+  for (const code of ["DE", ...places.map((p) => p.code)]) {
+    for (const pot of buildYou(2024, 45_358, code).pots) {
+      for (const cat of pot.categories) {
+        assert.ok(cat.label.de && cat.label.en, `${code} ${pot.id} ${cat.id}`);
+        for (const child of cat.children ?? []) {
+          assert.ok(child.label.de && child.label.en, `${code} ${pot.id} ${cat.id} child`);
+        }
+      }
     }
   }
 });

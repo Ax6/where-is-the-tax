@@ -1,8 +1,10 @@
 /*
  * Where taxes go: one interactive slide.
  * Hue means one thing only: the legal recipient. Everything else is ink and grey.
- * Recipient palette validated with the dataviz validator (light, surface #f6f6f3):
- * adjacent CVD ΔE ≥ 15.2, normal-vision ΔE ≥ 15.6; sub-3:1 hues carry direct labels and a table view.
+ * Recipient palettes validated with the dataviz validator (adjacent pairs, both stacking orders):
+ *   light, surface #f6f6f3: worst CVD ΔE 15.2, normal ΔE 15.6; four hues < 3:1 → direct labels + table view
+ *   dark,  surface #17191b: worst CVD ΔE 13.2, normal ΔE 17.4; one hue < 3:1 → direct labels + table view
+ * Map diverging arms validated as ordinal ramps in both modes; poles ≥ normal ΔE 15.4 from every recipient hue.
  */
 :root {
   color-scheme: light;
@@ -10,13 +12,20 @@
   --raise: #ffffff;
   --ink: #161a1d;
   --ink-2: #4c5358;
-  --muted: #737a80;
+  --muted: #60676c;
   --hair: #dcdedb;
   --axis: #b4b8b4;
   --flow-neutral: #8a908b;
   --flow-yours: #d2d5d1;
   --flow-ghost: #ecedea;
   --borrowed: #4f5551;
+  --neutral-1: #6f7570;
+  --neutral-2: #989e99;
+  --neutral-3: #bfc3be;
+  --shadow: rgb(22 26 29 / 0.12);
+  --backdrop: rgb(22 26 29 / 0.16);
+  --tex-ink: var(--page);
+  --ribbon-alpha: 0.4;
   --e-fed: #2a78d6;
   --e-land: #eb6834;
   --e-muni: #4a3aa7;
@@ -26,7 +35,7 @@
   --e-care: #eda100;
   --e-unemp: #e34948;
   --map-pays: #6b4f2a;
-  --map-mid: #e4e4df;
+  --map-mid: #c8c9c2;
   --map-receives: #0e6e74;
   --serif: "Iowan Old Style", Charter, "Bitstream Charter", "Sitka Text", Cambria, Georgia, serif;
   --sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
@@ -35,6 +44,73 @@
   font-family: var(--sans);
   color: var(--ink);
   background: var(--page);
+}
+
+/* Dark: its own steps from the same ramps (not an inversion). Follows the OS unless the toggle says otherwise. */
+@media (prefers-color-scheme: dark) {
+  :root:where(:not([data-theme="light"])) {
+    color-scheme: dark;
+    --page: #17191b;
+    --raise: #22262a;
+    --ink: #eceeec;
+    --ink-2: #c4c8c5;
+    --muted: #9ca29f;
+    --hair: #30353a;
+    --axis: #4b5156;
+    --flow-neutral: #7b827e;
+    --flow-yours: #3b403f;
+    --flow-ghost: #262a2d;
+    --borrowed: #b6bcb8;
+    --neutral-1: #8f9692;
+    --neutral-2: #6c726f;
+    --neutral-3: #4f5552;
+    --shadow: rgb(0 0 0 / 0.5);
+    --backdrop: rgb(0 0 0 / 0.45);
+    --ribbon-alpha: 0.5;
+    --e-fed: #3987e5;
+    --e-land: #d95926;
+    --e-muni: #9085e9;
+    --e-eu: #40a87e;
+    --e-pension: #11780f;
+    --e-health: #d55181;
+    --e-care: #c98500;
+    --e-unemp: #ab3137;
+    --map-pays: #ceb69c;
+    --map-mid: #3a3d3c;
+    --map-receives: #40d0df;
+  }
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+    --page: #17191b;
+    --raise: #22262a;
+    --ink: #eceeec;
+    --ink-2: #c4c8c5;
+    --muted: #9ca29f;
+    --hair: #30353a;
+    --axis: #4b5156;
+    --flow-neutral: #7b827e;
+    --flow-yours: #3b403f;
+    --flow-ghost: #262a2d;
+    --borrowed: #b6bcb8;
+    --neutral-1: #8f9692;
+    --neutral-2: #6c726f;
+    --neutral-3: #4f5552;
+    --shadow: rgb(0 0 0 / 0.5);
+    --backdrop: rgb(0 0 0 / 0.45);
+    --ribbon-alpha: 0.5;
+    --e-fed: #3987e5;
+    --e-land: #d95926;
+    --e-muni: #9085e9;
+    --e-eu: #40a87e;
+    --e-pension: #11780f;
+    --e-health: #d55181;
+    --e-care: #c98500;
+    --e-unemp: #ab3137;
+    --map-pays: #ceb69c;
+    --map-mid: #3a3d3c;
+    --map-receives: #40d0df;
 }
 
 * {
@@ -105,7 +181,7 @@ select {
   align-items: flex-end;
   justify-content: space-between;
   gap: 8px 32px;
-  padding: 14px var(--gutter) 10px;
+  padding: 12px var(--gutter) 8px;
   border-bottom: 1px solid var(--ink);
 }
 
@@ -131,9 +207,6 @@ select {
   gap: 3px;
 }
 
-.ctl.is-inactive {
-  opacity: 0.4;
-}
 
 .ctl-label {
   color: var(--muted);
@@ -149,8 +222,8 @@ select {
 
 .range-wrap {
   position: relative;
-  width: clamp(200px, 21vw, 320px);
-  padding-bottom: 16px;
+  width: clamp(220px, 21vw, 320px);
+  padding-bottom: 30px;
 }
 
 input[type="range"] {
@@ -162,7 +235,7 @@ input[type="range"] {
 .ticks {
   position: absolute;
   inset: auto 8px 0;
-  height: 16px;
+  height: 30px;
 }
 
 .tick-mark {
@@ -192,11 +265,14 @@ input[type="range"] {
   transform: translateX(-50%);
 }
 
-.tick-kv,
-.tick-rv {
-  height: 4px;
-  background: var(--axis);
+.tick-mark.row-1 {
+  height: 18px;
 }
+
+.tick-mark.row-1 span {
+  top: 17px;
+}
+/* (row-0/row-1 is the no-JS layout; main.ts measures and re-rows the labels) */
 
 #wage-number {
   width: 96px;
@@ -248,6 +324,26 @@ select {
   display: none;
 }
 
+.display-row {
+  display: flex;
+  gap: 6px;
+}
+
+.toggle {
+  padding: 5px 10px;
+  border: 1px solid var(--ink);
+  border-radius: 3px;
+  background: var(--raise);
+  font-size: 13.5px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.toggle[aria-pressed="true"] {
+  background: var(--ink);
+  color: var(--page);
+}
+
 /* ---------------------------------------------------------------- hero */
 
 .hero {
@@ -293,7 +389,7 @@ select {
 
 .flow {
   position: relative;
-  height: clamp(430px, calc(100vh - 306px), 680px);
+  height: clamp(430px, calc(100vh - 336px), 680px);
   margin-top: 4px;
   transition: opacity 160ms ease;
 }
@@ -356,7 +452,7 @@ select {
 }
 
 .ribbon {
-  opacity: 0.4;
+  opacity: var(--ribbon-alpha);
   transition: opacity 120ms ease;
   cursor: pointer;
 }
@@ -373,6 +469,31 @@ select {
 
 .ribbon.is-ghost {
   opacity: 0.2;
+}
+
+/* ≈* household estimate: lighter fill, dashed edge (a projection, not a payslip line) */
+.ribbon.is-estimate {
+  opacity: 0.3;
+  stroke: var(--ink-2);
+  stroke-dasharray: 3 3;
+  stroke-width: 1;
+}
+
+.node-estimate {
+  fill: var(--page);
+  opacity: 0.6;
+  stroke-dasharray: 2 2;
+  stroke-width: 1;
+}
+
+.focus-estimate .ribbon:not(.is-estimate),
+.focus-estimate .join-stream,
+.focus-estimate .join-wedge {
+  opacity: 0.12;
+}
+
+.focus-estimate .ribbon.is-estimate {
+  opacity: 0.5;
 }
 
 .has-focus .ribbon,
@@ -540,15 +661,15 @@ select {
 }
 
 .bridge-taxes {
-  fill: #6f7570;
+  fill: var(--neutral-1);
 }
 
 .bridge-contributions {
-  fill: #989e99;
+  fill: var(--neutral-2);
 }
 
 .bridge-other {
-  fill: #bfc3be;
+  fill: var(--neutral-3);
 }
 
 .bridge-borrowed {
@@ -570,7 +691,7 @@ select {
 }
 
 .cofog-bar {
-  fill: #6f7570;
+  fill: var(--neutral-1);
 }
 
 .cofog-seg:hover .cofog-bar {
@@ -701,6 +822,11 @@ select {
   background: var(--borrowed);
 }
 
+.swatch.is-estimate {
+  border: 1px dashed var(--ink-2);
+  background: transparent;
+}
+
 .swatch.is-hatch {
   background: repeating-linear-gradient(45deg, var(--ink) 0 1.4px, var(--page) 1.4px 4px);
 }
@@ -721,7 +847,7 @@ select {
   border: 1px solid var(--hair);
   border-radius: 4px;
   background: var(--raise);
-  box-shadow: 0 4px 16px rgb(22 26 29 / 0.12);
+  box-shadow: 0 4px 16px var(--shadow);
   font-size: 12.5px;
   line-height: 1.35;
   pointer-events: none;
@@ -791,7 +917,7 @@ select {
   position: fixed;
   z-index: 39;
   inset: 0;
-  background: rgb(22 26 29 / 0.16);
+  background: var(--backdrop);
 }
 
 .drawer {
@@ -1565,7 +1691,7 @@ code {
     padding: 16px var(--gutter) 24px;
     border-top: 1px solid var(--ink);
     background: var(--page);
-    box-shadow: 0 -8px 24px rgb(22 26 29 / 0.14);
+    box-shadow: 0 -8px 24px var(--shadow);
   }
 
   .controls-open .controls {
@@ -1629,6 +1755,266 @@ code {
   }
 }
 
+/* ---------------------------------------------------------------- textures: identity without colour
+ * Opt-in ("Patterns" toggle) and automatic under forced colours. One pattern per recipient; the
+ * pro-rata hatch keeps its single 45° line, which no recipient pattern uses on its own. */
+
+.textures [data-entity="fed"]:not(path, rect, g) {
+  background: repeating-linear-gradient(135deg, var(--tex-ink) 0 1.4px, transparent 1.4px 5px), var(--e-fed) !important;
+}
+
+.textures [data-entity="land"]:not(path, rect, g) {
+  background: repeating-linear-gradient(90deg, var(--tex-ink) 0 1.4px, transparent 1.4px 5px), var(--e-land) !important;
+}
+
+.textures [data-entity="muni"]:not(path, rect, g) {
+  background: repeating-linear-gradient(45deg, var(--tex-ink) 0 1px, transparent 1px 5px), repeating-linear-gradient(135deg, var(--tex-ink) 0 1px, transparent 1px 5px), var(--e-muni) !important;
+}
+
+.textures [data-entity="eu"]:not(path, rect, g) {
+  background: radial-gradient(var(--tex-ink) 1.1px, transparent 1.4px) 0 0 / 5px 5px, var(--e-eu) !important;
+}
+
+.textures [data-entity="pension"]:not(path, rect, g) {
+  background: repeating-linear-gradient(0deg, var(--tex-ink) 0 1.4px, transparent 1.4px 5px), var(--e-pension) !important;
+}
+
+.textures [data-entity="health"]:not(path, rect, g) {
+  background: repeating-linear-gradient(0deg, var(--tex-ink) 0 1px, transparent 1px 5px), repeating-linear-gradient(90deg, var(--tex-ink) 0 1px, transparent 1px 5px), var(--e-health) !important;
+}
+
+.textures [data-entity="care"]:not(path, rect, g) {
+  background: radial-gradient(var(--tex-ink) 1.8px, transparent 2.1px) 0 0 / 8px 8px, var(--e-care) !important;
+}
+
+.textures [data-entity="unemp"]:not(path, rect, g) {
+  background: conic-gradient(var(--tex-ink) 25%, transparent 0 50%, var(--tex-ink) 0 75%, transparent 0) 0 0 / 6px 6px, var(--e-unemp) !important;
+}
+
+.textures .hero-svg [data-entity="fed"]:is(path, rect) {
+  fill: url(#tex-fed);
+}
+
+.textures .hero-svg [data-entity="land"]:is(path, rect) {
+  fill: url(#tex-land);
+}
+
+.textures .hero-svg [data-entity="muni"]:is(path, rect) {
+  fill: url(#tex-muni);
+}
+
+.textures .hero-svg [data-entity="eu"]:is(path, rect) {
+  fill: url(#tex-eu);
+}
+
+.textures .hero-svg [data-entity="pension"]:is(path, rect) {
+  fill: url(#tex-pension);
+}
+
+.textures .hero-svg [data-entity="health"]:is(path, rect) {
+  fill: url(#tex-health);
+}
+
+.textures .hero-svg [data-entity="care"]:is(path, rect) {
+  fill: url(#tex-care);
+}
+
+.textures .hero-svg [data-entity="unemp"]:is(path, rect) {
+  fill: url(#tex-unemp);
+}
+
+.textures .ribbon,
+.textures .join-stream {
+  opacity: 0.55;
+}
+
+.textures .label-backdrop {
+  opacity: 0.95;
+}
+
+.tex-bg {
+  stroke: none;
+}
+
+.tex-ink {
+  fill: var(--tex-ink);
+  stroke: var(--tex-ink);
+}
+
+@media (forced-colors: active) {
+  :root,
+  :root[data-theme] {
+    --tex-ink: CanvasText;
+    --page: Canvas;
+    --raise: Canvas;
+    --ink: CanvasText;
+    --ink-2: CanvasText;
+    --muted: CanvasText;
+    --hair: GrayText;
+    --axis: GrayText;
+    --flow-neutral: GrayText;
+    --flow-yours: Canvas;
+    --flow-ghost: Canvas;
+    --borrowed: CanvasText;
+    --neutral-1: GrayText;
+    --neutral-2: GrayText;
+    --neutral-3: GrayText;
+  }
+
+  .hero-svg,
+  .legend,
+  .receipts,
+  .stage-bar,
+  .split-bar,
+  .swatch,
+  .dr-bar {
+    forced-color-adjust: none;
+  }
+
+  /* every recipient mark wears its pattern in system colours */
+  [data-entity="fed"]:not(path, rect, g) {
+    background: repeating-linear-gradient(135deg, var(--tex-ink) 0 1.4px, transparent 1.4px 5px), Canvas !important;
+    outline: 1px solid CanvasText;
+  }
+
+  [data-entity="land"]:not(path, rect, g) {
+    background: repeating-linear-gradient(90deg, var(--tex-ink) 0 1.4px, transparent 1.4px 5px), Canvas !important;
+    outline: 1px solid CanvasText;
+  }
+
+  [data-entity="muni"]:not(path, rect, g) {
+    background: repeating-linear-gradient(45deg, var(--tex-ink) 0 1px, transparent 1px 5px), repeating-linear-gradient(135deg, var(--tex-ink) 0 1px, transparent 1px 5px), Canvas !important;
+    outline: 1px solid CanvasText;
+  }
+
+  [data-entity="eu"]:not(path, rect, g) {
+    background: radial-gradient(var(--tex-ink) 1.1px, transparent 1.4px) 0 0 / 5px 5px, Canvas !important;
+    outline: 1px solid CanvasText;
+  }
+
+  [data-entity="pension"]:not(path, rect, g) {
+    background: repeating-linear-gradient(0deg, var(--tex-ink) 0 1.4px, transparent 1.4px 5px), Canvas !important;
+    outline: 1px solid CanvasText;
+  }
+
+  [data-entity="health"]:not(path, rect, g) {
+    background: repeating-linear-gradient(0deg, var(--tex-ink) 0 1px, transparent 1px 5px), repeating-linear-gradient(90deg, var(--tex-ink) 0 1px, transparent 1px 5px), Canvas !important;
+    outline: 1px solid CanvasText;
+  }
+
+  [data-entity="care"]:not(path, rect, g) {
+    background: radial-gradient(var(--tex-ink) 1.8px, transparent 2.1px) 0 0 / 8px 8px, Canvas !important;
+    outline: 1px solid CanvasText;
+  }
+
+  [data-entity="unemp"]:not(path, rect, g) {
+    background: conic-gradient(var(--tex-ink) 25%, transparent 0 50%, var(--tex-ink) 0 75%, transparent 0) 0 0 / 6px 6px, Canvas !important;
+    outline: 1px solid CanvasText;
+  }
+
+  .hero-svg [data-entity="fed"]:is(path, rect) {
+    fill: url(#tex-fed);
+    stroke: CanvasText;
+    stroke-width: 0.5px;
+  }
+
+  .hero-svg [data-entity="land"]:is(path, rect) {
+    fill: url(#tex-land);
+    stroke: CanvasText;
+    stroke-width: 0.5px;
+  }
+
+  .hero-svg [data-entity="muni"]:is(path, rect) {
+    fill: url(#tex-muni);
+    stroke: CanvasText;
+    stroke-width: 0.5px;
+  }
+
+  .hero-svg [data-entity="eu"]:is(path, rect) {
+    fill: url(#tex-eu);
+    stroke: CanvasText;
+    stroke-width: 0.5px;
+  }
+
+  .hero-svg [data-entity="pension"]:is(path, rect) {
+    fill: url(#tex-pension);
+    stroke: CanvasText;
+    stroke-width: 0.5px;
+  }
+
+  .hero-svg [data-entity="health"]:is(path, rect) {
+    fill: url(#tex-health);
+    stroke: CanvasText;
+    stroke-width: 0.5px;
+  }
+
+  .hero-svg [data-entity="care"]:is(path, rect) {
+    fill: url(#tex-care);
+    stroke: CanvasText;
+    stroke-width: 0.5px;
+  }
+
+  .hero-svg [data-entity="unemp"]:is(path, rect) {
+    fill: url(#tex-unemp);
+    stroke: CanvasText;
+    stroke-width: 0.5px;
+  }
+
+  .hero-svg .tex-bg {
+    fill: Canvas !important;
+  }
+
+  .hero-svg .ribbon,
+  .hero-svg .join-stream {
+    opacity: 0.75;
+  }
+
+  .hero-svg .ribbon.is-neutral,
+  .hero-svg .ribbon.is-yours {
+    fill: Canvas;
+    stroke: GrayText;
+    stroke-width: 0.5px;
+  }
+
+  .hero-svg .node-yours,
+  .hero-svg .node-ghost {
+    fill: Canvas;
+    stroke: CanvasText;
+  }
+
+  .hero-svg text,
+  .hero-svg tspan {
+    fill: CanvasText;
+  }
+
+  .hero-svg .stage-label,
+  .hero-svg .boundary-label {
+    stroke: none;
+  }
+
+  .hero-svg .pot-transfer,
+  .hero-svg .transfer-line,
+  .hero-svg .leader {
+    stroke: CanvasText;
+  }
+
+  .swatch {
+    outline: 1px solid CanvasText;
+  }
+
+  .label-backdrop {
+    fill: Canvas;
+    opacity: 1;
+  }
+
+  .seg button[aria-pressed="true"],
+  .chip[aria-pressed="true"] {
+    forced-color-adjust: none;
+    background: Highlight;
+    color: HighlightText;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -1638,13 +2024,6 @@ code {
   }
 }
 
-@media (forced-colors: active) {
-  .ribbon,
-  .pot-bar,
-  .comp-bar {
-    forced-color-adjust: none;
-  }
-}
 
 @media print {
   .controls,

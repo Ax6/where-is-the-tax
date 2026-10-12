@@ -26,7 +26,7 @@ interface Row {
 function stage(parent: HTMLElement, title: string, rows: Row[], options: { lang: Lang; onOpen: (target: DrawerTarget) => void; onSelect?: (id: string) => void; note?: string; base?: number; mixedBases?: boolean; rows?: boolean }): void {
   const section = document.createElement("section");
   section.className = "stage";
-  const h = document.createElement("h3");
+  const h = document.createElement("h2");
   h.className = "stage-title";
   h.textContent = title;
   const bar = document.createElement("div");
@@ -42,6 +42,7 @@ function stage(parent: HTMLElement, title: string, rows: Row[], options: { lang:
       seg.style.flexGrow = String(part);
       if (row.entity) {
         seg.style.background = `var(--e-${row.entity})`;
+        seg.dataset.entity = row.entity;
       }
       bar.append(seg);
     });
@@ -57,6 +58,7 @@ function stage(parent: HTMLElement, title: string, rows: Row[], options: { lang:
     swatch.className = `swatch${row.kind ? ` is-${row.kind}` : ""}`;
     if (row.entity) {
       swatch.style.background = `var(--e-${row.entity})`;
+      swatch.dataset.entity = row.entity;
     }
     const name = document.createElement("span");
     name.className = "stage-name";
@@ -156,9 +158,9 @@ export function renderYouStages(
       return {
         key: n.id,
         label: label(n.label, lang),
-        value: n.value,
+        value: n.value - (n.estimate ?? 0),
         employerPart: employer || undefined,
-        display: eur(n.value, lang),
+        display: eur(n.value - (n.estimate ?? 0), lang),
         entity: n.entity,
         target: { kind: "node" as const, id: n.id },
       };
@@ -172,6 +174,19 @@ export function renderYouStages(
         ? `${eur(recipientsTotal, lang)} = Steuern ${eur(p.totals.taxes, lang)} + Beiträge ${eur(p.totals.social_employee + p.totals.social_employer, lang)}; netto ${eur(p.totals.net, lang)} bleibt Ihnen.`
         : `${eur(recipientsTotal, lang)} = taxes ${eur(p.totals.taxes, lang)} + contributions ${eur(p.totals.social_employee + p.totals.social_employer, lang)}; net ${eur(p.totals.net, lang)} stays yours.`,
   });
+  if (model.estimate) {
+    const e = model.estimate;
+    const parts: Row[] = [
+      { key: "est-fed", label: lang === "de" ? "Bund" : "Federation", value: e.recipients.fed, display: `≈ ${eur(e.recipients.fed, lang)}`, entity: "fed", target: { kind: "node", id: "estimate" } },
+      { key: "est-land", label: lang === "de" ? "Länder" : "Länder", value: e.recipients.land, display: `≈ ${eur(e.recipients.land, lang)}`, entity: "land", target: { kind: "node", id: "estimate" } },
+      { key: "est-muni", label: lang === "de" ? "Gemeinden" : "Municipalities", value: e.recipients.muni, display: `≈ ${eur(e.recipients.muni, lang)}`, entity: "muni", target: { kind: "node", id: "estimate" } },
+    ];
+    stage(container, `${t("estimateLabel", lang)} · ≈ ${eur(e.total, lang)} ${lang === "de" ? "im Jahr" : "a year"}`, parts, {
+      lang,
+      onOpen: options.onOpen,
+      note: `${tr(e.label, lang)}*. ${lang === "de" ? "Schätzung, nicht Teil des Lohnzettels." : "Estimate, not part of the payslip."}`,
+    });
+  }
   const pots: Row[] = model.pots.map((pot) => ({
     key: pot.id,
     label: `${label(pot.label, lang)} · ${pot.year}${pot.status === "provisional" ? "p" : ""}`,

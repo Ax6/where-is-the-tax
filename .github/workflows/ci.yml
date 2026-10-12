@@ -26,3 +26,6 @@ jobs:
       # v2 data envelope + front-end data paths, then the research cross-file reconciliation (stdlib only)
       - run: npm run check:data
       - run: npm run build
+      # axe-core (both views, languages, themes, textures, forced colours, mobile) and keyboard checks
+      - run: npx playwright install --with-deps chromium
+      - run: npm run test:a11y

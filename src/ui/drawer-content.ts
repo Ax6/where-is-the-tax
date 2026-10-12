@@ -14,6 +14,10 @@ import {
   equalisation,
   equalisationSource,
   euRoundTrip2024,
+  householdCaveats,
+  householdEstimate,
+  householdSource,
+  tradeTaxLevy,
   euSource,
   payrollView2024,
   payslipParams,
@@ -57,7 +61,7 @@ function rows(items: { label: string; value: string; share?: number; entity?: En
       (item) => `<li class="${item.cls ?? ""}">
         <span class="dr-label">${item.entity ? swatch(item.entity) : ""}${esc(item.label)}${item.sub ? `<span class="dr-sub">${esc(item.sub)}</span>` : ""}</span>
         <span class="dr-value num">${esc(item.value)}</span>
-        ${item.share !== undefined ? `<span class="dr-bar"><span style="width:${Math.max(0, Math.min(1, item.share / top)) * 100}%;${item.entity ? `background:var(--e-${item.entity})` : ""}"></span></span>` : ""}
+        ${item.share !== undefined ? `<span class="dr-bar" aria-hidden="true"><span${item.entity ? ` data-entity="${item.entity}"` : ""} style="width:${Math.max(0, Math.min(1, item.share / top)) * 100}%;${item.entity ? `background:var(--e-${item.entity})` : ""}"></span></span>` : ""}
       </li>`,
     )
     .join("")}</ul>`;
@@ -148,16 +152,21 @@ function youNodeDrawer(id: string, ctx: DrawerContext): DrawerContent {
   const params = payslipParams.years[String(you.year)]!;
   const node = you.flow.nodes.find((n) => n.id === id);
   const title = node ? tr(node.label, lang) : id;
+  if (id === "estimate") {
+    return estimateDrawer(ctx);
+  }
   if (id === "gross" || id === "employer" || id === "net") {
+    const estimate = householdEstimate(p.totals.net);
     const extra =
       id === "net"
         ? section(
-            t("receiptLabel", lang),
+            t("estimateLabel", lang),
             `<p class="drawer-note">${esc(
-              lang === "de"
-                ? "Beim Ausgeben fallen Verbrauchsteuern an. Jahressummen pro Haushalt fehlen in den Daten; gezeigt wird je Kauf:"
-                : "Spending it triggers taxes on purchases. Annual household totals are not in the data; shown per purchase:",
-            )}</p>${rows(purchases().map((item) => ({ label: `${tr(item.label, lang)}*`, value: pct(item.taxShare, lang, 0), share: item.taxShare })), 1)}`,
+              `≈ ${eur(estimate.total, lang)}* ${lang === "de" ? "im Jahr für einen Haushalt mit" : "a year for a household with"} ${tr(estimate.label, lang)}*. ${
+                lang === "de" ? "Schätzung, nicht Teil des Lohnzettels." : "Estimate, not part of the payslip."
+              }`,
+            )}</p>` +
+              rows(purchases().map((item) => ({ label: `${tr(item.label, lang)}*`, value: pct(item.taxShare, lang, 0), share: item.taxShare })), 1),
           )
         : "";
     return {
@@ -269,11 +278,46 @@ function youNodeDrawer(id: string, ctx: DrawerContext): DrawerContent {
   return { title, html: "" };
 }
 
+function estimateDrawer(ctx: DrawerContext): DrawerContent {
+  const { lang, you } = ctx;
+  const e = householdEstimate(you.payslip.totals.net);
+  const exciseNames: Record<string, Bi> = {
+    tobacco_tax: bi("Tabaksteuer", "Tobacco tax"),
+    alcohol_taxes: bi("Alkohol-, Bier-, Schaumweinsteuer", "Alcohol, beer and sparkling-wine taxes"),
+    electricity_tax: bi("Stromsteuer", "Electricity tax"),
+    energy_tax_heating: bi("Energiesteuer, Heizen", "Energy tax, heating"),
+    energy_tax_fuel: bi("Energiesteuer, Kraftstoff", "Energy tax, motor fuel"),
+  };
+  const parts = [
+    { label: lang === "de" ? "Umsatzsteuer" : "VAT", value: e.vat },
+    ...Object.entries(e.excises).map(([key, value]) => ({ label: tr(exciseNames[key] ?? bi(key, key), lang), value })),
+  ].sort((a, b) => b.value - a.value);
+  const recipients = [
+    { entity: "fed" as EntityId, label: lang === "de" ? "Bund" : "Federation", value: e.recipients.fed },
+    { entity: "land" as EntityId, label: lang === "de" ? "Länder (Umsatzsteuer-Topf, Biersteuer)" : "Länder (VAT pool, beer tax)", value: e.recipients.land },
+    { entity: "muni" as EntityId, label: lang === "de" ? "Gemeinden" : "Municipalities", value: e.recipients.muni },
+  ];
+  return {
+    title: t("estimateLabel", lang),
+    html: `${header(`≈ ${eur(e.total, lang)}`, `${lang === "de" ? "im Jahr" : "a year"} · ${tr(e.label, lang)}*`, "estimate", lang)}
+      <p class="drawer-note">${esc(
+        lang === "de"
+          ? `Ihr Netto ${eur(you.payslip.totals.net, lang)} ÷ 12 = ${eur(e.monthlyNet, lang)} im Monat ordnet Sie dieser Haushaltsklasse zu* (ein Verdiener; bei Paaren beide Netto addieren). Konsum der Klasse ≈ ${eur(e.consumptionMonth, lang)} im Monat; davon ≈ ${pct(e.shareOfConsumption, lang, 1)} Steuern.`
+          : `Your net ${eur(you.payslip.totals.net, lang)} ÷ 12 = ${eur(e.monthlyNet, lang)} a month places you in this household class* (one earner; couples add both nets). The class spends ≈ ${eur(e.consumptionMonth, lang)} a month; ≈ ${pct(e.shareOfConsumption, lang, 1)} of it is tax.`,
+      )}</p>
+      ${section(t("mechanism", lang), `${splitBar(recipients.map((r) => ({ entity: r.entity, share: r.value / e.total })), 14)}${rows(recipients.map((r) => ({ label: r.label, value: `≈ ${eur(r.value, lang)}`, entity: r.entity })))}`)}
+      ${section(t("breakdown", lang), rows(parts.map((part) => ({ label: part.label, value: `≈ ${eur(part.value, lang)}`, share: part.value / e.total }))))}
+      ${section(lang === "de" ? "Grenzen der Schätzung" : "Limits of the estimate", `<ul class="quotes">${householdCaveats.map((c) => `<li>${esc(c)}</li>`).join("")}</ul>`)}
+      ${section(t("sources", lang), sourceList(householdSource(), lang))}`,
+  };
+}
+
 // --- pots ------------------------------------------------------------------------------------
 
 function potDrawer(pot: Pot, ctx: DrawerContext): DrawerContent {
   const { lang } = ctx;
   const inflow = ctx.you.inflow[pot.id] ?? 0;
+  const estimateIn = pot.recipients.reduce((sum, id) => sum + (ctx.you.flow.nodes.find((n) => n.id === id)?.estimate ?? 0), 0);
   const yearTag = `${pot.year}${pot.status === "provisional" ? "p" : ""}`;
   const breakdown = pot.categories
     .map((cat) => {
@@ -298,9 +342,13 @@ function potDrawer(pot: Pot, ctx: DrawerContext): DrawerContent {
   return {
     title: tr(pot.label, lang),
     html: `${header(bn(pot.total, lang), `${yearTag} · ${tr(pot.basis, lang)}`, pot.status, lang)}
-      ${inflow > 0 ? `<p class="drawer-joins">${esc(`${eur(inflow, lang)} ${t("joins", lang)} ${bn(pot.total, lang)}`)}</p>` : ""}
+      ${inflow > 0 ? `<p class="drawer-joins">${esc(`${eur(inflow, lang)} ${t("joins", lang)} ${bn(pot.total, lang)}${estimateIn > 0 ? ` · + ≈ ${eur(estimateIn, lang)}* ${lang === "de" ? "aus Ihren Einkäufen (Schätzung)" : "from your purchases (estimate)"}` : ""}`)}</p>` : ""}
       ${section(`${t("breakdown", lang)} · ${t("ofEvery100", lang)} ${tr(pot.compositionLabel, lang)}`, breakdown)}
-      ${lang === "en" && pot.entity === "land" ? `<p class="drawer-note">${esc("(DE): sub-function name published in German only.")}</p>` : ""}
+      ${
+        lang === "en" && pot.categories.some((cat) => cat.children?.some((child) => child.label.en.endsWith(" (DE)")))
+          ? `<p class="drawer-note">${esc("(DE): sub-function name published in German only.")}</p>`
+          : ""
+      }
       ${inflow > 0 ? `<p class="drawer-note prorata">${esc(t("proRataNote", lang))}</p>` : ""}
       ${transfers.length ? section(lang === "de" ? "Transfers und Kredit" : "Transfers and borrowing", rows(transfers)) : ""}
       ${pot.note ? `<p class="drawer-note">${esc(tr(pot.note, lang))}</p>` : ""}
@@ -474,8 +522,18 @@ function germanyNodeDrawer(id: string, ctx: DrawerContext): DrawerContent {
         value: fmt(edge.value),
         entity: edge.entity,
       })),
-    )}<p class="drawer-note">${esc(tr(allocationKinds[kind] ?? bi(kind, kind), lang))}</p>${quotes(taxId, lang)}`;
-    srcs = [byTaxSource(), ...allocationSource(taxId), ...(taxId === "STEUERARTK30" ? [byRecipientSource()] : [])];
+    )}<p class="drawer-note">${esc(tr(allocationKinds[kind] ?? bi(kind, kind), lang))}</p>${
+      taxId === "STEUERARTK30"
+        ? `<p class="drawer-note">${esc(`${tr(tradeTaxLevy.label, lang)}: ${tr(tradeTaxLevy.formula, lang)} (${tradeTaxLevy.multipliers.legal_basis}). ${tr(tradeTaxLevy.effective_share_of_gross_note, lang)}. ${tr(tradeTaxLevy.city_states, lang)}.`)}</p>`
+        : ""
+    }${quotes(taxId, lang)}`;
+    srcs = [
+      byTaxSource(),
+      ...allocationSource(taxId),
+      ...(taxId === "STEUERARTK30"
+        ? [{ label: bi("§ 6 (3) GemFinRefG, Vervielfältiger", "§ 6 (3) GemFinRefG, multipliers"), file: files.legalAllocation, url: tradeTaxLevy.multipliers.source.url, coordinates: tradeTaxLevy.multipliers.source.coordinates }]
+        : []),
+    ];
     series = taxSeries(taxId);
   }
   return {

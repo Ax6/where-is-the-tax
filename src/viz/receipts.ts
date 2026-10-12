@@ -37,12 +37,14 @@ export function renderReceipts(
       part.style.flexGrow = String(seg.value);
       if (seg.entity) {
         part.style.background = `var(--e-${seg.entity})`;
+        part.dataset.entity = seg.entity;
       }
       bar.append(part);
     }
     const tax = item.segments.filter((seg) => seg.entity).reduce((sum, seg) => sum + seg.value, 0);
     const lines = item.segments.map((seg) => `${tr(seg.label, lang)}: ${eur(seg.value, lang, seg.value < 10 ? 2 : 0)}`);
-    button.setAttribute("aria-label", `${tr(item.label, lang)}. ${lines.join(". ")}. ${t("priceAssumed", lang)}`);
+    // accessible name starts with the visible text: "<purchase>* <share> tax"
+    button.setAttribute("aria-label", `${name.textContent} ${share.textContent}. ${lines.join(". ")}. ${t("priceAssumed", lang)}`);
     const tip = (x: number, y: number) =>
       showTooltip({ value: `${eur(tax, lang, tax < 10 ? 2 : 0)} (${pct(item.taxShare, lang, 1)})`, title: tr(item.label, lang), lines, status: "law", body: `${t("priceAssumed", lang)}. ${t("vatPool", lang)}: ${lang === "de" ? "Ergebnis 2024" : "2024 outcome"}.` }, { x, y }, lang);
     button.addEventListener("pointerenter", (event) => tip(event.clientX, event.clientY));

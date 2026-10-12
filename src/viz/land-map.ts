@@ -21,13 +21,18 @@ interface LandFeature {
 const geo = raw.laenderGeo as unknown as { features: LandFeature[]; attribution: string };
 export const mapAttribution = geo.attribution;
 
-export const MAP_PAYS = "#6b4f2a";
-export const MAP_RECEIVES = "#0e6e74";
-export const MAP_MID = "#e4e4df";
-
+/**
+ * Diverging scale from the theme's tokens (--map-pays / --map-mid / --map-receives in styles.css): light and
+ * dark have their own validated steps, so colours are read at render time.
+ */
 export function mapScale(lands: EqualisationLand[]): (value: number) => string {
   const max = Math.max(...lands.map((land) => Math.abs(land.perResident)));
-  const scale = scaleLinear<string>().domain([-max, 0, max]).range([MAP_PAYS, MAP_MID, MAP_RECEIVES]).interpolate(interpolateLab);
+  const css = getComputedStyle(document.documentElement);
+  const token = (name: string, fallback: string) => css.getPropertyValue(name).trim() || fallback;
+  const scale = scaleLinear<string>()
+    .domain([-max, 0, max])
+    .range([token("--map-pays", "#6b4f2a"), token("--map-mid", "#c8c9c2"), token("--map-receives", "#0e6e74")])
+    .interpolate(interpolateLab);
   return (value: number) => scale(value);
 }
 

@@ -286,3 +286,43 @@ contributions.
 - Review A (re-derivation from raw files, all main layers) and review B (payslip) and review C
   (social insurance) are logged under `docs/research/logs/2026-10-09-review-*.md`; corrections
   from those logs are applied to the files and noted there.
+
+## 12. Wage reference points and a household's indirect taxes (added 2026-10-12)
+
+Source: `data/de/citizen/wage-reference.json`. Marks on the wage slider:
+
+| Reference | 2024 | 2025 | 2026 | Basis |
+|---|---:|---:|---:|---|
+| Minimum wage, €/hour | 12.41 | 12.82 | 13.90 | statute (MiLoV4, MiLoV5) |
+| Minimum wage, annual full-time`*` (40 h × 52 weeks) | 25,813 | 26,666 | 28,912 | derived`*`, hours assumption |
+| Median gross monthly earnings, full-time, April, without special payments | 3,978 | 4,123 | — | Destatis 62361 |
+| Median gross annual earnings, full-time, incl. special payments | 52,159 | 54,066 | — | Destatis 62361 |
+| Average gross annual earnings, full-time, incl. special payments | 62,235 | 64,441 | — | Destatis 62361 |
+| Durchschnittsentgelt (pension law, all insured incl. part-time) | 47,085 | 50,493`*` | 51,944`*` | Anlage 1 SGB VI (`*` provisional) |
+
+Neat construct: a full-time minimum-wage job (€28,912 in 2026) is about **55 % of the median**
+full-time salary (€52,159, 2024) and the pension law's "average earner" (€47,085 in 2024) sits
+*below* the full-time median because part-timers are included.
+
+Source: `data/de/citizen/household-indirect-taxes.json` — an **estimate (≈, `*`)**: Destatis LWR
+2024 consumption per household by net-income class × statutory VAT rates per purpose, plus
+excise shares from stated price assumptions.
+
+| Household net income / month | Consumption €/month | ≈ VAT €/year | ≈ excises €/year | ≈ total €/year | of consumption |
+|---|---:|---:|---:|---:|---:|
+| Unter 1300 Euro | 1,332 | 1,237 | 245 | 1,482 | 9.3 % |
+| 1300 bis unter 2600 Euro | 1,948 | 1,916 | 399 | 2,316 | 9.9 % |
+| 2600 bis unter 3600 Euro | 2,754 | 2,793 | 584 | 3,378 | 10.2 % |
+| 3600 bis unter 5000 Euro | 3,436 | 3,537 | 733 | 4,270 | 10.4 % |
+| 5000 und mehr Euro | 5,075 | 5,362 | 977 | 6,339 | 10.4 % |
+| Haushalte insgesamt | 3,257 | 3,359 | 651 | 4,009 | 10.3 % |
+
+Recipients (all-household average): Bund ≈ €2,260, Länder ≈ €1,655, municipalities ≈ €94 per
+year (VAT by the effective 2024 split; energy, electricity, tobacco, spirits and insurance taxes to
+the Bund; beer tax to the Länder). Why it is an estimate: rates are assigned per purpose group
+(rent, health, education and insurance exempt; food, books, local transport, culture 7 %;
+everything else 19 %), and excises depend on assumed prices (petrol €1.75/l, cigarettes €9/pack)
+and on the EVS 2023 tobacco/alcohol split. The indirect-tax burden is roughly 10 % of consumption
+in every class, i.e. a *falling* share of income as income rises, because richer households save
+more. Mapping to the wage slider is approximate: the classes are household net income, so a
+single earner's payslip net ÷ 12 picks the class`*`.

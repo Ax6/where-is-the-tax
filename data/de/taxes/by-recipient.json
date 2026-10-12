@@ -7,7 +7,7 @@
  },
  "unit": "EUR",
  "basis": "Kassenmäßige Steuereinnahmen (cash receipts), calendar year, Germany; GENESIS unit 'Tsd. EUR' multiplied by 1000",
- "generated": "2026-10-09",
+ "generated": "2026-10-12",
  "generated_by": "scripts/research/build_taxes.py",
  "years": [
   "1999",

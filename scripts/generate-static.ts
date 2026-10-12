@@ -15,6 +15,8 @@ const state: PageState = {
   pot: "pot-fed",
   unit: "bn",
   layer: "all",
+  theme: "auto",
+  tex: false,
 };
 
 const html = renderPage(state, buildYou(state.year, state.wage, state.land), buildGermany(), { staticBuild: true });

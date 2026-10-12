@@ -7,7 +7,7 @@
  },
  "unit": "n/a",
  "basis": "Static attributes used to read the equalisation files",
- "generated": "2026-10-09",
+ "generated": "2026-10-12",
  "generated_by": "scripts/research/build_equalisation.py",
  "note": "municipal_shares_in_land_budget: in Berlin and Hamburg the Land budget also contains the municipal level (no separate municipalities), so municipal tax shares flow into the Land budget; Bremen is a city-state whose two municipalities (Bremen, Bremerhaven) keep separate budgets. Statutory basis: § 7 GemFinRefG (Stadtstaaten); that section is not among the retrieved statutes, so the flag is marked unverified_in_repo.",
  "laender": [

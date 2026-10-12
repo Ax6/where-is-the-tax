@@ -1,0 +1,4 @@
+{
+  "note": "Accepted axe violations as 'scenario/rule-id'. Empty: any violation fails tests/browser/a11y.test.ts.",
+  "accepted": []
+}

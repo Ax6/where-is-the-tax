@@ -7,7 +7,7 @@
  },
  "unit": "MEUR",
  "basis": "ESA 2010 accrual; S13_S212 = general government plus EU institutions; S212 = EU institutions' share collected in Germany",
- "generated": "2026-10-09",
+ "generated": "2026-10-12",
  "generated_by": "scripts/research/build_government.py",
  "sectors": {
   "S13": {

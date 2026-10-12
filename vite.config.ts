@@ -36,6 +36,11 @@ const PRUNE: Record<string, (data: Record<string, unknown>) => void> = {
   "data/de/government/cofog.json": (data) => {
     data.rows = (data.rows as { sector: string }[]).filter((row) => row.sector === "S13");
   },
+  "data/de/citizen/household-indirect-taxes.json": (data) => {
+    for (const cls of Object.values(data.classes as Record<string, Record<string, unknown>>)) {
+      delete cls.items;
+    }
+  },
   "data/de/social-insurance/accounts.json": (data) => {
     for (const system of Object.values(data.systems as Record<string, { years: Record<string, unknown> }>)) {
       delete system.years["2025"];

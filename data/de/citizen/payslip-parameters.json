@@ -7,7 +7,7 @@
  },
  "unit": "EUR / %",
  "basis": "Statutory values for the annual wage-tax withholding (Steuerklasse I/IV, no children, no church tax) and the statutory social contributions of an employee insured in all branches. Values are the law of the year; 2024 tariff = after the retroactive Grundfreibetrag increase.",
- "generated": "2026-10-09",
+ "generated": "2026-10-12",
  "generated_by": "scripts/research/build_payslip.py",
  "years_covered": [
   2024,

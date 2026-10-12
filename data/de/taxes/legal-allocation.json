@@ -7,7 +7,7 @@
  },
  "unit": "share (0-1) and EUR",
  "basis": "Statute (Art. 106 GG, FAG, GemFinRefG) in force at retrieval; shares applied to Destatis cash receipts give the statutory split before decomposition, equalisation and grants. The statutory split is a derived figure, not an observation.",
- "generated": "2026-10-09",
+ "generated": "2026-10-12",
  "generated_by": "scripts/research/build_legal.py",
  "recipients": {
   "federation": {
@@ -50,6 +50,78 @@
   "VAT has no fixed share: see equalisation files for the effective yearly split.",
   "Trade tax is shown gross; the levy to Federation and Land is in by-recipient.json (STEUERNVK30, STEUERNVB50, STEUERNVL50)."
  ],
+ "trade_tax_levy": {
+  "label": {
+   "de": "Gewerbesteuerumlage",
+   "en": "Trade-tax levy"
+  },
+  "formula": {
+   "de": "Umlage = (Istaufkommen ÷ Hebesatz) × Vervielfältiger; Vervielfältiger = Bundesvervielfältiger 14,5 % + Landesvervielfältiger 20,5 % = 35 % des Messbetrags",
+   "en": "Levy = (receipts ÷ municipal assessment rate) × multiplier; multiplier = federal 14.5 % + Land 20.5 % = 35 % of the Messbetrag (the tax base before the municipal rate)"
+  },
+  "multipliers": {
+   "federation_pct": 14.5,
+   "land_pct": 20.5,
+   "total_pct": 35.0,
+   "legal_basis": "§ 6 (3) GemFinRefG",
+   "source": {
+    "source_id": "gesetze_im_internet",
+    "file": "gemfinrefg_6.html",
+    "path": "research/raw/gesetze_im_internet/gemfinrefg_6.html",
+    "url": "https://www.gesetze-im-internet.de/gemfinrefg/__6.html",
+    "retrieved": "2026-10-09T12:45:41Z",
+    "sha256": "827b7de0dd732288575b2f21bcbeca1a745389c3abc1c9012e8446df8ae70b5d",
+    "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+    "coordinates": "text contains: Der Bundesvervielfältiger beträgt 14,5 Prozent. Der Landesvervielfältiger beträgt 20,5 Prozent."
+   }
+  },
+  "split_of_levy": {
+   "federation": 0.4143,
+   "land": 0.5857
+  },
+  "city_states": {
+   "de": "Berlin und Hamburg führen nur den Bundesanteil ab (§ 7 GemFinRefG); Bremen hat Gemeinden und zahlt die volle Umlage",
+   "en": "Berlin and Hamburg remit only the federal part (§ 7 GemFinRefG); Bremen has municipalities and pays the full levy",
+   "source": {
+    "source_id": "gesetze_im_internet_allocation",
+    "file": "gemfinrefg_7.html",
+    "path": "research/raw/gesetze_im_internet_allocation/gemfinrefg_7.html",
+    "url": "https://www.gesetze-im-internet.de/gemfinrefg/__7.html",
+    "retrieved": "2026-10-09T12:59:08Z",
+    "sha256": "0ce74682e9e79329cf8fb5611d966a4fe75fc3dc2e40929cf8a2cd45c2b046be",
+    "licence": "Official works (§ 5 UrhG)",
+    "coordinates": "text contains: Die Länder Berlin und Hamburg führen den Bundesanteil an der Umlage nach § 6 an den Bund ab"
+   }
+  },
+  "effective_share_of_gross_note": {
+   "de": "Da die Hebesätze (bundesweit ≈ 400 %) über dem Vervielfältiger liegen, entspricht die Umlage nur ≈ 9 % des Bruttoaufkommens",
+   "en": "Because municipal assessment rates (≈ 400 % nationally) exceed the multiplier, the levy is only ≈ 9 % of gross receipts"
+  },
+  "outcome": {
+   "2024": {
+    "gross_trade_tax_eur": 75293525000,
+    "levy_paid_by_municipalities_eur": -6642096000,
+    "received_federation_eur": 2753363000,
+    "received_laender_eur": 3892030000,
+    "received_laender_increased_levy_eur": 1789000,
+    "levy_share_of_gross": 0.0882,
+    "federation_share_of_levy": 0.4142,
+    "federation_share_denominator": "received by Federation + received by Länder + 'erhöhte Gewerbesteuerumlage' (STEUERNVL60); statutory share would be 14.5/35 = 0.4143",
+    "note": "Destatis after-distribution positions STEUERARTK30 (gross), STEUERNVK30 (levy, negative), STEUERNVB50/STEUERNVL50/STEUERNVL60 (received); the levy received by Bund+Länder differs slightly from the levy paid because of settlement timing"
+   },
+   "2025": {
+    "gross_trade_tax_eur": 76444382000,
+    "levy_paid_by_municipalities_eur": -6618181000,
+    "received_federation_eur": 2719837000,
+    "received_laender_eur": 3845534000,
+    "received_laender_increased_levy_eur": 108000,
+    "levy_share_of_gross": 0.0866,
+    "federation_share_of_levy": 0.4143,
+    "federation_share_denominator": "received by Federation + received by Länder + 'erhöhte Gewerbesteuerumlage' (STEUERNVL60); statutory share would be 14.5/35 = 0.4143",
+    "note": "Destatis after-distribution positions STEUERARTK30 (gross), STEUERNVK30 (levy, negative), STEUERNVB50/STEUERNVL50/STEUERNVL60 (received); the levy received by Bund+Länder differs slightly from the levy paid because of settlement timing"
+   }
+  }
+ },
  "rows": [
   {
    "id": "STEUERARTG10",

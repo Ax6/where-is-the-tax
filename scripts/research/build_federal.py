@@ -370,7 +370,22 @@ def label_for(code: str, bmf_rows: dict, sums: dict) -> tuple[dict | None, str]:
         if abs(meur(sums[code]) - row["ist"]) > 1:
             raise SystemExit(f"fkt {code} {de}: XML {meur(sums[code]):.1f} vs BMF {row['ist']} Mio EUR")
         return {"de": de, "en": en}, f"BMF Tabelle {row['table_no']} row '{row['row']}' (XML sum for code {code} equals the row within 1 Mio EUR)"
-    return None, "Funktionenplan label not contained in the sources (XML carries codes only); code shown as is"
+    fp = funktionenplan_labels()
+    if code in fp:
+        return fp[code], "BMF Funktionenplan (Stand 12.11.2024), via data/de/federal/funktionenplan.json; amount not separately published by BMF"
+    return None, "code not found in the BMF Funktionenplan (Stand 12.11.2024) nor in a BMF closing-table row; code shown as is"
+
+
+_FP: dict | None = None
+
+
+def funktionenplan_labels() -> dict:
+    global _FP
+    if _FP is None:
+        import json
+        path = ROOT / "data" / "de" / "federal" / "funktionenplan.json"
+        _FP = {r["code"]: r["label"] for r in json.loads(path.read_text(encoding="utf-8"))["rows"]} if path.exists() else {}
+    return _FP
 
 
 def build_year(year: int) -> dict:
@@ -549,7 +564,7 @@ def build_year(year: int) -> dict:
         bridge=bridge,
         bridge_result={"reconciled_eur": eur(reconciled), "official_total_eur": official_meur * MEUR, "residual_eur": round(residual_meur * MEUR), "tolerance_eur": 0.5 * MEUR, "ok": abs(residual_meur) <= 0.5},
         hauptfunktionen=hauptfunktionen,
-        hauptfunktionen_note="The federal Funktionenplan has Hauptfunktionen 0–8 only (no 9). Sub-function labels are taken from BMF's table rows where a row corresponds to exactly one code and the XML sum matches it; all other codes carry label null.",
+        hauptfunktionen_note="The federal Funktionenplan has Hauptfunktionen 0–8 only (no 9). Sub-function labels come from BMF's closing-table rows where a row corresponds to exactly one code and the XML sum matches it (label_source says so); all other codes are labelled from the BMF Funktionenplan (data/de/federal/funktionenplan.json, German verbatim, English editorial); label null only if a code is in neither.",
         bmf_combined_rows_checked=combined_checked,
         einzelplaene=einzelplaene,
         top_titel=top_titel,

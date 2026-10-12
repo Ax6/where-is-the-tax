@@ -3,7 +3,7 @@ import "./styles.css";
 import { buildGermany, buildYou, defaultWage, equalisation, GERMANY_CODE, getPlace, payslipYears, purchases, timeSeries, type LayerId } from "./data/model.ts";
 import { eur, t, type Lang } from "./i18n.ts";
 import { drawerContent } from "./ui/drawer-content.ts";
-import { renderLayerChips, renderLegend, renderPage, renderWageTicks, WAGE_MAX, WAGE_MIN, type PageState } from "./ui/page.ts";
+import { renderHeroTable, renderLayerChips, renderLegend, renderPage, renderWageTicks, WAGE_MAX, WAGE_MIN, type PageState } from "./ui/page.ts";
 import { renderGermany, renderYou, type DrawerTarget } from "./viz/hero.ts";
 import { renderLandBars, renderLandMap } from "./viz/land-map.ts";
 import { renderReceipts } from "./viz/receipts.ts";
@@ -42,6 +42,8 @@ function parseHash(): State {
     pot: params.get("pot") ?? "pot-fed",
     unit: params.get("unit") === "day" ? "day" : "bn",
     layer: layer && LAYERS.includes(layer) ? layer : "all",
+    theme: params.get("theme") === "dark" || params.get("theme") === "light" ? (params.get("theme") as "light" | "dark") : "auto",
+    tex: params.get("tex") === "1",
     open: params.get("open"),
   };
 }
@@ -61,6 +63,12 @@ function hashOf(s: State): string {
   if (s.layer !== "all") {
     params.set("layer", s.layer);
   }
+  if (s.theme !== "auto") {
+    params.set("theme", s.theme);
+  }
+  if (s.tex) {
+    params.set("tex", "1");
+  }
   if (s.open) {
     params.set("open", s.open);
   }
@@ -68,10 +76,43 @@ function hashOf(s: State): string {
 }
 
 let state = parseHash();
-let you = buildYou(state.year, state.wage, state.land);
+/** The Shopping layer carries the ≈* household estimate in the flow. */
+const withEstimate = (s: State): boolean => s.zoom === "you" && (s.layer === "all" || s.layer === "shopping");
+let you = buildYou(state.year, state.wage, state.land, { estimate: withEstimate(state) });
 let lastTrigger: HTMLElement | null = null;
 
 const isMobile = () => window.matchMedia("(max-width: 760px)").matches;
+const prefersDark = window.matchMedia("(prefers-color-scheme: dark)");
+const effectiveTheme = (): "light" | "dark" => (state.theme === "auto" ? (prefersDark.matches ? "dark" : "light") : state.theme);
+
+/** Theme and texture live on <html>; every colour is a CSS variable, so only JS-computed colours (map) re-render. */
+function applyDisplay(): void {
+  const root = document.documentElement;
+  if (state.theme === "auto") {
+    delete root.dataset.theme;
+  } else {
+    root.dataset.theme = state.theme;
+  }
+  root.classList.toggle("textures", state.tex);
+}
+
+let liveTimer = 0;
+/** Announce the payslip once the wage, Land or year settles (screen readers). */
+function announce(): void {
+  window.clearTimeout(liveTimer);
+  liveTimer = window.setTimeout(() => {
+    const live = document.querySelector<HTMLElement>("#live");
+    if (!live || state.zoom !== "you") {
+      return;
+    }
+    const p = you.payslip;
+    const l = state.lang;
+    live.textContent =
+      l === "de"
+        ? `Brutto ${eur(p.gross, l)}: netto ${eur(p.totals.net, l)}, Lohnsteuer ${eur(p.deductions_employee.lohnsteuer, l)}, Sozialbeiträge ${eur(p.totals.social_employee, l)}, Arbeitgeber zusätzlich ${eur(p.totals.social_employer, l)}.`
+        : `Gross ${eur(p.gross, l)}: net ${eur(p.totals.net, l)}, wage tax ${eur(p.deductions_employee.lohnsteuer, l)}, social contributions ${eur(p.totals.social_employee, l)}, employer on top ${eur(p.totals.social_employer, l)}.`;
+  }, 700);
+}
 
 function syncHash(): void {
   const hash = hashOf(state);
@@ -83,18 +124,32 @@ function syncHash(): void {
 function update(next: Partial<State>, options: { animate?: boolean; full?: boolean } = {}): void {
   const before = state;
   state = { ...state, ...next };
-  if (state.year !== before.year || state.wage !== before.wage || state.land !== before.land) {
-    you = buildYou(state.year, state.wage, state.land);
+  if (state.year !== before.year || state.wage !== before.wage || state.land !== before.land || withEstimate(state) !== withEstimate(before)) {
+    you = buildYou(state.year, state.wage, state.land, { estimate: withEstimate(state) });
     if (!you.pots.some((pot) => pot.id === state.pot)) {
       state.pot = "pot-fed";
     }
   }
   syncHash();
+  if (state.theme !== before.theme || state.tex !== before.tex) {
+    applyDisplay();
+    renderMap();
+  }
   if (options.full || state.lang !== before.lang) {
-    mountAll();
+    prefersDark.addEventListener("change", () => {
+  if (state.theme === "auto") {
+    renderMap();
+    syncControls();
+  }
+});
+
+mountAll();
     return;
   }
-  if (state.zoom !== before.zoom) {
+  if (state.wage !== before.wage || state.land !== before.land || state.year !== before.year) {
+    announce();
+  }
+  if (state.zoom !== before.zoom || state.layer !== before.layer) {
     refreshChrome();
   }
   if (state.year !== before.year) {
@@ -112,6 +167,7 @@ function update(next: Partial<State>, options: { animate?: boolean; full?: boole
 // ---------------------------------------------------------------------------------------------
 
 function mountAll(): void {
+  applyDisplay();
   document.documentElement.lang = state.lang;
   document.title = t("docTitle", state.lang);
   document.querySelector('meta[name="description"]')?.setAttribute("content", t("description", state.lang));
@@ -145,6 +201,9 @@ function refreshChrome(): void {
     line.textContent = state.zoom === "you" ? t("assumptions", state.lang) : t("switchGermany", state.lang);
   }
   document.querySelector<HTMLElement>(".ctl-unit")?.toggleAttribute("hidden", state.zoom !== "germany");
+  for (const control of document.querySelectorAll<HTMLElement>(".ctl-you")) {
+    control.toggleAttribute("hidden", state.zoom !== "you");
+  }
 }
 
 function refreshControls(): void {
@@ -161,7 +220,8 @@ function renderHero(animate: boolean): void {
   const receipts = document.querySelector<HTMLElement>("#receipts")!;
   hideTooltip();
   const isolated = state.layer === "all" ? null : state.layer;
-  const dimmed = state.zoom === "you" && isolated !== null && isolated !== "payday";
+  // Fuel & energy and Home isolate the per-item receipts; Shopping keeps the flow and highlights the ≈ estimate
+  const dimmed = state.zoom === "you" && (isolated === "fuel" || isolated === "home");
   flow.classList.toggle("is-mobile", isMobile());
   flow.classList.toggle("is-collapsed", dimmed);
   if (isMobile()) {
@@ -182,9 +242,14 @@ function renderHero(animate: boolean): void {
     };
     if (state.zoom === "you") {
       renderYou(flow, you, options);
+      flow.querySelector("svg")?.classList.toggle("focus-estimate", isolated === "shopping");
     } else {
       renderGermany(flow, germany, options);
     }
+  }
+  const twin = document.querySelector<HTMLElement>("#flow-table");
+  if (twin) {
+    twin.innerHTML = renderHeroTable(state, you, germany);
   }
   const layers = new Set<LayerId>(state.layer === "all" ? LAYERS : [state.layer]);
   if (state.zoom === "you" && !(isolated === "payday")) {
@@ -234,9 +299,10 @@ function syncControls(): void {
       button.setAttribute("aria-pressed", String(String(state[name]) === button.dataset.value));
     }
   }
-  for (const control of document.querySelectorAll<HTMLElement>(".ctl-wage, [data-control='year'], #land-select")) {
-    control.closest(".ctl")?.classList.toggle("is-inactive", state.zoom === "germany");
+  for (const button of document.querySelectorAll<HTMLButtonElement>("[data-control='theme'] button")) {
+    button.setAttribute("aria-pressed", String(button.dataset.value === effectiveTheme()));
   }
+  document.querySelector("#tex-toggle")?.setAttribute("aria-pressed", String(state.tex));
   const toggle = document.querySelector<HTMLButtonElement>("#controls-toggle");
   if (toggle) {
     const place = state.land === GERMANY_CODE ? t("allLaender", state.lang) : (getPlace(state.land)?.name[state.lang] ?? state.land);
@@ -245,7 +311,38 @@ function syncControls(): void {
 }
 
 let rangeFrame = 0;
+/** Tick labels: each goes to the first row where it does not touch its left neighbour (measured, ≤ 3 rows). */
+function layoutTickLabels(): void {
+  const ticks = [...document.querySelectorAll<HTMLButtonElement>(".tick-mark")].sort((a, b) => a.offsetLeft - b.offsetLeft);
+  const rowEnds: number[] = [];
+  const ROW = 12;
+  for (const tick of ticks) {
+    const label = tick.querySelector("span");
+    tick.classList.remove("row-0", "row-1");
+    if (!label) {
+      continue;
+    }
+    label.style.top = "5px";
+    const box = label.getBoundingClientRect();
+    let row = rowEnds.findIndex((end) => box.left > end + 6);
+    if (row === -1) {
+      row = Math.min(rowEnds.length, 2);
+    }
+    rowEnds[row] = box.right;
+    label.style.top = `${5 + row * ROW}px`;
+    tick.style.height = "6px";
+  }
+  const holder = document.querySelector<HTMLElement>(".range-wrap");
+  const box = document.querySelector<HTMLElement>("#wage-ticks");
+  const height = `${20 + Math.max(0, rowEnds.length - 1) * ROW}px`;
+  if (holder && box) {
+    holder.style.paddingBottom = height;
+    box.style.height = height;
+  }
+}
+
 function wireTicks(): void {
+  requestAnimationFrame(layoutTickLabels);
   for (const tick of document.querySelectorAll<HTMLButtonElement>(".tick-mark")) {
     tick.addEventListener("click", () => update({ wage: Number(tick.dataset.wage) }, { animate: true }));
   }
@@ -265,6 +362,8 @@ function wireChips(): void {
 }
 
 function wireControls(): void {
+  // the controls are a <form> for grouping only; Enter in the wage field must not submit (reload) it
+  document.querySelector<HTMLFormElement>("#controls")?.addEventListener("submit", (event) => event.preventDefault());
   const range = document.querySelector<HTMLInputElement>("#wage-range")!;
   const number = document.querySelector<HTMLInputElement>("#wage-number")!;
   range.addEventListener("input", () => {
@@ -296,12 +395,15 @@ function wireControls(): void {
           update({ unit: value as State["unit"] });
         } else if (name === "lang") {
           update({ lang: value as Lang });
+        } else if (name === "theme") {
+          update({ theme: value as State["theme"] });
         }
       });
     }
   }
   wireTicks();
   wireChips();
+  document.querySelector<HTMLButtonElement>("#tex-toggle")?.addEventListener("click", () => update({ tex: !state.tex }));
   const toggle = document.querySelector<HTMLButtonElement>("#controls-toggle")!;
   toggle.addEventListener("click", () => {
     const open = !document.body.classList.contains("controls-open");
@@ -350,6 +452,9 @@ function openDrawer(target: DrawerTarget, trigger: HTMLElement | null): void {
   document.querySelector("#drawer-body")!.innerHTML = content.html;
   drawer.hidden = false;
   backdrop.hidden = false;
+  for (const region of document.querySelectorAll<HTMLElement>("#app > header, #app > main, #app > footer, .skip-link")) {
+    region.inert = true;
+  }
   requestAnimationFrame(() => drawer.classList.add("is-open"));
   document.querySelector<HTMLButtonElement>("#drawer-close")?.focus({ preventScroll: true });
   if (state.open !== encodeTarget(target)) {
@@ -365,6 +470,9 @@ function closeDrawer(): void {
   }
   drawer.classList.remove("is-open");
   drawer.hidden = true;
+  for (const region of document.querySelectorAll<HTMLElement>("#app > header, #app > main, #app > footer, .skip-link")) {
+    region.inert = false;
+  }
   document.querySelector<HTMLElement>("#drawer-backdrop")!.hidden = true;
   state = { ...state, open: null };
   syncHash();

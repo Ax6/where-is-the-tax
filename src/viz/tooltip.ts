@@ -26,7 +26,7 @@ function ensure(): HTMLDivElement {
   return element;
 }
 
-const STATUS_KEY = { law: "statusLaw", official: "statusOfficial", provisional: "statusProvisional", assumption: "statusAssumption" } as const;
+const STATUS_KEY = { law: "statusLaw", official: "statusOfficial", provisional: "statusProvisional", assumption: "statusAssumption", estimate: "statusEstimate" } as const;
 
 export function statusLabel(status: Status, lang: Lang): string {
   return t(STATUS_KEY[status], lang);

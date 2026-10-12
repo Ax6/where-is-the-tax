@@ -7,7 +7,7 @@
  },
  "unit": "MEUR",
  "basis": "Jahresrechnungsstatistik der kommunalen Kernhaushalte (core budgets only, no Extrahaushalte); Flächenländer only (Berlin, Hamburg, Bremen municipal tasks are inside the Land budgets)",
- "generated": "2026-10-09",
+ "generated": "2026-10-12",
  "generated_by": "scripts/research/build_municipal.py",
  "areas": {
   "total": {

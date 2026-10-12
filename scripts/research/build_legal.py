@@ -95,7 +95,7 @@ def main():
     for e in ENTRIES:
         basis = []
         for file, phrase, section in e["basis"]:
-            src = LAW2 if file in ("gemfinrefg_1.html", "zerlg_7.html", "gg_art_105.html") else LAW
+            src = LAW2 if file in ("gemfinrefg_1.html", "zerlg_7.html", "gg_art_105.html", "gemfinrefg_7.html") else LAW
             must_contain(src, file, phrase)
             basis.append({"section": section, "quote": phrase, "source": source_ref(src, file, f"text contains: {phrase}")})
         t = taxes[e["id"]]
@@ -110,7 +110,33 @@ def main():
     missing = [c for c in leaves if c not in covered]
     if missing:
         raise SystemExit(f"taxes without legal entry: {missing}")
-    print(f"legal allocation: {len(rows)} taxes, all {len(leaves)} Destatis leaf positions covered; statute quotes verified")
+    # structured trade-tax levy (Gewerbesteuerumlage): statutory multipliers and the observed outcome
+    by_rec = json.loads((DATA / "de" / "taxes" / "by-recipient.json").read_text(encoding="utf-8"))
+    rec = {r["id"]: r for r in by_rec["rows"]}
+    must_contain(LAW, "gemfinrefg_6.html", "Der Bundesvervielfältiger beträgt 14,5 Prozent. Der Landesvervielfältiger beträgt 20,5 Prozent.")
+    must_contain(LAW2, "gemfinrefg_7.html", "Die Länder Berlin und Hamburg führen den Bundesanteil an der Umlage nach § 6 an den Bund ab")
+    levy = {}
+    for y in ("2024", "2025"):
+        gross = rec["STEUERARTK30"]["values_eur"].get(y)
+        paid = rec["STEUERNVK30"]["values_eur"].get(y)
+        bund = rec["STEUERNVB50"]["values_eur"].get(y)
+        land = rec["STEUERNVL50"]["values_eur"].get(y)
+        land_inc = rec["STEUERNVL60"]["values_eur"].get(y)
+        levy[y] = {"gross_trade_tax_eur": gross, "levy_paid_by_municipalities_eur": paid, "received_federation_eur": bund, "received_laender_eur": land,
+                   "received_laender_increased_levy_eur": land_inc, "levy_share_of_gross": round(abs(paid) / gross, 4) if gross and paid else None,
+                   "federation_share_of_levy": round(bund / (bund + land + (land_inc or 0)), 4) if bund and land else None,
+                   "federation_share_denominator": "received by Federation + received by Länder + 'erhöhte Gewerbesteuerumlage' (STEUERNVL60); statutory share would be 14.5/35 = 0.4143",
+                   "note": "Destatis after-distribution positions STEUERARTK30 (gross), STEUERNVK30 (levy, negative), STEUERNVB50/STEUERNVL50/STEUERNVL60 (received); the levy received by Bund+Länder differs slightly from the levy paid because of settlement timing"}
+    trade_tax_levy = {
+        "label": {"de": "Gewerbesteuerumlage", "en": "Trade-tax levy"},
+        "formula": {"de": "Umlage = (Istaufkommen ÷ Hebesatz) × Vervielfältiger; Vervielfältiger = Bundesvervielfältiger 14,5 % + Landesvervielfältiger 20,5 % = 35 % des Messbetrags", "en": "Levy = (receipts ÷ municipal assessment rate) × multiplier; multiplier = federal 14.5 % + Land 20.5 % = 35 % of the Messbetrag (the tax base before the municipal rate)"},
+        "multipliers": {"federation_pct": 14.5, "land_pct": 20.5, "total_pct": 35.0, "legal_basis": "§ 6 (3) GemFinRefG", "source": source_ref(LAW, "gemfinrefg_6.html", "text contains: Der Bundesvervielfältiger beträgt 14,5 Prozent. Der Landesvervielfältiger beträgt 20,5 Prozent.")},
+        "split_of_levy": {"federation": round(14.5 / 35, 4), "land": round(20.5 / 35, 4)},
+        "city_states": {"de": "Berlin und Hamburg führen nur den Bundesanteil ab (§ 7 GemFinRefG); Bremen hat Gemeinden und zahlt die volle Umlage", "en": "Berlin and Hamburg remit only the federal part (§ 7 GemFinRefG); Bremen has municipalities and pays the full levy", "source": source_ref(LAW2, "gemfinrefg_7.html", "text contains: Die Länder Berlin und Hamburg führen den Bundesanteil an der Umlage nach § 6 an den Bund ab")},
+        "effective_share_of_gross_note": {"de": "Da die Hebesätze (bundesweit ≈ 400 %) über dem Vervielfältiger liegen, entspricht die Umlage nur ≈ 9 % des Bruttoaufkommens", "en": "Because municipal assessment rates (≈ 400 % nationally) exceed the multiplier, the levy is only ≈ 9 % of gross receipts"},
+        "outcome": levy,
+    }
+    print(f"legal allocation: {len(rows)} taxes, all {len(leaves)} Destatis leaf positions covered; statute quotes verified; trade-tax levy 2024 = {levy['2024']['levy_share_of_gross']*100:.1f} % of gross")
     payload = envelope(
         "de.taxes.legal_allocation", "Wer bekommt welche Steuer? Gesetzliche Ertragshoheit je Steuerart", "Who receives which tax? Statutory allocation per named tax",
         "share (0-1) and EUR", "Statute (Art. 106 GG, FAG, GemFinRefG) in force at retrieval; shares applied to Destatis cash receipts give the statutory split before decomposition, equalisation and grants. The statutory split is a derived figure, not an observation.",
@@ -118,6 +144,7 @@ def main():
         notes=["Statutory split × receipts ignores timing and the geographic decomposition; the observed outcome per recipient is in by-recipient.json.",
                "VAT has no fixed share: see equalisation files for the effective yearly split.",
                "Trade tax is shown gross; the levy to Federation and Land is in by-recipient.json (STEUERNVK30, STEUERNVB50, STEUERNVL50)."],
+        trade_tax_levy=trade_tax_levy,
         rows=rows,
     )
     write_json("de/taxes/legal-allocation.json", payload)

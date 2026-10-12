@@ -9,26 +9,29 @@ Rules for whoever wires the front end:
 - Read the `basis`, `unit` and `status` of every file. Never add values across files with
   different bases (cash vs ESA accrual vs statute) or years.
 - `label.de` / `label.en` exist on every row; use them, do not re-translate.
-- The old `data/index.json` and `data/de/2024/`, `data/de/2021/` trees are **legacy**: they were
-  built in August 2026 without stored raw material. Every figure in them has been reproduced by the
-  new builds (see `docs/research/logs/2026-10-09-*.md`), and each legacy file now has a
-  `superseded_by` pointer. They stay only until `src/` stops importing them.
+- Estimates are marked in the file (`status: estimate*`, `≈`) and in `label`/`note` fields; show
+  them with the marker. Statutory values carry `status: statute`; assumptions `assumption`.
+- The August-2026 legacy files were removed once their figures had been reproduced by the new
+  builds (`docs/research/logs/2026-10-09-*.md`); the Berlin function table now lives as a
+  committed extract (`research/extracts/berlin_jahresrechnung_2024/funktionen-2024.csv`).
 
 <!-- index -->
 | File | Id | Title (en) | Years | Built by |
 |---|---|---|---|---|
-| `data/de/2024/accounts/berlin-functions.json` | `de_berlin_budget` | Berlin budget — actual spending 2024 | legacy (superseded, kept until the front end is rewired) | `` |
 | `data/de/berlin/functions-2024.json` | `de.berlin.functions_2024` | Berlin expenditure by function 2024 (annual account) | 2024 | `scripts/research/build_berlin.py` |
 | `data/de/berlin/tax-receipts.json` | `de.berlin.tax_receipts` | Tax receipts of Berlin (Land and municipal roles) |  | `scripts/research/build_berlin.py` |
+| `data/de/citizen/household-indirect-taxes.json` | `de.citizen.household_indirect_taxes` | A household's indirect taxes (estimate ≈): VAT and excises by household net income class |  | `scripts/research/build_household_taxes.py` |
 | `data/de/citizen/payslip-examples.json` | `de.citizen.payslip_examples` | Worked examples: gross → net 2024-2026 |  | `scripts/research/build_payslip.py` |
 | `data/de/citizen/payslip-parameters.json` | `de.citizen.payslip_parameters` | Statutory payslip parameters 2024-2026 |  | `scripts/research/build_payslip.py` |
 | `data/de/citizen/purchase-taxes.json` | `de.citizen.purchase_taxes` | Taxes inside everyday purchases |  | `scripts/research/build_purchases.py` |
+| `data/de/citizen/wage-reference.json` | `de.citizen.wage_reference` | Wage reference points: minimum wage, median and average earnings |  | `scripts/research/build_wages.py` |
 | `data/de/equalisation/2024.json` | `de.equalisation.2024` | VAT distribution, fiscal capacity equalisation and supplementary federal grants, equalisation year 2024 | 2024 | `scripts/research/build_equalisation.py` |
 | `data/de/equalisation/2025.json` | `de.equalisation.2025` | VAT distribution, fiscal capacity equalisation and supplementary federal grants, equalisation year 2025 | 2025 | `scripts/research/build_equalisation.py` |
 | `data/de/equalisation/laender-meta.json` | `de.equalisation.laender_meta` | Länder: code, name, city-state flag |  | `scripts/research/build_equalisation.py` |
 | `data/de/eu/round-trip.json` | `de.eu.round_trip` | Germany and the EU budget: payments and EU spending in Germany |  | `scripts/research/build_eu.py` |
 | `data/de/federal/budget-2024.json` | `de.federal.budget_2024` | Federal budget 2024: actual expenditure by function, Einzelplan and Titel, reconciled to the BMF provisional closing | 2024 | `scripts/research/build_federal.py` |
 | `data/de/federal/budget-2025.json` | `de.federal.budget_2025` | Federal budget 2025: actual expenditure by function, Einzelplan and Titel, reconciled to the BMF provisional closing | 2025 | `scripts/research/build_federal.py` |
+| `data/de/federal/funktionenplan.json` | `de.federal.funktionenplan` | Federal functional classification (Funktionenplan): main, upper and detailed functions |  | `scripts/research/build_funktionenplan.py` |
 | `data/de/federal/overview.json` | `de.federal.overview` | Federal budget 2023–2025: provisional closing headline figures and special funds | 2023, 2024, 2025 | `scripts/research/build_federal.py` |
 | `data/de/government/aggregates.json` | `de.government.aggregates` | General government revenue, expenditure, deficit, interest, debt and GDP (time series) | 1975–2025 | `scripts/research/build_government.py` |
 | `data/de/government/cash-by-level.json` | `de.government.cash_by_level` | Cash results of the overall public budget by level and economic type | 2024, 2025 | `scripts/research/build_cash_levels.py` |

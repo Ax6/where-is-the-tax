@@ -7,7 +7,7 @@
  },
  "unit": "MEUR",
  "basis": "Jahresrechnungsstatistik 2022 (final), core and extra budgets; Bereinigte Ausgaben = total net of payments within the same level; Nettoausgaben = financed by the level itself; Personalausgaben = staff. Versorgung (V) is a Destatis carve-out spanning functions of groups 0 and 1 and must be shown as its own tile.",
- "generated": "2026-10-09",
+ "generated": "2026-10-12",
  "generated_by": "scripts/research/build_laender.py",
  "year": 2022,
  "status": "final",
@@ -57,6 +57,248 @@
   "land_plus_municipal": "Länder und Gemeinden/Gv.",
   "land": "Länder",
   "municipal": "Gemeinden/Gv."
+ },
+ "function_labels": {
+  "Allgemeinbildende und berufliche Schulen": {
+   "de": "Allgemeinbildende und berufliche Schulen",
+   "en": "General and vocational schools"
+  },
+  "Allgemeinbildende und berufliche Schulen, Allgemeinbildende Schulen": {
+   "de": "Allgemeinbildende und berufliche Schulen, Allgemeinbildende Schulen",
+   "en": "General and vocational schools: General schools"
+  },
+  "Allgemeinbildende und berufliche Schulen, Berufliche Schulen": {
+   "de": "Allgemeinbildende und berufliche Schulen, Berufliche Schulen",
+   "en": "General and vocational schools: Vocational schools"
+  },
+  "Auswärtige Angelegenheiten": {
+   "de": "Auswärtige Angelegenheiten",
+   "en": "Foreign affairs"
+  },
+  "Auswärtige Angelegenheiten, Wirtschaftliche Zusammenarbeit und Entwicklung": {
+   "de": "Auswärtige Angelegenheiten, Wirtschaftliche Zusammenarbeit und Entwicklung",
+   "en": "Foreign affairs: Economic cooperation and development"
+  },
+  "Energie- und Wasserwirtschaft, Gewerbe, Dienstleistungen": {
+   "de": "Energie- und Wasserwirtschaft, Gewerbe, Dienstleistungen",
+   "en": "Energy and water, trade and services"
+  },
+  "Energie- und Wasserwirtschaft, Gewerbe, Dienstleistungen, Energie- und Wasserversorgung, Entsorgung": {
+   "de": "Energie- und Wasserwirtschaft, Gewerbe, Dienstleistungen, Energie- und Wasserversorgung, Entsorgung",
+   "en": "Energy and water, trade and services: Energy and water supply, waste disposal"
+  },
+  "Energie- und Wasserwirtschaft, Gewerbe, Dienstleistungen, Energie- und Wasserversorgung, Entsorgung, Abfallwirtschaft": {
+   "de": "Energie- und Wasserwirtschaft, Gewerbe, Dienstleistungen, Energie- und Wasserversorgung, Entsorgung, Abfallwirtschaft",
+   "en": "Energy and water, trade and services: Energy and water supply, waste disposal: Waste management"
+  },
+  "Energie- und Wasserwirtschaft, Gewerbe, Dienstleistungen, Energie- und Wasserversorgung, Entsorgung, Abwasserentsorgung": {
+   "de": "Energie- und Wasserwirtschaft, Gewerbe, Dienstleistungen, Energie- und Wasserversorgung, Entsorgung, Abwasserentsorgung",
+   "en": "Energy and water, trade and services: Energy and water supply, waste disposal: Waste-water disposal"
+  },
+  "Energie- und Wasserwirtschaft, Gewerbe, Dienstleistungen, Geld- und Versicherungswesen": {
+   "de": "Energie- und Wasserwirtschaft, Gewerbe, Dienstleistungen, Geld- und Versicherungswesen",
+   "en": "Energy and water, trade and services: Banking and insurance"
+  },
+  "Energie- und Wasserwirtschaft, Gewerbe, Dienstleistungen, Regionale Fördermaßnahmen": {
+   "de": "Energie- und Wasserwirtschaft, Gewerbe, Dienstleistungen, Regionale Fördermaßnahmen",
+   "en": "Energy and water, trade and services: Regional development measures"
+  },
+  "Energie- und Wasserwirtschaft, Gewerbe, Dienstleistungen, Sonstiges im Bereich Gewerbe und Dienstleistungen": {
+   "de": "Energie- und Wasserwirtschaft, Gewerbe, Dienstleistungen, Sonstiges im Bereich Gewerbe und Dienstleistungen",
+   "en": "Energy and water, trade and services: Other trade and services"
+  },
+  "Ernährung, Landwirtschaft und Forsten": {
+   "de": "Ernährung, Landwirtschaft und Forsten",
+   "en": "Food, agriculture and forestry"
+  },
+  "Finanzverwaltung": {
+   "de": "Finanzverwaltung",
+   "en": "Financial administration"
+  },
+  "Finanzwirtschaft": {
+   "de": "Finanzwirtschaft",
+   "en": "Financial management"
+  },
+  "Finanzwirtschaft, Beihilfen, Unterstützungen u.ä.": {
+   "de": "Finanzwirtschaft, Beihilfen, Unterstützungen u.ä.",
+   "en": "Financial management: Allowances and support"
+  },
+  "Finanzwirtschaft, Grund- und Kapitalvermögen": {
+   "de": "Finanzwirtschaft, Grund- und Kapitalvermögen",
+   "en": "Financial management: Real and financial assets"
+  },
+  "Finanzwirtschaft, Schulden": {
+   "de": "Finanzwirtschaft, Schulden",
+   "en": "Financial management: Debt"
+  },
+  "Finanzwirtschaft, Steuern und Finanzzuweisungen": {
+   "de": "Finanzwirtschaft, Steuern und Finanzzuweisungen",
+   "en": "Financial management: Taxes and financial allocations"
+  },
+  "Förderung für Schülerinnen und Schüler, Studierende, Weiterbildungsteilnehmende u. dgl.": {
+   "de": "Förderung für Schülerinnen und Schüler, Studierende, Weiterbildungsteilnehmende u. dgl.",
+   "en": "Support for pupils, students and trainees"
+  },
+  "Gesundheit, Umwelt, Sport und Erholung": {
+   "de": "Gesundheit, Umwelt, Sport und Erholung",
+   "en": "Health, environment, sport and recreation"
+  },
+  "Gesundheit, Umwelt, Sport und Erholung, Gesundheitswesen": {
+   "de": "Gesundheit, Umwelt, Sport und Erholung, Gesundheitswesen",
+   "en": "Health, environment, sport and recreation: Health"
+  },
+  "Gesundheit, Umwelt, Sport und Erholung, Sport und Erholung": {
+   "de": "Gesundheit, Umwelt, Sport und Erholung, Sport und Erholung",
+   "en": "Health, environment, sport and recreation: Sport and recreation"
+  },
+  "Gesundheit, Umwelt, Sport und Erholung, Umwelt- und Naturschutz": {
+   "de": "Gesundheit, Umwelt, Sport und Erholung, Umwelt- und Naturschutz",
+   "en": "Health, environment, sport and recreation: Environmental and nature protection"
+  },
+  "Hochschulen": {
+   "de": "Hochschulen",
+   "en": "Higher education"
+  },
+  "Insgesamt": {
+   "de": "Insgesamt",
+   "en": "Total"
+  },
+  "Kultur und Religion": {
+   "de": "Kultur und Religion",
+   "en": "Culture and religion"
+  },
+  "Kultur und Religion, Theater und Musik": {
+   "de": "Kultur und Religion, Theater und Musik",
+   "en": "Culture and religion: Theatre and music"
+  },
+  "Politische Führung und zentrale Verwaltung": {
+   "de": "Politische Führung und zentrale Verwaltung",
+   "en": "Political leadership and central administration"
+  },
+  "Politische Führung und zentrale Verwaltung, Innere Verwaltung": {
+   "de": "Politische Führung und zentrale Verwaltung, Innere Verwaltung",
+   "en": "Political leadership and central administration: Internal administration"
+  },
+  "Politische Führung und zentrale Verwaltung, Politische Führung": {
+   "de": "Politische Führung und zentrale Verwaltung, Politische Führung",
+   "en": "Political leadership and central administration: Political leadership"
+  },
+  "Rechtsschutz": {
+   "de": "Rechtsschutz",
+   "en": "Legal protection (courts, prisons)"
+  },
+  "Sonstiges Bildungswesen": {
+   "de": "Sonstiges Bildungswesen",
+   "en": "Other education"
+  },
+  "Soziale Sicherung, Familie und Jugend, Arbeitsmarktpolitik": {
+   "de": "Soziale Sicherung, Familie und Jugend, Arbeitsmarktpolitik",
+   "en": "Social security, family and youth, labour market"
+  },
+  "Soziale Sicherung, Familie und Jugend, Arbeitsmarktpolitik, Arbeitsmarktpolitik": {
+   "de": "Soziale Sicherung, Familie und Jugend, Arbeitsmarktpolitik, Arbeitsmarktpolitik",
+   "en": "Social security, family and youth, labour market: Labour-market policy"
+  },
+  "Soziale Sicherung, Familie und Jugend, Arbeitsmarktpolitik, Familienhilfe, Wohlfahrtspflege u.ä. (ohne Leistungen nach SGB VIII)": {
+   "de": "Soziale Sicherung, Familie und Jugend, Arbeitsmarktpolitik, Familienhilfe, Wohlfahrtspflege u.ä. (ohne Leistungen nach SGB VIII)",
+   "en": "Social security, family and youth, labour market: Family assistance and welfare (excl. SGB VIII)"
+  },
+  "Soziale Sicherung, Familie und Jugend, Arbeitsmarktpolitik, Kinder- und Jugendhilfe nach SGB VIII (ohne Kindertagesbetreuung)": {
+   "de": "Soziale Sicherung, Familie und Jugend, Arbeitsmarktpolitik, Kinder- und Jugendhilfe nach SGB VIII (ohne Kindertagesbetreuung)",
+   "en": "Social security, family and youth, labour market: Child and youth welfare (SGB VIII, excl. day care)"
+  },
+  "Soziale Sicherung, Familie und Jugend, Arbeitsmarktpolitik, Kindertagesbetreuung nach SGB VIII": {
+   "de": "Soziale Sicherung, Familie und Jugend, Arbeitsmarktpolitik, Kindertagesbetreuung nach SGB VIII",
+   "en": "Social security, family and youth, labour market: Day care for children (SGB VIII)"
+  },
+  "Soziale Sicherung, Familie und Jugend, Arbeitsmarktpolitik, Soziale Leistungen für Folgen von Krieg und politischen Ereignissen": {
+   "de": "Soziale Sicherung, Familie und Jugend, Arbeitsmarktpolitik, Soziale Leistungen für Folgen von Krieg und politischen Ereignissen",
+   "en": "Social security, family and youth, labour market: Benefits for consequences of war and political events"
+  },
+  "Soziale Sicherung, Familie und Jugend, Arbeitsmarktpolitik, Soziale Leistungen nach dem SGB XII und dem Asylbewerberleistungsgesetz, Eingliederungshilfen für Menschen mit Behinderungen nach dem SGB IX": {
+   "de": "Soziale Sicherung, Familie und Jugend, Arbeitsmarktpolitik, Soziale Leistungen nach dem SGB XII und dem Asylbewerberleistungsgesetz, Eingliederungshilfen für Menschen mit Behinderungen nach dem SGB IX",
+   "en": "Social security, family and youth, labour market: Social assistance (SGB XII), asylum-seeker benefits, integration assistance (SGB IX)"
+  },
+  "Soziale Sicherung, Familie und Jugend, Arbeitsmarktpolitik, Sozialversicherung einschließlich Arbeitslosenversicherung": {
+   "de": "Soziale Sicherung, Familie und Jugend, Arbeitsmarktpolitik, Sozialversicherung einschließlich Arbeitslosenversicherung",
+   "en": "Social security, family and youth, labour market: Social insurance incl. unemployment insurance"
+  },
+  "Soziale Sicherung, Familie und Jugend, Arbeitsmarktpolitik, Verwaltung": {
+   "de": "Soziale Sicherung, Familie und Jugend, Arbeitsmarktpolitik, Verwaltung",
+   "en": "Social security, family and youth, labour market: Administration"
+  },
+  "Verkehrs- und Nachrichtenwesen": {
+   "de": "Verkehrs- und Nachrichtenwesen",
+   "en": "Transport and communications"
+  },
+  "Verkehrs- und Nachrichtenwesen, Eisenbahnen und öffentlicher Personennahverkehr": {
+   "de": "Verkehrs- und Nachrichtenwesen, Eisenbahnen und öffentlicher Personennahverkehr",
+   "en": "Transport and communications: Railways and local public transport"
+  },
+  "Verkehrs- und Nachrichtenwesen, Sonstiges Verkehrswesen": {
+   "de": "Verkehrs- und Nachrichtenwesen, Sonstiges Verkehrswesen",
+   "en": "Transport and communications: Other transport"
+  },
+  "Verkehrs- und Nachrichtenwesen, Straßen einschließlich Verwaltung": {
+   "de": "Verkehrs- und Nachrichtenwesen, Straßen einschließlich Verwaltung",
+   "en": "Transport and communications: Roads incl. administration"
+  },
+  "Verkehrs- und Nachrichtenwesen, Straßen einschließlich Verwaltung, Bundes- und Landesstraßen": {
+   "de": "Verkehrs- und Nachrichtenwesen, Straßen einschließlich Verwaltung, Bundes- und Landesstraßen",
+   "en": "Transport and communications: Roads incl. administration: Federal and state roads"
+  },
+  "Verkehrs- und Nachrichtenwesen, Straßen einschließlich Verwaltung, Bundesautobahnen": {
+   "de": "Verkehrs- und Nachrichtenwesen, Straßen einschließlich Verwaltung, Bundesautobahnen",
+   "en": "Transport and communications: Roads incl. administration: Federal motorways"
+  },
+  "Verkehrs- und Nachrichtenwesen, Straßen einschließlich Verwaltung, Gemeindestraßen": {
+   "de": "Verkehrs- und Nachrichtenwesen, Straßen einschließlich Verwaltung, Gemeindestraßen",
+   "en": "Transport and communications: Roads incl. administration: Municipal roads"
+  },
+  "Verkehrs- und Nachrichtenwesen, Straßen einschließlich Verwaltung, Kreisstraßen": {
+   "de": "Verkehrs- und Nachrichtenwesen, Straßen einschließlich Verwaltung, Kreisstraßen",
+   "en": "Transport and communications: Roads incl. administration: District roads"
+  },
+  "Verkehrs- und Nachrichtenwesen, Wasserstraßen und Häfen, Förderung der Schifffahrt": {
+   "de": "Verkehrs- und Nachrichtenwesen, Wasserstraßen und Häfen, Förderung der Schifffahrt",
+   "en": "Transport and communications: Waterways and ports, shipping support"
+  },
+  "Versorgung": {
+   "de": "Versorgung",
+   "en": "Civil-servant pensions"
+  },
+  "Verteidigung": {
+   "de": "Verteidigung",
+   "en": "Defence"
+  },
+  "Wissenschaft, Forschung und Entwicklung außerhalb der Hochschulen": {
+   "de": "Wissenschaft, Forschung und Entwicklung außerhalb der Hochschulen",
+   "en": "Science and research outside universities"
+  },
+  "Wohnungswesen, Städtebau, Raumordnung und komm. Gemeinschaftsdienste": {
+   "de": "Wohnungswesen, Städtebau, Raumordnung und komm. Gemeinschaftsdienste",
+   "en": "Housing, urban development, regional planning and community services"
+  },
+  "Wohnungswesen, Städtebau, Raumordnung und komm. Gemeinschaftsdienste, Geoinformation, Raumordnung und Landesplanung, Städtebauförderung": {
+   "de": "Wohnungswesen, Städtebau, Raumordnung und komm. Gemeinschaftsdienste, Geoinformation, Raumordnung und Landesplanung, Städtebauförderung",
+   "en": "Housing, urban development, regional planning and community services: Geo-information, regional planning, urban development funding"
+  },
+  "Wohnungswesen, Städtebau, Raumordnung und komm. Gemeinschaftsdienste, Kommunale Gemeinschaftsdienste (ohne Straßenbeleuchtung, Abwasserentsorgung und Abfallwirtschaft)": {
+   "de": "Wohnungswesen, Städtebau, Raumordnung und komm. Gemeinschaftsdienste, Kommunale Gemeinschaftsdienste (ohne Straßenbeleuchtung, Abwasserentsorgung und Abfallwirtschaft)",
+   "en": "Housing, urban development, regional planning and community services: Community services (excl. street lighting, waste water, waste)"
+  },
+  "Wohnungswesen, Städtebau, Raumordnung und komm. Gemeinschaftsdienste, Wohnungswesen, Wohnungsbauprämie": {
+   "de": "Wohnungswesen, Städtebau, Raumordnung und komm. Gemeinschaftsdienste, Wohnungswesen, Wohnungsbauprämie",
+   "en": "Housing, urban development, regional planning and community services: Housing, housing-construction premium"
+  },
+  "Öffentliche Sicherheit und Ordnung": {
+   "de": "Öffentliche Sicherheit und Ordnung",
+   "en": "Public security and order"
+  },
+  "Öffentliche Sicherheit und Ordnung, Polizei": {
+   "de": "Öffentliche Sicherheit und Ordnung, Polizei",
+   "en": "Public security and order: Police"
+  }
  },
  "caveats": [
   "Includes extra budgets (Extrahaushalte); larger than core budget documents.",

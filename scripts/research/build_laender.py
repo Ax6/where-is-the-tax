@@ -47,6 +47,44 @@ GROUPS = {
     "8": {"de": "Finanzwirtschaft", "en": "Financial management (interest, equalisation payments, assets)"},
     "V": {"de": "Versorgung (Beamtenpensionen; Destatis-Sonderausweis)", "en": "Civil-servant pensions (Destatis carve-out across functions)"},
 }
+EN_FUNC = {
+    "Insgesamt": "Total", "Politische Führung und zentrale Verwaltung": "Political leadership and central administration", "Politische Führung": "Political leadership", "Innere Verwaltung": "Internal administration",
+    "Auswärtige Angelegenheiten": "Foreign affairs", "Wirtschaftliche Zusammenarbeit und Entwicklung": "Economic cooperation and development", "Verteidigung": "Defence",
+    "Öffentliche Sicherheit und Ordnung": "Public security and order", "Polizei": "Police", "Rechtsschutz": "Legal protection (courts, prisons)", "Finanzverwaltung": "Financial administration",
+    "Allgemeinbildende und berufliche Schulen": "General and vocational schools", "Allgemeinbildende Schulen": "General schools", "Berufliche Schulen": "Vocational schools", "Hochschulen": "Higher education",
+    "Förderung für Schülerinnen und Schüler, Studierende, Weiterbildungsteilnehmende u. dgl.": "Support for pupils, students and trainees", "Sonstiges Bildungswesen": "Other education",
+    "Wissenschaft, Forschung und Entwicklung außerhalb der Hochschulen": "Science and research outside universities", "Kultur und Religion": "Culture and religion", "Theater und Musik": "Theatre and music",
+    "Soziale Sicherung, Familie und Jugend, Arbeitsmarktpolitik": "Social security, family and youth, labour market", "Verwaltung": "Administration",
+    "Sozialversicherung einschließlich Arbeitslosenversicherung": "Social insurance incl. unemployment insurance", "Familienhilfe, Wohlfahrtspflege u.ä. (ohne Leistungen nach SGB VIII)": "Family assistance and welfare (excl. SGB VIII)",
+    "Soziale Leistungen für Folgen von Krieg und politischen Ereignissen": "Benefits for consequences of war and political events", "Arbeitsmarktpolitik": "Labour-market policy",
+    "Kinder- und Jugendhilfe nach SGB VIII (ohne Kindertagesbetreuung)": "Child and youth welfare (SGB VIII, excl. day care)", "Kindertagesbetreuung nach SGB VIII": "Day care for children (SGB VIII)",
+    "Soziale Leistungen nach dem SGB XII und dem Asylbewerberleistungsgesetz, Eingliederungshilfen für Menschen mit Behinderungen nach dem SGB IX": "Social assistance (SGB XII), asylum-seeker benefits, integration assistance (SGB IX)",
+    "Gesundheit, Umwelt, Sport und Erholung": "Health, environment, sport and recreation", "Gesundheitswesen": "Health", "Sport und Erholung": "Sport and recreation", "Umwelt- und Naturschutz": "Environmental and nature protection",
+    "Wohnungswesen, Städtebau, Raumordnung und komm. Gemeinschaftsdienste": "Housing, urban development, regional planning and community services", "Wohnungswesen, Wohnungsbauprämie": "Housing, housing-construction premium",
+    "Geoinformation, Raumordnung und Landesplanung, Städtebauförderung": "Geo-information, regional planning, urban development funding",
+    "Kommunale Gemeinschaftsdienste (ohne Straßenbeleuchtung, Abwasserentsorgung und Abfallwirtschaft)": "Community services (excl. street lighting, waste water, waste)",
+    "Ernährung, Landwirtschaft und Forsten": "Food, agriculture and forestry", "Energie- und Wasserwirtschaft, Gewerbe, Dienstleistungen": "Energy and water, trade and services",
+    "Energie- und Wasserversorgung, Entsorgung": "Energy and water supply, waste disposal", "Abwasserentsorgung": "Waste-water disposal", "Abfallwirtschaft": "Waste management",
+    "Geld- und Versicherungswesen": "Banking and insurance", "Sonstiges im Bereich Gewerbe und Dienstleistungen": "Other trade and services", "Regionale Fördermaßnahmen": "Regional development measures",
+    "Verkehrs- und Nachrichtenwesen": "Transport and communications", "Straßen einschließlich Verwaltung": "Roads incl. administration", "Bundesautobahnen": "Federal motorways", "Bundes- und Landesstraßen": "Federal and state roads",
+    "Kreisstraßen": "District roads", "Gemeindestraßen": "Municipal roads", "Wasserstraßen und Häfen, Förderung der Schifffahrt": "Waterways and ports, shipping support",
+    "Eisenbahnen und öffentlicher Personennahverkehr": "Railways and local public transport", "Sonstiges Verkehrswesen": "Other transport", "Finanzwirtschaft": "Financial management",
+    "Grund- und Kapitalvermögen": "Real and financial assets", "Steuern und Finanzzuweisungen": "Taxes and financial allocations", "Schulden": "Debt", "Beihilfen, Unterstützungen u.ä.": "Allowances and support", "Versorgung": "Civil-servant pensions",
+}
+
+
+def en_label(func: str) -> str:
+    """Translate 'Parent, Child' Aufgabenbereich names part by part (parts are Funktionenplan names)."""
+    if func in EN_FUNC:
+        return EN_FUNC[func]
+    # split at the longest known prefix
+    for k in sorted(EN_FUNC, key=len, reverse=True):
+        if func.startswith(k + ", "):
+            rest = func[len(k) + 2:]
+            return f"{EN_FUNC[k]}: {en_label(rest)}"
+    raise KeyError(func)
+
+
 SCOPES = {"Länder und Gemeinden/Gv.": "land_plus_municipal", "Länder": "land", "Gemeinden/Gv.": "municipal"}
 MEASURES = {"Ausgaben, Bereinigte Ausgaben": "adjusted", "Ausgaben, Nettoausgaben": "net", "Ausgaben, Personalausgaben": "staff"}
 
@@ -67,6 +105,8 @@ def main():
         data.setdefault(SCOPES[scope], {}).setdefault(code, {}).setdefault(MEASURES[art], {})[func] = val
         extract.append([i, scope, code, func, art, val])
     write_csv("destatis_rechnungsergebnisse_2022/csv-71711-12-expenditure-2022.csv", ["sheet_row", "scope", "land", "aufgabenbereich", "ausgabeart", "value_meur"], extract, base=EXTRACTS)
+    all_funcs = sorted({f for lands in data.values() for m in lands.values() for funcs in m.values() for f in funcs})
+    function_labels = {f: {"de": f, "en": en_label(f)} for f in all_funcs}
 
     out = {}
     for scope, lands in data.items():
@@ -95,7 +135,7 @@ def main():
     payload = envelope(
         "de.laender.functions_2022", "Ausgaben der Länder und Gemeinden nach Aufgabenbereichen 2022", "Expenditure of Länder and municipalities by function 2022",
         "MEUR", "Jahresrechnungsstatistik 2022 (final), core and extra budgets; Bereinigte Ausgaben = total net of payments within the same level; Nettoausgaben = financed by the level itself; Personalausgaben = staff. Versorgung (V) is a Destatis carve-out spanning functions of groups 0 and 1 and must be shown as its own tile.",
-        SCRIPT, year=2022, status="final", groups=GROUPS, scopes={v: k for k, v in SCOPES.items()},
+        SCRIPT, year=2022, status="final", groups=GROUPS, scopes={v: k for k, v in SCOPES.items()}, function_labels=function_labels,
         caveats=["Includes extra budgets (Extrahaushalte); larger than core budget documents.", "Group 8 (Finanzwirtschaft) contains equalisation payments and interest; it is inflated for donor Länder.", "Not the same scope or year as the federal 2024/2025 accounts; never add across files."],
         source=source_ref(SRC, FILE, "sheet csv-71711-12, columns Koerperschaft/Bundeslaender/Aufgabenbereiche/Ausgabeart_Einnahmeart/Jahr/Wert_Mill_EUR; rows in research/extracts/destatis_rechnungsergebnisse_2022/csv-71711-12-expenditure-2022.csv"),
         scopes_data=out,

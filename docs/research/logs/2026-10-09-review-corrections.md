@@ -29,3 +29,21 @@
 | C | C8 ≈60 GKV Konto labels untranslated; "Wanderungsausgleich" opaque | build asked to add English labels |
 
 All numeric re-derivations in reviews A and B reproduced the data files; no numeric correction was needed.
+
+## Review D (2026-10-12: wages, household estimate, Funktionenplan, cleanup)
+
+| Finding | Action |
+|---|---|
+| 15 Funktionenplan names truncated at line wraps; 83/830 merged explanation line | parser rewritten: double-space wrap detection, word-boundary connector rule, bracket balance, explanatory-line stop; verified 1, 024, 033, 114, 118, 16, 164, 167, 23, 241, 259, 26, 43, 51, 61 |
+| 236 (trailer typo "Funktion 235") and 412 (no trailer) are in the PDF | special cases added; both labelled; `label_source` text corrected; `hauptfunktionen_note` rewritten |
+| en for 251/252/253 from another code layout; 12/18/19 split invented; 64, 165, 236 loose | corrected; joint headings 11/12 and 18/19 now carry the joint name for both codes with `joint_heading` |
+| Oberfunktion 24 (and 241) pre-2024 name kept | vintage markers parsed: 2024 version used, `valid_from` set, old names under `superseded_names` |
+| Household: insurance tax announced but never computed | removed from the estimate; stated in basis/method/caveats (premiums are outside LWR consumption) |
+| Household: tobacco share used the 2026 tariff | 2024 tariff (11.15 ct + 19.84 % at 9.00 EUR/pack = 44.6 %) |
+| Household: long-distance bus VAT reason wrong | reason corrected (7 % only within a municipality or ≤ 50 km for bus/taxi/ferry) |
+| Household: under-coverage of tobacco/alcohol; biggest levers; universe 38.713 m households | caveats added; `lwr_universe` block from csv-63111-b01; `macro_sanity` note (≈ 43 % of VAT receipts, a bound not a sourced share) |
+| Levy denominator 0.4142 undocumented | `federation_share_denominator` field added (statutory 14.5/35 = 0.4143) |
+| Minimum-wage annualisation 40 h | second figure at Destatis' 39.1 paid hours/week (csv-62361-04_1) added with source |
+| Berlin names editorial; re-derivation open | source note closed (review D: 31/33 verbatim, 2 indirect, total exact); German names marked editorial |
+
+All numbers in review D reproduced; no numeric correction to data values other than the tobacco tariff (≈ 95 → ≈ 90 EUR per household).

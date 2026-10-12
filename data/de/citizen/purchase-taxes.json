@@ -7,7 +7,7 @@
  },
  "unit": "mixed (see each rate)",
  "basis": "Statutory rates (exact); worked examples use illustrative prices marked as assumptions; recipients follow data/de/taxes/legal-allocation.json",
- "generated": "2026-10-09",
+ "generated": "2026-10-12",
  "generated_by": "scripts/research/build_purchases.py",
  "vat": {
   "standard": {

@@ -7,7 +7,7 @@
  },
  "unit": "EUR",
  "basis": "BMF Monatsbericht provisional closings (Jan 2025 for 2024 with Ist 2023 column; Jan 2026 for 2025). Figures in Mio EUR in the source, multiplied by 1,000,000; KTF/SVIK figures from the article text in Mrd EUR (one decimal).",
- "generated": "2026-10-09",
+ "generated": "2026-10-12",
  "generated_by": "scripts/research/build_federal.py",
  "years": [
   "2023",

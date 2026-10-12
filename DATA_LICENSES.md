@@ -36,6 +36,12 @@
 | `bmf_steuerrechner` | Published by the BMF for software development; site is © Bundesministerium der Finanzen. Cached, cited by element/page, not redistributed. The external programming interface is for program tests only; not used for bulk calculation. | https://www.bmf-steuerrechner.de/interface/einganginterface.xhtml | unverified | `research/cache/` (+ extracts) |
 | `bundesanzeiger_zusatzbeitrag` | Official notices are official works (§ 5 UrhG); the Bundesanzeiger Verlag claims rights in the publication layout, so the PDFs are cached and cited, not redistributed. | https://www.bundesanzeiger.de/pub/de/nutzungsbedingungen | unverified | `research/cache/` (+ extracts) |
 | `gkv_spitzenverband_zusatzbeitrag` | Association web page; facts only, cached and cited | https://www.gkv-spitzenverband.de/service/impressum/impressum.jsp | not_allowed | `research/cache/` (+ extracts) |
+| `gesetze_im_internet_wages` | Official works (§ 5 UrhG) | https://www.gesetze-im-internet.de/hinweise.html | allowed | `research/raw/` |
+| `destatis_genesis_62361` | DL-DE-BY-2.0; attribution: Statistisches Bundesamt (Destatis), GENESIS-Online | https://www.destatis.de/DE/Service/Impressum/_inhalt.html | allowed | `research/raw/` |
+| `destatis_verdienste_bericht` | DL-DE-BY-2.0 (workbook Impressum sheet) | Impressum sheet inside the workbook | allowed | `research/cache/` (+ extracts) |
+| `destatis_lwr_2024` | DL-DE-BY-2.0 (workbook Impressum sheet) | Impressum sheet inside the workbook | allowed | `research/cache/` (+ extracts) |
+| `bmf_funktionenplan` | BMF document; the Funktionenplan is an official classification (Haushaltssystematik, § 10 HGrG) — names of functions are facts; PDF not redistributed | https://www.bundesfinanzministerium.de/Web/DE/Service/Impressum/impressum.html | not_allowed | `research/cache/` (+ extracts) |
+| `destatis_evs_2023_feinanschreibung` | DL-DE-BY-2.0 (workbook Impressum sheet) | Impressum sheet inside the workbook | allowed | `research/cache/` (+ extracts) |
 
 ## Committed geodata
 

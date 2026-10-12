@@ -47,10 +47,19 @@ function interactive(
   content: () => TooltipContent,
   onActivate: () => void,
   onHover?: (on: boolean) => void,
+  options: { pointerOnly?: boolean; visible?: string } = {},
 ): void {
-  el.setAttribute("tabindex", "0");
-  el.setAttribute("role", "button");
-  el.setAttribute("aria-label", tooltipText(content(), lang));
+  if (options.pointerOnly) {
+    // duplicates what the focusable nodes say: hover detail for the mouse, hidden from assistive tech and
+    // out of the tab order (Chromium otherwise tabs to SVG shapes with listeners)
+    el.setAttribute("aria-hidden", "true");
+    el.setAttribute("tabindex", "-1");
+  } else {
+    el.setAttribute("tabindex", "0");
+    el.setAttribute("role", "button");
+    // the accessible name starts with the visible text (WCAG 2.5.3)
+    el.setAttribute("aria-label", [options.visible, tooltipText(content(), lang)].filter(Boolean).join(". "));
+  }
   el.addEventListener("pointerenter", (event) => {
     onHover?.(true);
     showTooltip(content(), { x: event.clientX, y: event.clientY }, lang);
@@ -78,11 +87,47 @@ function interactive(
   });
 }
 
+/**
+ * Patterns: the pro-rata hatch (single 45° line) and one texture per recipient, used in the opt-in pattern
+ * mode and under forced colours (styles.css), so identity never relies on colour alone.
+ */
+const TEXTURES: Record<EntityId, { size: number; transform?: string; draw: (p: SVGPatternElement, size: number) => void }> = {
+  fed: { size: 5, transform: "rotate(-45)", draw: (p, n) => void svgEl(p, "line", { x1: 0, y1: 0, x2: 0, y2: n, class: "tex-ink", "stroke-width": 1.4 }) },
+  land: { size: 5, draw: (p, n) => void svgEl(p, "line", { x1: 0.7, y1: 0, x2: 0.7, y2: n, class: "tex-ink", "stroke-width": 1.4 }) },
+  muni: { size: 6, draw: (p, n) => void svgEl(p, "path", { d: `M0,0L${n},${n}M${n},0L0,${n}`, class: "tex-ink", "stroke-width": 1 }) },
+  eu: { size: 5, draw: (p) => void svgEl(p, "circle", { cx: 2.5, cy: 2.5, r: 1.1, class: "tex-ink", "stroke-width": 0 }) },
+  pension: { size: 5, draw: (p, n) => void svgEl(p, "line", { x1: 0, y1: 0.7, x2: n, y2: 0.7, class: "tex-ink", "stroke-width": 1.4 }) },
+  health: { size: 5, draw: (p, n) => void svgEl(p, "path", { d: `M0,0.5H${n}M0.5,0V${n}`, class: "tex-ink", "stroke-width": 1 }) },
+  care: { size: 8, draw: (p) => void svgEl(p, "circle", { cx: 4, cy: 4, r: 1.9, class: "tex-ink", "stroke-width": 0 }) },
+  unemp: {
+    size: 6,
+    draw: (p) => {
+      svgEl(p, "rect", { x: 0, y: 0, width: 3, height: 3, class: "tex-ink", "stroke-width": 0 });
+      svgEl(p, "rect", { x: 3, y: 3, width: 3, height: 3, class: "tex-ink", "stroke-width": 0 });
+    },
+  },
+};
+
 function defs(svg: SVGSVGElement): void {
   const d = svgEl(svg, "defs");
   const hatch = svgEl(d, "pattern", { id: "hatch", patternUnits: "userSpaceOnUse", width: 6, height: 6, patternTransform: "rotate(45)" });
   svgEl(hatch, "rect", { width: 6, height: 6, class: "hatch-bg" });
   svgEl(hatch, "line", { x1: 0, y1: 0, x2: 0, y2: 6, class: "hatch-line" });
+  for (const [entity, texture] of Object.entries(TEXTURES) as [EntityId, (typeof TEXTURES)[EntityId]][]) {
+    const pattern = svgEl(d, "pattern", { id: `tex-${entity}`, patternUnits: "userSpaceOnUse", width: texture.size, height: texture.size, patternTransform: texture.transform });
+    svgEl(pattern, "rect", { width: texture.size, height: texture.size, class: "tex-bg", fill: `var(--e-${entity})` });
+    texture.draw(pattern, texture.size);
+  }
+}
+
+/** Marks filled with a recipient hue carry data-entity, so CSS can swap the fill for its texture. */
+function tagEntities(svg: SVGSVGElement): void {
+  for (const el of svg.querySelectorAll<SVGElement>("[fill^='var(--e-']")) {
+    const match = /var\(--e-(\w+)\)/.exec(el.getAttribute("fill") ?? "");
+    if (match && !el.closest("pattern")) {
+      el.dataset.entity = match[1]!;
+    }
+  }
 }
 
 function stageLabel(svg: SVGSVGElement, x: number, text: string, anchor: "start" | "end" | "middle" = "start"): void {
@@ -302,7 +347,7 @@ export function renderYou(container: HTMLElement, model: YouModel, options: Hero
   const ribbons = svgEl(svg, "g", { class: "ribbons" });
   const joins = svgEl(svg, "g", { class: "joins" });
   const nodes = svgEl(svg, "g", { class: "nodes" });
-  const labels = svgEl(svg, "g", { class: "labels" });
+  const labels = svgEl(svg, "g", { class: "labels", "aria-hidden": "true" });
 
   const related = new Map<string, Set<Element>>();
   const relate = (key: string, el: Element) => {
@@ -327,7 +372,7 @@ export function renderYou(container: HTMLElement, model: YouModel, options: Hero
 
   // ---- ribbons left of the boundary
   for (const edge of flow.edges) {
-    const cls = `ribbon${edge.ghost ? " is-ghost" : ""}${edge.entity ? "" : " is-neutral"}${edge.to === "net" ? " is-yours" : ""}`;
+    const cls = `ribbon${edge.ghost ? " is-ghost" : ""}${edge.estimate ? " is-estimate" : ""}${edge.entity ? "" : " is-neutral"}${edge.to === "net" ? " is-yours" : ""}`;
     const path = ribbon(ribbons, `e-${edge.id}`, edge, cls, entityFill(edge.entity));
     relate(edge.from, path);
     relate(edge.to, path);
@@ -337,15 +382,26 @@ export function renderYou(container: HTMLElement, model: YouModel, options: Hero
     interactive(
       path,
       lang,
-      () => ({
-        value: eur(edge.value, lang),
-        title: `${tr(from.label, lang)} → ${tr(to.label, lang)}`,
-        lines: edge.share !== undefined && edge.share < 1 ? [`${pct(edge.share, lang, 1)} ${t("legalShares", lang).toLowerCase()}`] : undefined,
-        status: edge.status,
-        hint: true,
-      }),
-      () => options.onOpen({ kind: "node", id: edge.from === "gross" || edge.from === "employer" ? edge.to : edge.from }),
+      () =>
+        edge.estimate && model.estimate
+          ? {
+              value: `≈ ${eur(edge.value, lang)}*`,
+              title: `${t("estimateLabel", lang)} → ${tr(to.label, lang)}`,
+              lines: [tr(model.estimate.label, lang)],
+              status: "estimate" as const,
+              body: tr(ESTIMATE_NOTE, lang),
+              hint: true,
+            }
+          : {
+              value: eur(edge.value, lang),
+              title: `${tr(from.label, lang)} → ${tr(to.label, lang)}`,
+              lines: edge.share !== undefined && edge.share < 1 ? [`${pct(edge.share, lang, 1)} ${t("legalShares", lang).toLowerCase()}`] : undefined,
+              status: edge.status,
+              hint: true,
+            },
+      () => options.onOpen({ kind: "node", id: edge.estimate ? "estimate" : edge.from === "gross" || edge.from === "employer" ? edge.to : edge.from }),
       (on) => highlight([`edge:${edge.id}`, edge.from, edge.to], on),
+      { pointerOnly: true },
     );
   }
 
@@ -384,13 +440,23 @@ export function renderYou(container: HTMLElement, model: YouModel, options: Hero
     const fill = node.kind === "yours" ? "var(--flow-yours)" : node.kind === "ghost" ? "var(--flow-ghost)" : entityFill(node.entity);
     const rect = nodeRect(nodes, node, cls, fill);
     relate(node.id, rect);
+    // ≈* band: the part of a recipient's euros that comes from the household estimate
+    for (const edge of flow.edges.filter((e) => e.estimate && e.to === node.id)) {
+      const band = svgEl(nodes, "rect", { x: node.x + 0.75, y: edge.y1 + 0.75, width: node.w - 1.5, height: Math.max(0, edge.t - 1.5), class: "node-estimate", stroke: entityFill(node.entity) });
+      relate(node.id, band);
+    }
+    const exact = node.value - (node.estimate ?? 0);
     interactive(
       rect,
       lang,
       () => ({
-        value: eur(node.value, lang, node.value < 100 ? 2 : 0),
+        value: eur(exact, lang, exact < 100 ? 2 : 0),
         title: `${tr(node.label, lang)}${node.star ? "" : ""}`,
-        lines: node.stage === 1 && node.id !== "net" ? [`${pct(node.value / model.gross, lang, 1)} ${t("ofEvery100", lang)} ${lang === "de" ? "brutto" : "gross"}`] : undefined,
+        lines: [
+          ...(node.stage === 1 && node.id !== "net" ? [`${pct(node.value / model.gross, lang, 1)} ${lang === "de" ? "des Bruttolohns" : "of the gross wage"}`] : []),
+          ...(node.estimate ? [`+ ≈ ${eur(node.estimate, lang)}* ${lang === "de" ? "aus Ihren Einkäufen (Schätzung)" : "from your purchases (estimate)"}`] : []),
+          ...(node.id === "net" && model.estimate ? [`≈ ${eur(model.estimate.total, lang)}* ${lang === "de" ? "davon als Steuer beim Einkaufen (Schätzung)" : "of it back as tax when spent (estimate)"}`] : []),
+        ],
         status: node.status,
         body: node.mechanism ? tr(node.mechanism, lang) : node.star ? tr(STAR_HEALTH, lang) : undefined,
         hint: true,
@@ -401,18 +467,39 @@ export function renderYou(container: HTMLElement, model: YouModel, options: Hero
   }
 
   // ---- node labels: minimum spacing, one line for small nodes, leader lines where a label had to move
+  const estimateEdges = flow.edges.filter((edge) => edge.estimate);
   for (const stage of [0, 1, 2]) {
     const column = flow.nodes.filter((node) => node.stage === stage && node.h > 0);
-    const placed = placeLabels(
-      labels,
-      column.map((node) => ({
+    const specs: LabelSpec[] = column.map((node) => {
+      const exact = node.value - (node.estimate ?? 0);
+      const exactText = eur(exact, lang, exact < 100 ? 2 : 0);
+      return {
         key: node.id,
         name: `${tr(node.label, lang)}${node.star ? "*" : ""}`,
-        value: eur(node.value, lang, node.value < 100 ? 2 : 0),
+        // never one total: the exact payslip euros, then the ≈ estimate
+        value: node.estimate ? `${exactText} + ≈${eur(node.estimate, lang)}*` : exactText,
         anchorX: stage === 0 ? node.x : node.x + node.w,
-        nodeY: stage === 0 ? node.y : node.y,
+        nodeY: node.y,
         nodeH: stage === 0 ? Math.min(node.h, 80) : node.h,
-      })),
+      };
+    });
+    if (stage === 1 && model.estimate && estimateEdges.length) {
+      // the ≈ input sits beside the exact payslip, where its ribbons leave net pay
+      const net = column.find((node) => node.id === "net")!;
+      const top0 = Math.min(...estimateEdges.map((edge) => edge.y0));
+      const bottom0 = Math.max(...estimateEdges.map((edge) => edge.y0 + edge.t));
+      specs.unshift({
+        key: "estimate",
+        name: t("estimateLabel", lang),
+        value: `≈ ${eur(model.estimate.total, lang)} ${lang === "de" ? "im Jahr" : "a year"}`,
+        anchorX: net.x + net.w,
+        nodeY: top0,
+        nodeH: bottom0 - top0,
+      });
+    }
+    const placed = placeLabels(
+      labels,
+      specs,
       {
         side: stage === 0 ? "left" : "right",
         maxWidth: stage === 0 ? leftLabel - 14 : stage === 1 ? x2 - x1 - 22 : xb - x2 - nodeW - 18,
@@ -431,7 +518,7 @@ export function renderYou(container: HTMLElement, model: YouModel, options: Hero
 
   // ---- pots
   const potGroup = svgEl(svg, "g", { class: "pots" });
-  const potLabelGroup = svgEl(svg, "g", { class: "pot-labels" });
+  const potLabelGroup = svgEl(svg, "g", { class: "pot-labels", "aria-hidden": "true" });
   const selected = potById.get(options.selectedPot) ?? potLayout.pots[0]!;
   for (const p of potLayout.pots) {
     const isSelected = p === selected;
@@ -508,8 +595,14 @@ export function renderYou(container: HTMLElement, model: YouModel, options: Hero
     onOpen: () => options.onOpen({ kind: "pot", id: selected.pot.id }),
   });
 
+  tagEntities(svg);
   tween(container, svg, options.animate);
 }
+
+const ESTIMATE_NOTE = {
+  de: "Schätzung*: Umsatz- und Verbrauchsteuern eines Haushalts dieser Nettoeinkommensklasse (Destatis LWR 2024 × Steuersätze). Nicht Teil des exakten Lohnzettels; Klasse aus Ihrem Netto ÷ 12 (ein Verdiener)*.",
+  en: "Estimate*: VAT and excise of a household in this net-income class (Destatis LWR 2024 × tax rates). Not part of the exact payslip; class from your net ÷ 12 (one earner)*.",
+};
 
 const STAR_HEALTH = {
   de: "* Mit dem durchschnittlichen Zusatzbeitrag (§ 242a SGB V); jede Kasse erhebt ihren eigenen.",
@@ -591,6 +684,7 @@ export function renderComposition(svg: SVGSVGElement, pot: Pot, inflow: number, 
       }),
       o.onOpen,
       (on) => hatch.setAttribute("opacity", on ? "1" : "0"),
+      { visible: `${pct(share, lang, 1)} ${nameLines.join(" ")}` },
     );
   });
   let fy = barBottom + 16;
@@ -658,7 +752,7 @@ export function renderGermany(container: HTMLElement, model: GermanyModel, optio
 
   const ribbons = svgEl(svg, "g", { class: "ribbons" });
   const nodes = svgEl(svg, "g", { class: "nodes" });
-  const labels = svgEl(svg, "g", { class: "labels" });
+  const labels = svgEl(svg, "g", { class: "labels", "aria-hidden": "true" });
   for (const edge of flow.edges) {
     const path = ribbon(ribbons, `e-${edge.id}`, edge, `ribbon${edge.entity ? "" : " is-neutral"}`, entityFill(edge.entity));
     const from = nodeById.get(edge.from)!;
@@ -668,6 +762,8 @@ export function renderGermany(container: HTMLElement, model: GermanyModel, optio
       lang,
       () => ({ value: value(edge.value), title: `${tr(from.label, lang)} → ${tr(to.label, lang)}`, lines: edge.share !== undefined ? [pct(edge.share, lang, 1)] : undefined, status: edge.status, hint: true }),
       () => options.onOpen({ kind: "node", id: edge.from }),
+      undefined,
+      { pointerOnly: true },
     );
   }
   for (const node of flow.nodes) {
@@ -716,7 +812,8 @@ export function renderGermany(container: HTMLElement, model: GermanyModel, optio
   boundary(svg, xb, top + 6, bottom, lang);
   // recipient streams to the boundary
   for (const node of flow.nodes.filter((n) => n.stage === 1)) {
-    svgEl(svg, "path", { d: `M${node.x + node.w},${node.y}H${xb}V${node.y + node.h}H${node.x + node.w}Z`, class: "join-stream", fill: entityFill(node.entity) });
+    // streams go under the labels (ribbon layer), so text stays on top
+    svgEl(ribbons, "path", { d: `M${node.x + node.w},${node.y}H${xb}V${node.y + node.h}H${node.x + node.w}Z`, class: "join-stream", fill: entityFill(node.entity) });
   }
 
   // revenue bridge and spending: same height (spending = revenue + borrowing)
@@ -792,9 +889,12 @@ export function renderGermany(container: HTMLElement, model: GermanyModel, optio
         hint: true,
       }),
       () => options.onOpen({ kind: "cofog", code: s.fn.code }),
+      undefined,
+      { visible: `${unit === "day" ? eur(perResidentPerDay(s.fn.value), lang, 2) : pct(share, lang, 1)} ${wrap(tr(s.fn.label, lang), W - xc - nodeW - 70, 12, 400, 1)[0] ?? ""}` },
     );
   });
   svgEl(right, "text", { x: xc, y: yTop + barH + 18, class: "panel-note" }, `${t("spendingTotal", lang)} ${bn(total, lang)} = ${eur(perResidentPerDay(total), lang, 2)} ${t("perResidentDay", lang)}`);
+  tagEntities(svg);
   tween(container, svg, options.animate);
 }
 

@@ -7,7 +7,7 @@
  },
  "unit": "persons",
  "basis": "Fortschreibung des Bevölkerungsstandes auf Basis des Zensus 2022; status flags per GENESIS ('e' = final)",
- "generated": "2026-10-09",
+ "generated": "2026-10-12",
  "generated_by": "scripts/research/build_population.py",
  "source_germany": {
   "source_id": "destatis_genesis_12411",

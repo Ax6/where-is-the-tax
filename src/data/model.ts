@@ -12,7 +12,7 @@ import { computePayslip, type PayslipParameters, type PayslipRow } from "./paysl
 import { files, raw } from "./sources.ts";
 
 export type EntityId = "fed" | "land" | "muni" | "eu" | "pension" | "health" | "care" | "unemp";
-export type Status = "law" | "official" | "provisional" | "assumption";
+export type Status = "law" | "official" | "provisional" | "assumption" | "estimate";
 
 export interface SourceLink {
   label: Bi;
@@ -103,23 +103,51 @@ export function payslip(year: number, gross: number): PayslipRow {
   return computePayslip(payslipParams, year, gross);
 }
 
-const socialInsurance = raw.socialInsurance as unknown as {
-  systems: Record<string, { rates: { average_earnings_eur?: Record<string, { value: number }> } }>;
-};
+interface WageYear {
+  minimum_wage?: { hourly_eur: number; annual_full_time_eur: number; annual_assumption: string } | null;
+  full_time_earnings?: { annual?: { median_gross_annual_eur: number; average_gross_annual_eur: number } } | null;
+}
+const wageYears = (raw.wageReference as unknown as { years: Record<string, WageYear> }).years;
 
-/** Slider reference points that exist in data/ (statute): average earnings, 2×, contribution ceilings. */
-export function wageTicks(year: number): { id: string; value: number }[] {
-  const average = socialInsurance.systems.pension?.rates.average_earnings_eur?.[String(year)]?.value;
-  const si = payslipParams.years[String(year)]!.social_insurance;
-  const ticks: { id: string; value: number }[] = [];
-  if (average) {
-    ticks.push({ id: "average", value: average }, { id: "double", value: 2 * average });
+export interface WageTick {
+  id: "minimum" | "median" | "average" | "double";
+  value: number;
+  /** year of the figure when it differs from the payslip year (newest available) */
+  fromYear?: number;
+  star?: boolean;
+}
+
+/**
+ * Slider reference points (data/de/citizen/wage-reference.json), all full-time: minimum wage annualised
+ * (40 h × 52 weeks, derived*), median and average annual earnings, 2× average. Earnings for a year that is not
+ * published yet come from the newest earlier year and say so.
+ */
+export function wageTicks(year: number): WageTick[] {
+  const ticks: WageTick[] = [];
+  const minimum = wageYears[String(year)]?.minimum_wage;
+  if (minimum) {
+    ticks.push({ id: "minimum", value: minimum.annual_full_time_eur, star: true });
   }
-  ticks.push({ id: "kv", value: si.kv.ceiling_annual.value }, { id: "rv", value: si.rv.ceiling_annual.value });
+  const earningsYear = Object.keys(wageYears)
+    .map(Number)
+    .filter((y) => y <= year && wageYears[String(y)]?.full_time_earnings?.annual)
+    .sort((a, b) => b - a)[0];
+  const annual = earningsYear ? wageYears[String(earningsYear)]!.full_time_earnings!.annual! : undefined;
+  if (annual) {
+    const fromYear = earningsYear !== year ? earningsYear : undefined;
+    ticks.push(
+      { id: "median", value: annual.median_gross_annual_eur, fromYear },
+      { id: "average", value: annual.average_gross_annual_eur, fromYear },
+      { id: "double", value: 2 * annual.average_gross_annual_eur, fromYear },
+    );
+  }
   return ticks.sort((a, b) => a.value - b.value);
 }
 
-export const defaultWage = (year: number): number => wageTicks(year).find((tick) => tick.id === "average")?.value ?? 45_000;
+export const minimumWageAssumption = (year: number): string | undefined => wageYears[String(year)]?.minimum_wage?.annual_assumption;
+
+/** Default wage: the full-time median (the typical full-time employee). */
+export const defaultWage = (year: number): number => wageTicks(year).find((tick) => tick.id === "median")?.value ?? 50_000;
 
 // ---------------------------------------------------------------------------------------------
 // Flow graph types
@@ -139,6 +167,8 @@ export interface FlowNode {
   /** extra line under the label (e.g. "42.5 % by law") */
   sub?: Bi;
   star?: boolean;
+  /** ≈* part of the value that comes from the household estimate (never part of the exact payslip) */
+  estimate?: number;
 }
 
 export interface FlowEdge {
@@ -150,6 +180,8 @@ export interface FlowEdge {
   status: Status;
   share?: number;
   ghost?: boolean;
+  /** ≈* household estimate ribbon */
+  estimate?: boolean;
 }
 
 export interface Flow {
@@ -292,7 +324,13 @@ function findFunction(code: string): FedFunction {
   return found;
 }
 
-const fnLabel = (fn: FedFunction): Bi => fn.label ?? bi(`Funktion ${fn.code}`, `Function ${fn.code}`);
+/** Federal function names from the Funktionenplan (data/de/federal/funktionenplan.json), else the budget file. */
+const planLabels = new Map(
+  (raw.funktionenplan as unknown as { rows: { code: string; label: Bi }[] }).rows.map((row) => [row.code, row.label]),
+);
+export const functionName = (code: string, fallback?: Bi | null): Bi =>
+  planLabels.get(code) ?? fallback ?? bi(`Funktion ${code}`, `Function ${code}`);
+const fnLabel = (fn: FedFunction): Bi => functionName(fn.code, fn.label);
 
 /** Federal grants to the two social pools shown as pots: function 221 (pension) and 224 (health). */
 export const federalGrants = {
@@ -311,7 +349,7 @@ function federalPot(): Pot {
       }))
       .filter((child) => Math.abs(child.value) > 0.5e9)
       .sort((a, b) => b.value - a.value);
-    return { id: `hf${hf.code}`, label: hf.label ?? bi(hf.code, hf.code), value: hf.amount_eur - removed, children };
+    return { id: `hf${hf.code}`, label: functionName(hf.code, hf.label), value: hf.amount_eur - removed, children };
   });
   const own = federal.official_total_eur - transfer;
   return {
@@ -353,6 +391,8 @@ interface LaenderMeasure {
 const laender = raw.laenderFunctions2022 as unknown as {
   year: number;
   groups: Record<string, Bi>;
+  /** bilingual labels keyed by the German function key (added 2026-10-12); older builds lack it */
+  function_labels?: Record<string, Bi>;
   scopes_data: Record<"land" | "municipal" | "land_plus_municipal", Record<string, { name: string; measures: { adjusted: LaenderMeasure } }>>;
   source: SourceLike;
   caveats: string[];
@@ -400,8 +440,18 @@ function laenderChildren(measure: LaenderMeasure, code: string): { label: Bi; va
   return names
     .map((name) => ({ name, value: measure.functions_meur[name] }))
     .filter((entry): entry is { name: string; value: number } => typeof entry.value === "number" && entry.value > 0)
-    .map((entry) => ({ label: germanOnly(entry.name.slice(strip)), value: entry.value * 1e6 }))
+    .map((entry) => ({ label: functionLabel(entry.name, strip), value: entry.value * 1e6 }))
     .sort((a, b) => b.value - a.value);
+}
+
+/** Label of a Länder function: the file's bilingual label (child part only), else the German name marked (DE). */
+function functionLabel(key: string, strip: number): Bi {
+  const label = laender.function_labels?.[key];
+  if (!label) {
+    return germanOnly(key.slice(strip));
+  }
+  const childEn = strip > 0 && label.en.includes(": ") ? label.en.slice(label.en.lastIndexOf(": ") + 2) : label.en;
+  return bi(key.slice(strip), childEn);
 }
 
 function laenderCategories(measure: LaenderMeasure): PotCategory[] {
@@ -442,7 +492,14 @@ const berlin = raw.berlinFunctions2024 as unknown as {
   total_eur: number;
   year: number;
   status: string;
-  groups: { code: string; name: string; name_de: string; amount_eur: number; children?: { code: string; name_de: string; amount_eur: number }[] }[];
+  groups: {
+    code: string;
+    label?: Bi;
+    name?: string;
+    name_de?: string;
+    amount_eur: number;
+    children?: { code: string; label?: Bi; name_de?: string; amount_eur: number }[];
+  }[];
   source: SourceLike;
 };
 
@@ -462,9 +519,9 @@ function landPot(place: Place | undefined): Pot {
       categories: fold(
         berlin.groups.map((group) => ({
           id: `g${group.code}`,
-          label: bi(group.name_de, group.name),
+          label: group.label ?? bi(group.name_de ?? group.code, group.name ?? group.code),
           value: group.amount_eur,
-          children: (group.children ?? []).map((child) => ({ label: germanOnly(child.name_de), value: child.amount_eur })),
+          children: (group.children ?? []).map((child) => ({ label: child.label ?? germanOnly(child.name_de ?? child.code), value: child.amount_eur })),
         })),
         6,
       ),
@@ -654,6 +711,87 @@ function socialPot(entity: "pension" | "health" | "care" | "unemp"): Pot {
 export const payrollView2024 = social.payroll_view["2024"]!;
 
 // ---------------------------------------------------------------------------------------------
+// Household indirect taxes (estimate ≈*), data/de/citizen/household-indirect-taxes.json
+// ---------------------------------------------------------------------------------------------
+
+interface HouseholdClass {
+  household_net_income_class_de: string;
+  consumption_month_eur: number;
+  vat_year_eur: number;
+  excises_year_eur: Record<string, number>;
+  indirect_taxes_year_eur: number;
+  share_of_consumption: number;
+  recipients_year_eur: { bund: number; laender: number; gemeinden: number };
+}
+const household = raw.householdIndirectTaxes as unknown as {
+  class_order: string[];
+  classes: Record<string, HouseholdClass>;
+  caveats: string[];
+  method: Record<string, string>;
+  sources: Record<string, SourceLike>;
+};
+
+export interface HouseholdEstimate {
+  classId: string;
+  /** monthly household net income bounds of the class, EUR */
+  from: number;
+  to: number | null;
+  label: Bi;
+  monthlyNet: number;
+  total: number;
+  vat: number;
+  excises: Record<string, number>;
+  recipients: { fed: number; land: number; muni: number };
+  consumptionMonth: number;
+  shareOfConsumption: number;
+}
+
+/** Classes by monthly household net income, parsed from the class names ("1300 bis unter 2600 Euro"). */
+export const householdClasses = household.class_order
+  .filter((id) => /\d/.test(id))
+  .map((id) => {
+    const numbers = (id.match(/\d+/g) ?? []).map(Number);
+    const from = /^Unter/.test(id) ? 0 : numbers[0]!;
+    const to = /^Unter/.test(id) ? numbers[0]! : /und mehr/.test(id) ? null : numbers[1]!;
+    return { id, from, to };
+  });
+
+/**
+ * ≈* indirect taxes for the household class the payslip's net pay falls into (net ÷ 12, single earner, as the
+ * file's method suggests). An estimate by household, not a person; shown next to the exact payslip, never in it.
+ */
+export function householdEstimate(netAnnual: number): HouseholdEstimate {
+  const monthly = netAnnual / 12;
+  const found = householdClasses.find((c) => monthly >= c.from && (c.to === null || monthly < c.to)) ?? householdClasses[0]!;
+  const c = household.classes[found.id]!;
+  const range = (lang: "de" | "en") => {
+    const n = (v: number) => v.toLocaleString(lang === "de" ? "de-DE" : "en-GB");
+    if (found.from === 0) return lang === "de" ? `unter ${n(found.to!)} €` : `under €${n(found.to!)}`;
+    if (found.to === null) return lang === "de" ? `ab ${n(found.from)} €` : `€${n(found.from)} and more`;
+    return lang === "de" ? `${n(found.from)}–${n(found.to)} €` : `€${n(found.from)}–${n(found.to)}`;
+  };
+  return {
+    classId: found.id,
+    from: found.from,
+    to: found.to,
+    label: bi(`Haushaltsnetto ${range("de")} im Monat`, `household net ${range("en")} a month`),
+    monthlyNet: monthly,
+    total: c.indirect_taxes_year_eur,
+    vat: c.vat_year_eur,
+    excises: c.excises_year_eur,
+    recipients: { fed: c.recipients_year_eur.bund, land: c.recipients_year_eur.laender, muni: c.recipients_year_eur.gemeinden },
+    consumptionMonth: c.consumption_month_eur,
+    shareOfConsumption: c.share_of_consumption,
+  };
+}
+
+export const householdCaveats = household.caveats;
+export const householdSource = (): SourceLink[] => [
+  link(bi("Destatis Laufende Wirtschaftsrechnungen 2024 (63111)", "Destatis household budget survey 2024 (63111)"), files.householdIndirectTaxes, household.sources.lwr),
+  { label: bi("Steuersätze und Verteilung: Umsatzsteuer 2024, Verbrauchsteuern", "Rates and split: VAT 2024 outcome, excises"), file: files.householdIndirectTaxes, coordinates: household.method.recipients },
+];
+
+// ---------------------------------------------------------------------------------------------
 // You zoom: payslip → recipients → pots
 // ---------------------------------------------------------------------------------------------
 
@@ -664,13 +802,15 @@ export interface YouModel {
   payslip: PayslipRow;
   flow: Flow;
   pots: Pot[];
-  /** personal euros reaching each pot (sum of its recipients) */
+  /** personal euros reaching each pot (sum of its recipients), exact payslip only */
   inflow: Record<string, number>;
+  /** ≈* indirect taxes on what the household buys, when the Shopping layer is on */
+  estimate?: HouseholdEstimate;
 }
 
 export const ENTITY_ORDER: EntityId[] = ["fed", "land", "muni", "eu", "pension", "health", "care", "unemp"];
 
-export function buildYou(year: number, gross: number, placeCode: string): YouModel {
+export function buildYou(year: number, gross: number, placeCode: string, options: { estimate?: boolean } = {}): YouModel {
   const place = getPlace(placeCode);
   const p = payslip(year, gross);
   const d = p.deductions_employee;
@@ -806,9 +946,31 @@ export function buildYou(year: number, gross: number, placeCode: string): YouMod
   }
   edges.push({ id: "soli-fed", from: "soli", to: "r-fed", value: d.soli, entity: "fed", status: "law", share: 1 });
 
+  // ≈* taxes on what the household buys, out of net pay, by the file's recipient split
+  const estimate = options.estimate ? householdEstimate(p.totals.net) : undefined;
+  if (estimate) {
+    const parts: { to: string; entity: EntityId; value: number }[] = merged
+      ? [
+          { to: "r-fed", entity: "fed", value: estimate.recipients.fed },
+          { to: "r-land", entity: "land", value: estimate.recipients.land + estimate.recipients.muni },
+        ]
+      : [
+          { to: "r-fed", entity: "fed", value: estimate.recipients.fed },
+          { to: "r-land", entity: "land", value: estimate.recipients.land },
+          { to: "r-muni", entity: "muni", value: estimate.recipients.muni },
+        ];
+    for (const part of parts) {
+      edges.push({ id: `est-${part.entity}`, from: "net", to: part.to, value: part.value, entity: part.entity, status: "estimate", estimate: true });
+    }
+  }
+
   for (const node of nodes) {
     if (node.stage === 2) {
       node.value = edges.filter((edge) => edge.to === node.id).reduce((sum, edge) => sum + edge.value, 0);
+      const est = edges.filter((edge) => edge.to === node.id && edge.estimate).reduce((sum, edge) => sum + edge.value, 0);
+      if (est > 0) {
+        node.estimate = est;
+      }
     }
   }
 
@@ -816,7 +978,8 @@ export function buildYou(year: number, gross: number, placeCode: string): YouMod
   const pots = [federalPot(), landPot(place), ...(muniPot ? [muniPot] : []), socialPot("pension"), socialPot("health"), socialPot("care"), socialPot("unemp")];
   const inflow: Record<string, number> = {};
   for (const pot of pots) {
-    inflow[pot.id] = pot.recipients.reduce((sum, id) => sum + (nodes.find((node) => node.id === id)?.value ?? 0), 0);
+    // exact payslip euros only: the ≈ estimate never enters the pro-rata base
+    inflow[pot.id] = edges.filter((edge) => !edge.estimate && pot.recipients.includes(edge.to)).reduce((sum, edge) => sum + edge.value, 0);
   }
 
   return {
@@ -831,6 +994,7 @@ export function buildYou(year: number, gross: number, placeCode: string): YouMod
     },
     pots,
     inflow,
+    estimate,
   };
 }
 
@@ -1182,11 +1346,22 @@ export interface TaxTableRow {
  * Trade tax: legal-allocation.json assigns it 100 % to municipalities (gross) and carries the levy only in
  * its note; the levy amounts paid to Federation and Länder in 2024 are in by-recipient.json.
  */
+export const tradeTaxLevy = (raw.legalAllocation as unknown as {
+  trade_tax_levy: {
+    label: Bi;
+    formula: Bi;
+    multipliers: { federation_pct: number; land_pct: number; total_pct: number; legal_basis: string; source: SourceLike };
+    city_states: Bi;
+    effective_share_of_gross_note: Bi;
+    outcome: Record<string, { gross_trade_tax_eur: number; levy_paid_by_municipalities_eur: number; received_federation_eur: number; received_laender_eur: number; received_laender_increased_levy_eur: number; levy_share_of_gross: number }>;
+  };
+}).trade_tax_levy;
+
 export function tradeTaxSplit2024(): { entity: EntityId; share: number; value: number }[] {
-  const gross = taxValue("STEUERARTK30");
-  const fed = recipientValue("STEUERNVB50");
-  const land = recipientValue("STEUERNVL50") + recipientValue("STEUERNVL60");
-  const muni = gross + recipientValue("STEUERNVK30");
+  const o = tradeTaxLevy.outcome["2024"]!;
+  const muni = o.gross_trade_tax_eur + o.levy_paid_by_municipalities_eur;
+  const fed = o.received_federation_eur;
+  const land = o.received_laender_eur + o.received_laender_increased_levy_eur;
   const total = muni + fed + land;
   return [
     { entity: "muni", share: muni / total, value: muni },
@@ -1220,7 +1395,10 @@ export function taxTable(): TaxTableRow[] {
           amount,
           kind: row.kind,
           shares: tradeTaxSplit2024().map(({ entity, share }) => ({ entity, share })),
-          outcome: bi("2024 nach der Gewerbesteuerumlage an Bund und Länder", "2024, after the statutory levy to Federation and Länder"),
+          outcome: bi(
+            `2024 nach der Gewerbesteuerumlage (${tradeTaxLevy.multipliers.total_pct.toLocaleString("de-DE")} % des Messbetrags: ${tradeTaxLevy.multipliers.federation_pct.toLocaleString("de-DE")} Bund, ${tradeTaxLevy.multipliers.land_pct.toLocaleString("de-DE")} Land)`,
+            `2024, after the statutory levy (${tradeTaxLevy.multipliers.total_pct} % of the tax base: ${tradeTaxLevy.multipliers.federation_pct} Federation, ${tradeTaxLevy.multipliers.land_pct} Land)`,
+          ),
           note: row.note,
         };
       }

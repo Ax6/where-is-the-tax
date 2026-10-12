@@ -7,11 +7,11 @@ export function esc(value: string): string {
   return value.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;").replaceAll("'", "&#039;");
 }
 
-const STATUS_KEY = { law: "statusLaw", official: "statusOfficial", provisional: "statusProvisional", assumption: "statusAssumption" } as const;
+const STATUS_KEY = { law: "statusLaw", official: "statusOfficial", provisional: "statusProvisional", assumption: "statusAssumption", estimate: "statusEstimate" } as const;
 export const badge = (status: Status, lang: Lang): string => `<span class="badge" data-status="${status}">${esc(t(STATUS_KEY[status], lang))}</span>`;
 
 export const swatch = (entity?: EntityId, extra = ""): string =>
-  `<span class="swatch ${extra}"${entity ? ` style="background:var(--e-${entity})"` : ""} aria-hidden="true"></span>`;
+  `<span class="swatch ${extra}"${entity ? ` data-entity="${entity}" style="background:var(--e-${entity})"` : ""} aria-hidden="true"></span>`;
 
 /** A horizontal 100 % bar from parts (HTML, no SVG): used in drawers and tables. */
 export function splitBar(parts: { entity?: EntityId; share: number; cls?: string }[], height = 10): string {
@@ -19,7 +19,7 @@ export function splitBar(parts: { entity?: EntityId; share: number; cls?: string
     .filter((part) => part.share > 0)
     .map(
       (part) =>
-        `<span class="split-seg ${part.cls ?? ""}" style="flex-grow:${part.share.toFixed(5)};${part.entity ? `background:var(--e-${part.entity})` : ""}"></span>`,
+        `<span class="split-seg ${part.cls ?? ""}"${part.entity ? ` data-entity="${part.entity}"` : ""} style="flex-grow:${part.share.toFixed(5)};${part.entity ? `background:var(--e-${part.entity})` : ""}"></span>`,
     )
     .join("")}</span>`;
 }

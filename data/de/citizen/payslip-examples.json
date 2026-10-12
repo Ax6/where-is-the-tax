@@ -7,7 +7,7 @@
  },
  "unit": "EUR per year",
  "basis": "ANNUAL WAGE-TAX WITHHOLDING for Steuerklasse I (identical to IV without children), no church tax, no children, no Freibeträge, employee compulsorily insured in all four social-insurance branches (West ceilings, statutory average Zusatzbeitrag, outside Saxony). This is what the employer withholds over a year under the Programmablaufplan; the income-tax ASSESSMENT (Veranlagung) can differ (actual Werbungskosten, Sonderausgaben, the real Zusatzbeitrag of the Krankenkasse, other income). 'childless' = with the PV childless surcharge (age 23+, no children); 'with_child' = one child (surcharge off, no abatement).",
- "generated": "2026-10-09",
+ "generated": "2026-10-12",
  "generated_by": "scripts/research/build_payslip.py",
  "years_covered": [
   2024,

@@ -7,7 +7,7 @@
  },
  "unit": "MEUR",
  "basis": "ESA 2010 accrual; general government S13 consolidated (transfers between levels eliminated) and subsectors S1311-S1314 (not consolidated with each other, do not add subsectors to S13); 'p' = provisional per Eurostat; 'unflagged' = Eurostat sets no flag (not an assertion of finality)",
- "generated": "2026-10-09",
+ "generated": "2026-10-12",
  "generated_by": "scripts/research/build_government.py",
  "years": [
   "1990",

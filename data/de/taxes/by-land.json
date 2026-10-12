@@ -7,7 +7,7 @@
  },
  "unit": "EUR",
  "basis": "Cash receipts by Land, calendar year. 'Before distribution' = taxes collected in the Land (Aufkommen); 'after distribution' = what the Land, its municipalities, the Federation and the EU receive out of that Land's table after legal shares, equalisation and grants.",
- "generated": "2026-10-09",
+ "generated": "2026-10-12",
  "generated_by": "scripts/research/build_taxes.py",
  "years": [
   "2022",
