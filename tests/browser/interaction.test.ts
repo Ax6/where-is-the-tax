@@ -50,6 +50,8 @@ test("header: controls fit at breakpoints and mobile settings preserve state and
     assert.equal(await page.getAttribute("#controls-toggle", "aria-expanded"), "true");
     assert.equal(await page.locator("#wage-range").isVisible(), true);
     const node = page.locator(".stage-row").first();
+    // the row is identified by its key: a redraw (fonts, resize) replaces the element but keeps the key
+    const key = await node.getAttribute("data-key");
     for (const resize of [false, true]) {
       await node.focus();
       await page.keyboard.press("Enter");
@@ -63,14 +65,13 @@ test("header: controls fit at breakpoints and mobile settings preserve state and
       await page.keyboard.press("Escape");
       // focus returns to the row (a frame later if the browser dropped the first focus() after `inert` was lifted)
       try {
-        await page.waitForFunction((el) => el === document.activeElement, await node.elementHandle(), { timeout: 5_000 });
+        await page.waitForFunction((k) => (document.activeElement as HTMLElement | null)?.dataset?.key === k, key, { timeout: 5_000 });
       } catch (error) {
         const state = await page.evaluate(() => {
-          const a = document.activeElement;
-          const drawer = document.querySelector<HTMLElement>("#drawer");
-          return { active: a ? `${a.tagName}#${a.id}.${a.className} key=${(a as HTMLElement).dataset?.key}` : null, drawerHidden: drawer?.hidden, mainInert: document.querySelector<HTMLElement>("#app > main")?.inert, rows: document.querySelectorAll(".stage-row").length };
+          const a = document.activeElement as HTMLElement | null;
+          return { active: a ? `${a.tagName}#${a.id}.${a.className} key=${a.dataset?.key}` : null, drawerHidden: document.querySelector<HTMLElement>("#drawer")?.hidden };
         });
-        throw new Error(`focus not restored (resize=${resize}): ${JSON.stringify(state)}`, { cause: error });
+        throw new Error(`focus not restored to ${key} (resize=${resize}): ${JSON.stringify(state)}`, { cause: error });
       }
       assert.equal(await page.getAttribute("#controls-toggle", "aria-expanded"), "true");
     }
