@@ -722,6 +722,51 @@ li.legend-note {
   overflow: visible;
 }
 
+/* view switch: the old chart lifts away as a ghost, the new one rises in; zooming out (You → Germany) moves up,
+   zooming back in moves down */
+.flow-ghost {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  animation: flow-out 260ms ease forwards;
+}
+
+.flow[data-enter] > :not(.flow-ghost) {
+  animation: flow-in 380ms cubic-bezier(0.2, 0.7, 0.3, 1) both;
+}
+
+.flow[data-enter="in"] > .flow-ghost {
+  --flow-shift: 14px;
+}
+
+.flow[data-enter="in"] > :not(.flow-ghost) {
+  --flow-shift: -14px;
+}
+
+@keyframes flow-out {
+  to {
+    opacity: 0;
+    transform: translateY(var(--flow-shift, -14px));
+  }
+}
+
+@keyframes flow-in {
+  from {
+    opacity: 0;
+    transform: translateY(var(--flow-shift, 14px));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .flow-ghost {
+    display: none;
+  }
+
+  .flow[data-enter] > :not(.flow-ghost) {
+    animation: none;
+  }
+}
+
 .hero-svg text {
   font-family: var(--sans);
 }

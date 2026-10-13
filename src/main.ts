@@ -173,7 +173,7 @@ function update(next: Partial<State>, options: { animate?: boolean; full?: boole
   if (state.zoom !== before.zoom || state.estimate !== before.estimate || state.highlight !== before.highlight || state.year !== before.year) {
     refreshChrome();
   }
-  renderHero(options.animate ?? false);
+  renderHero(options.animate ?? false, { crossfade: state.zoom !== before.zoom ? (state.zoom === "germany" ? "out" : "in") : undefined });
   if (state.land !== before.land || state.year !== before.year || state.zoom !== before.zoom) {
     renderMap();
   }
@@ -250,10 +250,16 @@ function refreshChrome(): void {
   requestAnimationFrame(layoutTickLabels);
 }
 
-function renderHero(animate: boolean): void {
+/**
+ * Draws the hero. On a view switch ("crossfade": zooming out to Germany or back in to You) the old chart stays as a
+ * ghost that lifts away while the new one rises in (styles.css: flow-out / flow-in); nothing to tween between the two.
+ */
+function renderHero(animate: boolean, options: { crossfade?: "out" | "in" } = {}): void {
   const flow = document.querySelector<HTMLElement>("#flow")!;
   const focusedKey = flow.contains(document.activeElement) ? (document.activeElement as HTMLElement).dataset.key : undefined;
   hideTooltip();
+  flow.querySelector(".flow-ghost")?.remove();
+  const ghost = options.crossfade && !window.matchMedia("(prefers-reduced-motion: reduce)").matches ? (flow.firstElementChild?.cloneNode(true) as HTMLElement | null) : null;
   flow.classList.toggle("is-mobile", isMobile());
   const onOpen = (target: DrawerTarget, trigger?: HTMLElement) => openDrawer(target, trigger ?? document.activeElement as HTMLElement);
   const onSelectPot = (id: string) => update({ pot: id });
@@ -278,6 +284,19 @@ function renderHero(animate: boolean): void {
   }
   if (focusedKey) {
     flow.querySelector<HTMLElement>(`[data-key="${CSS.escape(focusedKey)}"]`)?.focus({ preventScroll: true });
+  }
+  if (ghost) {
+    ghost.classList.add("flow-ghost");
+    ghost.setAttribute("aria-hidden", "true");
+    ghost.inert = true;
+    flow.dataset.enter = options.crossfade;
+    flow.append(ghost);
+    const done = () => {
+      ghost.remove();
+      delete flow.dataset.enter;
+    };
+    ghost.addEventListener("animationend", done, { once: true });
+    window.setTimeout(done, 600);
   }
 }
 
