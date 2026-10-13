@@ -911,6 +911,10 @@ li.legend-note {
   font-size: 10.5px;
 }
 
+.boundary-label[role="button"] {
+  cursor: pointer;
+}
+
 .pot {
   cursor: pointer;
 }
