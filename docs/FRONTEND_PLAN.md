@@ -78,7 +78,7 @@ The map's diverging palette must not reuse recipient hues.
 ## Interaction
 
 - **One control row (v4):** title · year `2024 | 2025` (28 px segmented control; drives every
-  view; default 2024; hash `y=2025`; the title follows the year) · gross wage (figure, click to
+  view; default 2025; hash `y=2024` preserves the previous year; the title follows the year) · gross wage (figure, click to
   type; slider in €1,000 steps that snaps to a reference wage within €500, value bubble while
   dragging; ticks `min* · median · avg`, full name and definition on hover) · zoom (You |
   Germany) · unit (Germany only) · `DE | EN` · theme and pattern icon buttons. No number box, no

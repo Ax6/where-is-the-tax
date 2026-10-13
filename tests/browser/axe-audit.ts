@@ -60,7 +60,7 @@ export interface Violation {
   targets: string[];
 }
 
-const TYPES: Record<string, string> = { ".html": "text/html", ".js": "text/javascript", ".css": "text/css", ".json": "application/json", ".svg": "image/svg+xml" };
+const TYPES: Record<string, string> = { ".html": "text/html", ".js": "text/javascript", ".css": "text/css", ".json": "application/json", ".svg": "image/svg+xml", ".woff2": "font/woff2" };
 
 export async function serveDist(): Promise<{ server: Server; url: string }> {
   await stat(join(DIST, "index.html"));

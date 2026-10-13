@@ -1,116 +1,129 @@
+@font-face {
+  font-family: "IBM Plex Sans";
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url("./assets/fonts/ibm-plex-sans.woff2") format("woff2");
+}
+
 /*
  * Where taxes go: one interactive slide.
- * Hue means one thing only: the legal recipient. Everything else is ink and grey.
- * Recipient palettes validated with the dataviz validator (adjacent pairs, both stacking orders):
- *   light, surface #f6f6f3: worst CVD ΔE 15.2, normal ΔE 15.6; four hues < 3:1 → direct labels + table view
- *   dark,  surface #17191b: worst CVD ΔE 13.2, normal ΔE 17.4; one hue < 3:1 → direct labels + table view
- * Map diverging arms validated as ordinal ramps in both modes; poles ≥ normal ΔE 15.4 from every recipient hue.
+ * Hue identifies the legal recipient. Muted colours are paired with direct labels,
+ * accessible tables and optional patterns so colour is never the only cue.
  */
 :root {
   color-scheme: light;
-  --page: #f6f6f3;
-  --raise: #ffffff;
-  --ink: #161a1d;
-  --ink-2: #4c5358;
-  --muted: #60676c;
-  --hair: #dcdedb;
-  --axis: #b4b8b4;
-  --flow-neutral: #8a908b;
-  --flow-yours: #d2d5d1;
-  --flow-ghost: #ecedea;
-  --borrowed: #4f5551;
-  --neutral-1: #6f7570;
-  --neutral-2: #989e99;
-  --neutral-3: #bfc3be;
+  --page: #f7f6f1;
+  --raise: #fcfcf8;
+  --ink: #223746;
+  --ink-2: #475967;
+  --muted: #596b76;
+  --hair: #dce2e1;
+  --axis: #a9b8bd;
+  --flow-neutral: #83969e;
+  --flow-yours: #d2dedf;
+  --flow-ghost: #e9eeed;
+  --borrowed: #536d79;
+  --neutral-1: #718b98;
+  --neutral-2: #9bb0b8;
+  --neutral-3: #c8d5d8;
   --shadow: rgb(22 26 29 / 0.12);
   --backdrop: rgb(22 26 29 / 0.16);
   --tex-ink: var(--page);
   --ribbon-alpha: 0.4;
-  --e-fed: #2a78d6;
-  --e-land: #eb6834;
-  --e-muni: #4a3aa7;
-  --e-eu: #1baf7a;
-  --e-pension: #008300;
-  --e-health: #e87ba4;
-  --e-care: #eda100;
-  --e-unemp: #e34948;
-  --map-pays: #6b4f2a;
-  --map-mid: #c8c9c2;
-  --map-receives: #0e6e74;
+  --e-fed: #5d86a4;
+  --e-land: #ac8c67;
+  --e-muni: #9485a7;
+  --e-eu: #5a8e88;
+  --e-pension: #7b906b;
+  --e-health: #ae8298;
+  --e-care: #aa965e;
+  --e-unemp: #aa7d76;
+  --map-pays: #a38e6c;
+  --map-mid: #d5ddd9;
+  --map-receives: #5a858e;
   --serif: "Iowan Old Style", Charter, "Bitstream Charter", "Sitka Text", Cambria, Georgia, serif;
-  --sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+  --sans: "IBM Plex Sans", system-ui, sans-serif;
   --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
   --gutter: clamp(14px, 1.7vw, 28px);
   font-family: var(--sans);
+  font-synthesis: none;
+  -webkit-font-smoothing: antialiased;
   color: var(--ink);
   background: var(--page);
+  --accent: #e3ecec;
+  --accent-ink: #223746;
 }
 
 /* Dark: its own steps from the same ramps (not an inversion). Follows the OS unless the toggle says otherwise. */
 @media (prefers-color-scheme: dark) {
   :root:where(:not([data-theme="light"])) {
     color-scheme: dark;
-    --page: #17191b;
-    --raise: #22262a;
-    --ink: #eceeec;
-    --ink-2: #c4c8c5;
-    --muted: #9ca29f;
-    --hair: #30353a;
-    --axis: #4b5156;
-    --flow-neutral: #7b827e;
-    --flow-yours: #3b403f;
-    --flow-ghost: #262a2d;
-    --borrowed: #b6bcb8;
-    --neutral-1: #8f9692;
-    --neutral-2: #6c726f;
-    --neutral-3: #4f5552;
+    --page: #1c272d;
+    --raise: #25333b;
+    --ink: #e8edeb;
+    --ink-2: #c0cdd0;
+    --muted: #a0b3b9;
+    --hair: #3b4a51;
+    --axis: #627a84;
+    --flow-neutral: #8fa4ac;
+    --flow-yours: #435a64;
+    --flow-ghost: #2b3c44;
+    --borrowed: #becdd1;
+    --neutral-1: #98aeb7;
+    --neutral-2: #74909c;
+    --neutral-3: #526e7b;
     --shadow: rgb(0 0 0 / 0.5);
     --backdrop: rgb(0 0 0 / 0.45);
     --ribbon-alpha: 0.5;
-    --e-fed: #3987e5;
-    --e-land: #d95926;
-    --e-muni: #9085e9;
-    --e-eu: #40a87e;
-    --e-pension: #11780f;
-    --e-health: #d55181;
-    --e-care: #c98500;
-    --e-unemp: #ab3137;
-    --map-pays: #ceb69c;
-    --map-mid: #3a3d3c;
-    --map-receives: #40d0df;
+    --e-fed: #8aafc7;
+    --e-land: #c6aa86;
+    --e-muni: #b4a5c5;
+    --e-eu: #8ab6ad;
+    --e-pension: #a8b895;
+    --e-health: #c6a2b2;
+    --e-care: #c4b784;
+    --e-unemp: #c4a09a;
+    --map-pays: #c4b18d;
+    --map-mid: #40525a;
+    --map-receives: #91b7c0;
+    --accent: #3c5760;
+    --accent-ink: #e8edeb;
   }
 }
 
 :root[data-theme="dark"] {
   color-scheme: dark;
-    --page: #17191b;
-    --raise: #22262a;
-    --ink: #eceeec;
-    --ink-2: #c4c8c5;
-    --muted: #9ca29f;
-    --hair: #30353a;
-    --axis: #4b5156;
-    --flow-neutral: #7b827e;
-    --flow-yours: #3b403f;
-    --flow-ghost: #262a2d;
-    --borrowed: #b6bcb8;
-    --neutral-1: #8f9692;
-    --neutral-2: #6c726f;
-    --neutral-3: #4f5552;
+    --page: #1c272d;
+    --raise: #25333b;
+    --ink: #e8edeb;
+    --ink-2: #c0cdd0;
+    --muted: #a0b3b9;
+    --hair: #3b4a51;
+    --axis: #627a84;
+    --flow-neutral: #8fa4ac;
+    --flow-yours: #435a64;
+    --flow-ghost: #2b3c44;
+    --borrowed: #becdd1;
+    --neutral-1: #98aeb7;
+    --neutral-2: #74909c;
+    --neutral-3: #526e7b;
     --shadow: rgb(0 0 0 / 0.5);
     --backdrop: rgb(0 0 0 / 0.45);
     --ribbon-alpha: 0.5;
-    --e-fed: #3987e5;
-    --e-land: #d95926;
-    --e-muni: #9085e9;
-    --e-eu: #40a87e;
-    --e-pension: #11780f;
-    --e-health: #d55181;
-    --e-care: #c98500;
-    --e-unemp: #ab3137;
-    --map-pays: #ceb69c;
-    --map-mid: #3a3d3c;
-    --map-receives: #40d0df;
+    --e-fed: #8aafc7;
+    --e-land: #c6aa86;
+    --e-muni: #b4a5c5;
+    --e-eu: #8ab6ad;
+    --e-pension: #a8b895;
+    --e-health: #c6a2b2;
+    --e-care: #c4b784;
+    --e-unemp: #c4a09a;
+    --map-pays: #c4b18d;
+    --map-mid: #40525a;
+    --map-receives: #91b7c0;
+    --accent: #3c5760;
+    --accent-ink: #e8edeb;
 }
 
 * {
@@ -183,6 +196,7 @@ select {
   min-height: 80px;
   padding: 12px var(--gutter);
   border-bottom: 1px solid var(--hair);
+  background: var(--raise);
 }
 
 .title {
@@ -345,7 +359,7 @@ input[type="range"] {
   min-width: 0;
   padding: 3px;
   border: 1px solid var(--hair);
-  border-radius: 8px;
+  border-radius: 6px;
   background: var(--flow-ghost);
 }
 
@@ -357,7 +371,7 @@ input[type="range"] {
   background: none;
   color: var(--ink-2);
   font-size: 13px;
-  font-weight: 550;
+  font-weight: 500;
   white-space: nowrap;
   cursor: pointer;
 }
@@ -376,6 +390,14 @@ input[type="range"] {
   color: var(--page);
 }
 
+.seg-year button[aria-pressed="true"] {
+  font-weight: 650;
+}
+
+.ctl-unit .seg button[aria-pressed="true"] {
+  background: var(--accent);
+  color: var(--accent-ink);
+}
 .ctl-unit {
   grid-area: context;
   justify-self: end;
@@ -513,8 +535,8 @@ input[type="range"] {
 
 .chip {
   padding: 3px 10px;
-  border: 1px solid var(--ink);
-  border-radius: 999px;
+  border: 1px solid var(--hair);
+  border-radius: 5px;
   background: var(--raise);
   font-size: 12.5px;
   cursor: pointer;
@@ -544,7 +566,7 @@ input[type="range"] {
   gap: 6px;
   padding: 2px 7px;
   border: 1px solid transparent;
-  border-radius: 999px;
+  border-radius: 4px;
   background: none;
   color: var(--ink-2);
   font-size: 12px;
@@ -556,8 +578,8 @@ input[type="range"] {
 }
 
 .legend-item[aria-pressed="true"] {
-  border-color: var(--ink);
-  background: var(--raise);
+  border-color: var(--axis);
+  background: var(--flow-ghost);
   color: var(--ink);
 }
 
@@ -595,7 +617,7 @@ li.legend-note {
 .map-title {
   margin: 0;
   color: var(--muted);
-  font-family: var(--mono);
+  font-family: var(--sans);
   font-size: 11px;
   font-weight: 400;
 }
@@ -628,8 +650,9 @@ li.legend-note {
   background: none;
   font-size: 12.5px;
   text-decoration: underline;
-  text-underline-offset: 2px;
+  text-underline-offset: 4px;
   cursor: pointer;
+  text-decoration-color: var(--axis);
 }
 
 .hero-line {
@@ -705,7 +728,7 @@ li.legend-note {
 
 .stage-label {
   fill: var(--muted);
-  font-family: var(--mono) !important;
+  font-family: var(--sans) !important;
   font-size: 11px;
 }
 
@@ -826,7 +849,7 @@ li.legend-note {
 
 .boundary-label {
   fill: var(--ink-2);
-  font-family: var(--mono) !important;
+  font-family: var(--sans) !important;
   font-size: 10.5px;
 }
 
@@ -1129,7 +1152,7 @@ li.legend-note {
   width: min(500px, 100vw);
   overflow-y: auto;
   border-left: 1px solid var(--ink);
-  background: var(--page);
+  background: var(--raise);
   transform: translateX(24px);
   opacity: 0;
   transition: transform 200ms ease, opacity 200ms ease;
@@ -1810,7 +1833,7 @@ code {
 .stage-title {
   margin: 0 0 6px;
   color: var(--muted);
-  font-family: var(--mono);
+  font-family: var(--sans);
   font-size: 11.5px;
   font-weight: 400;
 }
