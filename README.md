@@ -26,11 +26,8 @@ Everyone should be able to see where their taxes go. And AI does the tedious wor
   <img alt="Opus said OK." src="https://img.shields.io/badge/Sol_6.1-OK-green?logo=openaigym">
 </p>
 
-<a href="https://ax6.github.io/where-is-the-tax/#lang=en&y=2025">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="docs/screenshots/readme-dark.png">
-    <img src="docs/screenshots/readme-light.png" alt="The tax explorer: a map of Germany beside flows from gross salary through taxes and social contributions to their recipients, with a spending breakdown for the selected budget." width="1440">
-  </picture>
+<a href="https://ax6.github.io/where-is-the-tax/#lang=en&y=2025&theme=light">
+  <img src="docs/screenshots/readme-light.png" alt="The tax explorer: a map of Germany beside flows from gross salary through taxes and social contributions to their recipients, with a spending breakdown for the selected budget." width="1440">
 </a>
 
 <p align="center"><sub>The live explorer · 2025 view · captured 13 October 2026 · click to explore</sub></p>
