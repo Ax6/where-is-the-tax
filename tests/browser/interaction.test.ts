@@ -92,22 +92,22 @@ test("year control: 2025 is the default with and without JS; explicit years and 
     const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
     const staticPage = await browser.newPage({ javaScriptEnabled: false });
     await staticPage.goto(url, { waitUntil: "networkidle" });
-    assert.equal(await staticPage.textContent("#title"), "Where taxes go · Germany 2025");
+    assert.equal(await staticPage.textContent("#title"), "Where do my taxes go? · Germany 2025");
     assert.equal(await staticPage.getAttribute(".seg-year button[data-value='2025']", "aria-pressed"), "true");
     assert.equal(await staticPage.textContent("#wage-figure"), "€54,066");
     await staticPage.close();
     await page.goto(`${url}#lang=en`, { waitUntil: "networkidle" });
-    assert.equal(await page.textContent("#title"), "Where taxes go · Germany 2025");
+    assert.equal(await page.textContent("#title"), "Where do my taxes go? · Germany 2025");
     assert.equal(await page.getAttribute(".seg-year button[data-value='2025']", "aria-pressed"), "true");
     assert.equal(await page.getAttribute(".seg-year button[data-value='2024']", "aria-pressed"), "false");
     assert.equal(await page.textContent("#wage-figure"), "€54,066");
     await page.goto(`${url}#y=2024&lang=en`, { waitUntil: "networkidle" });
-    assert.equal(await page.textContent("#title"), "Where taxes go · Germany 2024");
+    assert.equal(await page.textContent("#title"), "Where do my taxes go? · Germany 2024");
     assert.equal(await page.locator(".seg-year button").count(), 2);
     await page.click(".seg-year button[data-value='2025']");
     await page.waitForFunction(() => /y=2025/.test(window.location.hash));
-    assert.equal(await page.textContent("#title"), "Where taxes go · Germany 2025");
-    assert.equal(await page.title(), "Where taxes go · Germany 2025");
+    assert.equal(await page.textContent("#title"), "Where do my taxes go? · Germany 2025");
+    assert.equal(await page.title(), "Where do my taxes go? · Germany 2025");
     // default wage follows the year's full-time median until the reader sets one
     assert.equal(await page.textContent("#wage-figure"), "€54,066");
     // BMF settlement rests on the provisional annual accounts: the status stays visible
@@ -199,7 +199,7 @@ test("old links: year=2026 opens the last page year, layer=payday keeps the purc
   try {
     const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
     await page.goto(`${url}#year=2026&layer=payday&lang=en`, { waitUntil: "networkidle" });
-    assert.equal(await page.textContent("#title"), "Where taxes go · Germany 2025");
+    assert.equal(await page.textContent("#title"), "Where do my taxes go? · Germany 2025");
     assert.equal(await page.getAttribute("#estimate-toggle", "aria-pressed"), "false");
   } finally {
     await browser.close();

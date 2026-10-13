@@ -14,7 +14,12 @@ for (const lang of ["en", "de"] as const) {
       const state = { ...base, lang, zoom };
       const html = renderPage(state, buildYou(state.year, state.wage, state.land), buildGermany());
       assert.doesNotMatch(html, /undefined|NaN|\[object Object\]/);
-      assert.match(html, lang === "en" ? /Where taxes go · Germany 2024/ : /Wohin Steuern fließen · Deutschland 2024/);
+      assert.match(
+        html,
+        zoom === "you"
+          ? lang === "en" ? /Where do my taxes go\? · Germany 2024/ : /Wohin gehen meine Steuern\? · Deutschland 2024/
+          : lang === "en" ? /Where do everyone&#039;s taxes go\? · Germany 2024/ : /Wohin gehen alle Steuern\? · Deutschland 2024/,
+      );
       assert.match(html, lang === "en" ? /€465\.7bn/ : /465,7 Mrd\. €/);
       assert.match(html, /<table class="data-table taxes">/);
     });

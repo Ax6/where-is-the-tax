@@ -31,8 +31,9 @@ const byTax = (id: string, year: number) => (raw.byTax.rows as unknown as Row[])
 test("the page offers 2024 and 2025 only; the default is 2025", () => {
   assert.deepEqual([...PAGE_YEARS], [2024, 2025]);
   assert.equal(DEFAULT_PAGE_YEAR, 2025);
-  assert.equal(titleFor(2025, "en"), "Where taxes go · Germany 2025");
-  assert.equal(titleFor(2025, "de"), "Wohin Steuern fließen · Deutschland 2025");
+  assert.equal(titleFor(2025, "en"), "Where do my taxes go? · Germany 2025");
+  assert.equal(titleFor(2025, "de"), "Wohin gehen meine Steuern? · Deutschland 2025");
+  assert.equal(titleFor(2025, "en", "germany"), "Where do everyone's taxes go? · Germany 2025");
 });
 
 test("You view: federal and social pots read their year; Länder, municipal and Berlin keep their latest vintage", () => {
@@ -93,7 +94,7 @@ test("rendered page and drawers follow the year; 2026 appears only as the paysli
   const you = buildYou(2025, state.wage, state.land, { estimate: true });
   const germany = buildGermany(2025);
   const html = renderPage(state, you, germany);
-  assert.match(html, /Where taxes go · Germany 2025/);
+  assert.match(html, /Where do my taxes go\? · Germany 2025/);
   assert.match(html, /All taxes 2025/);
   assert.match(html, /Fiscal equalisation 2025/);
   assert.match(html, /€493\.3bn/);

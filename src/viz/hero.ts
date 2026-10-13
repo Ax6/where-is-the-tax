@@ -38,6 +38,8 @@ export interface HeroOptions {
   selectedPot: string;
   onSelectPot: (id: string) => void;
   onOpen: (target: DrawerTarget) => void;
+  /** draw at this width instead of the container's (the grid may still be animating towards it) */
+  width?: number;
 }
 
 const reducedMotion = (): boolean => typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -325,7 +327,7 @@ function placeLabels(parent: Element, specs: LabelSpec[], o: LabelOptions): Map<
 
 export function renderYou(container: HTMLElement, model: YouModel, options: HeroOptions): void {
   const { lang } = options;
-  const W = Math.max(720, container.clientWidth);
+  const W = Math.max(720, options.width ?? container.clientWidth);
   const H = Math.max(420, container.clientHeight || 540);
   const top = 30;
   const bottom = H - 6;
@@ -859,7 +861,7 @@ export function renderComposition(svg: SVGSVGElement, pot: Pot, inflow: number, 
 
 export function renderGermany(container: HTMLElement, model: GermanyModel, options: HeroOptions): void {
   const { lang, unit } = options;
-  const W = Math.max(720, container.clientWidth);
+  const W = Math.max(720, options.width ?? container.clientWidth);
   const H = Math.max(420, container.clientHeight || 540);
   const top = 30;
   const bottom = H - 6;
