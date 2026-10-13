@@ -45,6 +45,11 @@ const ui = {
   stateSpending: bi("Ausgaben des Staates", "State spending"),
   boundary: bi("Ab hier zusammengezählt mit dem Geld aller anderen", "From here summed with everyone else's money"),
   boundaryGermany: bi("Ab hier ein Topf mit Gebühren, sonstigen Einnahmen und Krediten", "From here on, one pot with fees, other income and borrowing"),
+  onePotTitle: bi("Ab hier ein Topf.", "From here on, one pot."),
+  onePot: bi(
+    "Steuern und Beiträge werden mit allem zusammengezählt, was der Staat sonst einnimmt: Gebühren und Verkäufe öffentlicher Stellen, etwa Pass, Genehmigungen und Müllabfuhr; Zinsen, Dividenden und Mieten; erhaltene Transfers, etwa von der EU; und Kredite. Ab hier lässt sich nichts mehr einer einzelnen Steuer zuordnen.",
+    "Taxes and contributions are added up with everything else the state takes in: fees and sales by public bodies, such as passports, permits and waste collection; interest, dividends and rents; transfers received, for example from the EU; and what it borrows. Nothing can be traced to one tax any more.",
+  ),
   employerGhost: bi("zahlt Ihr Arbeitgeber zusätzlich", "paid on top by your employer"),
   netPay: bi("Netto: bleibt Ihnen", "Net pay: yours"),
   wageTax: bi("Lohnsteuer", "Wage tax"),
