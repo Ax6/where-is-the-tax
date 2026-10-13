@@ -160,11 +160,11 @@ function stageLabel(svg: SVGSVGElement, x: number, text: string, anchor: "start"
   multiline(svg, [first, words.join(" ")], { x, y: 8, class: "stage-label", "text-anchor": anchor }, 12);
 }
 
-function boundary(svg: SVGSVGElement, x: number, top: number, bottom: number, lang: Lang): void {
+function boundary(svg: SVGSVGElement, x: number, top: number, bottom: number, lang: Lang, key: "boundary" | "boundaryGermany" = "boundary"): void {
   const g = svgEl(svg, "g", { class: "boundary" });
   svgEl(g, "line", { x1: x, x2: x, y1: top - 6, y2: bottom, class: "boundary-line" });
   // just right of the dotted line, clear of the recipient labels that end at the line
-  svgEl(g, "text", { x: x + 12, y: top, class: "boundary-label", transform: `rotate(-90 ${x + 12} ${top})`, "text-anchor": "end" }, t("boundary", lang));
+  svgEl(g, "text", { x: x + 12, y: top, class: "boundary-label", transform: `rotate(-90 ${x + 12} ${top})`, "text-anchor": "end" }, t(key, lang));
 }
 
 /** Animate rect heights/positions and ribbons from the previous render (respects reduced motion). */
@@ -946,7 +946,7 @@ export function renderGermany(container: HTMLElement, model: GermanyModel, optio
     );
   }
 
-  boundary(svg, xb, top + 6, bottom, lang);
+  boundary(svg, xb, top + 6, bottom, lang, "boundaryGermany");
   // recipient streams to the boundary
   for (const node of flow.nodes.filter((n) => n.stage === 1)) {
     // streams go under the labels (ribbon layer), so text stays on top
