@@ -89,6 +89,13 @@ test("social pots: 2024 expenditure and the payroll view of €529.3bn* (§ 10)"
   }
 });
 
+test("unemployment own spending and outgoing payments partition the published total", () => {
+  for (const year of [2024, 2025]) {
+    const pot = buildYou(year, 54_066, "DE").pots.find((p) => p.id === "pot-unemp")!;
+    close(pot.compositionBase + pot.transferOut!.value, pot.total, 1, `${year}: no reimbursement counted twice`);
+  }
+});
+
 test("pots never show slivers: every category except 'other' is at least 1 % of its pot", () => {
   for (const code of ["DE", ...places.map((p) => p.code)]) {
     for (const pot of buildYou(2024, 45_358, code).pots) {

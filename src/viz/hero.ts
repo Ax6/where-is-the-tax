@@ -50,7 +50,7 @@ function interactive(
   content: () => TooltipContent,
   onActivate: () => void,
   onHover?: (on: boolean) => void,
-  options: { pointerOnly?: boolean; visible?: string } = {},
+  options: { pointerOnly?: boolean; visible?: string; dismissOnHide?: boolean } = {},
 ): void {
   if (options.pointerOnly) {
     // duplicates what the focusable nodes say: hover detail for the mouse, hidden from assistive tech and
@@ -63,19 +63,24 @@ function interactive(
     // the accessible name starts with the visible text (WCAG 2.5.3)
     el.setAttribute("aria-label", [options.visible, tooltipText(content(), lang)].filter(Boolean).join(". "));
   }
-  el.addEventListener("pointerenter", (event) => {
+  const dismiss = options.dismissOnHide ? () => onHover?.(false) : undefined;
+  const show = (anchor: { x: number; y: number }) => {
+    showTooltip(content(), anchor, lang, dismiss);
     onHover?.(true);
-    showTooltip(content(), { x: event.clientX, y: event.clientY }, lang);
+  };
+  el.addEventListener("pointerenter", (event) => show({ x: event.clientX, y: event.clientY }));
+  el.addEventListener("pointermove", (event) => {
+    const anchor = { x: event.clientX, y: event.clientY };
+    if (options.dismissOnHide) show(anchor);
+    else showTooltip(content(), anchor, lang);
   });
-  el.addEventListener("pointermove", (event) => showTooltip(content(), { x: event.clientX, y: event.clientY }, lang));
   el.addEventListener("pointerleave", () => {
     onHover?.(false);
     hideTooltip();
   });
   el.addEventListener("focus", () => {
-    onHover?.(true);
     const box = el.getBoundingClientRect();
-    showTooltip(content(), { x: box.right, y: box.top }, lang);
+    show({ x: box.right, y: box.top });
   });
   el.addEventListener("blur", () => {
     onHover?.(false);
@@ -579,26 +584,52 @@ export function renderYou(container: HTMLElement, model: YouModel, options: Hero
   // ---- pots
   const potGroup = svgEl(svg, "g", { class: "pots" });
   const potLabelGroup = svgEl(svg, "g", { class: "pot-labels", "aria-hidden": "true" });
+  const segmentTarget = (rect: SVGRectElement, pot: Pot, kind: PotSegment): void => {
+    if (rect.height.baseVal.value <= 0) return;
+    rect.dataset.segment = kind;
+    rect.dataset.key = `p-${pot.id}-${kind}`;
+    const transferGroup = kind === "incoming" ? pot.transferIn?.from : kind === "outgoing" && pot.transferOut?.to.length ? pot.id : undefined;
+    if (transferGroup) rect.dataset.transferGroup = transferGroup;
+    const connectedPots = new Set(transferGroup ? [transferGroup, ...(potById.get(transferGroup)?.pot.transferOut?.to.map((target) => target.pot) ?? [])] : []);
+    rect.style.setProperty("--segment-fill", kind === "borrowed" ? "var(--borrowed)" : entityFill(pot.entity));
+    interactive(rect, lang, () => potSegmentTooltip(pot, kind, lang), () => {
+      rect.focus({ preventScroll: true });
+      options.onOpen({ kind: "pot", id: pot.id });
+    }, (on) => {
+      svg.classList.toggle("has-segment-focus", on);
+      rect.classList.toggle("is-segment-active", on);
+      for (const linked of potGroup.querySelectorAll<SVGElement>("[data-transfer-group]")) {
+        linked.classList.toggle("is-segment-related", on && linked !== rect && linked.dataset.transferGroup === transferGroup);
+      }
+      for (const label of potLabelGroup.querySelectorAll<SVGElement>(".pot-label")) {
+        label.classList.toggle("is-segment-context", on && label.dataset.pot === pot.id);
+        label.classList.toggle("is-segment-related", on && label.dataset.pot !== pot.id && connectedPots.has(label.dataset.pot!));
+      }
+    }, { dismissOnHide: true });
+  };
   const selected = potLayout.pots.find((p) => p.pot.id === options.selectedPot) ?? potLayout.pots[0]!;
   for (const p of potLayout.pots) {
     const g = svgEl(potGroup, "g", { class: `pot${p === selected ? " is-selected" : ""}`, "data-pot": p.pot.id });
     const rect = svgEl(g, "rect", { x: xp, y: p.y, width: potW, height: p.h, rx: 2, fill: entityFill(p.pot.entity), class: "pot-bar", "data-key": `p-${p.pot.id}` });
     if (p.pot.borrowed) {
       const h = p.pot.borrowed * potLayout.scale;
-      svgEl(g, "rect", { x: xp, y: p.y, width: potW, height: h, class: "pot-borrowed" });
+      segmentTarget(svgEl(g, "rect", { x: xp, y: p.y, width: potW, height: h, class: "pot-borrowed" }), p.pot, "borrowed");
     }
     if (p.pot.transferOut) {
       const h = p.pot.transferOut.value * potLayout.scale;
-      svgEl(g, "rect", { x: xp + 0.75, y: p.y + p.h - h + 0.75, width: potW - 1.5, height: Math.max(0, h - 1.5), class: "pot-transfer", stroke: entityFill(p.pot.entity) });
+      // Keep the data-scaled outer height even when the usual stroke would consume the entire segment.
+      const inset = Math.min(0.75, h / 4);
+      segmentTarget(svgEl(g, "rect", { x: xp + 0.75, y: p.y + p.h - h + inset, width: potW - 1.5, height: h - 2 * inset, class: "pot-transfer", stroke: entityFill(p.pot.entity), style: `stroke-width:${2 * inset}` }), p.pot, "outgoing");
     }
     if (p.pot.transferIn) {
       // the grant's share of the receiving pot, drawn at its top: the connector from the federal pot lands on it
       const h = p.pot.transferIn.value * potLayout.scale;
-      svgEl(g, "rect", { x: xp + 0.75, y: p.y + 0.75, width: potW - 1.5, height: Math.max(0, h - 1.5), class: "pot-transfer", stroke: entityFill(p.pot.entity) });
+      const inset = Math.min(0.75, h / 4);
+      segmentTarget(svgEl(g, "rect", { x: xp + 0.75, y: p.y + inset, width: potW - 1.5, height: h - 2 * inset, class: "pot-transfer", stroke: entityFill(p.pot.entity), style: `stroke-width:${2 * inset}` }), p.pot, "incoming");
     }
     relate(p.pot.id, rect);
     interactive(
-      g as unknown as SVGElement,
+      rect,
       lang,
       () => potTooltip(p.pot, potInflow(model, p.pot), lang),
       () => options.onSelectPot(p.pot.id),
@@ -620,6 +651,7 @@ export function renderYou(container: HTMLElement, model: YouModel, options: Hero
       svgEl(potGroup, "path", {
         d: `M${xp + potW},${startY}H${laneX}V${endY}H${xp + potW + 2}`,
         class: "transfer-line",
+        "data-transfer-group": fed.pot.id,
         stroke: "var(--e-fed)",
         "marker-end": "",
       });
@@ -638,7 +670,7 @@ export function renderYou(container: HTMLElement, model: YouModel, options: Hero
   resolveColumn(potBlocks, top + 4, bottom, 10);
   for (const block of potBlocks) {
     const { p } = block;
-    const g = svgEl(potLabelGroup, "g", { class: `pot-label${p === selected ? " is-selected" : ""}` });
+    const g = svgEl(potLabelGroup, "g", { class: `pot-label${p === selected ? " is-selected" : ""}`, "data-pot": p.pot.id });
     const centre = p.y + p.h / 2;
     const blockCentre = block.y + block.h / 2;
     if (Math.abs(blockCentre - centre) > p.h / 2 + 2) {
@@ -683,6 +715,20 @@ function potTooltip(pot: Pot, inflow: number, lang: Lang): TooltipContent {
     pot.fenced ? t("fenced", lang) : t("generalBudget", lang),
   ].filter(Boolean);
   return { value: bn(pot.total, lang), title: tr(pot.label, lang), lines, status: pot.status, hint: true };
+}
+
+type PotSegment = "incoming" | "outgoing" | "borrowed";
+
+function potSegmentTooltip(pot: Pot, kind: PotSegment, lang: Lang): TooltipContent {
+  const transfer = kind === "incoming" ? pot.transferIn : kind === "outgoing" ? pot.transferOut : undefined;
+  return {
+    value: bn(transfer?.value ?? pot.borrowed!, lang),
+    title: transfer ? tr(transfer.label, lang) : bi("Nettokreditaufnahme", "Net borrowing")[lang],
+    lines: [`${tr(pot.label, lang)} · ${pot.year}`],
+    status: transfer?.status ?? pot.status,
+    body: transfer?.note ? tr(transfer.note, lang) : kind === "borrowed" ? bi("Neue Kredite abzüglich Tilgungen im Bundeshaushalt.", "New borrowing minus repayments in the federal budget.")[lang] : undefined,
+    hint: true,
+  };
 }
 
 /** Pot label lines: "Federal budget · €465.7bn" on one line when it fits, else name (≤ 2 lines) and amount. */

@@ -1,6 +1,6 @@
 # ROADMAP — honest state of where-is-the-tax
 
-**As of 2026-10-12.** Goal (CLAUDE.md): one interactive page, German and English, where anyone
+**As of 2026-10-13.** Goal (CLAUDE.md): one interactive page, German and English, where anyone
 sees at a glance where a German citizen's taxes go; data first, every figure true and sourced,
 contestable items marked.
 
@@ -37,6 +37,7 @@ has not been tested with first-time visitors.
 
 | Area | Item | State | Where |
 |---|---|---|---|
+| Front end | Budget segments: bilingual hover/focus details, solid active segment and selective dimming; connected grants and their blue lines stay visible together, with separate amounts and source drawers | **done** | `src/viz/hero.ts`, `src/viz/tooltip.ts`, `tests/browser/segments.test.ts` |
 | Research infra | Raw registry, fetch script, manifest with SHA-256, licence decisions, cache for non-redistributable files | **done** | `research/sources.json`, `scripts/research/fetch.py`, `research/raw/MANIFEST.json` |
 | Research infra | Build scripts raw → data, orchestrator, cross-file checks, generated catalog/licence/index docs | **done** | `scripts/research/build_*.py`, `build_all.py`, `check.py`, `build_docs.py` |
 | Data | Named taxes 1999–2025, after-distribution 1999–2025, by Land 2013–2025 (Destatis 71211) | **done** | `data/de/taxes/` |

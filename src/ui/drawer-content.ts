@@ -345,6 +345,7 @@ function potDrawer(pot: Pot, ctx: DrawerContext): DrawerContent {
       }
       ${inflow > 0 ? `<p class="drawer-note prorata">${esc(t("proRataNote", lang).replace("{pot}", tr(pot.label, lang)))}</p>` : ""}
       ${transfers.length ? section(lang === "de" ? "Transfers und Kredit" : "Transfers and borrowing", rows(transfers)) : ""}
+      ${[pot.transferOut?.note, pot.transferIn?.note].filter(Boolean).map((note) => `<p class="drawer-note">${esc(tr(note!, lang))}</p>`).join("")}
       ${pot.note ? `<p class="drawer-note">${esc(tr(pot.note, lang))}</p>` : ""}
       ${pot.benchmark ? section(t("benchmarks", lang), benchmarkHtml(pot, ctx)) : ""}
       ${section(t("sources", lang), sourceList(pot.sources, lang))}`,

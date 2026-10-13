@@ -14,6 +14,7 @@ export interface TooltipContent {
 }
 
 let element: HTMLDivElement | null = null;
+let onDismiss: (() => void) | undefined;
 
 function ensure(): HTMLDivElement {
   if (!element) {
@@ -46,7 +47,9 @@ function add(parent: HTMLElement, tag: string, className: string, text: string):
   return el;
 }
 
-export function showTooltip(content: TooltipContent, anchor: { x: number; y: number }, lang: Lang): void {
+export function showTooltip(content: TooltipContent, anchor: { x: number; y: number }, lang: Lang, onHide?: () => void): void {
+  if (onDismiss !== onHide) onDismiss?.();
+  onDismiss = onHide;
   const tip = ensure();
   tip.replaceChildren();
   if (content.value) {
@@ -84,6 +87,9 @@ export function showTooltip(content: TooltipContent, anchor: { x: number; y: num
 }
 
 export function hideTooltip(): void {
+  const dismiss = onDismiss;
+  onDismiss = undefined;
+  dismiss?.();
   if (element) {
     element.hidden = true;
   }

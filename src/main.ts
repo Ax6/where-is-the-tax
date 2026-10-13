@@ -789,6 +789,7 @@ document.addEventListener("pointerdown", (event) => {
 document.addEventListener("keydown", (event) => {
   const drawer = document.querySelector<HTMLElement>("#drawer");
   if (event.key === "Escape") {
+    hideTooltip();
     if (drawer && !drawer.hidden) {
       closeDrawer();
       return;

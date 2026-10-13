@@ -1079,7 +1079,7 @@ li.legend-note {
 }
 
 .pot:hover .pot-bar,
-.pot:focus-visible .pot-bar,
+.pot:focus-within .pot-bar,
 .pot.is-selected .pot-bar {
   opacity: 1;
 }
@@ -1096,6 +1096,34 @@ li.legend-note {
 .pot-transfer {
   fill: var(--page);
   stroke-width: 1.5;
+}
+
+/* Focus only the central flow: its selected segment and budget label stay clear. */
+.hero-svg.has-segment-focus .ribbons,
+.hero-svg.has-segment-focus .joins,
+.hero-svg.has-segment-focus .nodes,
+.hero-svg.has-segment-focus .pot > rect:not(.is-segment-active),
+.hero-svg.has-segment-focus .transfer-line {
+  opacity: 0.25;
+}
+
+.hero-svg.has-segment-focus .labels,
+.hero-svg.has-segment-focus .pot-label:not(.is-segment-context) {
+  opacity: 0.55;
+}
+
+.hero-svg.has-segment-focus .pot > .is-segment-active {
+  fill: var(--segment-fill);
+  opacity: 1;
+}
+
+.hero-svg.has-segment-focus .pot > rect.is-segment-related,
+.hero-svg.has-segment-focus .pot-label.is-segment-related {
+  opacity: 0.8;
+}
+
+.hero-svg.has-segment-focus .transfer-line.is-segment-related {
+  opacity: 1;
 }
 
 .transfer-line {
@@ -2696,6 +2724,17 @@ code {
   .hero-svg .transfer-line,
   .hero-svg .leader {
     stroke: CanvasText;
+  }
+
+  .hero-svg.has-segment-focus .pot > .is-segment-active {
+    fill: Highlight;
+    forced-color-adjust: none;
+  }
+
+  .hero-svg.has-segment-focus .labels,
+  .hero-svg.has-segment-focus .pot-label,
+  .hero-svg.has-segment-focus .pot-label.is-segment-related {
+    opacity: 1;
   }
 
   .swatch {

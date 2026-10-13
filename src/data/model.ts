@@ -225,8 +225,8 @@ export interface Pot {
   compositionBase: number;
   compositionLabel: Bi;
   categories: PotCategory[];
-  transferOut?: { label: Bi; value: number; to: { pot: string; value: number }[]; star?: boolean };
-  transferIn?: { label: Bi; value: number; from: string };
+  transferOut?: { label: Bi; value: number; to: { pot: string; value: number }[]; star?: boolean; note?: Bi; status?: Status };
+  transferIn?: { label: Bi; value: number; from: string; note?: Bi; status?: Status };
   borrowed?: number;
   basis: Bi;
   note?: Bi;
@@ -388,6 +388,7 @@ function federalPot(year: number): Pot {
     categories: fold(categories, 6),
     transferOut: {
       label: bi("Zuschüsse an Renten- und Krankenversicherung (alle Zweige)", "Grants to pension and health insurance (all schemes)"),
+      note: bi("Zuschüsse aus dem Bundeshaushalt an alle Zweige. Der hier gezeigte Rentenhaushalt umfasst nur die allgemeine Rentenversicherung.", "Federal grants across all schemes. The pension budget shown here covers only the general pension scheme."),
       value: transfer,
       to: [
         { pot: "pot-pension", value: grants.pension },
@@ -675,21 +676,25 @@ function socialPot(entity: "pension" | "health" | "care" | "unemp", accountYear 
   let total = valueOf(year.expenditure_total);
   let items = (year.expenditure_items ?? []).map((item, index) => ({ id: `i${index}`, label: item.label ?? bi("", ""), value: valueOf(item) }));
   let transfer = 0;
-  let transferLabel = bi("an andere Sozialversicherungen", "paid to other social insurers");
+  let transferLabel: Bi;
+  let transferNote: Bi;
   let transferStar = false;
   const matches = (item: { label: Bi }, pattern: RegExp) => pattern.test(item.label.en);
 
   if (entity === "pension") {
-    // KVdR: the pension insurer's share of pensioners' health contributions goes to the health insurance.
+    // KVdR includes contributions and subsidies, including subsidies outside statutory health insurance.
     const kvdr = items.find((item) => matches(item, /KVdR/));
     transfer = kvdr?.value ?? 0;
     transferStar = true; // upper bound: includes § 106 SGB VI subsidies to pensioners outside the GKV
     items = items.filter((item) => item !== kvdr);
-    transferLabel = bi("an die Krankenversicherung der Rentner (KVdR)*", "to pensioners' health insurance (KVdR)*");
+    transferLabel = bi("Krankenversicherung von Rentnern*", "Pensioners’ health insurance*");
+    transferNote = bi("Beiträge und Zuschüsse der Rentenversicherung zur Krankenversicherung von Rentnern. * Enthält auch Zuschüsse für privat Versicherte; nicht alles fließt an die gesetzliche Krankenversicherung.", "Pension insurance contributions and subsidies for pensioners’ health insurance. * Includes subsidies for privately insured pensioners; not all of it reaches statutory health insurance.");
   } else if (entity === "health") {
     total = year.consolidated?.expenditure_total_eur ?? total;
     const kk = year.krankenkassen!;
     transfer = valueOf(kk.contributions_paid_to_other_systems);
+    transferLabel = bi("Sozialbeiträge bei Krankengeld", "Social contributions on sickness benefit");
+    transferNote = bi("Die Krankenversicherung zahlt Renten-, Arbeitslosen- und Pflegeversicherungsbeiträge für Krankengeldempfänger.", "Health insurance pays pension, unemployment and care insurance contributions for people receiving sickness benefit.");
     items = kk.expenditure_items.map((item, index) => ({ id: `i${index}`, label: item.label ?? bi("", ""), value: valueOf(item) }));
     const sickness = items.find((item) => matches(item, /Sickness benefit/));
     if (sickness) {
@@ -698,15 +703,20 @@ function socialPot(entity: "pension" | "health" | "care" | "unemp", accountYear 
   } else if (entity === "care") {
     const carers = items.find((item) => matches(item, /Social security of family carers/));
     transfer = carers?.value ?? 0;
+    transferLabel = bi("Sozialversicherung für Pflegepersonen", "Social insurance for family carers");
+    transferNote = bi("Die Pflegeversicherung zahlt Renten-, Arbeitslosen- und Unfallversicherungsbeiträge für pflegende Angehörige. Die Unfallversicherung ist hier nicht dargestellt.", "Care insurance pays pension, unemployment and accident insurance contributions for family carers. Accident insurance is outside this diagram.");
     items = items.filter((item) => item !== carers);
   } else {
     // Unemployment benefit I includes the contributions the BA pays for recipients to DRV, GKV and SPV.
     transfer = ledger("bundesagentur", undefined, accountYear) + ledger("bundesagentur", ["reimbursement"], accountYear);
+    transferLabel = bi("Sozialbeiträge und Erstattungen", "Social contributions and reimbursements");
+    const reimbursesBund = social.transfers.some((tr) => tr.year === accountYear && tr.from === "bundesagentur" && tr.to === "bund" && tr.kind === "reimbursement" && (tr.amount_eur ?? 0) > 0);
+    transferNote = bi(`Beiträge der Bundesagentur für Leistungsempfänger sowie Erstattungen an Renten- und Pflegeversicherung${reimbursesBund ? " und den Bundeshaushalt" : ""}.`, `Federal Employment Agency contributions for benefit recipients, plus reimbursements to pension and care insurance${reimbursesBund ? " and the federal budget" : ""}.`);
     const alg = items.find((item) => matches(item, /Unemployment benefit I/));
     if (alg) {
       alg.value -= ledger("bundesagentur", undefined, accountYear);
     }
-    items = items.filter((item) => !matches(item, /Reimbursements to pension and care/));
+    items = items.filter((item) => !matches(item, /Reimbursements to pension and care|Expense reimbursement to the Bund/));
   }
 
   const compositionBase = items.reduce((sum, item) => sum + item.value, 0);
@@ -735,21 +745,24 @@ function socialPot(entity: "pension" | "health" | "care" | "unemp", accountYear 
     status,
     fenced: true,
     compositionBase,
-    compositionLabel: bi("eigene Ausgaben ohne Zahlungen an andere Sozialversicherungen", "own spending, without payments to other social insurers"),
+    compositionLabel: bi("eigene Ausgaben ohne separat gezeigte Zahlungen", "own spending, excluding payments shown separately"),
     categories: fold(items, 6),
-    transferOut: transfer > 0 ? { label: transferLabel, value: transfer, to: [], star: transferStar } : undefined,
+    transferOut: transfer > 0 ? { label: transferLabel, value: transfer, to: [], star: transferStar, note: transferNote, status: entity === "unemp" && /^provisional/.test(social.year_status[String(accountYear)]?.pension ?? "") ? "provisional" : status } : undefined,
     transferIn:
       fedIn > 0
         ? {
-            label: entity === "pension" ? bi("Zuschüsse und Beiträge aus dem Bundeshaushalt (laut DRV-Rechnung)", "Grants and contributions from the federal budget (per the DRV accounts)") : bi("Bundeszuschuss (laut GKV-Rechnung)", "Federal grant (per the GKV accounts)"),
+            label: entity === "pension" ? bi("Bundesmittel für die Rente", "Federal funding for pensions") : bi("Bundeszuschüsse zur Krankenversicherung", "Federal grants to health insurance"),
+            note: entity === "pension"
+              ? bi("Bundeszuschüsse und Beiträge für Kindererziehungszeiten laut DRV-Rechnung. Allgemeine Rentenversicherung, ohne Knappschaft.", "Federal grants and child-raising contributions recorded in the DRV accounts. General pension scheme, excluding the miners’ scheme.")
+              : bi("Bundeszuschuss und Zuschüsse zur landwirtschaftlichen Krankenversicherung laut GKV-Rechnung.", "Federal grant and subsidies to agricultural health insurance recorded in the GKV accounts."),
             value: fedIn,
             from: "pot-fed",
           }
         : undefined,
     basis: bi(`${meta.label.de}, Rechnungsergebnis ${accountYear}`, `${meta.label.en}, accounts ${accountYear}`),
-    sources: (SOCIAL_SOURCES[system] ?? []).map((ref) =>
-      link(bi(`${meta.label.de} ${accountYear}`, `${meta.label.en} ${accountYear}`), files.socialInsurance, social.sources[ref.replace("2024", String(accountYear))] ?? social.sources[ref]),
-    ),
+    sources: (entity === "unemp" ? [system, "pension", "health", "ltc"] : [system]).flatMap((sourceSystem) => (SOCIAL_SOURCES[sourceSystem] ?? []).map((ref) =>
+      link(bi(`${social.systems[sourceSystem]!.label.de} ${accountYear}`, `${social.systems[sourceSystem]!.label.en} ${accountYear}`), files.socialInsurance, social.sources[ref.replace("2024", String(accountYear))] ?? social.sources[ref]),
+    )),
   };
 }
 

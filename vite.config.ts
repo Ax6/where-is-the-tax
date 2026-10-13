@@ -87,11 +87,11 @@ const PRUNE: Record<string, (data: Record<string, unknown>) => void> = {
       }
     }
     data.transfers = (data.transfers as { year: number }[]).filter((tr) => tr.year >= 2024);
-    // health: the page reads the sickness funds' lines and the consolidated total only
+    // health: the page reads the sickness funds' lines, consolidated spending and incoming grants
     for (const year of Object.values((data.systems as Record<string, { years: Record<string, Record<string, unknown>> }>).health!.years)) {
       delete year.gesundheitsfonds;
-      const consolidated = year.consolidated as { expenditure_total_eur?: number } | undefined;
-      year.consolidated = { expenditure_total_eur: consolidated?.expenditure_total_eur };
+      const consolidated = year.consolidated as { expenditure_total_eur?: number; federal_grants?: unknown } | undefined;
+      year.consolidated = { expenditure_total_eur: consolidated?.expenditure_total_eur, federal_grants: consolidated?.federal_grants };
     }
     delete data.checks;
   },
