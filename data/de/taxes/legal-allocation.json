@@ -448,8 +448,8 @@
    },
    "statutory_split_eur": null,
    "note": {
-    "de": "Grundanteile Bund 52,81 % / Länder 45,19 % / Gemeinden 2,00 %, jährlich um feste Euro-Beträge verschoben (§ 1 (2) FAG). Das tatsächliche Ergebnis steht in data/de/equalisation/<Jahr>.json (2024: Bund 48,10 %, Länder 49,11 %, Gemeinden 2,79 %).",
-    "en": "Base shares Federation 52.81 % / Länder 45.19 % / municipalities 2.00 %, shifted every year by fixed euro amounts (§ 1 (2) FAG). The effective outcome is in data/de/equalisation/<year>.json (2024: 48.10 / 49.11 / 2.79 %)."
+    "de": "Grundanteile Bund 52,81 % / Länder 45,19 % / Gemeinden 2,00 %, jährlich um feste Euro-Beträge verschoben (§ 1 (2) FAG). Das tatsächliche Ergebnis des Jahres zeigt die Aufteilung oben (2024: Bund 48,10 %, Länder 49,11 %, Gemeinden 2,79 %).",
+    "en": "Base shares Federation 52.81 % / Länder 45.19 % / municipalities 2.00 %, shifted every year by fixed euro amounts (§ 1 (2) FAG). The year's effective outcome is the split shown above (2024: 48.10 / 49.11 / 2.79 %)."
    }
   },
   {

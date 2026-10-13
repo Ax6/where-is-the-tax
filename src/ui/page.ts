@@ -3,26 +3,9 @@
  * browser (re-rendered on language or year change). Every figure comes from the model; every table row links
  * to its data file and source coordinates.
  */
-import {
-  allocationKinds,
-  ENTITY_ORDER,
-  equalisation,
-  equalisationSource,
-  equalisationStatus,
-  GERMANY_CODE,
-  PAGE_YEARS,
-  perResidentPerDay,
-  populationOf,
-  purchases,
-  taxTable,
-  minimumWageAssumption,
-  wageTicks,
-  type EntityId,
-  type GermanyModel,
-  type YouModel,
-} from "../data/model.ts";
+import { allocationKinds, ENTITY_ORDER, type EntityId, equalisation, equalisationSource, equalisationStatus, GERMANY_CODE, type GermanyModel, minimumWageAssumption, ownShare, PAGE_YEARS, perResidentPerDay, populationOf, potInflow, purchases, taxTable, wageTicks, type YouModel } from "../data/model.ts";
 import { files, REPO_URL, raw, repoBlob } from "../data/sources.ts";
-import { bn, eur, fill, num, pct, t, titleFor, tr, yearTag, type Lang } from "../i18n.ts";
+import { assumptionsText, bn, eur, fill, type Lang, num, pct, t, titleFor, tr, yearTag } from "../i18n.ts";
 import { esc, sourceList, splitBar, swatch } from "./html.ts";
 
 export interface PageState {
@@ -183,7 +166,8 @@ export function renderHeroTable(state: PageState, you: YouModel, germany: German
   }
   const p = you.payslip;
   const selected = you.pots.find((pot) => pot.id === state.pot) ?? you.pots[0]!;
-  const inflow = you.inflow[selected.id] ?? 0;
+  const inflow = potInflow(you, selected);
+  const own = inflow * ownShare(selected); // what the pot keeps; the rest leaves with its transfer (see the chart)
   return `<table class="data-table compact"><caption>${esc(`${t("stageGross", lang)} ${eur(p.gross, lang)} · ${you.year}`)}</caption>
     <thead><tr><th scope="col">${esc(t("stageDeductions", lang))}</th><th scope="col" class="num">${esc(t("amount", lang))}</th></tr></thead>
     <tbody>${you.flow.nodes
@@ -220,7 +204,7 @@ export function renderHeroTable(state: PageState, you: YouModel, germany: German
     <tbody>${selected.categories
       .map((cat) => {
         const share = cat.value / selected.compositionBase;
-        const mine = inflow * share;
+        const mine = own * share;
         return `<tr><th scope="row">${esc(`${pct(share, lang, 1)} · ${tr(cat.label, lang)}${cat.star ? "*" : ""}`)}</th><td class="num">${esc(inflow > 0 ? `${mine < 1 ? `< ${eur(1, lang)}` : `≈ ${eur(mine, lang)}`}*` : bn(cat.value, lang))}</td></tr>`;
       })
       .join("")}</tbody></table>${inflow > 0 ? `<p class="section-note">${esc(`* ${t("proRataIfYour", lang).replace("{eur}", eur(inflow, lang)).replace("{pot}", tr(selected.label, lang))}`)}</p>` : ""}`;
@@ -356,7 +340,7 @@ export function renderPage(state: PageState, you: YouModel, germany: GermanyMode
         <div class="sr-only" id="flow-table"></div>
       </div>
     </div>
-    <p class="hero-line" id="hero-line">${esc(state.zoom === "you" ? t("assumptions", lang) : t("switchGermany", lang))}</p>
+    <p class="hero-line" id="hero-line">${esc(state.zoom === "you" ? assumptionsText(lang, state.year) : t("switchGermany", lang))}</p>
   </section>
   ${
     options.staticBuild

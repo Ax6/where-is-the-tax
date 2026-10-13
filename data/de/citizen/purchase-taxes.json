@@ -161,6 +161,28 @@
    },
    "valid": "2026-01-01 to 2027-02-14"
   },
+  "cigarettes_2024": {
+   "value": 0.1115,
+   "unit": "EUR per cigarette + 19.84 % of retail price",
+   "label": {
+    "de": "Tabaksteuer auf Zigaretten 2024",
+    "en": "Tobacco tax on cigarettes 2024"
+   },
+   "recipient": "federation",
+   "legal_basis": "§ 2 (1) Nr. 1 c TabStG",
+   "quote": "vom 1. Januar 2023 bis zum 31. Dezember 2024 11,15 Cent je Stück und 19,84 Prozent des Kleinverkaufspreises",
+   "source": {
+    "source_id": "gesetze_im_internet",
+    "file": "tabstg_2.html",
+    "path": "research/raw/gesetze_im_internet/tabstg_2.html",
+    "url": "https://www.gesetze-im-internet.de/tabstg_2009/__2.html",
+    "retrieved": "2026-10-09T12:45:42Z",
+    "sha256": "e47935d70b11e6c2b3f23dfa9d20702966b4477c0cd5ab08bec1f851cd4f55f6",
+    "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+    "coordinates": "text contains: vom 1. Januar 2023 bis zum 31. Dezember 2024 11,15 Cent je Stück und 19,84 Prozent des Kleinverkaufspreises"
+   },
+   "valid": "2024"
+  },
   "cigarettes_2025": {
    "value": 0.1171,
    "unit": "EUR per cigarette + 19.84 % of retail price",

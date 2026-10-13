@@ -1,7 +1,7 @@
 import "./styles.css";
 
 import { buildGermany, buildYou, defaultWage, DEFAULT_PAGE_YEAR, ENTITY_ORDER, equalisation, GERMANY_CODE, getPlace, PAGE_YEARS, timeSeries, type EntityId } from "./data/model.ts";
-import { eur, fill, pct, t, titleFor, tr, type Lang } from "./i18n.ts";
+import { assumptionsText, eur, fill, type Lang, pct, t, titleFor, tr } from "./i18n.ts";
 import { drawerContent, purchaseDetail } from "./ui/drawer-content.ts";
 import { mapTitleFor, renderDataTable, renderHeroTable, renderLegendRow, renderPage, renderSources, renderTaxTable, renderTitle, renderWageTicks, WAGE_MAX, WAGE_MIN, WAGE_STEP, type PageState } from "./ui/page.ts";
 import { renderGermany, renderYou, type DrawerTarget, type PanelId } from "./viz/hero.ts";
@@ -247,7 +247,7 @@ function refreshChrome(): void {
   }
   const line = document.querySelector<HTMLElement>("#hero-line");
   if (line) {
-    line.textContent = state.zoom === "you" ? t("assumptions", state.lang) : t("switchGermany", state.lang);
+    line.textContent = state.zoom === "you" ? assumptionsText(state.lang, state.year) : t("switchGermany", state.lang);
   }
   refreshTitle();
   // Germany view: the map column shrinks to a dormant, grey, inert thumbnail and the flow takes the width.

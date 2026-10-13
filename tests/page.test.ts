@@ -53,3 +53,13 @@ test("no-JS build keeps the equalisation section: provisional title, pooled note
   // the interactive page has the map instead
   assert.doesNotMatch(renderPage(base, buildYou(base.year, base.wage, base.land), buildGermany()), /equalisation-static/);
 });
+
+test("the static 'of every €100' table uses the same 'yours' arithmetic as the chart: the pot splits only what it keeps", () => {
+  const you = buildYou(2025, 54_066, "DE");
+  const fed = you.pots.find((pot) => pot.id === "pot-fed")!;
+  const html = renderPage({ ...base, year: 2025, wage: 54_066, land: "DE", pot: "pot-fed" } as typeof base, you, buildGermany());
+  const own = (you.inflow["pot-fed"] ?? 0) * (1 - fed.transferOut!.value / fed.total);
+  const first = fed.categories[0]!;
+  const expected = Math.round(own * (first.value / fed.compositionBase));
+  assert.match(html, new RegExp(`≈ €${expected.toLocaleString("en-US")}\\*`), `first federal category shows ≈ €${expected}`);
+});

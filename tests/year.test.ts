@@ -111,11 +111,11 @@ test("rendered page and drawers follow the year; 2026 appears only as the paysli
   const ranking = drawerContent({ kind: "panel", id: "ranking" }, ctx);
   assert.equal(ranking.title, "Fiscal equalisation 2025");
   const shopping = drawerContent({ kind: "panel", id: "shopping" }, ctx);
-  // ten purchases, sorted by tax share, the 2026 cigarette rates tagged inline
+  // ten purchases, sorted by tax share; cigarettes use the 2025 tobacco rate, so no 2026 tag appears
   const shares = [...shopping.html.matchAll(/pr-share num">(\d+)% tax/g)].map((m) => Number(m[1]));
   assert.equal(shares.length, 10);
   assert.deepEqual(shares, [...shares].sort((a, b) => b - a));
-  assert.match(shopping.html, /<span class="tag">2026<\/span>/);
+  assert.doesNotMatch(shopping.html, /<span class="tag">2026<\/span>/);
 });
 
 test("map picker: clicking the selected Land returns to all Länder", () => {

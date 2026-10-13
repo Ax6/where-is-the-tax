@@ -348,7 +348,14 @@ const planLabels = new Map(
 );
 export const functionName = (code: string, fallback?: Bi | null): Bi =>
   planLabels.get(code) ?? fallback ?? bi(`Funktion ${code}`, `Function ${code}`);
-const fnLabel = (fn: FedFunction): Bi => functionName(fn.code, fn.label);
+/** Presentation overrides on the official Funktionenplan names where the plan's word misleads a lay reader. */
+const FUNCTION_LABEL_OVERRIDES: Record<string, Bi> = {
+  // Hauptfunktion 0 is "Allgemeine Dienste" and holds the defence budget; COFOG "general public services" does not.
+  "0": bi("Allgemeine Dienste (inkl. Verteidigung)", "General public services (incl. defence)"),
+  // Oberfunktion 83 "Schulden" is the cost of debt, not the debt itself.
+  "83": bi("Schulden: Zinsen und Kreditkosten", "Debt service: interest and borrowing costs"),
+};
+const fnLabel = (fn: FedFunction): Bi => FUNCTION_LABEL_OVERRIDES[fn.code] ?? functionName(fn.code, fn.label);
 
 /** Federal grants to the two social pools shown as pots: function 221 (pension) and 224 (health). */
 export const federalGrantsOf = (year: number) => ({
@@ -370,7 +377,7 @@ function federalPot(year: number): Pot {
       }))
       .filter((child) => Math.abs(child.value) > 0.5e9)
       .sort((a, b) => b.value - a.value);
-    return { id: `hf${hf.code}`, label: functionName(hf.code, hf.label), value: hf.amount_eur - removed, children };
+    return { id: `hf${hf.code}`, label: FUNCTION_LABEL_OVERRIDES[hf.code] ?? functionName(hf.code, hf.label), value: hf.amount_eur - removed, children };
   });
   const own = federal.official_total_eur - transfer;
   const article = (raw.federalOverview.sources as Record<string, SourceLike>)[`${year}_article`];
@@ -767,6 +774,19 @@ function socialPot(entity: "pension" | "health" | "care" | "unemp", accountYear 
 }
 
 export const payrollViewOf = (year: number) => social.payroll_view[String(year)] ?? social.payroll_view["2024"]!;
+
+/**
+ * Lower bound of the contributions one of the four systems pays to another in a year (docs/research/RATIONALIZATION.md):
+ * the Federal Employment Agency's contributions for benefit recipients, health/care insurers' contributions for benefit
+ * recipients, and the pension insurer's KVdR payments to the health insurance (an upper bound for that flow).
+ */
+export function crossSystemTransfers(year: number): number {
+  const byYear = (raw.socialInsurance as unknown as { contributions_by_payer_all_systems: Record<string, Record<string, { by_system?: Record<string, number> }>> }).contributions_by_payer_all_systems;
+  const payers = byYear[String(year)] ?? byYear["2024"]!;
+  const payerSum = (key: string) => Object.values(payers[key]?.by_system ?? {}).reduce((sum, v) => sum + v, 0);
+  const kvdr = (socialYear("pension", year).expenditure_items ?? []).filter((item) => /KVdR/.test(item.label?.en ?? "")).reduce((sum, item) => sum + valueOf(item), 0);
+  return payerSum("bundesagentur_for_benefit_recipients") + payerSum("health_and_care_insurance_for_benefit_recipients") + kvdr;
+}
 export const payrollView2024 = payrollViewOf(2024);
 
 // ---------------------------------------------------------------------------------------------
@@ -1249,7 +1269,7 @@ export function buildGermany(year = 2024): GermanyModel {
     fed: bi("Bund", "Federation"),
     land: bi("Länder", "Länder"),
     muni: bi("Gemeinden", "Municipalities"),
-    eu: bi("EU", "EU"),
+    eu: bi("EU (nur Zölle)", "EU (customs only)"),
     pension: bi("Rentenversicherung", "Pension insurance"),
     health: bi("Krankenversicherung", "Health insurance"),
     care: bi("Pflegeversicherung", "Care insurance"),
@@ -1338,6 +1358,9 @@ const EXCISE_RECIPIENT: Record<string, { entity: EntityId; label: Bi }> = {
   real_estate_transfer_tax: { entity: "land", label: bi("Grunderwerbsteuer → Land*", "Real-estate transfer tax → Land*") },
 };
 
+/** Ad valorem part of the cigarette tax, 19.84 % of the retail price in every covered year (§ 2 (1) Nr. 1 c–e TabStG; asserted in tests against the rate's unit text). */
+export const TOBACCO_AD_VALOREM = 0.1984;
+
 /** Purchases; the VAT inside is split by the given year's outcome shares (§ 1 FAG). */
 export function purchases(year = 2024): Purchase[] {
   const examples = raw.purchaseTaxes.examples as unknown as {
@@ -1350,9 +1373,18 @@ export function purchases(year = 2024): Purchase[] {
   }[];
   const split = vatSplit(year);
   const vatShares = { fed: split.fed / split.total, land: split.laender / split.total, muni: split.muni / split.total };
+  const exciseRates = raw.purchaseTaxes.excises as unknown as Record<string, { value: number; unit: string }>;
   return examples.map((example) => {
     const segments: Purchase["segments"] = [];
-    for (const layer of example.layers) {
+    let layers = example.layers;
+    let label = example.label;
+    // Cigarettes: the tobacco tax changes every year (§ 2 (1) Nr. 1 TabStG); the file's example uses the newest rate.
+    const cigaretteRate = example.id === "cigarettes_pack" ? exciseRates[`cigarettes_${year}`] : undefined;
+    if (cigaretteRate) {
+      layers = example.layers.map((layer) => (layer.tax === "tobacco_tax" ? { ...layer, eur: Math.round((20 * cigaretteRate.value + TOBACCO_AD_VALOREM * example.price_eur) * 1e4) / 1e4 } : layer));
+      label = bi(example.label.de.replace(/\(\d{4}\)/, `(${year})`), example.label.en.replace(/\(\d{4}\)/, `(${year})`));
+    }
+    for (const layer of layers) {
       if (layer.tax === "vat") {
         segments.push(
           { id: "vat-fed", entity: "fed", value: layer.eur * vatShares.fed, label: bi("Umsatzsteuer → Bund", "VAT → Federation") },
@@ -1364,14 +1396,14 @@ export function purchases(year = 2024): Purchase[] {
         segments.push({ id: layer.tax, entity: recipient?.entity, value: layer.eur, label: recipient?.label ?? bi(layer.tax, layer.tax) });
       }
     }
-    const tax = example.layers.reduce((sum, layer) => sum + layer.eur, 0);
+    const tax = layers.reduce((sum, layer) => sum + layer.eur, 0);
     segments.push({ id: "price", value: example.price_eur - tax, label: bi("Preis ohne Steuer", "Price before tax") });
     const excises = (raw.purchaseTaxes as unknown as { excises: Record<string, { legal_basis: string }>; vat: Record<string, { legal_basis: string }> });
     const exciseKey: Record<string, string> = {
       petrol_litre: "petrol",
       diesel_litre: "diesel",
       electricity_kwh: "electricity",
-      cigarettes_pack: "cigarettes_2026",
+      cigarettes_pack: cigaretteRate ? `cigarettes_${year}` : "cigarettes_2026",
       beer_half_litre: "beer",
       coffee_pack: "coffee",
       car_insurance: "insurance",
@@ -1384,11 +1416,11 @@ export function purchases(year = 2024): Purchase[] {
     return {
       id: example.id,
       laws,
-      label: example.label,
+      label,
       price: example.price_eur,
       star: true,
       segments,
-      taxShare: example.tax_share_of_price,
+      taxShare: cigaretteRate ? tax / example.price_eur : example.tax_share_of_price,
       assumption: example.assumption,
     };
   });
