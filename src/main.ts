@@ -436,7 +436,7 @@ function syncControls(): void {
   if (cut) {
     const p = you.payslip;
     const share = (p.gross - p.totals.net) / p.gross;
-    cut.innerHTML = `<span class="cut-swatch" aria-hidden="true"></span>${pct(share, state.lang, 0)} ${t("deductions", state.lang)}`;
+    cut.innerHTML = `<span class="cut-swatch" aria-hidden="true"></span><span class="cut-text"><span>${pct(share, state.lang, 0)} ${t("deductions", state.lang)}</span><span class="cut-eur">${eur(p.gross - p.totals.net, state.lang)}</span></span>`;
     cut.title = fill(t("deductionsName", state.lang), eur(p.gross - p.totals.net, state.lang));
   }
   const figure = document.querySelector<HTMLButtonElement>("#wage-figure");

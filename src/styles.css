@@ -382,6 +382,16 @@ input[type="range"]:focus-visible {
   white-space: nowrap;
 }
 
+.cut-text {
+  display: grid;
+  line-height: 1.25;
+}
+
+.cut-eur {
+  color: var(--ink);
+  font-weight: 650;
+}
+
 .cut-swatch {
   width: 14px;
   height: 8px;
