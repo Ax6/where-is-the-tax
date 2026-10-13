@@ -3,15 +3,15 @@
 import { mkdir, writeFile } from "node:fs/promises";
 import { resolve } from "node:path";
 
-import { buildGermany, buildYou, defaultWage, GERMANY_CODE } from "../src/data/model.ts";
+import { buildGermany, buildYou, defaultWage, DEFAULT_PAGE_YEAR, GERMANY_CODE } from "../src/data/model.ts";
 import { renderPage, type PageState } from "../src/ui/page.ts";
 
 const state: PageState = {
   zoom: "you",
-  wage: Math.round(defaultWage(2024)),
+  wage: Math.round(defaultWage(DEFAULT_PAGE_YEAR)),
   wageSet: false,
   land: GERMANY_CODE,
-  year: 2024,
+  year: DEFAULT_PAGE_YEAR,
   lang: "en",
   unit: "bn",
   estimate: true,

@@ -1,6 +1,6 @@
 import "./styles.css";
 
-import { buildGermany, buildYou, defaultWage, ENTITY_ORDER, equalisation, GERMANY_CODE, getPlace, PAGE_YEARS, timeSeries, type EntityId } from "./data/model.ts";
+import { buildGermany, buildYou, defaultWage, DEFAULT_PAGE_YEAR, ENTITY_ORDER, equalisation, GERMANY_CODE, getPlace, PAGE_YEARS, timeSeries, type EntityId } from "./data/model.ts";
 import { eur, t, titleFor, tr, type Lang } from "./i18n.ts";
 import { drawerContent, purchaseDetail } from "./ui/drawer-content.ts";
 import { mapTitleFor, renderDataTable, renderHeroTable, renderLegendRow, renderPage, renderSources, renderTaxTable, renderTitle, renderWageTicks, WAGE_MAX, WAGE_MIN, WAGE_STEP, type PageState } from "./ui/page.ts";
@@ -9,6 +9,9 @@ import { renderLandBars, renderLandMap } from "./viz/land-map.ts";
 import { renderGermanyStages, renderYouStages } from "./viz/stages.ts";
 import { renderTimeStrip } from "./viz/timestrip.ts";
 import { hideTooltip, showTooltip } from "./viz/tooltip.ts";
+
+// Measure diagram labels in the chosen typeface; keep the system fallback if the font cannot load.
+await document.fonts.load('400 14px "IBM Plex Sans"').catch(() => []);
 
 document.documentElement.classList.add("enhanced");
 
@@ -28,7 +31,7 @@ function parseHash(): State {
   const yearParam = Number(params.get("y") ?? params.get("year"));
   // old links: a payslip year past the page's last year (2026) opens that last year
   const lastYear = PAGE_YEARS[PAGE_YEARS.length - 1]!;
-  const year = isPageYear(yearParam) ? yearParam : Number.isFinite(yearParam) && yearParam > lastYear ? lastYear : PAGE_YEARS[0];
+  const year = isPageYear(yearParam) ? yearParam : Number.isFinite(yearParam) && yearParam > lastYear ? lastYear : DEFAULT_PAGE_YEAR;
   const wage = Number(params.get("wage"));
   const wageSet = params.has("wage") && Number.isFinite(wage) && wage > 0 && wage < 1e7;
   const lang = params.get("lang") === "de" || params.get("lang") === "en" ? (params.get("lang") as Lang) : navigator.language.toLowerCase().startsWith("de") ? "de" : "en";

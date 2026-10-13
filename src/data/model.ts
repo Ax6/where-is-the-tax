@@ -51,6 +51,7 @@ export const placeName = (code: string): Bi =>
 
 /** Years the page offers (one global switch). 2026 appears only as one payslip line in the drawer. */
 export const PAGE_YEARS = [2024, 2025] as const;
+export const DEFAULT_PAGE_YEAR = 2025;
 export type PageYear = (typeof PAGE_YEARS)[number];
 
 export const populationOf = (year: number): number => (raw.population.germany as Record<string, number>)[String(year)] ?? (raw.population.germany as Record<string, number>)["2024"]!;

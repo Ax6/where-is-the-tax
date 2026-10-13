@@ -10,6 +10,7 @@ import {
   buildGermany,
   buildYou,
   defaultWage,
+  DEFAULT_PAGE_YEAR,
   equalisation,
   GERMANY_CODE,
   householdEstimate,
@@ -27,8 +28,9 @@ import { titleFor, yearTag } from "../src/i18n.ts";
 type Row = { id: string; values_eur: Record<string, number | null> };
 const byTax = (id: string, year: number) => (raw.byTax.rows as unknown as Row[]).find((row) => row.id === id)!.values_eur[String(year)]!;
 
-test("the page offers 2024 and 2025 only; the default is 2024", () => {
+test("the page offers 2024 and 2025 only; the default is 2025", () => {
   assert.deepEqual([...PAGE_YEARS], [2024, 2025]);
+  assert.equal(DEFAULT_PAGE_YEAR, 2025);
   assert.equal(titleFor(2025, "en"), "Where taxes go · Germany 2025");
   assert.equal(titleFor(2025, "de"), "Wohin Steuern fließen · Deutschland 2025");
 });

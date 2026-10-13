@@ -66,11 +66,22 @@ test("header: controls fit at breakpoints and mobile settings preserve state and
   }
 });
 
-test("year control: 2025 re-reads every view; a wage the reader set survives the switch", { timeout: 120_000 }, async () => {
+test("year control: 2025 is the default with and without JS; explicit years and wages survive", { timeout: 120_000 }, async () => {
   const { server, url } = await serveDist();
   const browser = await chromium.launch();
   try {
     const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
+    const staticPage = await browser.newPage({ javaScriptEnabled: false });
+    await staticPage.goto(url, { waitUntil: "networkidle" });
+    assert.equal(await staticPage.textContent("#title"), "Where taxes go · Germany 2025");
+    assert.equal(await staticPage.getAttribute(".seg-year button[data-value='2025']", "aria-pressed"), "true");
+    assert.equal(await staticPage.textContent("#wage-figure"), "€54,066");
+    await staticPage.close();
+    await page.goto(`${url}#lang=en`, { waitUntil: "networkidle" });
+    assert.equal(await page.textContent("#title"), "Where taxes go · Germany 2025");
+    assert.equal(await page.getAttribute(".seg-year button[data-value='2025']", "aria-pressed"), "true");
+    assert.equal(await page.getAttribute(".seg-year button[data-value='2024']", "aria-pressed"), "false");
+    assert.equal(await page.textContent("#wage-figure"), "€54,066");
     await page.goto(`${url}#y=2024&lang=en`, { waitUntil: "networkidle" });
     assert.equal(await page.textContent("#title"), "Where taxes go · Germany 2024");
     assert.equal(await page.locator(".seg-year button").count(), 2);

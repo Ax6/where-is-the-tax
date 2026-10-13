@@ -22,7 +22,7 @@ export function svgEl<K extends keyof SVGElementTagNameMap>(
 }
 
 let canvas: HTMLCanvasElement | null = null;
-const FONT_SANS = 'system-ui, -apple-system, "Segoe UI", Roboto, sans-serif';
+const FONT_SANS = '"IBM Plex Sans", system-ui, sans-serif';
 
 /** Width of a string at a given font size/weight in the page's sans face. */
 export function textWidth(text: string, size = 12, weight = 400): number {
