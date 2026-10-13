@@ -121,9 +121,13 @@ export function renderControls(state: PageState): string {
   </div>`;
 }
 
+/** The question for the view, over an invisible copy of the longer one so the title's width never changes on a switch. */
 export function renderTitle(year: number, lang: Lang, zoom: "you" | "germany" = "you"): string {
   const [name, context] = titleFor(year, lang, zoom).split(" · ");
-  return `<span class="title-name">${esc(name!)}</span><span class="title-context"><span class="sr-only"> · </span>${esc(context!)}</span>`;
+  const other = titleFor(year, lang, zoom === "you" ? "germany" : "you").split(" · ")[0]!;
+  const longest = other.length > name!.length ? other : name!;
+  // the sizer is generated content (styles.css), so it is in neither the text nor the accessibility tree
+  return `<span class="title-stack" data-sizer="${esc(longest)}"><span class="title-name">${esc(name!)}</span></span><span class="title-context"><span class="sr-only"> · </span>${esc(context!)}</span>`;
 }
 
 /** One row above the charts: the Shopping panel, the recipients (click to highlight), the marker notes. */
