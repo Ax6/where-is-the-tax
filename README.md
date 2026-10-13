@@ -27,7 +27,7 @@ Everyone should be able to see where their taxes go. And AI does the tedious wor
 </p>
 
 <a href="https://ax6.github.io/where-is-the-tax/#lang=en&y=2025&theme=light">
-  <img src="docs/screenshots/readme-light.png" alt="The tax explorer: a map of Germany beside flows from gross salary through taxes and social contributions to their recipients, with a spending breakdown for the selected budget." width="1440">
+  <img src="docs/screenshots/readme-light-1080p.png" alt="The tax explorer: a map of Germany beside flows from gross salary through taxes and social contributions to their recipients, with a spending breakdown for the selected budget." width="1440">
 </a>
 
 <p align="center"><sub>The live explorer · 2025 view · captured 13 October 2026 · click to explore</sub></p>
