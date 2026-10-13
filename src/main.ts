@@ -546,8 +546,9 @@ function wireWage(): void {
     const max = Number(range.max);
     const thumb = 16;
     const x = ((Number(range.value) - min) / (max - min)) * (range.clientWidth - thumb) + thumb / 2;
-    bubble.style.left = `${x}px`;
     bubble.textContent = wageText(state.wage);
+    const half = bubble.offsetWidth / 2;
+    bubble.style.left = `${Math.max(half, Math.min(range.clientWidth - half, x))}px`;
   };
   range.addEventListener("pointerdown", () => {
     wageDragging = true;

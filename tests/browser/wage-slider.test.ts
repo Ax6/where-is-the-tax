@@ -5,6 +5,44 @@ import { chromium } from "playwright";
 
 import { serveDist } from "./axe-audit.ts";
 
+test("wage bubble stays within the slider without widening the page", { timeout: 120_000 }, async () => {
+  const { server, url } = await serveDist();
+  const browser = await chromium.launch();
+  try {
+    const page = await browser.newPage({ isMobile: true, hasTouch: true });
+    for (const width of [320, 390, 760, 1440]) {
+      await page.setViewportSize({ width, height: 844 });
+      for (const lang of ["de", "en"]) {
+        await page.goto(`${url}#lang=${lang}&y=2025`, { waitUntil: "networkidle" });
+        const positions = await page.evaluate(async () => {
+          const range = document.querySelector<HTMLInputElement>("#wage-range")!;
+          const bubble = document.querySelector<HTMLOutputElement>("#wage-bubble")!;
+          range.dispatchEvent(new PointerEvent("pointerdown", { pointerType: "touch", bubbles: true }));
+          const positions = [];
+          for (const wage of [8000, 27000, 54000, 64000, 160000, 80000]) {
+            range.value = String(wage);
+            range.dispatchEvent(new Event("input", { bubbles: true }));
+            await new Promise<void>((done) => requestAnimationFrame(() => requestAnimationFrame(() => done())));
+            const track = range.getBoundingClientRect();
+            const label = bubble.getBoundingClientRect();
+            positions.push({ wage, left: label.left - track.left, right: track.right - label.right, overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth });
+          }
+          range.dispatchEvent(new PointerEvent("pointerup", { pointerType: "touch", bubbles: true }));
+          return positions;
+        });
+        for (const position of positions) {
+          const context = `${width}px ${lang} wage=${position.wage}: ${JSON.stringify(position)}`;
+          assert.ok(position.left >= -1 && position.right >= -1, context);
+          assert.equal(position.overflow, 0, context);
+        }
+      }
+    }
+  } finally {
+    await browser.close();
+    server.close();
+  }
+});
+
 test("touch wage slider: chart updates never reset an unfocused active drag", { timeout: 120_000 }, async () => {
   const { server, url } = await serveDist();
   const browser = await chromium.launch();
