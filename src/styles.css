@@ -1096,6 +1096,11 @@ li.legend-note {
 .pot-transfer {
   fill: var(--page);
   stroke-width: 1.5;
+  transition: fill 120ms ease, opacity 120ms ease;
+}
+
+.hero-svg :is(.ribbons, .joins, .nodes, .labels, .pot-label, .pot-borrowed, .transfer-line) {
+  transition: opacity 120ms ease;
 }
 
 /* Focus only the central flow: its selected segment and budget label stay clear. */
