@@ -378,7 +378,7 @@ function federalPot(year: number): Pot {
     status: "provisional",
     fenced: false,
     compositionBase: own,
-    compositionLabel: bi("eigene Ausgaben ohne Zuschüsse an die Sozialversicherung", "own spending, without grants to social insurance"),
+    compositionLabel: bi("Ausgaben des Bundes (ohne Zuschüsse an die Sozialversicherung)", "Federation spending (excluding grants to social insurance)"),
     categories: fold(categories, 6),
     transferOut: {
       label: bi("Zuschüsse an Renten- und Krankenversicherung", "Grants to pension and health insurance"),
@@ -389,7 +389,7 @@ function federalPot(year: number): Pot {
       ],
     },
     borrowed: overviewRow("nettokreditaufnahme", year),
-    basis: bi(`Kernhaushalt, Ist ${year} (vorläufiger Abschluss), BMF-Abgrenzung`, `Core budget, actuals ${year} (provisional closing), BMF definition`),
+    basis: bi("Kernhaushalt des Bundes, tatsächliche Ausgaben, wie das BMF sie zählt", "Core federal budget, actual spending, as the BMF counts it"),
     sources: [
       link(bi(`Haushaltsrechnung des Bundes ${year} (XML)`, `Federal budget account ${year} (XML)`), federalPath(year), federal.sources.xml),
       link(bi(`BMF Monatsbericht: Abschluss ${year}`, `BMF monthly report: closing ${year}`), files.federalOverview, article),
@@ -942,7 +942,7 @@ export function buildYou(year: number, gross: number, placeCode: string, options
     { id: "r-unemp", stage: 2, label: bi("Arbeitslosenversicherung", "Unemployment insurance"), value: 0, entity: "unemp", kind: "entity", status: "law" },
   ];
   const generalBudget = bi("Allgemeiner Haushalt: alle Einnahmen decken alle Ausgaben.", "General budget: all revenue covers all spending.");
-  const fencedPool = bi("Zweckgebundener Topf (§ 30 SGB IV): nur für die Aufgaben dieses Systems.", "Fenced pool (§ 30 SGB IV): only for this system's tasks.");
+  const fencedPool = bi("Nur für diese Versicherung (§ 30 SGB IV), nicht für den allgemeinen Haushalt.", "Only for this insurance (§ 30 SGB IV), not for the general budget.");
   for (const recipient of recipients) {
     recipient.mechanism = ["fed", "land", "muni"].includes(recipient.entity ?? "") ? generalBudget : fencedPool;
   }
