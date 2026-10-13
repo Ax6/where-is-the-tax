@@ -623,6 +623,7 @@ function bridgeDrawer(id: string, ctx: DrawerContext): DrawerContent {
   return {
     title: tr(seg.label, lang),
     html: `${header(bn(seg.value, lang), `${SY} · ${seg.share !== undefined ? `${pct(seg.share, lang, 1)} ${lang === "de" ? "der Staatseinnahmen" : "of state revenue"}` : `${eur(seg.value / (raw.population.germany as Record<string, number>)[SY]!, lang)} ${lang === "de" ? "je Einwohner" : "per resident"}`}`, "official", lang)}
+      ${id === "other" ? `<p class="drawer-note"><strong>${esc(t("onePotTitle", lang))}</strong> ${esc(t("onePot", lang))}</p>` : ""}
       ${section(t("breakdown", lang), rows(parts[id] ?? []))}
       <p class="drawer-note">${esc(
         lang === "de"
