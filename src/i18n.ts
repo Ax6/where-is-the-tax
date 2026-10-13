@@ -44,6 +44,7 @@ const ui = {
   stateRevenue: bi("Einnahmen des Staates", "State revenue"),
   stateSpending: bi("Ausgaben des Staates", "State spending"),
   boundary: bi("Ab hier zusammengezählt mit dem Geld aller anderen", "From here summed with everyone else's money"),
+  boundaryGermany: bi("Ab hier ein Topf mit Gebühren, sonstigen Einnahmen und Krediten", "From here on, one pot with fees, other income and borrowing"),
   employerGhost: bi("zahlt Ihr Arbeitgeber zusätzlich", "paid on top by your employer"),
   netPay: bi("Netto: bleibt Ihnen", "Net pay: yours"),
   wageTax: bi("Lohnsteuer", "Wage tax"),

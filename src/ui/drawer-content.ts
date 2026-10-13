@@ -745,8 +745,8 @@ function rankingPanel(ctx: DrawerContext): DrawerContent {
       ${renderEqualisationTable(lang, ctx.year)}
       <p class="drawer-note">${esc(
         lang === "de"
-          ? "Ein gemeinsamer Ausgleich, keine Zahlungen von Land zu Land. Klick auf ein Land zeigt Ihren Fluss dort; nochmals klicken: alle Länder."
-          : "One pooled calculation, no payments from Land to Land. Click a Land to see your flow there; click again for all Länder.",
+          ? `Ein gemeinsamer Ausgleich, keine Zahlungen von Land zu Land. ${ctx.zoom === "you" ? "Klick auf ein Land zeigt Ihren Fluss dort" : "Klick auf ein Land hebt es hervor"}; nochmals klicken: alle Länder.`
+          : `One pooled calculation, no payments from Land to Land. ${ctx.zoom === "you" ? "Click a Land to see your flow there" : "Click a Land to mark it"}; click again for all Länder.`,
       )}</p>
       ${section(t("sources", lang), sourceList(equalisationSource(ctx.year), lang))}`,
   };
