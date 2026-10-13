@@ -22,6 +22,7 @@ Everyone should be able to see where their taxes go. And AI does the tedious wor
   <img alt="Opus said OK." src="https://img.shields.io/badge/Opus_5.5-OK-green?logo=Claude">
   <img alt="Opus said OK." src="https://img.shields.io/badge/Fable_5.1-OK-green?logo=Claude">
   <img alt="Opus said OK." src="https://img.shields.io/badge/Sol_6.1-OK-green?logo=openaigym">
+  <img alt="Opus said OK." src="https://img.shields.io/badge/Astra_6-Not enough tokens-orange?logo=openaigym">
 </p>
 
 <a href="https://ax6.github.io/where-is-the-tax/#lang=en&y=2025&theme=light">
