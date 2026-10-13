@@ -3,6 +3,7 @@ dist/
 .generated/
 .DS_Store
 coverage/
+/design/mockups/
 *.log
 # research: non-redistributable or oversized raw downloads live in the cache (re-fetch with scripts/research/fetch.py)
 research/cache/

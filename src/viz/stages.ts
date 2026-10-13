@@ -23,7 +23,7 @@ interface Row {
   selected?: boolean;
 }
 
-function stage(parent: HTMLElement, title: string, rows: Row[], options: { lang: Lang; onOpen: (target: DrawerTarget) => void; onSelect?: (id: string) => void; note?: string; base?: number; mixedBases?: boolean; rows?: boolean }): void {
+function stage(parent: HTMLElement, title: string, rows: Row[], options: { lang: Lang; onOpen: (target: DrawerTarget, trigger?: HTMLElement) => void; onSelect?: (id: string) => void; note?: string; base?: number; mixedBases?: boolean; rows?: boolean }): void {
   const section = document.createElement("section");
   section.className = "stage";
   const h = document.createElement("h2");
@@ -54,6 +54,7 @@ function stage(parent: HTMLElement, title: string, rows: Row[], options: { lang:
     const button = document.createElement("button");
     button.type = "button";
     button.className = `stage-row${row.selected ? " is-selected" : ""}`;
+    button.dataset.key = `n-${row.key}`;
     const swatch = document.createElement("span");
     swatch.className = `swatch${row.kind ? ` is-${row.kind}` : ""}`;
     if (row.entity) {
@@ -95,7 +96,7 @@ function stage(parent: HTMLElement, title: string, rows: Row[], options: { lang:
       if (row.select && options.onSelect) {
         options.onSelect(row.select);
       } else if (row.target) {
-        options.onOpen(row.target);
+        options.onOpen(row.target, button);
       }
     });
     li.append(button);
@@ -116,7 +117,7 @@ const label = (bi: Bi, lang: Lang) => tr(bi, lang);
 export function renderYouStages(
   container: HTMLElement,
   model: YouModel,
-  options: { lang: Lang; year: number; selectedPot: string; onOpen: (target: DrawerTarget) => void; onSelectPot: (id: string) => void },
+  options: { lang: Lang; year: number; selectedPot: string; onOpen: (target: DrawerTarget, trigger?: HTMLElement) => void; onSelectPot: (id: string) => void },
 ): void {
   const { lang } = options;
   container.replaceChildren();
@@ -190,8 +191,9 @@ export function renderYouStages(
     const hook = document.createElement("button");
     hook.type = "button";
     hook.className = "link-btn stage-hook";
+    hook.dataset.key = "shopping-hook";
     hook.textContent = shoppingHook(options.year, lang);
-    hook.addEventListener("click", () => options.onOpen({ kind: "panel", id: "shopping" }));
+    hook.addEventListener("click", () => options.onOpen({ kind: "panel", id: "shopping" }, hook));
     container.lastElementChild?.append(hook);
   }
   const pots: Row[] = model.pots.map((pot) => ({
@@ -231,7 +233,7 @@ export function renderYouStages(
 export function renderGermanyStages(
   container: HTMLElement,
   model: GermanyModel,
-  options: { lang: Lang; unit: "bn" | "day"; onOpen: (target: DrawerTarget) => void },
+  options: { lang: Lang; unit: "bn" | "day"; onOpen: (target: DrawerTarget, trigger?: HTMLElement) => void },
 ): void {
   const { lang, unit } = options;
   container.replaceChildren();
