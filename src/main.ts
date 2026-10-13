@@ -423,10 +423,13 @@ const wageText = (wage: number): string => {
   return `${eur(wage, state.lang)}${tick ? ` · ${tick.name}` : ""}`;
 };
 
+let wageDragging = false;
+
 function syncControls(): void {
   const range = document.querySelector<HTMLInputElement>("#wage-range");
   if (range) {
-    if (!range.matches(":active") && document.activeElement !== range) {
+    // iOS touch drags need not focus the range or match :active; writing value can interrupt them.
+    if (!wageDragging && !range.matches(":active") && document.activeElement !== range) {
       range.value = String(Math.min(WAGE_MAX, Math.max(WAGE_MIN, Math.round(state.wage / WAGE_STEP) * WAGE_STEP)));
     }
     range.setAttribute("aria-valuetext", wageText(state.wage));
@@ -533,11 +536,11 @@ function sliceRange(range: HTMLInputElement): void {
 
 let rangeFrame = 0;
 function wireWage(): void {
+  wageDragging = false;
   const range = document.querySelector<HTMLInputElement>("#wage-range")!;
   const bubble = document.querySelector<HTMLOutputElement>("#wage-bubble")!;
   const figure = document.querySelector<HTMLButtonElement>("#wage-figure")!;
   const input = document.querySelector<HTMLInputElement>("#wage-input")!;
-  let dragging = false;
   const placeBubble = () => {
     const min = Number(range.min);
     const max = Number(range.max);
@@ -547,12 +550,12 @@ function wireWage(): void {
     bubble.textContent = wageText(state.wage);
   };
   range.addEventListener("pointerdown", () => {
-    dragging = true;
+    wageDragging = true;
     bubble.hidden = false;
     placeBubble();
   });
   const release = () => {
-    dragging = false;
+    wageDragging = false;
     bubble.hidden = true;
   };
   range.addEventListener("pointerup", release);
@@ -564,7 +567,7 @@ function wireWage(): void {
     rangeFrame = requestAnimationFrame(() => {
       const { wage } = snapWage(Number(range.value));
       update({ wage, wageSet: true });
-      if (dragging) {
+      if (wageDragging) {
         placeBubble();
       }
     });
