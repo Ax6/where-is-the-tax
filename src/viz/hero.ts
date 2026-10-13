@@ -163,7 +163,8 @@ function stageLabel(svg: SVGSVGElement, x: number, text: string, anchor: "start"
 function boundary(svg: SVGSVGElement, x: number, top: number, bottom: number, lang: Lang): void {
   const g = svgEl(svg, "g", { class: "boundary" });
   svgEl(g, "line", { x1: x, x2: x, y1: top - 6, y2: bottom, class: "boundary-line" });
-  svgEl(g, "text", { x: x - 6, y: top, class: "boundary-label", transform: `rotate(-90 ${x - 6} ${top})`, "text-anchor": "end" }, t("boundary", lang));
+  // just right of the dotted line, clear of the recipient labels that end at the line
+  svgEl(g, "text", { x: x + 12, y: top, class: "boundary-label", transform: `rotate(-90 ${x + 12} ${top})`, "text-anchor": "end" }, t("boundary", lang));
 }
 
 /** Animate rect heights/positions and ribbons from the previous render (respects reduced motion). */
@@ -268,13 +269,16 @@ interface PlacedLabel {
 function placeLabels(parent: Element, specs: LabelSpec[], o: LabelOptions): Map<string, PlacedLabel> {
   const lineH = 13.5;
   const blocks = specs.map((spec) => {
-    const valueWidth = textWidth(spec.value, 12, 650);
+    const valueText = spec.value.replace("\n", " ");
+    const valueWidth = textWidth(valueText, 12, 650);
+    // a value too wide for the column breaks at its "\n" (the exact euros, then the ≈ estimate)
+    const valueLines = valueWidth <= o.maxWidth ? [valueText] : spec.value.split("\n").flatMap((part) => wrap(part, o.maxWidth, 12, 650, 2));
     // one line for small nodes when it fits; tiny nodes always get one line (ellipsised if needed)
     const fits = textWidth(spec.name, 12, 500) + 6 + valueWidth <= o.maxWidth;
     const compact = spec.nodeH < o.compactBelow && (fits || spec.nodeH < 6);
     const lines = compact ? [wrap(spec.name, o.maxWidth - valueWidth - 6, 12, 500, 1)[0] ?? ""] : wrap(spec.name, o.maxWidth, 12, 500, o.maxLines ?? 2);
-    const h = (compact ? lineH : (lines.length + 1) * lineH) + (spec.reserve ?? 0);
-    return { spec, compact, lines, h, y: spec.nodeY + spec.nodeH / 2 - h / 2, width: Math.max(valueWidth, ...lines.map((line) => textWidth(line, 12, 500))) + (compact ? valueWidth + 6 : 0) };
+    const h = (compact ? lineH : (lines.length + valueLines.length) * lineH) + (spec.reserve ?? 0);
+    return { spec, compact, lines, valueText, valueLines, h, y: spec.nodeY + spec.nodeH / 2 - h / 2, width: Math.max(...valueLines.map((line) => textWidth(line, 12, 650)), ...lines.map((line) => textWidth(line, 12, 500))) + (compact ? valueWidth + 6 : 0) };
   });
   resolveColumn(blocks, o.top, o.bottom, o.gap);
   const out = new Map<string, PlacedLabel>();
@@ -302,9 +306,9 @@ function placeLabels(parent: Element, specs: LabelSpec[], o: LabelOptions): Map<
     if (block.compact) {
       const text = svgEl(g, "text", { x, y: block.y + 10.5, class: "node-label", "text-anchor": anchor });
       svgEl(text, "tspan", {}, `${block.lines[0]} `);
-      svgEl(text, "tspan", { class: "num strong" }, spec.value);
+      svgEl(text, "tspan", { class: "num strong" }, block.valueText);
     } else {
-      multiline(g, [...block.lines, spec.value], { x, y: block.y + 10.5, class: "node-label", "text-anchor": anchor }, lineH, (i) => (i === block.lines.length ? "num strong" : undefined));
+      multiline(g, [...block.lines, ...block.valueLines], { x, y: block.y + 10.5, class: "node-label", "text-anchor": anchor }, lineH, (i) => (i >= block.lines.length ? "num strong" : undefined));
     }
     out.set(spec.key, { g, x, y: block.y, h: block.h - (spec.reserve ?? 0) });
   }
@@ -516,7 +520,7 @@ export function renderYou(container: HTMLElement, model: YouModel, options: Hero
         key: node.id,
         name: `${tr(node.label, lang)}${node.star ? "*" : ""}`,
         // never one total: the exact payslip euros, then the ≈ estimate
-        value: node.estimate ? `${exactText} + ≈${eur(node.estimate, lang)}*` : exactText,
+        value: node.estimate ? `${exactText}\n+ ≈${eur(node.estimate, lang)} ${lang === "de" ? "aus\u00a0Einkäufen" : "from\u00a0shopping"}*` : exactText,
         anchorX: stage === 0 ? node.x : node.x + node.w,
         nodeY: node.y,
         nodeH: stage === 0 ? Math.min(node.h, 80) : node.h,
@@ -747,7 +751,7 @@ export function renderComposition(svg: SVGSVGElement, pot: Pot, inflow: number, 
     svgEl(g, "text", { x: o.x + o.width - 4, y: o.top + 14 + headerLines.length * 13 + 6, class: "panel-sub", "text-anchor": "end" }, t("yoursColumn", lang));
   }
   const barTop = o.top + 14 + headerLines.length * 13 + (yours ? 14 : 0);
-  const noteLines = yours ? wrap(`* ${t("proRataIfYour", lang).replace("{eur}", eur(inflow, lang))}`, o.width - 8, 11, 400, 2) : [];
+  const noteLines = yours ? wrap(`* ${t("proRataIfYour", lang).replace("{eur}", eur(inflow, lang)).replace("{pot}", tr(pot.label, lang))}`, o.width - 8, 11, 400, 2) : [];
   const footer = (pot.transferOut ? 30 : 0) + (pot.borrowed ? 30 : 0) + noteLines.length * 13 + (yours ? 6 : 0) + 18;
   const barBottom = o.bottom - footer;
   const barH = barBottom - barTop;
@@ -805,7 +809,7 @@ export function renderComposition(svg: SVGSVGElement, pot: Pot, inflow: number, 
         lines: [`${bn(s.cat.value, lang)} ${lang === "de" ? "von" : "of"} ${bn(pot.compositionBase, lang)}`],
         prorata: yours ? `${t("proRata", lang)}: ${eur(inflow, lang)} × ${pct(share, lang, 1)} = ${eur(mine, lang)}` : undefined,
         status: pot.status,
-        body: yours ? tr(PRO_RATA, lang) : undefined,
+        body: yours ? t("proRataNote", lang).replace("{pot}", tr(pot.label, lang)) : undefined,
         hint: true,
       }),
       o.onOpen,
@@ -839,11 +843,6 @@ export function renderComposition(svg: SVGSVGElement, pot: Pot, inflow: number, 
     }
   });
 }
-
-const PRO_RATA = {
-  de: "* Anteilig: wenn Ihr Beitrag so verteilt wäre wie dieser Haushalt. Geld im Haushalt trägt keine Herkunft.",
-  en: "* Pro rata: if your contribution were spread like this budget. Money in a budget carries no origin.",
-};
 
 // =============================================================================================
 // Germany zoom
@@ -912,7 +911,7 @@ export function renderGermany(container: HTMLElement, model: GermanyModel, optio
       () => ({
         value: value(node.value),
         title: `${tr(node.label, lang)}`,
-        lines: node.stage === 0 && node.id.startsWith("t-") ? [`${pct(node.value / model.taxesTotal, lang, 1)} ${lang === "de" ? "aller Steuern (Kasse)" : "of all tax (cash)"}`] : undefined,
+        lines: node.stage === 0 && node.id.startsWith("t-") ? [`${pct(node.value / model.taxesTotal, lang, 1)} ${lang === "de" ? `aller eingenommenen Steuern ${Y}` : `of all taxes collected ${Y}`}`] : undefined,
         status: node.status,
         body: node.mechanism ? tr(node.mechanism, lang) : node.id === "r-eu" ? t("euLeaves", lang) : node.star ? tr(STAR_PAYROLL, lang) : undefined,
         hint: true,
@@ -1042,8 +1041,8 @@ const STAR_PAYROLL = {
   en: "* Contributions of compulsorily insured employees (employee and employer share), a proxy. Without contributions of pensioners, the self-employed and public bodies.",
 };
 const ESA_CASH = {
-  de: "Volkswirtschaftliche Abgrenzung (periodengerecht). Die kassenmäßigen Steuereinnahmen links sind eine andere Abgrenzung; nie addieren.",
-  en: "National-accounts basis (accrual). The cash tax receipts on the left are a different basis; never add the two.",
+  de: "Nach Eurostat-Methode gezählt, nicht als Kasseneinnahmen. Nicht zur linken Seite addieren.",
+  en: "Counted the Eurostat way, not as cash collected. Don't add it to the left side.",
 };
 
 export const formatShortNumber = (value: number, lang: Lang): string => num(value, lang);

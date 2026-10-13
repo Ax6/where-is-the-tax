@@ -102,7 +102,7 @@ test("rendered page and drawers follow the year; 2026 appears only as the paysli
   const payslip = drawerContent({ kind: "node", id: "gross" }, ctx);
   assert.match(payslip.html, /Same wage in 2026: €[\d,]+ net/);
   const wageTax = drawerContent({ kind: "node", id: "t-STEUERARTG10" }, { ...ctx, zoom: "germany" });
-  assert.match(wageTax.html, /of all tax 2025 \(cash\)/);
+  assert.match(wageTax.html, /of all taxes collected 2025/);
   const vat = drawerContent({ kind: "node", id: "t-vat" }, { ...ctx, zoom: "germany" });
   assert.match(vat.html, /Outcome 2025 after the fixed amounts/);
   const cofog = drawerContent({ kind: "cofog", code: germany.cofog[0]!.code }, { ...ctx, zoom: "germany" });

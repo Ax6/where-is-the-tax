@@ -43,7 +43,7 @@ test("no-JS build keeps the equalisation section: provisional title, pooled note
   const html = renderPage(base, buildYou(base.year, base.wage, base.land), buildGermany(), { staticBuild: true });
   const section = html.slice(html.indexOf('id="equalisation-static"'), html.indexOf('id="taxes"'));
   assert.match(section, /Fiscal equalisation 2024 provisional/);
-  assert.match(section, /no payment from one Land to another/);
+  assert.match(section, /no Land pays another/);
   assert.equal([...section.matchAll(/<tr><th scope="row">/g)].length, 16);
   // the interactive page has the map instead
   assert.doesNotMatch(renderPage(base, buildYou(base.year, base.wage, base.land), buildGermany()), /equalisation-static/);

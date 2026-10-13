@@ -224,7 +224,7 @@ export function renderHeroTable(state: PageState, you: YouModel, germany: German
         const mine = inflow * share;
         return `<tr><th scope="row">${esc(`${pct(share, lang, 1)} · ${tr(cat.label, lang)}${cat.star ? "*" : ""}`)}</th><td class="num">${esc(inflow > 0 ? `${mine < 1 ? `< ${eur(1, lang)}` : `≈ ${eur(mine, lang)}`}*` : bn(cat.value, lang))}</td></tr>`;
       })
-      .join("")}</tbody></table>${inflow > 0 ? `<p class="section-note">${esc(`* ${t("proRataIfYour", lang).replace("{eur}", eur(inflow, lang))}`)}</p>` : ""}`;
+      .join("")}</tbody></table>${inflow > 0 ? `<p class="section-note">${esc(`* ${t("proRataIfYour", lang).replace("{eur}", eur(inflow, lang)).replace("{pot}", tr(selected.label, lang))}`)}</p>` : ""}`;
 }
 
 export function renderTaxTable(lang: Lang, year: number, limit?: number): string {

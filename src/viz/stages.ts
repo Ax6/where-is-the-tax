@@ -150,7 +150,7 @@ export function renderYouStages(
     {
       lang,
       onOpen: options.onOpen,
-      note: lang === "de" ? "Hellere Teile: Arbeitgeberanteil. Anteile: an den Kosten des Arbeitsplatzes." : "Lighter parts: employer share. Shares: of the cost of the job.",
+      note: lang === "de" ? "Heller = Arbeitgeberanteil. Anteile: an den Kosten des Arbeitsplatzes." : "Lighter = employer's share. Shares: of what the job costs the employer.",
     },
   );
   const recipients: Row[] = model.flow.nodes
@@ -226,7 +226,7 @@ export function renderYouStages(
     lang,
     onOpen: options.onOpen,
     base: selected.compositionBase,
-    note: `${bn(selected.compositionBase, lang)} ${label(selected.compositionLabel, lang)}.${inflow > 0 ? ` * ${t("proRataIfYour", lang).replace("{eur}", eur(inflow, lang))}` : ""}`,
+    note: `${bn(selected.compositionBase, lang)} ${label(selected.compositionLabel, lang)}.${inflow > 0 ? ` * ${t("proRataIfYour", lang).replace("{eur}", eur(inflow, lang)).replace("{pot}", label(selected.label, lang))}` : ""}`,
   });
 }
 
@@ -254,7 +254,7 @@ export function renderGermanyStages(
         target: { kind: "node" as const, id: n.id },
         shareBase: n.id.startsWith("t-") || ["r-fed", "r-land", "r-muni", "r-eu"].includes(n.id) ? model.taxesTotal : undefined,
       }));
-  const shareNote = lang === "de" ? "Anteile: an allen Steuern (Kasse). Beiträge sind ein anderer Topf, ohne Anteil." : "Shares: of all tax (cash). Contributions are a separate pool, shown without a share.";
+  const shareNote = lang === "de" ? "Anteile an allen eingenommenen Steuern. Beiträge sind ein eigener Topf." : "Shares of all collected taxes. Contributions are a separate pool.";
   stage(container, `${t("stageTaxes", lang)} ${model.year}`, col(0), { lang, onOpen: options.onOpen, mixedBases: true, note: shareNote });
   stage(container, t("stageRecipients", lang), col(1), { lang, onOpen: options.onOpen, mixedBases: true });
   stage(

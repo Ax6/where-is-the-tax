@@ -373,13 +373,13 @@ function potDrawer(pot: Pot, ctx: DrawerContext): DrawerContent {
     title: tr(pot.label, lang),
     html: `${header(bn(pot.total, lang), `${tag} · ${tr(pot.basis, lang)}`, pot.status, lang)}
       ${inflow > 0 ? `<p class="drawer-joins">${esc(`${eur(inflow, lang)} ${t("joins", lang)} ${bn(pot.total, lang)}${estimateIn > 0 ? ` · + ≈ ${eur(estimateIn, lang)}* ${lang === "de" ? "aus Ihren Einkäufen (Schätzung)" : "from your purchases (estimate)"}` : ""}`)}</p>` : ""}
-      ${section(`${t("breakdown", lang)} · ${t("ofEvery100", lang)} ${tr(pot.compositionLabel, lang)}`, breakdown)}
+      ${section(`${t("breakdown", lang)} · ${tr(pot.compositionLabel, lang)}`, breakdown)}
       ${
         lang === "en" && pot.categories.some((cat) => cat.children?.some((child) => child.label.en.endsWith(" (DE)")))
           ? `<p class="drawer-note">${esc("(DE): sub-function name published in German only.")}</p>`
           : ""
       }
-      ${inflow > 0 ? `<p class="drawer-note prorata">${esc(t("proRataNote", lang))}</p>` : ""}
+      ${inflow > 0 ? `<p class="drawer-note prorata">${esc(t("proRataNote", lang).replace("{pot}", tr(pot.label, lang)))}</p>` : ""}
       ${transfers.length ? section(lang === "de" ? "Transfers und Kredit" : "Transfers and borrowing", rows(transfers)) : ""}
       ${pot.note ? `<p class="drawer-note">${esc(tr(pot.note, lang))}</p>` : ""}
       ${pot.benchmark ? section(t("benchmarks", lang), benchmarkHtml(pot, ctx)) : ""}
@@ -572,7 +572,7 @@ function germanyNodeDrawer(id: string, ctx: DrawerContext): DrawerContent {
   }
   return {
     title,
-    html: `${header(fmt(node.value), `${pct(node.value / germany.taxesTotal, lang, 1)} ${lang === "de" ? `aller Steuern ${Y} (Kasse)` : `of all tax ${Y} (cash)`}`, "official", lang)}
+    html: `${header(fmt(node.value), `${pct(node.value / germany.taxesTotal, lang, 1)} ${lang === "de" ? `aller eingenommenen Steuern ${Y}` : `of all taxes collected ${Y}`}`, "official", lang)}
       ${section(t("mechanism", lang), mechanism)}
       ${series.length ? section(lang === "de" ? "1999–2025" : "1999–2025", spark(series, lang, title)) : ""}
       ${section(t("sources", lang), sourceList(srcs, lang))}`,
