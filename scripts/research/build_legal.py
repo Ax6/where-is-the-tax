@@ -64,8 +64,9 @@ ENTRIES = [
         ("STEUERARTB79", "die Verbrauchsteuern"), ("STEUERARTB80", "die Ergänzungsabgabe zur Einkommensteuer und zur Körperschaftsteuer"), ("STEUERARTB85", "die Verbrauchsteuern"),
         ("STEUERARTB90", "Abgaben im Rahmen der Europäischen Gemeinschaften"), ("STEUERARTB100", "stehen dem Bund zu")]],
     # Customs → EU own resource (collected by the Federation, passed to the EU less collection costs)
-    {"id": "STEUERARTZ10", "shares": {"eu": 1.0}, "kind": "exclusive_assignment", "basis": [("gg_art_106.html", "die Zölle", "Art. 106 (1) Nr. 1 GG")],
-     "note": {"de": "Zölle sind traditionelle EU-Eigenmittel; Deutschland behält 25 % Erhebungskostenpauschale (EU-Eigenmittelbeschluss), Destatis bucht die Zölle vollständig als EU-Eigenmittel.", "en": "Customs duties are traditional EU own resources; Germany retains a 25 % collection-cost share (EU Own Resources Decision); Destatis books customs fully as EU own resources."}},
+    {"id": "STEUERARTZ10", "shares": {"eu": 0.75, "federation": 0.25}, "kind": "exclusive_assignment",
+     "basis": [("gg_art_106.html", "die Zölle", "Art. 106 (1) Nr. 1 GG"), ("customs-duties_en.html", "25% of the collected customs duties", "Art. 9(2) Own Resources Decision (EU, Euratom) 2020/2053")],
+     "note": {"de": "Zölle sind traditionelle EU-Eigenmittel (Art. 2 Abs. 1 Buchst. a Eigenmittelbeschluss 2020/2053); Deutschland behält 25 % als Erhebungskosten (Art. 9 Abs. 2). Destatis bucht die Zölle vollständig als EU-Eigenmittel; hier fließen 75 % an die EU und 25 % an den Bund.", "en": "Customs duties are traditional EU own resources (Art. 2(1)(a) Own Resources Decision 2020/2053); Germany retains 25 % as collection costs (Art. 9(2)). Destatis books all customs as EU own resources; here 75 % flow to the EU and 25 % to the Federation."}},
     # Länder taxes (Art. 106 (2))
     *[{"id": c, "shares": {"laender": 1.0}, "kind": "exclusive_assignment", "basis": [("gg_art_106.html", ph, "Art. 106 (2) GG")]} for c, ph in [
         ("STEUERARTL10", "die Vermögensteuer"), ("STEUERARTL20", "die Erbschaftsteuer"), ("STEUERARTL30", "die Verkehrsteuern"), ("STEUERARTL40", "die Kraftfahrzeugsteuer"),
@@ -95,7 +96,7 @@ def main():
     for e in ENTRIES:
         basis = []
         for file, phrase, section in e["basis"]:
-            src = LAW2 if file in ("gemfinrefg_1.html", "zerlg_7.html", "gg_art_105.html", "gemfinrefg_7.html") else LAW
+            src = "ec_customs_own_resource" if file == "customs-duties_en.html" else LAW2 if file in ("gemfinrefg_1.html", "zerlg_7.html", "gg_art_105.html", "gemfinrefg_7.html") else LAW
             must_contain(src, file, phrase)
             basis.append({"section": section, "quote": phrase, "source": source_ref(src, file, f"text contains: {phrase}")})
         t = taxes[e["id"]]

@@ -46,7 +46,8 @@ export interface PageState {
   tex: boolean;
 }
 
-export const WAGE_MIN = 6_000;
+/** 8 000 EUR a year = 667 EUR a month: above the Geringfügigkeitsgrenze of every covered year, so the engine never meets a Minijob (not modelled). */
+export const WAGE_MIN = 8_000;
 export const WAGE_MAX = 160_000;
 export const WAGE_STEP = 1_000;
 
@@ -108,7 +109,7 @@ export function renderControls(state: PageState): string {
         <span class="ctl-label" id="wage-label">${esc(t("wage", lang))}</span>
         <span class="wage-cut num" id="wage-cut"></span>
         <button type="button" class="wage-figure num" id="wage-figure" aria-label="${esc(`${t("wageType", lang)}: ${eur(state.wage, lang)}`)}">${esc(eur(state.wage, lang))}</button>
-        <input type="number" class="wage-input num" id="wage-input" min="0" max="999999" step="1" value="${state.wage}" aria-label="${esc(t("wageType", lang))}" hidden />
+        <input type="number" class="wage-input num" id="wage-input" min="${WAGE_MIN}" max="999999" step="1" value="${state.wage}" aria-label="${esc(t("wageType", lang))}" hidden />
       </div>
       <div class="range-wrap">
         <input type="range" id="wage-range" min="${WAGE_MIN}" max="${WAGE_MAX}" step="${WAGE_STEP}" value="${Math.round(sliderValue / WAGE_STEP) * WAGE_STEP}" aria-labelledby="wage-label" aria-valuetext="${esc(eur(state.wage, lang))}" />

@@ -26,8 +26,8 @@ const ui = {
   settings: bi("Einstellungen", "Settings"),
   close: bi("Schließen", "Close"),
   assumptions: bi(
-    "Steuerklasse I · keine Kinder · keine Kirchensteuer · durchschnittlicher Zusatzbeitrag* · gesetzlich versichert · Arbeitnehmer (Beamte: anders)",
-    "Tax class I · no children · no church tax · average additional health rate* · statutory insurance · employee (civil servants differ)",
+    "Steuerklasse I · keine Kinder · keine Kirchensteuer · durchschnittlicher Zusatzbeitrag* · gesetzlich versichert · Arbeitnehmer (Beamte: anders) · Beitragsbemessungsgrenze West (2024) · Midijob-Regeln bei Monatslohn bis 2 000 €",
+    "Tax class I · no children · no church tax · average additional health rate* · statutory insurance · employee (civil servants differ) · West contribution ceiling (2024) · Midijob rules up to €2,000 a month",
   ),
   switchGermany: bi(
     "Alle Steuern und Beiträge, auch die, die niemand vom Lohn zahlt. Rechts: was der Staat eingenommen und ausgegeben hat.",

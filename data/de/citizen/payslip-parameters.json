@@ -7,7 +7,7 @@
  },
  "unit": "EUR / %",
  "basis": "Statutory values for the annual wage-tax withholding (Steuerklasse I/IV, no children, no church tax) and the statutory social contributions of an employee insured in all branches. Values are the law of the year; 2024 tariff = after the retroactive Grundfreibetrag increase.",
- "generated": "2026-10-12",
+ "generated": "2026-10-13",
  "generated_by": "scripts/research/build_payslip.py",
  "years_covered": [
   2024,
@@ -559,6 +559,81 @@
       }
      },
      "ceiling": "same as health insurance (§ 55 Abs. 2 SGB XI)"
+    },
+    "uebergangsbereich": {
+     "geringfuegigkeitsgrenze_monthly": {
+      "value": 538,
+      "unit": "EUR per month",
+      "label": {
+       "de": "Geringfügigkeitsgrenze",
+       "en": "Marginal-employment threshold (lower end of the Übergangsbereich)"
+      },
+      "legal_basis": "§ 8 Abs. 1a SGB IV: minimum wage × 130 / 3, rounded up to the full euro",
+      "source_ref": {
+       "source_id": "gesetze_im_internet_payslip",
+       "file": "sgb4_8.html",
+       "path": "research/raw/gesetze_im_internet_payslip/sgb4_8.html",
+       "url": "https://www.gesetze-im-internet.de/sgb_4/__8.html",
+       "retrieved": "2026-10-13T19:14:51Z",
+       "sha256": "51043975307e6eef847ebfa5bbd2679f22c21122a58fa81fd2fe95a9823e6043",
+       "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+       "coordinates": "Abs. 1a S. 2: 'mit 130 vervielfacht, durch drei geteilt und auf volle Euro aufgerundet'"
+      },
+      "status": "statute",
+      "note": "Minimum wage 12.41 EUR/h (Nr. 1: ab 1. Januar 2024 12,41 Euro, milov4_1.html in the wages source)"
+     },
+     "upper_monthly": {
+      "value": 2000,
+      "unit": "EUR per month",
+      "label": {
+       "de": "Obere Grenze des Übergangsbereichs",
+       "en": "Upper end of the Übergangsbereich (Midijob)"
+      },
+      "legal_basis": "§ 20 Abs. 2 SGB IV",
+      "source_ref": {
+       "source_id": "gesetze_im_internet_payslip",
+       "file": "sgb4_20.html",
+       "path": "research/raw/gesetze_im_internet_payslip/sgb4_20.html",
+       "url": "https://www.gesetze-im-internet.de/sgb_4/__20.html",
+       "retrieved": "2026-10-13T19:14:51Z",
+       "sha256": "8ce076cd78d68ecf241c0267c82b6141a749f99c3c71731fe672b11b6ddc25c7",
+       "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+       "coordinates": "Abs. 2: 'bis 2 000 Euro'"
+      },
+      "status": "statute"
+     },
+     "faktor_f": {
+      "value": 0.6846,
+      "unit": "factor",
+      "label": {
+       "de": "Faktor F",
+       "en": "Factor F"
+      },
+      "legal_basis": "§ 20 Abs. 2a S. 2-3 SGB IV: 28 % ÷ total contribution rate (RV + ALV + KV incl. average Zusatzbeitrag + PV) of the year",
+      "source_ref": {
+       "source_id": "gesetze_im_internet_payslip",
+       "file": "sgb4_20.html",
+       "path": "research/raw/gesetze_im_internet_payslip/sgb4_20.html",
+       "url": "https://www.gesetze-im-internet.de/sgb_4/__20.html",
+       "retrieved": "2026-10-13T19:14:51Z",
+       "sha256": "8ce076cd78d68ecf241c0267c82b6141a749f99c3c71731fe672b11b6ddc25c7",
+       "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+       "coordinates": "Abs. 2a S. 2-3: 'der Wert 28 Prozent geteilt wird durch den Gesamtsozialversicherungsbeitragssatz'"
+      },
+      "status": "statute",
+      "note": "Computed here as 0.28 / 0.409 rounded to 4 decimals; the BMAS Bundesanzeiger notice of the year was not fetched"
+     },
+     "rule": "Monthly wage AE with G < AE <= 2 000: BE = F × G + (2000/(2000 − G) − G/(2000 − G) × F) × (AE − G) is the base of the total contribution; BE_AN = 2000/(2000 − G) × (AE − G) is the base of the employee's share; the employer pays the difference (§ 20 Abs. 2a SGB IV). The childless surcharge follows BE_AN. Wage tax is unaffected (the Vorsorgepauschale uses the wage). The engine assumes a steady monthly wage of gross / 12.",
+     "source_ref": {
+      "source_id": "gesetze_im_internet_payslip",
+      "file": "sgb4_20.html",
+      "path": "research/raw/gesetze_im_internet_payslip/sgb4_20.html",
+      "url": "https://www.gesetze-im-internet.de/sgb_4/__20.html",
+      "retrieved": "2026-10-13T19:14:51Z",
+      "sha256": "8ce076cd78d68ecf241c0267c82b6141a749f99c3c71731fe672b11b6ddc25c7",
+      "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+      "coordinates": "Abs. 2a (formulae)"
+     }
     },
     "bezugsgroesse": {
      "value": 42420,
@@ -1131,6 +1206,81 @@
      },
      "ceiling": "same as health insurance (§ 55 Abs. 2 SGB XI)"
     },
+    "uebergangsbereich": {
+     "geringfuegigkeitsgrenze_monthly": {
+      "value": 556,
+      "unit": "EUR per month",
+      "label": {
+       "de": "Geringfügigkeitsgrenze",
+       "en": "Marginal-employment threshold (lower end of the Übergangsbereich)"
+      },
+      "legal_basis": "§ 8 Abs. 1a SGB IV: minimum wage × 130 / 3, rounded up to the full euro",
+      "source_ref": {
+       "source_id": "gesetze_im_internet_payslip",
+       "file": "sgb4_8.html",
+       "path": "research/raw/gesetze_im_internet_payslip/sgb4_8.html",
+       "url": "https://www.gesetze-im-internet.de/sgb_4/__8.html",
+       "retrieved": "2026-10-13T19:14:51Z",
+       "sha256": "51043975307e6eef847ebfa5bbd2679f22c21122a58fa81fd2fe95a9823e6043",
+       "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+       "coordinates": "Abs. 1a S. 2: 'mit 130 vervielfacht, durch drei geteilt und auf volle Euro aufgerundet'"
+      },
+      "status": "statute",
+      "note": "Minimum wage 12.82 EUR/h (Nr. 2: ab 1. Januar 2025 12,82 Euro, milov4_1.html in the wages source)"
+     },
+     "upper_monthly": {
+      "value": 2000,
+      "unit": "EUR per month",
+      "label": {
+       "de": "Obere Grenze des Übergangsbereichs",
+       "en": "Upper end of the Übergangsbereich (Midijob)"
+      },
+      "legal_basis": "§ 20 Abs. 2 SGB IV",
+      "source_ref": {
+       "source_id": "gesetze_im_internet_payslip",
+       "file": "sgb4_20.html",
+       "path": "research/raw/gesetze_im_internet_payslip/sgb4_20.html",
+       "url": "https://www.gesetze-im-internet.de/sgb_4/__20.html",
+       "retrieved": "2026-10-13T19:14:51Z",
+       "sha256": "8ce076cd78d68ecf241c0267c82b6141a749f99c3c71731fe672b11b6ddc25c7",
+       "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+       "coordinates": "Abs. 2: 'bis 2 000 Euro'"
+      },
+      "status": "statute"
+     },
+     "faktor_f": {
+      "value": 0.6683,
+      "unit": "factor",
+      "label": {
+       "de": "Faktor F",
+       "en": "Factor F"
+      },
+      "legal_basis": "§ 20 Abs. 2a S. 2-3 SGB IV: 28 % ÷ total contribution rate (RV + ALV + KV incl. average Zusatzbeitrag + PV) of the year",
+      "source_ref": {
+       "source_id": "gesetze_im_internet_payslip",
+       "file": "sgb4_20.html",
+       "path": "research/raw/gesetze_im_internet_payslip/sgb4_20.html",
+       "url": "https://www.gesetze-im-internet.de/sgb_4/__20.html",
+       "retrieved": "2026-10-13T19:14:51Z",
+       "sha256": "8ce076cd78d68ecf241c0267c82b6141a749f99c3c71731fe672b11b6ddc25c7",
+       "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+       "coordinates": "Abs. 2a S. 2-3: 'der Wert 28 Prozent geteilt wird durch den Gesamtsozialversicherungsbeitragssatz'"
+      },
+      "status": "statute",
+      "note": "Computed here as 0.28 / 0.419 rounded to 4 decimals; the BMAS Bundesanzeiger notice of the year was not fetched"
+     },
+     "rule": "Monthly wage AE with G < AE <= 2 000: BE = F × G + (2000/(2000 − G) − G/(2000 − G) × F) × (AE − G) is the base of the total contribution; BE_AN = 2000/(2000 − G) × (AE − G) is the base of the employee's share; the employer pays the difference (§ 20 Abs. 2a SGB IV). The childless surcharge follows BE_AN. Wage tax is unaffected (the Vorsorgepauschale uses the wage). The engine assumes a steady monthly wage of gross / 12.",
+     "source_ref": {
+      "source_id": "gesetze_im_internet_payslip",
+      "file": "sgb4_20.html",
+      "path": "research/raw/gesetze_im_internet_payslip/sgb4_20.html",
+      "url": "https://www.gesetze-im-internet.de/sgb_4/__20.html",
+      "retrieved": "2026-10-13T19:14:51Z",
+      "sha256": "8ce076cd78d68ecf241c0267c82b6141a749f99c3c71731fe672b11b6ddc25c7",
+      "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+      "coordinates": "Abs. 2a (formulae)"
+     }
+    },
     "bezugsgroesse": {
      "value": 44940,
      "unit": "EUR per year",
@@ -1699,6 +1849,81 @@
      },
      "ceiling": "same as health insurance (§ 55 Abs. 2 SGB XI)"
     },
+    "uebergangsbereich": {
+     "geringfuegigkeitsgrenze_monthly": {
+      "value": 603,
+      "unit": "EUR per month",
+      "label": {
+       "de": "Geringfügigkeitsgrenze",
+       "en": "Marginal-employment threshold (lower end of the Übergangsbereich)"
+      },
+      "legal_basis": "§ 8 Abs. 1a SGB IV: minimum wage × 130 / 3, rounded up to the full euro",
+      "source_ref": {
+       "source_id": "gesetze_im_internet_payslip",
+       "file": "sgb4_8.html",
+       "path": "research/raw/gesetze_im_internet_payslip/sgb4_8.html",
+       "url": "https://www.gesetze-im-internet.de/sgb_4/__8.html",
+       "retrieved": "2026-10-13T19:14:51Z",
+       "sha256": "51043975307e6eef847ebfa5bbd2679f22c21122a58fa81fd2fe95a9823e6043",
+       "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+       "coordinates": "Abs. 1a S. 2: 'mit 130 vervielfacht, durch drei geteilt und auf volle Euro aufgerundet'"
+      },
+      "status": "statute",
+      "note": "Minimum wage 13.90 EUR/h (Nr. 1: ab 1. Januar 2026 13,90 Euro, milov5_1.html in the wages source)"
+     },
+     "upper_monthly": {
+      "value": 2000,
+      "unit": "EUR per month",
+      "label": {
+       "de": "Obere Grenze des Übergangsbereichs",
+       "en": "Upper end of the Übergangsbereich (Midijob)"
+      },
+      "legal_basis": "§ 20 Abs. 2 SGB IV",
+      "source_ref": {
+       "source_id": "gesetze_im_internet_payslip",
+       "file": "sgb4_20.html",
+       "path": "research/raw/gesetze_im_internet_payslip/sgb4_20.html",
+       "url": "https://www.gesetze-im-internet.de/sgb_4/__20.html",
+       "retrieved": "2026-10-13T19:14:51Z",
+       "sha256": "8ce076cd78d68ecf241c0267c82b6141a749f99c3c71731fe672b11b6ddc25c7",
+       "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+       "coordinates": "Abs. 2: 'bis 2 000 Euro'"
+      },
+      "status": "statute"
+     },
+     "faktor_f": {
+      "value": 0.6619,
+      "unit": "factor",
+      "label": {
+       "de": "Faktor F",
+       "en": "Factor F"
+      },
+      "legal_basis": "§ 20 Abs. 2a S. 2-3 SGB IV: 28 % ÷ total contribution rate (RV + ALV + KV incl. average Zusatzbeitrag + PV) of the year",
+      "source_ref": {
+       "source_id": "gesetze_im_internet_payslip",
+       "file": "sgb4_20.html",
+       "path": "research/raw/gesetze_im_internet_payslip/sgb4_20.html",
+       "url": "https://www.gesetze-im-internet.de/sgb_4/__20.html",
+       "retrieved": "2026-10-13T19:14:51Z",
+       "sha256": "8ce076cd78d68ecf241c0267c82b6141a749f99c3c71731fe672b11b6ddc25c7",
+       "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+       "coordinates": "Abs. 2a S. 2-3: 'der Wert 28 Prozent geteilt wird durch den Gesamtsozialversicherungsbeitragssatz'"
+      },
+      "status": "statute",
+      "note": "Computed here as 0.28 / 0.423 rounded to 4 decimals; the BMAS Bundesanzeiger notice of the year was not fetched"
+     },
+     "rule": "Monthly wage AE with G < AE <= 2 000: BE = F × G + (2000/(2000 − G) − G/(2000 − G) × F) × (AE − G) is the base of the total contribution; BE_AN = 2000/(2000 − G) × (AE − G) is the base of the employee's share; the employer pays the difference (§ 20 Abs. 2a SGB IV). The childless surcharge follows BE_AN. Wage tax is unaffected (the Vorsorgepauschale uses the wage). The engine assumes a steady monthly wage of gross / 12.",
+     "source_ref": {
+      "source_id": "gesetze_im_internet_payslip",
+      "file": "sgb4_20.html",
+      "path": "research/raw/gesetze_im_internet_payslip/sgb4_20.html",
+      "url": "https://www.gesetze-im-internet.de/sgb_4/__20.html",
+      "retrieved": "2026-10-13T19:14:51Z",
+      "sha256": "8ce076cd78d68ecf241c0267c82b6141a749f99c3c71731fe672b11b6ddc25c7",
+      "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+      "coordinates": "Abs. 2a (formulae)"
+     }
+    },
     "bezugsgroesse": {
      "value": 47460,
      "unit": "EUR per year",
@@ -1823,7 +2048,8 @@
   "not_validated": [
    "Solidaritätszuschlag amounts (no official table found; formula follows § 4 SolzG and PAP MSOLZ exactly)",
    "Social-contribution cent rounding (payroll rounds per month; here annual base × rate rounded to the cent)",
-   "Saxony PV split (implemented, not in the Prüftabelle)"
+   "Saxony PV split (implemented, not in the Prüftabelle)",
+   "Übergangsbereich bases (formula of § 20 Abs. 2a SGB IV applied to gross / 12 per month; no official table fetched)"
   ]
  },
  "status_legend": {

@@ -6,7 +6,7 @@ import parameters from "../data/de/citizen/payslip-parameters.json" with { type:
 import { availableYears, computePayslip, pyRound2, type PayslipParameters, type PayslipRow } from "../src/data/payslip.ts";
 
 const params = parameters as unknown as PayslipParameters;
-const years = examples.years as unknown as Record<string, Record<"childless" | "with_child", PayslipRow[]>>;
+const years = examples.years as unknown as Record<string, Record<"childless" | "with_child" | "saxony", PayslipRow[]>>;
 
 test("the engine covers exactly the years of the parameters file", () => {
   assert.deepEqual(availableYears(params), examples.years_covered);
@@ -17,7 +17,7 @@ for (const [year, variants] of Object.entries(years)) {
   for (const [variant, rows] of Object.entries(variants)) {
     for (const row of rows) {
       test(`payslip ${year} ${variant} gross ${row.gross} reproduces payslip-examples.json exactly`, () => {
-        const computed = computePayslip(params, Number(year), row.gross, { childless: variant === "childless" });
+        const computed = computePayslip(params, Number(year), row.gross, { childless: variant !== "with_child", saxony: variant === "saxony" });
         assert.deepEqual(computed, row);
       });
       compared += 1;
@@ -25,8 +25,31 @@ for (const [year, variants] of Object.entries(years)) {
   }
 }
 
-test("every example row was compared (3 years × 2 variants × 7 wages)", () => {
-  assert.equal(compared, examples.years_covered.length * 2 * examples.gross_wages.length);
+test("every example row was compared (3 years × 3 variants × 8 wages)", () => {
+  assert.equal(compared, examples.years_covered.length * 3 * examples.gross_wages.length);
+});
+
+test("Übergangsbereich: the employee's share falls to zero at the Geringfügigkeitsgrenze and meets the normal rule at 2 000 EUR a month", () => {
+  for (const year of availableYears(params)) {
+    const u = params.years[String(year)]!.social_insurance.uebergangsbereich!;
+    const g = u.geringfuegigkeitsgrenze_monthly.value;
+    const justAbove = computePayslip(params, year, (g + 1) * 12);
+    assert.ok(justAbove.intermediate.uebergangsbereich);
+    assert.ok(justAbove.totals.social_employee < 12, `${year}: employee contributions start near zero above G (${justAbove.totals.social_employee})`);
+    assert.ok(justAbove.totals.social_employer > justAbove.totals.social_employee, "the employer carries the reduced contribution");
+    const top = computePayslip(params, year, 24_000);
+    const normal = computePayslip(params, year, 24_012);
+    assert.ok(top.intermediate.uebergangsbereich && !normal.intermediate.uebergangsbereich);
+    assert.ok(Math.abs(top.totals.social_employee - normal.totals.social_employee) < 6, `${year}: continuous at the upper end`);
+  }
+});
+
+test("Saxony: half a care-insurance point moves from the employer to the employee (§ 58 Abs. 3 SGB XI); the total is unchanged", () => {
+  const west = computePayslip(params, 2025, 54_066);
+  const saxony = computePayslip(params, 2025, 54_066, { saxony: true });
+  assert.equal(pyRound2(saxony.deductions_employee.pv - west.deductions_employee.pv), pyRound2(54_066 * 0.005));
+  assert.equal(pyRound2(west.employer_contributions.pv - saxony.employer_contributions.pv), pyRound2(54_066 * 0.005));
+  assert.ok(saxony.deductions_employee.lohnsteuer <= west.deductions_employee.lohnsteuer, "the higher Vorsorgepauschale cannot raise the wage tax");
 });
 
 test("the Vorsorgepauschale caps hard-coded in the engine are the ones stated in the parameters' rule text", () => {

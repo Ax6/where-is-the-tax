@@ -8,7 +8,7 @@
  * - per-person euros beyond the boundary exist only as pro rata*.
  */
 import { bi, type Bi } from "../i18n.ts";
-import { computePayslip, type PayslipParameters, type PayslipRow } from "./payslip.ts";
+import { computePayslip, type PayslipOptions, type PayslipParameters, type PayslipRow } from "./payslip.ts";
 import { files, raw } from "./sources.ts";
 
 export type EntityId = "fed" | "land" | "muni" | "eu" | "pension" | "health" | "care" | "unemp";
@@ -110,9 +110,12 @@ export const vatSplit2024 = vatSplit(2024);
 export const payslipParams = raw.payslipParameters as unknown as PayslipParameters;
 export const payslipYears = raw.payslipParameters.years_covered as number[];
 
-export function payslip(year: number, gross: number): PayslipRow {
-  return computePayslip(payslipParams, year, gross);
+export function payslip(year: number, gross: number, options: PayslipOptions = {}): PayslipRow {
+  return computePayslip(payslipParams, year, gross, options);
 }
+
+/** Saxony keeps a public holiday the other Länder gave up: the employee bears more of the care contribution (§ 58 Abs. 3 SGB XI). */
+export const SAXONY_CODE = "SN";
 
 interface WageYear {
   minimum_wage?: { hourly_eur: number; annual_full_time_eur: number; annual_assumption: string } | null;
@@ -237,6 +240,9 @@ export interface Benchmark {
   groups: { id: string; label: Bi; shares: { code: string; share: number }[] }[];
   highlight: string;
 }
+
+/** Share of a pot's total it spends itself; the rest leaves as a transfer to other pots (e.g. federal grants). */
+export const ownShare = (pot: Pot): number => (pot.transferOut && pot.total > 0 ? 1 - pot.transferOut.value / pot.total : 1);
 
 interface SourceLike {
   url?: string;
@@ -381,7 +387,7 @@ function federalPot(year: number): Pot {
     compositionLabel: bi("Ausgaben des Bundes (ohne Zuschüsse an die Sozialversicherung)", "Federation spending (excluding grants to social insurance)"),
     categories: fold(categories, 6),
     transferOut: {
-      label: bi("Zuschüsse an Renten- und Krankenversicherung", "Grants to pension and health insurance"),
+      label: bi("Zuschüsse an Renten- und Krankenversicherung (alle Zweige)", "Grants to pension and health insurance (all schemes)"),
       value: transfer,
       to: [
         { pot: "pot-pension", value: grants.pension },
@@ -631,7 +637,9 @@ interface SocialYear {
   expenditure_items?: ValueItem[];
   revenue_total?: ValueItem;
   contributions_total?: ValueItem;
-  consolidated?: { expenditure_total_eur: number; revenue_total_eur: number; contributions_total: ValueItem };
+  contributions_by_payer?: Record<string, ValueItem>;
+  federal_grants?: ValueItem;
+  consolidated?: { expenditure_total_eur: number; revenue_total_eur: number; contributions_total: ValueItem; federal_grants?: ValueItem };
   krankenkassen?: { expenditure_items: ValueItem[]; expenditure_total: ValueItem; contributions_paid_to_other_systems: ValueItem | number };
 }
 const social = raw.socialInsurance as unknown as {
@@ -708,8 +716,14 @@ function socialPot(entity: "pension" | "health" | "care" | "unemp", accountYear 
     care: bi("Pflegeversicherung", "Long-term care insurance"),
     unemp: bi("Arbeitslosenversicherung", "Unemployment insurance"),
   }[entity];
-  const grants = federalGrantsOf(accountYear);
-  const fedIn = entity === "pension" ? grants.pension : entity === "health" ? grants.health : 0;
+  // What the scheme shown here booked from the federal budget (its own accounts), not the federal function total:
+  // pension = Bundeszuschüsse + contributions for child-raising periods; health = Bundeszuschuss § 221 SGB V + farmers' subsidies.
+  const fedIn =
+    entity === "pension"
+      ? valueOf(year.federal_grants) + valueOf(year.contributions_by_payer?.federal_budget)
+      : entity === "health"
+        ? valueOf(year.consolidated?.federal_grants)
+        : 0;
   const status = /^provisional/.test(social.year_status[String(accountYear)]?.[system] ?? "") ? "provisional" : "official";
   return {
     id: `pot-${entity}`,
@@ -724,7 +738,14 @@ function socialPot(entity: "pension" | "health" | "care" | "unemp", accountYear 
     compositionLabel: bi("eigene Ausgaben ohne Zahlungen an andere Sozialversicherungen", "own spending, without payments to other social insurers"),
     categories: fold(items, 6),
     transferOut: transfer > 0 ? { label: transferLabel, value: transfer, to: [], star: transferStar } : undefined,
-    transferIn: fedIn > 0 ? { label: bi("Zuschüsse aus dem Bundeshaushalt", "Grants from the federal budget"), value: fedIn, from: "pot-fed" } : undefined,
+    transferIn:
+      fedIn > 0
+        ? {
+            label: entity === "pension" ? bi("Zuschüsse und Beiträge aus dem Bundeshaushalt (laut DRV-Rechnung)", "Grants and contributions from the federal budget (per the DRV accounts)") : bi("Bundeszuschuss (laut GKV-Rechnung)", "Federal grant (per the GKV accounts)"),
+            value: fedIn,
+            from: "pot-fed",
+          }
+        : undefined,
     basis: bi(`${meta.label.de}, Rechnungsergebnis ${accountYear}`, `${meta.label.en}, accounts ${accountYear}`),
     sources: (SOCIAL_SOURCES[system] ?? []).map((ref) =>
       link(bi(`${meta.label.de} ${accountYear}`, `${meta.label.en} ${accountYear}`), files.socialInsurance, social.sources[ref.replace("2024", String(accountYear))] ?? social.sources[ref]),
@@ -833,15 +854,21 @@ export interface YouModel {
   pots: Pot[];
   /** personal euros reaching each pot (sum of its recipients), exact payslip only */
   inflow: Record<string, number>;
+  /** your euros that reach a social pot indirectly: the federal pot passes on its grants pro rata (keyed by pot id) */
+  grantIn: Record<string, number>;
   /** ≈* indirect taxes on what the household buys, when the Shopping layer is on */
   estimate?: HouseholdEstimate;
 }
+
+/** Your euros joining a pot: directly from the payslip plus, for pension and health, your share of the federal grants. */
+export const potInflow = (you: YouModel, pot: Pot): number => (you.inflow[pot.id] ?? 0) + (you.grantIn[pot.id] ?? 0);
 
 export const ENTITY_ORDER: EntityId[] = ["fed", "land", "muni", "eu", "pension", "health", "care", "unemp"];
 
 export function buildYou(year: number, gross: number, placeCode: string, options: { estimate?: boolean } = {}): YouModel {
   const place = getPlace(placeCode);
-  const p = payslip(year, gross);
+  const saxony = place?.code === SAXONY_CODE;
+  const p = payslip(year, gross, { saxony });
   const d = p.deductions_employee;
   const er = p.employer_contributions;
   const wageTaxShares = {
@@ -903,7 +930,9 @@ export function buildYou(year: number, gross: number, placeCode: string, options
       "Je zur Hälfte, bis zur Beitragsbemessungsgrenze. * Mit dem durchschnittlichen Zusatzbeitrag (§ 242a SGB V); jede Kasse erhebt ihren eigenen.",
       "Half each, up to the contribution ceiling. * With the average additional rate (§ 242a SGB V); each insurer charges its own.",
     ),
-    pv: bi("Je zur Hälfte; den Zuschlag für Kinderlose ab 23 zahlen Sie allein.", "Half each; the surcharge for the childless aged 23+ is paid by you alone."),
+    pv: saxony
+      ? bi("In Sachsen tragen Sie 0,5 Punkte mehr als Ihr Arbeitgeber (§ 58 Abs. 3 SGB XI); den Zuschlag für Kinderlose ab 23 zahlen Sie allein.", "In Saxony you bear 0.5 points more than your employer (§ 58 Abs. 3 SGB XI); the surcharge for the childless aged 23+ is paid by you alone.")
+      : bi("Je zur Hälfte; den Zuschlag für Kinderlose ab 23 zahlen Sie allein.", "Half each; the surcharge for the childless aged 23+ is paid by you alone."),
   };
   for (const c of contributions) {
     nodes.push({
@@ -1020,6 +1049,16 @@ export function buildYou(year: number, gross: number, placeCode: string, options
     // exact payslip euros only: the ≈ estimate never enters the pro-rata base
     inflow[pot.id] = edges.filter((edge) => !edge.estimate && pot.recipients.includes(edge.to)).reduce((sum, edge) => sum + edge.value, 0);
   }
+  // The federal budget hands part of every euro on as grants: your share of them joins the receiving pots.
+  const grantIn: Record<string, number> = {};
+  const fed = pots.find((pot) => pot.id === "pot-fed");
+  if (fed && fed.total > 0) {
+    for (const pot of pots) {
+      if (pot.transferIn?.from === fed.id) {
+        grantIn[pot.id] = (inflow[fed.id] ?? 0) * (pot.transferIn.value / fed.total);
+      }
+    }
+  }
 
   return {
     year,
@@ -1033,6 +1072,7 @@ export function buildYou(year: number, gross: number, placeCode: string, options
     },
     pots,
     inflow,
+    grantIn,
     estimate,
   };
 }
@@ -1149,7 +1189,12 @@ export function buildGermany(year = 2024): GermanyModel {
     label: bi("Grundsteuer u.\u00a0a.", "Property and local taxes"),
     parts: [{ to: "muni", value: taxValue("STEUERNVK20", Y) - taxValue("STEUERARTK30", Y), share: 1 }],
   });
-  taxNodes.push({ id: "STEUERARTZ10", label: allocation("STEUERARTZ10").label, parts: [{ to: "eu", value: taxValue("STEUERARTZ10", Y), share: 1 }] });
+  const customsShares = (Object.entries(allocation("STEUERARTZ10").shares ?? { eu: 1 }) as ["federation" | "laender" | "municipalities" | "eu", number][]).map(([recipient, share]) => ({
+    to: ({ federation: "fed", laender: "land", municipalities: "muni", eu: "eu" } as const)[recipient],
+    value: taxValue("STEUERARTZ10", Y) * share,
+    share,
+  }));
+  taxNodes.push({ id: "STEUERARTZ10", label: allocation("STEUERARTZ10").label, parts: customsShares });
 
   // Order taxes by the weighted mean position of their recipients (barycentre): federal-only taxes sit
   // next to the Federation, municipal taxes next to the municipalities, so ribbons barely cross.

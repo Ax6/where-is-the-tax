@@ -26,7 +26,9 @@ interface YearParameters {
     rv: { employee_share: number; employer_share: number; ceiling_annual: Valued };
     alv: { employee_share: number; employer_share: number };
     kv: { employee_share: number; employer_share: number; ceiling_annual: Valued; zusatzbeitrag_average: Valued };
-    pv: { employee_share: number; employer_share: number; childless_surcharge: Valued };
+    pv: { employee_share: number; employer_share: number; childless_surcharge: Valued; saxony?: { employee_share: number; employer_share: number } };
+    /** Übergangsbereich (Midijob), § 20 Abs. 2/2a SGB IV: reduced contribution bases for monthly wages in (G, upper]. */
+    uebergangsbereich?: { geringfuegigkeitsgrenze_monthly: Valued; upper_monthly: Valued; faktor_f: Valued };
   };
 }
 
@@ -54,6 +56,8 @@ export interface PayslipRow {
     zu_versteuernder_jahresbetrag: number;
     contribution_base_rv_alv: number;
     contribution_base_kv_pv: number;
+    /** true when the Übergangsbereich bases of § 20 Abs. 2a SGB IV applied (monthly wage above G, at most 2 000 EUR) */
+    uebergangsbereich: boolean;
   };
 }
 
@@ -76,6 +80,8 @@ const max = (a: bigint, b: bigint): bigint => (a > b ? a : b);
 const floorCent = (baseCents: bigint, r: bigint): bigint => (baseCents * r) / RATE_DEN;
 /** base × rate, commercially rounded to the cent (ROUND_HALF_UP). */
 const roundCent = (baseCents: bigint, r: bigint): bigint => (baseCents * r + RATE_DEN / 2n) / RATE_DEN;
+/** a / b, commercially rounded (ROUND_HALF_UP), for positive a and b. */
+const roundDiv = (a: bigint, b: bigint): bigint => (a + b / 2n) / b;
 /** Cents rounded up / down to full euros, returned in cents. */
 const ceilEur = (c: bigint): bigint => ((c + 99n) / 100n) * 100n;
 const floorEur = (c: bigint): bigint => (c / 100n) * 100n;
@@ -154,6 +160,30 @@ export function pyRound2(value: number): number {
 export interface PayslipOptions {
   /** Childless employee aged 23+ pays the PV surcharge (§ 55 Abs. 3 SGB XI). Default true. */
   childless?: boolean;
+  /** Employed in Saxony: the employee bears one percentage point more of the care contribution (§ 58 Abs. 3 SGB XI). */
+  saxony?: boolean;
+}
+
+/**
+ * Übergangsbereich bases (§ 20 Abs. 2a SGB IV) for a monthly wage AE in cents, or null outside (G, upper].
+ * BE is the base of the total contribution, BE_AN the base of the employee's share; both rounded half-up to the cent
+ * from exact integer arithmetic (scripts/research/build_payslip.py does the same with Fractions).
+ */
+export function uebergangsbereichBases(p: YearParameters, monthlyCents: bigint): { be: bigint; beAn: bigint } | null {
+  const u = p.social_insurance.uebergangsbereich;
+  if (!u) {
+    return null;
+  }
+  const g = cents(u.geringfuegigkeitsgrenze_monthly.value);
+  const upper = cents(u.upper_monthly.value);
+  if (monthlyCents <= g || monthlyCents > upper) {
+    return null;
+  }
+  const f = BigInt(Math.round(u.faktor_f.value * 10_000)); // ten-thousandths
+  const delta = monthlyCents - g;
+  const beAn = roundDiv(upper * delta, upper - g);
+  const be = roundDiv(f * g * (upper - g) + (upper * 10_000n - g * f) * delta, 10_000n * (upper - g));
+  return { be, beAn };
 }
 
 export function availableYears(params: PayslipParameters): number[] {
@@ -166,6 +196,7 @@ export function computePayslip(params: PayslipParameters, year: number, grossEur
     throw new Error(`No payslip parameters for ${year}.`);
   }
   const childless = options.childless ?? true;
+  const saxony = options.saxony ?? false;
   const si = p.social_insurance;
   const allowances = p.wage_tax_allowances;
   const vspRule = allowances.vorsorgepauschale.rule;
@@ -174,7 +205,10 @@ export function computePayslip(params: PayslipParameters, year: number, grossEur
   const baseRv = min(wage, cents(si.rv.ceiling_annual.value));
   const baseKv = min(wage, cents(si.kv.ceiling_annual.value));
 
-  const pvEmployee = rate(si.pv.employee_share) + (childless ? rate(si.pv.childless_surcharge.value) : 0n);
+  const pvSurcharge = childless ? rate(si.pv.childless_surcharge.value) : 0n;
+  const pvSplit = saxony && si.pv.saxony ? si.pv.saxony : si.pv;
+  const pvEmployee = rate(pvSplit.employee_share) + pvSurcharge;
+  const pvEmployer = rate(pvSplit.employer_share);
 
   // Vorsorgepauschale (§ 39b Abs. 2 S. 5 Nr. 3 EStG via PAP): KV uses the reduced rate's employee half.
   const kvVsp = rate(allowances.vorsorgepauschale.kv_rate_used.value) + rate(allowances.vorsorgepauschale.zusatzbeitrag_used.value) / 2n;
@@ -208,18 +242,48 @@ export function computePayslip(params: PayslipParameters, year: number, grossEur
       ? 0n
       : min(floorCent(lohnsteuer, rate(p.soli.rate.value)), floorCent(lohnsteuer - freigrenze, rate(p.soli.milderungszone_factor.value)));
 
-  const employee = {
+  let employee = {
     rv: roundCent(baseRv, rate(si.rv.employee_share)),
     alv: roundCent(baseRv, rate(si.alv.employee_share)),
     kv: roundCent(baseKv, rate(si.kv.employee_share)),
     pv: roundCent(baseKv, pvEmployee),
   };
-  const employer = {
+  let employer = {
     rv: roundCent(baseRv, rate(si.rv.employer_share)),
     alv: roundCent(baseRv, rate(si.alv.employer_share)),
     kv: roundCent(baseKv, rate(si.kv.employer_share)),
-    pv: roundCent(baseKv, rate(si.pv.employer_share)),
+    pv: roundCent(baseKv, pvEmployer),
   };
+  let contributionBaseRv = baseRv;
+  let contributionBaseKv = baseKv;
+  // Übergangsbereich (Midijob): a steady monthly wage of gross / 12 above G and at most 2 000 EUR pays the total
+  // contribution on BE and the employee's share on BE_AN (§ 20 Abs. 2a SGB IV); the employer pays the difference.
+  // The childless surcharge is the employee's alone (§ 58 Abs. 1 S. 3 SGB XI) and follows BE_AN. Wage tax is unchanged.
+  const bases = uebergangsbereichBases(p, roundDiv(wage, 12n));
+  if (bases) {
+    const { be, beAn } = bases;
+    const monthlyEmployee = {
+      rv: roundCent(beAn, rate(si.rv.employee_share)),
+      alv: roundCent(beAn, rate(si.alv.employee_share)),
+      kv: roundCent(beAn, rate(si.kv.employee_share)),
+      pv: roundCent(beAn, pvEmployee),
+    };
+    const monthlyTotal = {
+      rv: roundCent(be, rate(si.rv.employee_share) + rate(si.rv.employer_share)),
+      alv: roundCent(be, rate(si.alv.employee_share) + rate(si.alv.employer_share)),
+      kv: roundCent(be, rate(si.kv.employee_share) + rate(si.kv.employer_share)),
+      pv: roundCent(be, rate(si.pv.employee_share) + rate(si.pv.employer_share)) + roundCent(beAn, pvSurcharge),
+    };
+    employee = { rv: monthlyEmployee.rv * 12n, alv: monthlyEmployee.alv * 12n, kv: monthlyEmployee.kv * 12n, pv: monthlyEmployee.pv * 12n };
+    employer = {
+      rv: (monthlyTotal.rv - monthlyEmployee.rv) * 12n,
+      alv: (monthlyTotal.alv - monthlyEmployee.alv) * 12n,
+      kv: (monthlyTotal.kv - monthlyEmployee.kv) * 12n,
+      pv: (monthlyTotal.pv - monthlyEmployee.pv) * 12n,
+    };
+    contributionBaseRv = be * 12n;
+    contributionBaseKv = be * 12n;
+  }
   const socialEmployee = employee.rv + employee.alv + employee.kv + employee.pv;
   const socialEmployer = employer.rv + employer.alv + employer.kv + employer.pv;
   const taxes = lohnsteuer + soli;
@@ -270,8 +334,9 @@ export function computePayslip(params: PayslipParameters, year: number, grossEur
       vorsorgepauschale_kv_pv: eur(vspKvPv),
       vorsorgepauschale_rule: ruleLabel,
       zu_versteuernder_jahresbetrag: eur(x),
-      contribution_base_rv_alv: eur(baseRv),
-      contribution_base_kv_pv: eur(baseKv),
+      contribution_base_rv_alv: eur(contributionBaseRv),
+      contribution_base_kv_pv: eur(contributionBaseKv),
+      uebergangsbereich: bases !== null,
     },
   };
 }

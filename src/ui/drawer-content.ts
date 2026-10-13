@@ -1,43 +1,5 @@
 /** Drawer content: mechanism mini-diagram, one level deeper, benchmarks, sources. HTML strings, data escaped. */
-import {
-  aggregate,
-  aggregatesSource,
-  allocation,
-  allocationKinds,
-  allocationSource,
-  byRecipientRows,
-  byRecipientSource,
-  byTaxRows,
-  byTaxSource,
-  cofogRows,
-  cofogSource,
-  equalisation,
-  equalisationFile,
-  equalisationSource,
-  equalisationStatus,
-  euRoundTrip,
-  householdCaveats,
-  householdEstimate,
-  householdSource,
-  tradeTaxLevy,
-  euSource,
-  payrollViewOf,
-  payslip,
-  payslipParams,
-  payslipYears,
-  payslipSource,
-  perResidentPerDay,
-  populationSource,
-  purchaseSource,
-  purchases,
-  taxSeries,
-  vatSplit,
-  type EntityId,
-  type GermanyModel,
-  type Pot,
-  type SourceLink,
-  type YouModel,
-} from "../data/model.ts";
+import { aggregate, aggregatesSource, allocation, allocationKinds, allocationSource, byRecipientRows, byRecipientSource, byTaxRows, byTaxSource, cofogRows, cofogSource, type EntityId, equalisation, equalisationFile, equalisationSource, equalisationStatus, euRoundTrip, euSource, type GermanyModel, householdCaveats, householdEstimate, householdSource, ownShare, payrollViewOf, payslip, payslipParams, payslipSource, payslipYears, perResidentPerDay, populationSource, type Pot, potInflow, purchases, purchaseSource, SAXONY_CODE, type SourceLink, taxSeries, tradeTaxLevy, vatSplit, type YouModel } from "../data/model.ts";
 import { files, raw } from "../data/sources.ts";
 import { bi, bn, eur, fill, money, pct, t, tr, yearTag, type Bi, type Lang } from "../i18n.ts";
 import type { DrawerTarget } from "../viz/hero.ts";
@@ -145,13 +107,13 @@ function payslipTable(ctx: DrawerContext): string {
     ${line(`− ${lang === "de" ? "Rentenversicherung" : "Pension insurance"}`, d.rv)}
     ${line(`− ${lang === "de" ? "Arbeitslosenversicherung" : "Unemployment insurance"}`, d.alv)}
     ${line(`− ${lang === "de" ? "Krankenversicherung*" : "Health insurance*"}`, d.kv)}
-    ${line(`− ${lang === "de" ? "Pflegeversicherung (inkl. Kinderlosenzuschlag)" : "Care insurance (incl. childless surcharge)"}`, d.pv)}
+    ${line(`− ${lang === "de" ? "Pflegeversicherung (inkl. Kinderlosenzuschlag)" : "Care insurance (incl. childless surcharge)"}${ctx.you.place?.code === SAXONY_CODE ? (lang === "de" ? " · Sachsen" : " · Saxony") : ""}`, d.pv)}
     ${line(t("netPay", lang), p.totals.net, "strong")}
     ${line(`${t("employerGhost", lang)}`, p.totals.social_employer)}
     ${line(lang === "de" ? "Kosten des Arbeitsplatzes" : "Cost of the job", p.totals.employer_total_cost, "strong")}
   </tbody></table>${
     payslipYears.includes(2026) && ctx.you.year !== 2026
-      ? `<p class="drawer-next">${esc(fill(t("sameWage2026", lang), eur(payslip(2026, p.gross).totals.net, lang)))}</p>`
+      ? `<p class="drawer-next">${esc(fill(t("sameWage2026", lang), eur(payslip(2026, p.gross, { saxony: ctx.you.place?.code === SAXONY_CODE }).totals.net, lang)))}</p>`
       : ""
   }
   <p class="drawer-note">${esc(t("assumptions", lang))}. ${esc(
@@ -334,7 +296,9 @@ const yours = (value: number, lang: Lang): string => `${value < 1 ? `< ${eur(1, 
 
 function potDrawer(pot: Pot, ctx: DrawerContext): DrawerContent {
   const { lang } = ctx;
-  const inflow = ctx.you.inflow[pot.id] ?? 0;
+  const inflow = potInflow(ctx.you, pot);
+  const own = inflow * ownShare(pot);
+  const viaGrants = ctx.you.grantIn[pot.id] ?? 0;
   const estimateIn = pot.recipients.reduce((sum, id) => sum + (ctx.you.flow.nodes.find((n) => n.id === id)?.estimate ?? 0), 0);
   const tag = yearTag(pot.year, pot.status, 0, lang);
   const breakdown = pot.categories
@@ -347,7 +311,7 @@ function potDrawer(pot: Pot, ctx: DrawerContext): DrawerContent {
           value: `${pct(share, lang, 1)} · ${bn(cat.value, lang)}`,
           share,
           entity: pot.entity,
-          sub: inflow > 0 ? yours(inflow * share, lang) : undefined,
+          sub: inflow > 0 ? yours(own * share, lang) : undefined,
         },
       ], 1)}</summary>${
         children.length
@@ -356,7 +320,7 @@ function potDrawer(pot: Pot, ctx: DrawerContext): DrawerContent {
                 label: tr(child.label, lang),
                 value: bn(child.value, lang),
                 share: child.value / cat.value,
-                sub: inflow > 0 ? yours((inflow * child.value) / pot.compositionBase, lang) : undefined,
+                sub: inflow > 0 ? yours((own * child.value) / pot.compositionBase, lang) : undefined,
               })),
               1,
             )
@@ -365,14 +329,14 @@ function potDrawer(pot: Pot, ctx: DrawerContext): DrawerContent {
     })
     .join("");
   const transfers = [
-    pot.transferOut ? { label: `${tr(pot.transferOut.label, lang)}${pot.transferOut.star ? "" : ""}`, value: bn(pot.transferOut.value, lang) } : undefined,
+    pot.transferOut ? { label: tr(pot.transferOut.label, lang), value: bn(pot.transferOut.value, lang), sub: inflow > 0 ? yours(inflow - own, lang) : undefined } : undefined,
     pot.transferIn ? { label: tr(pot.transferIn.label, lang), value: bn(pot.transferIn.value, lang) } : undefined,
     pot.borrowed ? { label: t("borrowed", lang), value: bn(pot.borrowed, lang) } : undefined,
   ].filter((row): row is { label: string; value: string } => Boolean(row));
   return {
     title: tr(pot.label, lang),
     html: `${header(bn(pot.total, lang), `${tag} · ${tr(pot.basis, lang)}`, pot.status, lang)}
-      ${inflow > 0 ? `<p class="drawer-joins">${esc(`${eur(inflow, lang)} ${t("joins", lang)} ${bn(pot.total, lang)}${estimateIn > 0 ? ` · + ≈ ${eur(estimateIn, lang)}* ${lang === "de" ? "aus Ihren Einkäufen (Schätzung)" : "from your purchases (estimate)"}` : ""}`)}</p>` : ""}
+      ${inflow > 0 ? `<p class="drawer-joins">${esc(`${eur(inflow, lang)} ${t("joins", lang)} ${bn(pot.total, lang)}${viaGrants > 0 ? ` (${lang === "de" ? "davon" : "of which"} ≈ ${eur(viaGrants, lang)} ${lang === "de" ? "über den Bundeszuschuss" : "via the federal grant"})` : ""}${estimateIn > 0 ? ` · + ≈ ${eur(estimateIn, lang)}* ${lang === "de" ? "aus Ihren Einkäufen (Schätzung)" : "from your purchases (estimate)"}` : ""}`)}</p>` : ""}
       ${section(`${t("breakdown", lang)} · ${tr(pot.compositionLabel, lang)}`, breakdown)}
       ${
         lang === "en" && pot.categories.some((cat) => cat.children?.some((child) => child.label.en.endsWith(" (DE)")))
@@ -428,7 +392,7 @@ function germanyNodeDrawer(id: string, ctx: DrawerContext): DrawerContent {
     const eu = euRoundTrip(germany.year);
     return {
       title,
-      html: `${header(fmt(node.value), lang === "de" ? "Zölle, per Gesetz direkt an die EU" : "Customs duties, by law straight to the EU", "official", lang)}
+      html: `${header(fmt(node.value), lang === "de" ? "75 % der Zölle: EU-Eigenmittel; 25 % behält der Bund als Erhebungskosten (Art. 9 Abs. 2 Eigenmittelbeschluss 2020/2053)" : "75 % of customs duties: an EU own resource; the Federation keeps 25 % as collection costs (Art. 9(2) Own Resources Decision 2020/2053)", "official", lang)}
       ${section(
         lang === "de" ? `Die Rundreise ${Y} (EU-Kommission)` : `The round trip ${Y} (European Commission)`,
         rows([
@@ -545,7 +509,9 @@ function germanyNodeDrawer(id: string, ctx: DrawerContext): DrawerContent {
       .filter((row) => row.parent === parent && row.id !== "STEUERARTK30" && (row.values_eur[Y] ?? 0) > 0)
       .sort((a, b) => (b.values_eur[Y] ?? 0) - (a.values_eur[Y] ?? 0));
     mechanism = rows(children.map((row) => ({ label: tr(row.label, lang), value: bn(row.values_eur[Y] ?? 0, lang, 2), share: (row.values_eur[Y] ?? 0) / node.value, entity: node.entity })));
-    series = taxSeries(parent);
+    // the municipal group includes the trade tax, which has its own node: take it out of the history too
+    const tradeTax = parent === "STEUERNVK20" ? new Map(taxSeries("STEUERARTK30").map((p) => [p.year, p.value])) : new Map<number, number>();
+    series = taxSeries(parent).map((p) => ({ year: p.year, value: p.value - (tradeTax.get(p.year) ?? 0) }));
   } else if (id === "t-capital") {
     mechanism = rows(["STEUERARTG30", "STEUERARTG40"].map((tid) => ({ label: `${tr(allocation(tid).label, lang)} · ${Object.values(allocation(tid).shares ?? {}).map((s) => pct(s, lang, 0)).join(" / ")}`, value: bn(byTaxRows.find((row) => row.id === tid)?.values_eur[Y] ?? 0, lang) })));
     srcs = [byTaxSource(), ...allocationSource("STEUERARTG30"), ...allocationSource("STEUERARTG40")];
@@ -611,12 +577,19 @@ function bridgeDrawer(id: string, ctx: DrawerContext): DrawerContent {
   const agg = (aid: string, label?: Bi) => ({ label: label ? tr(label, lang) : aid, value: bn(aggregate(aid, SY), lang) });
   const parts: Record<string, { label: string; value: string }[]> = {
     taxes: [agg("D2REC", bi("Produktions- und Importabgaben", "Taxes on production and imports")), agg("D5REC", bi("Einkommen- und Vermögensteuern", "Taxes on income and wealth")), agg("D91REC", bi("Vermögenswirksame Steuern", "Capital taxes"))],
-    contributions: [agg("D611REC", bi("Tatsächliche Arbeitgeberbeiträge", "Employers' actual contributions")), agg("D613REC", bi("Beiträge der Haushalte", "Households' actual contributions"))],
+    contributions: [
+      agg("D611REC", bi("Tatsächliche Arbeitgeberbeiträge", "Employers' actual contributions")),
+      agg("D613REC", bi("Beiträge der Haushalte", "Households' actual contributions")),
+      // D61 = D611 + D612 (imputed, e.g. civil servants' pensions) + D613 + D614 − service charges; Eurostat's main table has no D612/D614 rows
+      { label: tr(bi("Unterstellte Beiträge u. a. (Beamtenversorgung), Rest", "Imputed contributions etc. (civil servants' pensions), remainder"), lang), value: bn(aggregate("D61REC", SY) - aggregate("D611REC", SY) - aggregate("D613REC", SY), lang) },
+    ],
     other: [
       agg("P11_P12_P131", bi("Verkäufe, Gebühren", "Sales and fees")),
+      agg("D39REC", bi("Empfangene Subventionen", "Subsidies received")),
       agg("D4REC", bi("Vermögenseinkommen", "Property income")),
       agg("D7REC", bi("Laufende Transfers", "Current transfers")),
-      agg("D9REC", bi("Vermögenstransfers", "Capital transfers")),
+      agg("D92REC", bi("Investitionszuschüsse", "Investment grants")),
+      agg("D99REC", bi("Sonstige Vermögenstransfers", "Other capital transfers")),
     ],
     borrowed: [agg("GD", bi(`Schuldenstand Ende ${SY} (Maastricht)`, `Gross debt end-${SY} (Maastricht)`)), agg("D41PAY", bi(`Zinsausgaben ${SY}`, `Interest paid ${SY}`))],
   };
