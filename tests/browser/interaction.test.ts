@@ -61,7 +61,8 @@ test("header: controls fit at breakpoints and mobile settings preserve state and
         await page.waitForFunction((element) => !element!.isConnected, originalNode);
       }
       await page.keyboard.press("Escape");
-      assert.equal(await node.evaluate((el) => el === document.activeElement), true);
+      // focus returns to the row (a frame later if the browser dropped the first focus() after `inert` was lifted)
+      await page.waitForFunction((el) => el === document.activeElement, await node.elementHandle(), { timeout: 5_000 });
       assert.equal(await page.getAttribute("#controls-toggle", "aria-expanded"), "true");
     }
     await page.keyboard.press("Escape");

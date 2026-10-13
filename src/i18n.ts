@@ -82,7 +82,7 @@ const ui = {
   ),
   mapNoteShort: bi("Eine gemeinsame Berechnung (kein Land zahlt an ein anderes).", "One pooled calculation (no Land pays another)."),
   mapClick: bi("Klick zeigt Ihren Fluss in diesem Land.", "Click to see your flow in this Land."),
-  mapClickGermany: bi("Klick wählt das Land für die Ansicht „Ich“.", "Click to choose this Land for the “You” view."),
+  mapClickGermany: bi("Klicken: Details und Rangfolge.", "Click: details and ranking."),
   taxesTitle: bi("Alle Steuern", "All taxes"),
   taxesCash: bi("Kassenmäßige Einnahmen vor Verteilung, Destatis 71211", "Cash receipts before distribution, Destatis 71211"),
   colTax: bi("Steuer", "Tax"),
