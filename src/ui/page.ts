@@ -74,6 +74,7 @@ function seg(name: string, options: { value: string; label: string }[], current:
 }
 
 const ICON_THEME = `<svg viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M13.5 12.8A6 6 0 0 1 7.2 6.5a6 6 0 0 1 .9-3.2A7 7 0 1 0 16.7 12a6 6 0 0 1-3.2.8z"/></svg>`;
+const ICON_MENU = `<svg viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M3 5.5h14M3 10h14M3 14.5h14"/></svg>`;
 const ICON_PATTERNS = `<svg viewBox="0 0 20 20" aria-hidden="true" focusable="false"><rect x="3" y="3" width="14" height="14" rx="1.5" fill="none"/><path d="M3 9 9 3M3 15 15 3M7 17 17 7M13 17l4-4"/></svg>`;
 
 export function renderWageTicks(state: PageState): string {
@@ -100,6 +101,7 @@ export function renderControls(state: PageState): string {
     <div class="view-controls">
       ${seg("zoom", [{ value: "you", label: t("zoomYou", lang) }, { value: "germany", label: t("zoomGermany", lang) }], state.zoom, t("zoom", lang), "seg-view")}
       ${seg("year", PAGE_YEARS.map((year) => ({ value: String(year), label: String(year) })), String(state.year), t("year", lang), "seg-year")}
+      <button type="button" class="icon-btn menu-btn" id="menu-toggle" aria-expanded="false" aria-controls="display-controls" aria-label="${esc(t("settings", lang))}" title="${esc(t("settings", lang))}">${ICON_MENU}</button>
     </div>
     <div class="wage-ctl"${state.zoom === "you" ? "" : " hidden"}>
       <div class="wage-head">
@@ -113,7 +115,7 @@ export function renderControls(state: PageState): string {
         ${renderWageTicks(state)}
       </div>
     </div>
-    <div class="display-controls">
+    <div class="display-controls" id="display-controls">
       <div class="lang-toggle" role="group" aria-label="${esc(t("language", lang))}"><button type="button" data-lang="de" lang="de" aria-pressed="${lang === "de"}">DE</button><button type="button" data-lang="en" lang="en" aria-pressed="${lang === "en"}">EN</button></div>
       <button type="button" class="icon-btn" id="theme-toggle" aria-label="${esc(t("themeDarkName", lang))}" title="${esc(t("themeDarkName", lang))}" aria-pressed="${state.theme === "dark"}">${ICON_THEME}</button>
       <button type="button" class="icon-btn" id="tex-toggle" aria-label="${esc(t("patternsName", lang))}" title="${esc(t("patternsName", lang))}" aria-pressed="${state.tex}">${ICON_PATTERNS}</button>
@@ -329,7 +331,6 @@ export function renderPage(state: PageState, you: YouModel, germany: GermanyMode
   <a class="skip-link" href="#hero">${esc(t("skip", lang))}</a>
   <header class="top">
     <h1 class="title" id="title" aria-label="${esc(titleFor(state.year, lang, state.zoom))}">${renderTitle(state.year, lang, state.zoom)}</h1>
-    <button type="button" class="controls-toggle" id="controls-toggle" aria-expanded="false" aria-controls="controls"><span>${esc(t("settings", lang))}</span><span class="controls-summary num" id="controls-summary"></span></button>
     ${renderControls(state)}
   </header>
   <main id="main">
@@ -339,6 +340,7 @@ export function renderPage(state: PageState, you: YouModel, germany: GermanyMode
     <div class="hero-grid${state.zoom === "germany" ? " is-wide" : ""}">
       <aside class="map-panel" aria-labelledby="map-title"${state.zoom === "germany" ? " inert" : ""}>
         <h2 class="map-title" id="map-title">${esc(mapTitleFor(state.year, lang))}</h2>
+        <select class="land-select" id="land-select" aria-label="${esc(t("land", lang))}"></select>
         <div class="map" id="map"></div>
         <div class="map-key" id="map-key"></div>
         <p class="map-note">${esc(t("mapNoteShort", lang))}</p>

@@ -492,7 +492,8 @@ input[type="range"] {
   transform: scale(0.97);
 }
 
-.controls-toggle {
+.menu-btn,
+.land-select {
   display: none;
 }
 
@@ -2080,72 +2081,62 @@ code {
   }
 
   .top {
-    position: sticky;
     z-index: 30;
-    top: 0;
     grid-template-columns: minmax(0, 1fr);
     align-items: center;
+    gap: 10px;
     min-height: 0;
-    padding: 16px var(--gutter) 12px;
+    padding: 14px var(--gutter) 6px;
     background: var(--page);
   }
 
+  /* You view: sticky with a negative top (main.ts pinHeader), so only the wage figure and slider stay */
+  .top.is-pinned {
+    position: sticky;
+    top: var(--pin, 0);
+  }
+
   .title {
-    font-size: 24px;
-  }
-
-  .controls-toggle {
-    display: grid;
-    grid-template-columns: auto minmax(0, 1fr) auto;
-    align-items: center;
-    gap: 12px;
-    width: 100%;
-    min-height: 44px;
-    padding: 8px 12px;
-    border: 1px solid var(--hair);
-    border-radius: 8px;
-    background: var(--flow-ghost);
-    font-size: 12px;
-    text-align: left;
-    cursor: pointer;
-  }
-
-  .controls-summary {
-    overflow: hidden;
-    color: var(--ink-2);
-    text-align: right;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-
-  .controls-toggle::after {
-    width: 6px;
-    height: 6px;
-    border-right: 1.5px solid currentColor;
-    border-bottom: 1.5px solid currentColor;
-    content: "";
-    transform: rotate(45deg);
-  }
-
-  .controls-toggle[aria-expanded="true"]::after {
-    transform: rotate(225deg);
+    font-size: 22px;
   }
 
   .controls {
-    display: none;
-    grid-template-columns: minmax(0, 1fr);
-    grid-template-areas: "view" "context" "display";
-    align-items: stretch;
-    gap: 20px;
-    padding: 8px 0 4px;
-  }
-
-  .controls-open .top {
     position: relative;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: "view" "context";
+    align-items: stretch;
+    gap: 10px;
   }
 
-  .controls-open .controls {
+  .menu-btn {
     display: grid;
+    flex: none;
+    width: 34px;
+    height: 34px;
+  }
+
+  .menu-btn[aria-expanded="true"] {
+    border-color: var(--hair);
+    background: var(--flow-ghost);
+  }
+
+  /* the menu: a small sheet under the ≡ button */
+  .display-controls {
+    position: absolute;
+    z-index: 40;
+    top: 40px;
+    right: 0;
+    display: none;
+    gap: 4px;
+    padding: 6px;
+    border: 1px solid var(--hair);
+    border-radius: 8px;
+    background: var(--raise);
+    box-shadow: 0 6px 20px rgb(0 0 0 / 0.12);
+  }
+
+  .menu-open .display-controls {
+    display: flex;
   }
 
   .range-wrap {
@@ -2166,7 +2157,7 @@ code {
 
   .seg button {
     flex: 1;
-    height: 40px;
+    height: 34px;
     padding-inline: 8px;
     font-size: 12px;
   }
@@ -2180,7 +2171,7 @@ code {
   }
 
   .view-controls {
-    gap: 12px;
+    gap: 8px;
   }
 
   .seg-view {
@@ -2195,37 +2186,28 @@ code {
     justify-self: stretch;
   }
 
-  .display-controls {
-    justify-content: flex-end;
-    padding: 12px 0 0;
-    border-top: 1px solid var(--hair);
-    border-left: 0;
-  }
-
-  .lang-toggle {
-    margin-right: auto;
-  }
-
-  .lang-toggle button {
-    height: 44px;
-    min-width: 44px;
-  }
-
-  .icon-btn {
+  .lang-toggle button,
+  .display-controls .icon-btn {
     width: 44px;
     height: 44px;
   }
 
+  /* the map comes first, then the key right above the chart it explains */
+  .hero {
+    display: flex;
+    flex-direction: column;
+  }
+
   .hero-grid,
   .hero-grid.is-wide {
-    grid-template-columns: 1fr;
+    display: contents;
   }
 
   .map-panel {
+    order: -1;
     display: grid;
-    grid-template-columns: 168px minmax(0, 1fr);
-    grid-template-areas: "map title" "map place" "map key" "map rank";
-    grid-template-rows: auto auto auto 1fr;
+    grid-template-columns: 96px minmax(0, 1fr);
+    grid-template-areas: "map title" "map select" "map place" "map key" "map rank" "note note";
     gap: 6px 14px;
     align-items: start;
     margin-top: 4px;
@@ -2233,25 +2215,87 @@ code {
     border-bottom: 1px solid var(--hair);
   }
 
+  /* Germany view: the dormant thumbnail has no room on a phone */
+  .hero-grid.is-wide .map-panel {
+    display: none;
+  }
+
   .map {
     grid-area: map;
+  }
+
+  .map .land {
+    cursor: default;
   }
 
   .map-title {
     grid-area: title;
   }
 
+  .land-select {
+    grid-area: select;
+    display: block;
+    width: 100%;
+    height: 36px;
+    padding: 0 8px;
+    border: 1px solid var(--axis);
+    border-radius: 6px;
+    background: var(--raise);
+    color: var(--ink);
+    font: inherit;
+    font-size: 14px;
+  }
+
   .map-place {
     grid-area: place;
+  }
+
+  /* the select already says "All Länder" */
+  .map-place:not(.is-selected) {
+    display: none;
   }
 
   .map-key {
     grid-area: key;
   }
 
+  .map-note {
+    grid-area: note;
+  }
+
   .map-panel .link-btn {
     grid-area: rank;
-    padding: 8px 0;
+    padding: 4px 0;
+  }
+
+  /* the key: one line that scrolls sideways instead of four rows */
+  .legend-row {
+    flex-wrap: nowrap;
+    gap: 8px;
+    margin: 8px calc(-1 * var(--gutter)) 6px;
+    padding: 0 var(--gutter);
+    overflow-x: auto;
+    scrollbar-width: none;
+    -webkit-mask-image: linear-gradient(90deg, #000 calc(100% - 24px), transparent);
+    mask-image: linear-gradient(90deg, #000 calc(100% - 24px), transparent);
+  }
+
+  .legend-row::-webkit-scrollbar {
+    display: none;
+  }
+
+  .legend-row > .chip {
+    flex: none;
+    white-space: nowrap;
+  }
+
+  .legend {
+    flex-wrap: nowrap;
+    white-space: nowrap;
+  }
+
+  .legend-item {
+    min-height: 28px;
   }
 
   .stage-hook {
@@ -2578,7 +2622,6 @@ code {
 
 @media print {
   .controls,
-  .controls-toggle,
   .legend-row button,
   .drawer,
   .drawer-backdrop {
@@ -2596,7 +2639,6 @@ html:not(.enhanced) .flow {
 }
 
 html:not(.enhanced) .controls,
-html:not(.enhanced) .controls-toggle,
 html:not(.enhanced) .map-panel,
 html:not(.enhanced) .legend-row [data-panel] {
   display: none;

@@ -9,7 +9,7 @@ import { chromium } from "playwright";
 
 import { serveDist } from "./axe-audit.ts";
 
-test("header: controls fit at breakpoints and mobile settings preserve state and focus", { timeout: 120_000 }, async () => {
+test("header: controls fit at breakpoints; phone menu and pinned wage keep state and focus", { timeout: 120_000 }, async () => {
   const { server, url } = await serveDist();
   const browser = await chromium.launch();
   try {
@@ -19,9 +19,6 @@ test("header: controls fit at breakpoints and mobile settings preserve state and
         await page.goto(`${url}#lang=${lang}&zoom=${zoom}`, { waitUntil: "networkidle" });
         for (const width of [320, 390, 760, 761, 1024, 1199, 1200, 1280, 1440]) {
           await page.setViewportSize({ width, height: 900 });
-          if (width <= 760 && await page.getAttribute("#controls-toggle", "aria-expanded") === "false") {
-            await page.click("#controls-toggle");
-          }
           await page.evaluate(() => new Promise<void>((done) => requestAnimationFrame(() => requestAnimationFrame(() => done()))));
           const problems = await page.evaluate(() => {
             const groups = [...document.querySelectorAll<HTMLElement>(".title, .view-controls, .wage-ctl, .ctl-unit, .display-controls")]
@@ -45,10 +42,22 @@ test("header: controls fit at breakpoints and mobile settings preserve state and
     }
     await page.setViewportSize({ width: 390, height: 844 });
     await page.goto(`${url}#lang=en`, { waitUntil: "networkidle" });
-    if (await page.getAttribute("#controls-toggle", "aria-expanded") === "false") await page.click("#controls-toggle");
-    await page.click(".lang-toggle [data-lang='de']");
-    assert.equal(await page.getAttribute("#controls-toggle", "aria-expanded"), "true");
+    // the wage stays pinned while the page scrolls
     assert.equal(await page.locator("#wage-range").isVisible(), true);
+    await page.mouse.wheel(0, 1500);
+    await page.waitForFunction(() => window.scrollY > 1000);
+    const slider = await page.locator("#wage-range").boundingBox();
+    assert.ok(slider && slider.y >= 0 && slider.y < 120, `slider pinned at the top, got ${slider?.y}`);
+    await page.evaluate(() => window.scrollTo(0, 0));
+    // the Land comes from the select, not the map
+    await page.selectOption("#land-select", "BE");
+    await page.waitForFunction(() => location.hash.includes("land=BE"));
+    assert.equal(await page.evaluate(() => (document.querySelector("#map") as HTMLElement).inert), true);
+    await page.click("#menu-toggle");
+    assert.equal(await page.getAttribute("#menu-toggle", "aria-expanded"), "true");
+    await page.click(".lang-toggle [data-lang='de']");
+    assert.equal(await page.getAttribute("#menu-toggle", "aria-expanded"), "true");
+    assert.equal(await page.inputValue("#land-select"), "BE");
     const node = page.locator(".stage-row").first();
     // the row is identified by its key: a redraw (fonts, resize) replaces the element but keeps the key
     const key = await node.getAttribute("data-key");
@@ -73,12 +82,12 @@ test("header: controls fit at breakpoints and mobile settings preserve state and
         });
         throw new Error(`focus not restored to ${key} (resize=${resize}): ${JSON.stringify(state)}`, { cause: error });
       }
-      assert.equal(await page.getAttribute("#controls-toggle", "aria-expanded"), "true");
+      assert.equal(await page.getAttribute("#menu-toggle", "aria-expanded"), "true");
     }
     await page.keyboard.press("Escape");
-    assert.equal(await page.getAttribute("#controls-toggle", "aria-expanded"), "false");
-    assert.equal(await page.evaluate(() => document.activeElement?.id), "controls-toggle");
-    assert.equal(await page.locator("#wage-range").isVisible(), false);
+    assert.equal(await page.getAttribute("#menu-toggle", "aria-expanded"), "false");
+    assert.equal(await page.evaluate(() => document.activeElement?.id), "menu-toggle");
+    assert.equal(await page.locator(".display-controls").isVisible(), false);
   } finally {
     await browser.close();
     server.close();
