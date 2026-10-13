@@ -7,7 +7,7 @@
  },
  "unit": "share (0-1) and EUR",
  "basis": "Statute (Art. 106 GG, FAG, GemFinRefG) in force at retrieval; shares applied to Destatis cash receipts give the statutory split before decomposition, equalisation and grants. The statutory split is a derived figure, not an observation.",
- "generated": "2026-10-12",
+ "generated": "2026-10-13",
  "generated_by": "scripts/research/build_legal.py",
  "recipients": {
   "federation": {
@@ -1148,7 +1148,8 @@
    "group": "customs",
    "kind": "exclusive_assignment",
    "shares": {
-    "eu": 1.0
+    "eu": 0.75,
+    "federation": 0.25
    },
    "legal_basis": [
     {
@@ -1164,6 +1165,20 @@
       "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
       "coordinates": "text contains: die Zölle"
      }
+    },
+    {
+     "section": "Art. 9(2) Own Resources Decision (EU, Euratom) 2020/2053",
+     "quote": "25% of the collected customs duties",
+     "source": {
+      "source_id": "ec_customs_own_resource",
+      "file": "customs-duties_en.html",
+      "path": "research/raw/ec_customs_own_resource/customs-duties_en.html",
+      "url": "https://commission.europa.eu/strategy-and-policy/eu-budget/long-term-eu-budget/2021-2027/revenue/own-resources/customs-duties_en",
+      "retrieved": "2026-10-13T19:15:46Z",
+      "sha256": "7e7bee2dee70f111b37517addc9d57be4052dc9cf27725a5eef8a649ee403962",
+      "licence": "Commission reuse policy (Decision 2011/833/EU): reuse permitted with source acknowledgement (CC BY 4.0 for Commission documents)",
+      "coordinates": "text contains: 25% of the collected customs duties"
+     }
     }
    ],
    "receipts_eur": {
@@ -1172,15 +1187,17 @@
    },
    "statutory_split_eur": {
     "2024": {
-     "eu": 5463168000
+     "eu": 4097376000,
+     "federation": 1365792000
     },
     "2025": {
-     "eu": 5859720000
+     "eu": 4394790000,
+     "federation": 1464930000
     }
    },
    "note": {
-    "de": "Zölle sind traditionelle EU-Eigenmittel; Deutschland behält 25 % Erhebungskostenpauschale (EU-Eigenmittelbeschluss), Destatis bucht die Zölle vollständig als EU-Eigenmittel.",
-    "en": "Customs duties are traditional EU own resources; Germany retains a 25 % collection-cost share (EU Own Resources Decision); Destatis books customs fully as EU own resources."
+    "de": "Zölle sind traditionelle EU-Eigenmittel (Art. 2 Abs. 1 Buchst. a Eigenmittelbeschluss 2020/2053); Deutschland behält 25 % als Erhebungskosten (Art. 9 Abs. 2). Destatis bucht die Zölle vollständig als EU-Eigenmittel; hier fließen 75 % an die EU und 25 % an den Bund.",
+    "en": "Customs duties are traditional EU own resources (Art. 2(1)(a) Own Resources Decision 2020/2053); Germany retains 25 % as collection costs (Art. 9(2)). Destatis books all customs as EU own resources; here 75 % flow to the EU and 25 % to the Federation."
    }
   },
   {

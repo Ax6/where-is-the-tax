@@ -72,8 +72,9 @@ def main():
          "price_eur": 50.00, "layers": [{"tax": "vat", "eur": round(50 - 50 / 1.07, 4), "basis": "7 % VAT inside the gross price"}]},
         {"id": "electronics", "label": {"de": "Smartphone für 800 €", "en": "Smartphone at €800"}, "assumption": "Standard rate", "price_eur": 800.0, "layers": [{"tax": "vat", "eur": round(800 - 800 / 1.19, 2), "basis": "19 % VAT inside the gross price"}]},
         {"id": "car_insurance", "label": {"de": "Kfz-Versicherung, 600 € Jahresbeitrag", "en": "Car insurance, €600 annual premium"}, "assumption": "600 EUR incl. tax (assumption)", "price_eur": 600.0, "layers": [{"tax": "insurance_tax", "eur": round(600 - 600 / 1.19, 2), "basis": "19 % insurance tax inside the premium; no VAT on insurance"}]},
-        {"id": "flat_purchase_berlin", "label": {"de": "Wohnungskauf in Berlin für 400 000 €", "en": "Buying a flat in Berlin at €400,000"}, "assumption": "Berlin's rate is 6 % (Land law; the statute default is 3.5 %) — the Berlin rate is not in the fetched statutes and is marked secondary",
-         "price_eur": 400000.0, "layers": [{"tax": "real_estate_transfer_tax", "eur": 24000.0, "basis": "6 % × 400,000 (Berlin rate, secondary*)", "status": "secondary"}]},
+        # The transfer tax is charged on the consideration (§ 8 GrEStG) and comes on top of it: 400,000 + 24,000 = 424,000 paid in total.
+        {"id": "flat_purchase_berlin", "label": {"de": "Wohnungskauf in Berlin: 400 000 € plus Grunderwerbsteuer", "en": "Buying a flat in Berlin: €400,000 plus transfer tax"}, "assumption": "Berlin's rate is 6 % (Land law; the statute default is 3.5 %) — the Berlin rate is not in the fetched statutes and is marked secondary. The tax is charged on the €400,000 consideration and paid on top of it.",
+         "price_eur": 424000.0, "layers": [{"tax": "real_estate_transfer_tax", "eur": 24000.0, "basis": "6 % × 400,000 consideration (Berlin rate, secondary*), paid on top: 424,000 in total", "status": "secondary"}]},
     ]
     for ex in examples:
         ex["tax_total_eur"] = round(sum(l["eur"] for l in ex["layers"]), 4)

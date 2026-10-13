@@ -2,15 +2,7 @@
  * The master flow (desktop): GROSS WAGE → TAXES & CONTRIBUTIONS → WHO RECEIVES IT ‖ TOTAL BUDGET IT GOES INTO → OF EVERY €100,
  * and the Germany zoom: NAMED TAXES & CONTRIBUTIONS → RECIPIENTS ‖ THE CONSOLIDATED STATE.
  */
-import {
-  cofogRows,
-  perResidentPerDay,
-  purchases,
-  type EntityId,
-  type GermanyModel,
-  type Pot,
-  type YouModel,
-} from "../data/model.ts";
+import { cofogRows, type EntityId, type GermanyModel, ownShare, perResidentPerDay, type Pot, potInflow, purchases, type YouModel } from "../data/model.ts";
 import { bi, bn, eur, num, pct, t, tr, yearTag, type Lang } from "../i18n.ts";
 import { layoutFlow, layoutPots, lerp, resolveColumn, ribbonPath, spreadLabels, type FlowLayout, type LayoutNode } from "./flow-layout.ts";
 import { multiline, svgEl, textWidth, wrap } from "./svg.ts";
@@ -608,7 +600,7 @@ export function renderYou(container: HTMLElement, model: YouModel, options: Hero
     interactive(
       g as unknown as SVGElement,
       lang,
-      () => potTooltip(p.pot, model.inflow[p.pot.id] ?? 0, lang),
+      () => potTooltip(p.pot, potInflow(model, p.pot), lang),
       () => options.onSelectPot(p.pot.id),
       (on) => highlight([p.pot.id, ...p.pot.recipients], on),
       { visible: potText(p.pot, lang) },
@@ -661,7 +653,7 @@ export function renderYou(container: HTMLElement, model: YouModel, options: Hero
   }
 
   // ---- composition of the selected budget, with your euros pro rata* per row
-  renderComposition(svg, selected.pot, model.inflow[selected.pot.id] ?? 0, {
+  renderComposition(svg, selected.pot, potInflow(model, selected.pot), {
     x: panelX,
     width: W - panelX,
     top,
@@ -757,6 +749,8 @@ export function renderComposition(svg: SVGSVGElement, pot: Pot, inflow: number, 
   const headerLines = wrap(`${bn(pot.compositionBase, lang)} ${tr(pot.compositionLabel, lang)}`, o.width - 8, 11.5, 400, 2);
   multiline(g, headerLines, { x: o.x, y: o.top + 10, class: "panel-sub" }, 13);
   const yours = inflow > 0;
+  // what the pot keeps of your euros: the rest leaves with its transfer (federal grants, KVdR …)
+  const own = inflow * ownShare(pot);
   const yoursW = yours ? 62 : 0;
   if (yours) {
     svgEl(g, "text", { x: o.x + o.width - 4, y: o.top + 14 + headerLines.length * 13 + 6, class: "panel-sub", "text-anchor": "end" }, t("yoursColumn", lang));
@@ -807,7 +801,7 @@ export function renderComposition(svg: SVGSVGElement, pot: Pot, inflow: number, 
     const ty = ly - 1 - (nameLines.length - 1) * 6.5;
     svgEl(segG, "text", { x: labelX, y: ty, class: "comp-pct num strong" }, pct(share, lang, 1));
     multiline(segG, nameLines, { x: labelX + 50, y: ty, class: "comp-name" }, 13);
-    const mine = inflow * share;
+    const mine = own * share;
     if (yours) {
       svgEl(segG, "text", { x: o.x + o.width - 4, y: ty, class: "comp-yours num", "text-anchor": "end" }, `${yoursText(mine, lang)}*`);
     }
@@ -818,7 +812,7 @@ export function renderComposition(svg: SVGSVGElement, pot: Pot, inflow: number, 
         value: pct(share, lang, 1),
         title: tr(s.cat.label, lang),
         lines: [`${bn(s.cat.value, lang)} ${lang === "de" ? "von" : "of"} ${bn(pot.compositionBase, lang)}`],
-        prorata: yours ? `${t("proRata", lang)}: ${eur(inflow, lang)} × ${pct(share, lang, 1)} = ${eur(mine, lang)}` : undefined,
+        prorata: yours ? `${t("proRata", lang)}: ${eur(own, lang)} × ${pct(share, lang, 1)} = ${eur(mine, lang)}` : undefined,
         status: pot.status,
         body: yours ? t("proRataNote", lang).replace("{pot}", tr(pot.label, lang)) : undefined,
         hint: true,
@@ -830,7 +824,7 @@ export function renderComposition(svg: SVGSVGElement, pot: Pot, inflow: number, 
   });
   let fy = barBottom + 16;
   if (pot.transferOut) {
-    const lines = wrap(`${tr(pot.transferOut.label, lang)}: ${bn(pot.transferOut.value, lang)}`, o.width - 20, 11.5, 400, 2);
+    const lines = wrap(`${tr(pot.transferOut.label, lang)}: ${bn(pot.transferOut.value, lang)}${yours ? ` · ≈ ${eur(inflow - own, lang)} ${t("ofYours", lang)}*` : ""}`, o.width - 20, 11.5, 400, 2);
     svgEl(g, "rect", { x: o.x + 0.75, y: fy - 9, width: barW - 1.5, height: 9, class: "pot-transfer", stroke: entityFill(pot.entity) });
     multiline(g, lines, { x: labelX, y: fy, class: "panel-note" }, 13);
     fy += 30;

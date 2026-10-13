@@ -22,6 +22,7 @@ import csv
 import re
 import sys
 from decimal import ROUND_DOWN, ROUND_HALF_UP, ROUND_UP, Decimal
+from fractions import Fraction
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -107,7 +108,42 @@ SV = {
            "pv_employee_saxony": D("0.023"), "pv_employer_saxony": D("0.013")},
 }
 YEARS = [2024, 2025, 2026]
-EXAMPLE_WAGES = [20000, 30000, 45000, 60000, 80000, 100000, 150000]
+EXAMPLE_WAGES = [12000, 20000, 30000, 45000, 60000, 80000, 100000, 150000]
+
+# Übergangsbereich (Midijob), § 20 Abs. 2 and 2a SGB IV: monthly wages above the Geringfügigkeitsgrenze G up to
+# 2 000 EUR pay contributions on reduced bases. G = minimum wage × 130 / 3, rounded up to the full euro (§ 8 Abs. 1a
+# SGB IV); F = 28 % ÷ the year's total contribution rate (§ 20 Abs. 2a S. 2-3 SGB IV), announced to 4 decimals by the BMAS.
+MIDIJOB_UPPER = 2000  # EUR per month, § 20 Abs. 2 SGB IV
+MINIMUM_WAGE = {2024: D("12.41"), 2025: D("12.82"), 2026: D("13.90")}  # § 1 MiLoV4 / MiLoV5 (EUR per hour)
+MINIMUM_WAGE_REF = {2024: ("milov4_1.html", "Nr. 1: ab 1. Januar 2024 12,41 Euro"), 2025: ("milov4_1.html", "Nr. 2: ab 1. Januar 2025 12,82 Euro"), 2026: ("milov5_1.html", "Nr. 1: ab 1. Januar 2026 13,90 Euro")}
+WAGES = "gesetze_im_internet_wages"
+
+
+def geringfuegigkeitsgrenze(year: int) -> int:
+    return int((MINIMUM_WAGE[year] * 130 / 3).to_integral_value(rounding=ROUND_UP))
+
+
+def total_contribution_rate(year: int) -> Decimal:
+    p = SV[year]
+    return p["rv_rate"] + p["alv_rate"] + p["kv_rate"] + p["kv_zusatz_avg"] + p["pv_rate"]
+
+
+def faktor_f(year: int) -> Decimal:
+    return (D("0.28") / total_contribution_rate(year)).quantize(D("0.0001"), rounding=ROUND_HALF_UP)
+
+
+def midijob_bases(monthly: Decimal, year: int) -> tuple[Decimal, Decimal] | None:
+    """(BE, BE_AN) in EUR per month for a wage inside the Übergangsbereich, else None. Exact rational arithmetic,
+    each base rounded half-up to the cent (the TypeScript engine does the same in integer cents)."""
+    g = geringfuegigkeitsgrenze(year)
+    if not (g < monthly <= MIDIJOB_UPPER):
+        return None
+    f = Fraction(faktor_f(year))
+    u, gg, ae = Fraction(MIDIJOB_UPPER), Fraction(g), Fraction(monthly)
+    be_an = u / (u - gg) * (ae - gg)
+    be = f * gg + (u / (u - gg) - gg / (u - gg) * f) * (ae - gg)
+    cent = lambda x: (Decimal(x.numerator) / Decimal(x.denominator)).quantize(D("0.01"), rounding=ROUND_HALF_UP)  # noqa: E731
+    return cent(be), cent(be_an)
 
 
 # --------------------------------------------------------------------------------------------------
@@ -191,21 +227,36 @@ def soli(jahreslohnsteuer: Decimal, year: int) -> Decimal:
 def contributions(wage: Decimal | int, year: int, childless: bool = True, saxony: bool = False) -> dict:
     p = SV[year]
     w = D(wage)
-    base_rv = min(w, D(p["bbg_rv"]))
-    base_kv = min(w, D(p["bbg_kv"]))
     pv_an = (p["pv_employee_saxony"] if saxony else p["pv_rate"] / 2) + (p["pv_childless"] if childless else ZERO)
     pv_ag = p["pv_employer_saxony"] if saxony else p["pv_rate"] / 2
+    monthly = round_cent(w / 12)  # steady monthly wage (the Übergangsbereich is defined per month)
+    bases = midijob_bases(monthly, year)
+    if bases is not None:
+        # § 20 Abs. 2a SGB IV: the total contribution is due on BE, the employee's share on BE_AN; the employer pays
+        # the rest. The childless surcharge is the employee's alone and follows the employee base (§ 58 Abs. 1 S. 3 SGB XI).
+        be, be_an = bases
+        surcharge = p["pv_childless"] if childless else ZERO
+        kv_total = p["kv_rate"] + p["kv_zusatz_avg"]
+        emp_m = {"rv": round_cent(be_an * p["rv_rate"] / 2), "alv": round_cent(be_an * p["alv_rate"] / 2),
+                 "kv": round_cent(be_an * kv_total / 2), "pv": round_cent(be_an * pv_an)}
+        total_m = {"rv": round_cent(be * p["rv_rate"]), "alv": round_cent(be * p["alv_rate"]),
+                   "kv": round_cent(be * kv_total), "pv": round_cent(be * p["pv_rate"]) + round_cent(be_an * surcharge)}
+        emp = {k: v * 12 for k, v in emp_m.items()}
+        er = {k: (total_m[k] - emp_m[k]) * 12 for k in emp_m}
+        return {"employee": emp, "employer": er, "base_rv_alv": be * 12, "base_kv_pv": be * 12, "uebergangsbereich": True}
+    base_rv = min(w, D(p["bbg_rv"]))
+    base_kv = min(w, D(p["bbg_kv"]))
     emp = {"rv": round_cent(base_rv * p["rv_rate"] / 2), "alv": round_cent(base_rv * p["alv_rate"] / 2),
            "kv": round_cent(base_kv * (p["kv_rate"] / 2 + p["kv_zusatz_avg"] / 2)), "pv": round_cent(base_kv * pv_an)}
     er = {"rv": round_cent(base_rv * p["rv_rate"] / 2), "alv": round_cent(base_rv * p["alv_rate"] / 2),
           "kv": round_cent(base_kv * (p["kv_rate"] / 2 + p["kv_zusatz_avg"] / 2)), "pv": round_cent(base_kv * pv_ag)}
-    return {"employee": emp, "employer": er, "base_rv_alv": base_rv, "base_kv_pv": base_kv}
+    return {"employee": emp, "employer": er, "base_rv_alv": base_rv, "base_kv_pv": base_kv, "uebergangsbereich": False}
 
 
-def payslip(wage: int, year: int, childless: bool = True) -> dict:
-    lst = lohnsteuer(wage, year, childless)
+def payslip(wage: int, year: int, childless: bool = True, saxony: bool = False) -> dict:
+    lst = lohnsteuer(wage, year, childless, saxony)
     sz = soli(lst["lohnsteuer"], year)
-    c = contributions(wage, year, childless)
+    c = contributions(wage, year, childless, saxony)
     emp_sv = sum(c["employee"].values())
     taxes = lst["lohnsteuer"] + sz
     net = D(wage) - taxes - emp_sv
@@ -228,7 +279,8 @@ def payslip(wage: int, year: int, childless: bool = True) -> dict:
         "intermediate": {"arbeitnehmer_pauschbetrag": f(lst["arbeitnehmer_pauschbetrag"]), "sonderausgaben_pauschbetrag": f(lst["sonderausgaben_pauschbetrag"]),
                          "vorsorgepauschale": f(lst["vorsorgepauschale"]), "vorsorgepauschale_rv": f(lst["vorsorgepauschale_parts"]["rv"]),
                          "vorsorgepauschale_kv_pv": f(lst["vorsorgepauschale_parts"]["kv_pv"]), "vorsorgepauschale_rule": lst["vorsorgepauschale_parts"]["rule"],
-                         "zu_versteuernder_jahresbetrag": f(lst["zve"]), "contribution_base_rv_alv": f(c["base_rv_alv"]), "contribution_base_kv_pv": f(c["base_kv_pv"])},
+                         "zu_versteuernder_jahresbetrag": f(lst["zve"]), "contribution_base_rv_alv": f(c["base_rv_alv"]), "contribution_base_kv_pv": f(c["base_kv_pv"]),
+                         "uebergangsbereich": c["uebergangsbereich"]},
     }
 
 
@@ -398,6 +450,13 @@ def build_parameters(tariff_checks: dict) -> dict:
                        "employee_share": pct(s["pv_rate"] / 2), "employer_share": pct(s["pv_rate"] / 2), "split_basis": "§ 58 Abs. 1 S. 1 SGB XI (je zur Hälfte); surcharge: employee alone (S. 3)", "split_ref": source_ref(GIIP, "sgb11_58.html", "Abs. 1 S. 1 and S. 3"),
                        "saxony": {"employee_share": pct(s["pv_employee_saxony"]), "employer_share": pct(s["pv_employer_saxony"]), "legal_basis": "§ 58 Abs. 3 SGB XI (no public holiday abolished: employee bears 1 percentage point more)", "source_ref": source_ref(GIIP, "sgb11_58.html", "Abs. 3 S. 1, Abs. 5"), "pap_ref": source_ref(PAP, PAP_FILE[y], f"page {PAP_PARAM_PAGE[y]}, MPARA: PVS = 1 → PVSATZAN/PVSATZAG")},
                        "ceiling": "same as health insurance (§ 55 Abs. 2 SGB XI)"},
+                "uebergangsbereich": {
+                    "geringfuegigkeitsgrenze_monthly": P(geringfuegigkeitsgrenze(y), "EUR per month", "Geringfügigkeitsgrenze", "Marginal-employment threshold (lower end of the Übergangsbereich)", "§ 8 Abs. 1a SGB IV: minimum wage × 130 / 3, rounded up to the full euro", source_ref(GIIP, "sgb4_8.html", "Abs. 1a S. 2: 'mit 130 vervielfacht, durch drei geteilt und auf volle Euro aufgerundet'"), note=f"Minimum wage {MINIMUM_WAGE[y]} EUR/h ({MINIMUM_WAGE_REF[y][1]}, {MINIMUM_WAGE_REF[y][0]} in the wages source)"),
+                    "upper_monthly": P(MIDIJOB_UPPER, "EUR per month", "Obere Grenze des Übergangsbereichs", "Upper end of the Übergangsbereich (Midijob)", "§ 20 Abs. 2 SGB IV", source_ref(GIIP, "sgb4_20.html", "Abs. 2: 'bis 2 000 Euro'")),
+                    "faktor_f": P(float(faktor_f(y)), "factor", "Faktor F", "Factor F", "§ 20 Abs. 2a S. 2-3 SGB IV: 28 % ÷ total contribution rate (RV + ALV + KV incl. average Zusatzbeitrag + PV) of the year", source_ref(GIIP, "sgb4_20.html", "Abs. 2a S. 2-3: 'der Wert 28 Prozent geteilt wird durch den Gesamtsozialversicherungsbeitragssatz'"), note=f"Computed here as 0.28 / {total_contribution_rate(y)} rounded to 4 decimals; the BMAS Bundesanzeiger notice of the year was not fetched"),
+                    "rule": "Monthly wage AE with G < AE <= 2 000: BE = F × G + (2000/(2000 − G) − G/(2000 − G) × F) × (AE − G) is the base of the total contribution; BE_AN = 2000/(2000 − G) × (AE − G) is the base of the employee's share; the employer pays the difference (§ 20 Abs. 2a SGB IV). The childless surcharge follows BE_AN. Wage tax is unaffected (the Vorsorgepauschale uses the wage). The engine assumes a steady monthly wage of gross / 12.",
+                    "source_ref": source_ref(GIIP, "sgb4_20.html", "Abs. 2a (formulae)"),
+                },
                 "bezugsgroesse": P(s["bezugsgroesse"], "EUR per year", "Bezugsgröße (West)" if y == 2024 else "Bezugsgröße", "Reference value (§ 18 SGB IV)", "§ 18 SGB IV; SVBezGrV § 1", ref_bezug[y], note=(f"East: {s['bezugsgroesse_ost']} EUR (§ 1 Abs. 2 SVBezGrV 2024)" if s["bezugsgroesse_ost"] else None)),
                 "cross_check": {"bmas_table_2026": source_ref("bmas_rechengroessen", "sv-rechengroessenverordnung-2026.html", "table rows 'Beitragsbemessungsgrenze in der Kranken- und Pflegeversicherung 5.812,50 / 69.750', 'allgemeine Rentenversicherung 8.450 / 101.400', 'Bezugsgröße 3.955 / 47.460'") if y == 2026 else None,
                                 "pap_constants": ref_pap_param[y]},
@@ -421,7 +480,7 @@ def main() -> int:
         "method": "Every row of the class-I column of the BMF Prüftabelle ('Allgemeine maschinelle Jahreslohnsteuer', printed in each PAP) was recomputed with this engine; the build fails on any difference. The PAP tables assume an employee insured in all branches, PVZ = 1 (childless surcharge), contribution ceilings West, KVZ = the statutory average Zusatzbeitrag of the year. In addition the § 32a tariff was checked for 0 EUR at the Grundfreibetrag, continuity (< 1 EUR) at the three zone boundaries and marginal rates of 42 %/45 % at the top of zones 3/4. The BMF online calculator's programming interface could not be used (access code only shown behind an interactive consent dialog).",
         "prueftabelle": pruef,
         "extract": str(EXTRACTS.relative_to(EXTRACTS.parents[1]) / EXTRACT_CSV),
-        "not_validated": ["Solidaritätszuschlag amounts (no official table found; formula follows § 4 SolzG and PAP MSOLZ exactly)", "Social-contribution cent rounding (payroll rounds per month; here annual base × rate rounded to the cent)", "Saxony PV split (implemented, not in the Prüftabelle)"],
+        "not_validated": ["Solidaritätszuschlag amounts (no official table found; formula follows § 4 SolzG and PAP MSOLZ exactly)", "Social-contribution cent rounding (payroll rounds per month; here annual base × rate rounded to the cent)", "Saxony PV split (implemented, not in the Prüftabelle)", "Übergangsbereich bases (formula of § 20 Abs. 2a SGB IV applied to gross / 12 per month; no official table fetched)"],
     }
     params = envelope(
         "de.citizen.payslip_parameters",
@@ -436,11 +495,12 @@ def main() -> int:
     examples = {}
     for y in YEARS:
         examples[str(y)] = {"childless": [payslip(w, y, childless=True) for w in EXAMPLE_WAGES],
-                            "with_child": [payslip(w, y, childless=False) for w in EXAMPLE_WAGES]}
+                            "with_child": [payslip(w, y, childless=False) for w in EXAMPLE_WAGES],
+                            "saxony": [payslip(w, y, childless=True, saxony=True) for w in EXAMPLE_WAGES]}
     ex = envelope(
         "de.citizen.payslip_examples",
         "Beispielrechnungen: Brutto → Netto 2024-2026", "Worked examples: gross → net 2024-2026", "EUR per year",
-        "ANNUAL WAGE-TAX WITHHOLDING for Steuerklasse I (identical to IV without children), no church tax, no children, no Freibeträge, employee compulsorily insured in all four social-insurance branches (West ceilings, statutory average Zusatzbeitrag, outside Saxony). This is what the employer withholds over a year under the Programmablaufplan; the income-tax ASSESSMENT (Veranlagung) can differ (actual Werbungskosten, Sonderausgaben, the real Zusatzbeitrag of the Krankenkasse, other income). 'childless' = with the PV childless surcharge (age 23+, no children); 'with_child' = one child (surcharge off, no abatement).",
+        "ANNUAL WAGE-TAX WITHHOLDING for Steuerklasse I (identical to IV without children), no church tax, no children, no Freibeträge, employee compulsorily insured in all four social-insurance branches (West ceilings, statutory average Zusatzbeitrag). This is what the employer withholds over a year under the Programmablaufplan; the income-tax ASSESSMENT (Veranlagung) can differ (actual Werbungskosten, Sonderausgaben, the real Zusatzbeitrag of the Krankenkasse, other income). 'childless' = with the PV childless surcharge (age 23+, no children), outside Saxony; 'with_child' = one child (surcharge off, no abatement); 'saxony' = childless, employed in Saxony (§ 58 Abs. 3 SGB XI care split). Monthly wages above the Geringfügigkeitsgrenze up to 2 000 EUR (gross / 12) use the Übergangsbereich bases of § 20 Abs. 2a SGB IV.",
         SCRIPT, years_covered=YEARS, gross_wages=EXAMPLE_WAGES,
         fields={"deductions_employee": "amounts withheld from the gross wage", "employer_contributions": "paid by the employer on top of the gross wage (same rates as the employee, except the PV childless surcharge)",
                 "effective_rates": "percent of gross", "per_100_gross": "of every 100 EUR gross: how much goes where", "intermediate": "PAP intermediate values (Vorsorgepauschale, zu versteuernder Jahresbetrag, contribution bases)"},

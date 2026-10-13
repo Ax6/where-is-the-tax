@@ -7,7 +7,7 @@
  },
  "unit": "mixed (see each rate)",
  "basis": "Statutory rates (exact); worked examples use illustrative prices marked as assumptions; recipients follow data/de/taxes/legal-allocation.json",
- "generated": "2026-10-12",
+ "generated": "2026-10-13",
  "generated_by": "scripts/research/build_purchases.py",
  "vat": {
   "standard": {
@@ -511,21 +511,21 @@
   {
    "id": "flat_purchase_berlin",
    "label": {
-    "de": "Wohnungskauf in Berlin für 400 000 €",
-    "en": "Buying a flat in Berlin at €400,000"
+    "de": "Wohnungskauf in Berlin: 400 000 € plus Grunderwerbsteuer",
+    "en": "Buying a flat in Berlin: €400,000 plus transfer tax"
    },
-   "assumption": "Berlin's rate is 6 % (Land law; the statute default is 3.5 %) — the Berlin rate is not in the fetched statutes and is marked secondary",
-   "price_eur": 400000.0,
+   "assumption": "Berlin's rate is 6 % (Land law; the statute default is 3.5 %) — the Berlin rate is not in the fetched statutes and is marked secondary. The tax is charged on the €400,000 consideration and paid on top of it.",
+   "price_eur": 424000.0,
    "layers": [
     {
      "tax": "real_estate_transfer_tax",
      "eur": 24000.0,
-     "basis": "6 % × 400,000 (Berlin rate, secondary*)",
+     "basis": "6 % × 400,000 consideration (Berlin rate, secondary*), paid on top: 424,000 in total",
      "status": "secondary"
     }
    ],
    "tax_total_eur": 24000.0,
-   "tax_share_of_price": 0.06
+   "tax_share_of_price": 0.0566
   }
  ],
  "notes": [

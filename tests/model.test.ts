@@ -2,14 +2,17 @@ import assert from "node:assert/strict";
 import test from "node:test";
 
 import {
+  aggregate,
   buildGermany,
   buildYou,
   defaultWage,
   equalisation,
   federalGrants,
+  ownShare,
   payrollView2024,
   perResidentPerDay,
   places,
+  potInflow,
   purchases,
   taxTable,
   vatSplit2024,
@@ -226,4 +229,58 @@ test("every pot category and sub-category has a German and an English label", ()
       }
     }
   }
+});
+
+test("customs: 75 % to the EU, 25 % kept by the Federation as collection costs; nothing lost", () => {
+  const g = buildGermany();
+  const node = g.flow.nodes.find((n) => n.id === "t-STEUERARTZ10")!;
+  const out = g.flow.edges.filter((edge) => edge.from === "t-STEUERARTZ10");
+  assert.deepEqual(
+    out.map((edge) => [edge.entity, Math.round((edge.value / node.value) * 100)]).sort(),
+    [
+      ["eu", 75],
+      ["fed", 25],
+    ],
+  );
+  close(out.reduce((sum, edge) => sum + edge.value, 0), node.value, 1);
+});
+
+test("Saxony: the care contribution split follows § 58 Abs. 3 SGB XI; the total contribution is unchanged", () => {
+  const west = buildYou(2025, 54_066, "BY");
+  const saxony = buildYou(2025, 54_066, "SN");
+  close(saxony.payslip.deductions_employee.pv - west.payslip.deductions_employee.pv, 54_066 * 0.005, 0.01);
+  close(west.payslip.employer_contributions.pv - saxony.payslip.employer_contributions.pv, 54_066 * 0.005, 0.01);
+  const total = (you: typeof west) => you.payslip.deductions_employee.pv + you.payslip.employer_contributions.pv;
+  close(total(saxony), total(west), 0.01);
+});
+
+test("your share: the federal pot keeps only what it does not pass on; the grants carry your euros to pension and health", () => {
+  const you = buildYou(2025, 54_066, "DE");
+  const fed = you.pots.find((pot) => pot.id === "pot-fed")!;
+  close(ownShare(fed), 1 - fed.transferOut!.value / fed.total, 1e-12);
+  assert.ok(ownShare(fed) < 0.75 && ownShare(fed) > 0.6, `the Federation passes on roughly a third: ${ownShare(fed)}`);
+  const own = you.inflow["pot-fed"]! * ownShare(fed);
+  const yours = fed.categories.reduce((sum, cat) => sum + own * (cat.value / fed.compositionBase), 0);
+  close(yours, own, 0.01, "the category euros add up to what the pot keeps");
+  for (const id of ["pot-pension", "pot-health"]) {
+    const pot = you.pots.find((p) => p.id === id)!;
+    assert.ok(pot.transferIn && pot.transferIn.from === "pot-fed");
+    close(you.grantIn[id]!, you.inflow["pot-fed"]! * (pot.transferIn!.value / fed.total), 1e-6, id);
+    close(potInflow(you, pot), you.inflow[id]! + you.grantIn[id]!, 1e-9);
+  }
+  // the pension scheme's own accounts, not the federal function total (which also funds other schemes)
+  const pension = you.pots.find((p) => p.id === "pot-pension")!;
+  assert.equal(bn(pension.transferIn!.value), 112.4);
+  assert.ok(pension.transferIn!.value < fed.transferOut!.to.find((t) => t.pot === "pot-pension")!.value);
+});
+
+test("revenue bridge: the listed parts of social contributions and other revenue add up to the headline", () => {
+  const g = buildGermany();
+  const SY = String(g.stateYear);
+  const contributions = g.bridge.find((b) => b.id === "contributions")!.value;
+  const residual = aggregate("D61REC", SY) - aggregate("D611REC", SY) - aggregate("D613REC", SY);
+  close(aggregate("D611REC", SY) + aggregate("D613REC", SY) + residual, contributions, 1e6);
+  const other = g.bridge.find((b) => b.id === "other")!.value;
+  const parts = ["P11_P12_P131", "D39REC", "D4REC", "D7REC", "D92REC", "D99REC"].reduce((sum, id) => sum + aggregate(id, SY), 0);
+  close(parts, other, 1e6, "other revenue parts (without the capital taxes already under taxes)");
 });

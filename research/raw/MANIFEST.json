@@ -1,6 +1,6 @@
 {
   "schema_version": 2,
-  "generated": "2026-10-12T08:26:25Z",
+  "generated": "2026-10-13T19:15:46Z",
   "files": [
     {
       "source_id": "ba_finanzentwicklung",
@@ -835,6 +835,19 @@
       "description": "Page 3: Rechnungsergebnis allgemeine RV 2024 (endgültig) and 2025 (vorläufig) with contribution breakdown"
     },
     {
+      "source_id": "ec_customs_own_resource",
+      "file": "customs-duties_en.html",
+      "url": "https://commission.europa.eu/strategy-and-policy/eu-budget/long-term-eu-budget/2021-2027/revenue/own-resources/customs-duties_en",
+      "path": "research/raw/ec_customs_own_resource/customs-duties_en.html",
+      "retrieved": "2026-10-13T19:15:46Z",
+      "bytes": 158596,
+      "sha256": "7e7bee2dee70f111b37517addc9d57be4052dc9cf27725a5eef8a649ee403962",
+      "licence": "Commission reuse policy (Decision 2011/833/EU): reuse permitted with source acknowledgement (CC BY 4.0 for Commission documents)",
+      "redistribution": "allowed",
+      "committed": true,
+      "description": "Customs duties are collected by Member States for the EU; Member States keep 25 % of the collected duties as collection costs (Art. 9(2) ORD 2020/2053)"
+    },
+    {
       "source_id": "eu_budget_spending_revenue",
       "file": "eu_budget_spending_and_revenue_2000-2025.xlsx",
       "url": "https://commission.europa.eu/document/download/9f334bee-d097-4b68-8f93-2225eabeb631_en?filename=eu_budget_spending_and_revenue_2000-2025.xlsx",
@@ -1496,6 +1509,32 @@
       "redistribution": "allowed",
       "committed": true,
       "description": "§ 346 SGB III: unemployment contributions borne half/half"
+    },
+    {
+      "source_id": "gesetze_im_internet_payslip",
+      "file": "sgb4_20.html",
+      "url": "https://www.gesetze-im-internet.de/sgb_4/__20.html",
+      "path": "research/raw/gesetze_im_internet_payslip/sgb4_20.html",
+      "retrieved": "2026-10-13T19:14:51Z",
+      "bytes": 8217,
+      "sha256": "8ce076cd78d68ecf241c0267c82b6141a749f99c3c71731fe672b11b6ddc25c7",
+      "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+      "redistribution": "allowed",
+      "committed": true,
+      "description": "§ 20 SGB IV: Übergangsbereich (Midijob) above the Geringfügigkeitsgrenze up to 2 000 EUR/month; formula of the reduced contribution bases (Abs. 2a)"
+    },
+    {
+      "source_id": "gesetze_im_internet_payslip",
+      "file": "sgb4_8.html",
+      "url": "https://www.gesetze-im-internet.de/sgb_4/__8.html",
+      "path": "research/raw/gesetze_im_internet_payslip/sgb4_8.html",
+      "retrieved": "2026-10-13T19:14:51Z",
+      "bytes": 7509,
+      "sha256": "51043975307e6eef847ebfa5bbd2679f22c21122a58fa81fd2fe95a9823e6043",
+      "licence": "Official works (§ 5 UrhG); free to reproduce. Deep links expressly permitted by the site.",
+      "redistribution": "allowed",
+      "committed": true,
+      "description": "§ 8 SGB IV: Geringfügigkeitsgrenze = minimum wage × 130 / 3, rounded up to the full euro (Abs. 1a)"
     },
     {
       "source_id": "gesetze_im_internet_payslip",

@@ -49,7 +49,7 @@ has not been tested with first-time visitors.
 | Data | Berlin tax receipts 2024, 2025; Berlin functions 2024 | **done** / re-verify | `data/de/berlin/` |
 | Data | Länder + municipalities by function 2022; municipalities by product area 2011–2024 | **done** | `data/de/laender/`, `data/de/municipal/` |
 | Data | EU round trip 2021–2025 | **done** | `data/de/eu/round-trip.json` |
-| Data | Payslip parameters 2024–2026 and examples, validated against BMF Prüftabellen | **done** | `data/de/citizen/payslip-*.json` |
+| Data | Payslip parameters 2024–2026 and examples, validated against BMF Prüftabellen; Übergangsbereich (Midijob) bases and the Saxony care split (not in the Prüftabellen). Not modelled: Minijobs (slider starts above the limit), the 2024 East pension ceiling (West assumed, disclosed) | **done** | `data/de/citizen/payslip-*.json` |
 | Data | Purchase taxes (statutory rates, worked examples) | **done** | `data/de/citizen/purchase-taxes.json` |
 | Data | Population (Germany, Länder) | **done** | `data/de/population.json` |
 | Data | Household indirect taxes by net-income class (LWR 2024 × statutory rates), estimate `*` | **done** | `data/de/citizen/household-indirect-taxes.json` |

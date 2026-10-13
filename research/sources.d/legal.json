@@ -46,6 +46,23 @@
           "description": "§ 3 AO: legal definition of taxes (levies without an individual consideration) — basis for 'contributions are not taxes'"
         }
       ]
+    },
+    {
+      "id": "ec_customs_own_resource",
+      "institution": "European Commission, DG Budget",
+      "title": "EU budget: customs duties as a traditional own resource (Council Decision (EU, Euratom) 2020/2053, Art. 2(1)(a) and Art. 9(2))",
+      "licence": "Commission reuse policy (Decision 2011/833/EU): reuse permitted with source acknowledgement (CC BY 4.0 for Commission documents)",
+      "licence_evidence": "https://commission.europa.eu/legal-notice_en",
+      "redistribution": "allowed",
+      "store": "raw",
+      "basis": "Commission explainer of the customs-duties own resource; the Own Resources Decision itself could not be fetched (EUR-Lex returns an empty response to automated requests)",
+      "files": [
+        {
+          "file": "customs-duties_en.html",
+          "url": "https://commission.europa.eu/strategy-and-policy/eu-budget/long-term-eu-budget/2021-2027/revenue/own-resources/customs-duties_en",
+          "description": "Customs duties are collected by Member States for the EU; Member States keep 25 % of the collected duties as collection costs (Art. 9(2) ORD 2020/2053)"
+        }
+      ]
     }
   ]
 }
