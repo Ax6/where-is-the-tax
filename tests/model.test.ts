@@ -14,12 +14,16 @@ import {
   places,
   potInflow,
   purchases,
+  crossSystemTransfers,
+  TOBACCO_AD_VALOREM,
   taxTable,
   vatSplit2024,
   wageTicks,
 } from "../src/data/model.ts";
 
 const bn = (eur: number) => Math.round(eur / 1e8) / 10;
+import purchaseTaxes from "../data/de/citizen/purchase-taxes.json" with { type: "json" };
+const await_import_free = () => purchaseTaxes.excises;
 const close = (actual: number, expected: number, tolerance: number, message?: string) =>
   assert.ok(Math.abs(actual - expected) <= tolerance, `${message ?? ""} expected ${expected} ± ${tolerance}, got ${actual}`);
 
@@ -206,10 +210,10 @@ test("equalisation per resident includes all supplementary federal grants (Berli
   close(sumFka, 0, 16_000, "FKA nets to zero");
 });
 
-test("purchases: exact per-unit taxes, assumed prices (petrol 53 %, cigarettes 63 %)", () => {
+test("purchases: exact per-unit taxes, assumed prices (petrol 53 %, cigarettes 61 % at the 2024 rate)", () => {
   const items = purchases();
   assert.equal(Math.round(items.find((p) => p.id === "petrol_litre")!.taxShare * 100), 53);
-  assert.equal(Math.round(items.find((p) => p.id === "cigarettes_pack")!.taxShare * 100), 63);
+  assert.equal(Math.round(items.find((p) => p.id === "cigarettes_pack")!.taxShare * 100), 61);
   for (const item of items) {
     close(item.segments.reduce((sum, seg) => sum + seg.value, 0), item.price, 1e-9, item.id);
   }
@@ -290,4 +294,21 @@ test("revenue bridge: the listed parts of social contributions and other revenue
   const other = g.bridge.find((b) => b.id === "other")!.value;
   const parts = ["P11_P12_P131", "D39REC", "D4REC", "D7REC", "D92REC", "D99REC"].reduce((sum, id) => sum + aggregate(id, SY), 0);
   close(parts, other, 1e6, "other revenue parts (without the capital taxes already under taxes)");
+});
+
+test("cigarettes: the tobacco tax of the selected year, not the newest one", () => {
+  const share = (year: number) => Math.round(purchases(year).find((p) => p.id === "cigarettes_pack")!.taxShare * 1000) / 10;
+  assert.equal(share(2024), 60.6);
+  assert.equal(share(2025), 61.8);
+  assert.equal(share(2026), 63.1);
+  assert.match(purchases(2025).find((p) => p.id === "cigarettes_pack")!.label.en, /\(2025\)/);
+  const excises = (await_import_free() as Record<string, { unit: string }>);
+  for (const key of ["cigarettes_2024", "cigarettes_2025", "cigarettes_2026"]) {
+    assert.match(excises[key]!.unit, new RegExp(`${(TOBACCO_AD_VALOREM * 100).toFixed(2)} %`), key);
+  }
+});
+
+test("contributions one system pays to another: €46.0bn in 2024, €52.3bn in 2025 (lower bounds)", () => {
+  assert.equal(bn(crossSystemTransfers(2024)), 46);
+  assert.equal(bn(crossSystemTransfers(2025)), 52.3);
 });

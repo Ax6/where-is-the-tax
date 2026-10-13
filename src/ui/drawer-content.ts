@@ -1,7 +1,7 @@
 /** Drawer content: mechanism mini-diagram, one level deeper, benchmarks, sources. HTML strings, data escaped. */
-import { aggregate, aggregatesSource, allocation, allocationKinds, allocationSource, byRecipientRows, byRecipientSource, byTaxRows, byTaxSource, cofogRows, cofogSource, type EntityId, equalisation, equalisationFile, equalisationSource, equalisationStatus, euRoundTrip, euSource, type GermanyModel, householdCaveats, householdEstimate, householdSource, ownShare, payrollViewOf, payslip, payslipParams, payslipSource, payslipYears, perResidentPerDay, populationSource, type Pot, potInflow, purchases, purchaseSource, SAXONY_CODE, type SourceLink, taxSeries, tradeTaxLevy, vatSplit, type YouModel } from "../data/model.ts";
+import { aggregate, aggregatesSource, allocation, allocationKinds, allocationSource, byRecipientRows, byRecipientSource, byTaxRows, byTaxSource, cofogRows, cofogSource, crossSystemTransfers, type EntityId, equalisation, equalisationFile, equalisationSource, equalisationStatus, euRoundTrip, euSource, type GermanyModel, householdCaveats, householdEstimate, householdSource, ownShare, payrollViewOf, payslip, payslipParams, payslipSource, payslipYears, perResidentPerDay, populationSource, type Pot, potInflow, purchases, purchaseSource, SAXONY_CODE, type SourceLink, taxSeries, tradeTaxLevy, vatSplit, type YouModel } from "../data/model.ts";
 import { files, raw } from "../data/sources.ts";
-import { bi, bn, eur, fill, money, pct, t, tr, yearTag, type Bi, type Lang } from "../i18n.ts";
+import { assumptionsText, bi, type Bi, bn, eur, fill, type Lang, money, pct, t, tr, yearTag } from "../i18n.ts";
 import type { DrawerTarget } from "../viz/hero.ts";
 import { badge, esc, sourceList, splitBar, swatch } from "./html.ts";
 import { mapTitleFor, renderEqualisationTable } from "./page.ts";
@@ -116,7 +116,7 @@ function payslipTable(ctx: DrawerContext): string {
       ? `<p class="drawer-next">${esc(fill(t("sameWage2026", lang), eur(payslip(2026, p.gross, { saxony: ctx.you.place?.code === SAXONY_CODE }).totals.net, lang)))}</p>`
       : ""
   }
-  <p class="drawer-note">${esc(t("assumptions", lang))}. ${esc(
+  <p class="drawer-note">${esc(assumptionsText(lang, ctx.you.year))}. ${esc(
     lang === "de"
       ? `Jahreslohnsteuer nach Programmablaufplan ${ctx.you.year}; die Veranlagung kann abweichen.`
       : `Annual wage-tax withholding per the ${ctx.you.year} Programmablaufplan; the final assessment can differ.`,
@@ -437,8 +437,8 @@ function germanyNodeDrawer(id: string, ctx: DrawerContext): DrawerContent {
         rows(payerRows.map((row) => ({ label: tr(payerLabel[row.key] ?? bi(row.key, row.key), lang), value: bn(row.amount, lang), share: row.amount / total, entity: node.entity }))) +
           `<p class="drawer-note">${esc(tr(payrollViewOf(germany.year).label, lang))}. ${esc(
             lang === "de"
-              ? "Mindestens 46,0 Mrd. € der Beiträge aller vier Systeme zahlt ein System an ein anderes; im Bild zählt jeder Euro einmal."
-              : "At least €46.0bn of all four systems' contributions is paid by one system to another; in the picture each euro counts once.",
+              ? `Mindestens ${bn(crossSystemTransfers(Number(payerYear)), lang)} der Beiträge aller vier Systeme ${payerYear} zahlt ein System an ein anderes; im Bild zählt jeder Euro einmal.`
+              : `At least ${bn(crossSystemTransfers(Number(payerYear)), lang)} of all four systems' contributions in ${payerYear} is paid by one system to another; in the picture each euro counts once.`,
           )}</p>`,
       )}
       ${section(t("sources", lang), sourceList([{ label: bi(`Sozialversicherung ${payerYear}, Beiträge nach Zahlern`, `Social insurance ${payerYear}, contributions by payer`), file: files.socialInsurance }], lang))}`,
@@ -449,6 +449,7 @@ function germanyNodeDrawer(id: string, ctx: DrawerContext): DrawerContent {
     const recipientRow = { fed: "STEUERNVB10", land: "STEUERNVL10", muni: "STEUERNVK10" }[entity as "fed" | "land" | "muni"];
     const after = recipientRow ? byRecipientRows.find((row) => row.id === recipientRow) : undefined;
     const children = after ? byRecipientRows.filter((row) => row.parent === after.id && (row.values_eur[Y] ?? 0) !== 0) : [];
+    const plastics = byRecipientRows.find((row) => row.id === "STEUERNVEU50");
     const inEdges = germany.flow.edges.filter((edge) => edge.to === id);
     return {
       title,
@@ -465,7 +466,11 @@ function germanyNodeDrawer(id: string, ctx: DrawerContext): DrawerContent {
         after
           ? section(
               lang === "de" ? `Nach Verteilung: ${bn(after.values_eur[Y] ?? 0, lang)}` : `After distribution: ${bn(after.values_eur[Y] ?? 0, lang)}`,
-              rows(children.map((row) => ({ label: tr(row.label, lang), value: bn(row.values_eur[Y] ?? 0, lang) }))) +
+              rows([
+                ...children.map((row) => ({ label: tr(row.label, lang), value: bn(row.values_eur[Y] ?? 0, lang) })),
+                // Destatis deducts the plastics own resource from the federal total without a federal position of its own
+                ...(after.id === "STEUERNVB10" && plastics ? [{ label: `${tr(plastics.label, lang)} (${lang === "de" ? "abgezogen, ohne eigene Bundesposition" : "deducted, no federal position of its own"})`, value: bn(-(plastics.values_eur[Y] ?? 0), lang) }] : []),
+              ]) +
                 `<p class="drawer-note">${esc(lang === "de" ? `Kasse ${Y}, Destatis 71211-0002. Negative Zeilen: Zahlungen an EU oder Länder.` : `Cash ${Y}, Destatis 71211-0002. Negative rows: payments to the EU or the Länder.`)}</p>`,
             )
           : ""

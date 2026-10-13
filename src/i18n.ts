@@ -26,9 +26,11 @@ const ui = {
   settings: bi("Einstellungen", "Settings"),
   close: bi("Schließen", "Close"),
   assumptions: bi(
-    "Steuerklasse I · keine Kinder · keine Kirchensteuer · durchschnittlicher Zusatzbeitrag* · gesetzlich versichert · Arbeitnehmer (Beamte: anders) · Beitragsbemessungsgrenze West (2024) · Midijob-Regeln bei Monatslohn bis 2 000 €",
-    "Tax class I · no children · no church tax · average additional health rate* · statutory insurance · employee (civil servants differ) · West contribution ceiling (2024) · Midijob rules up to €2,000 a month",
+    "Steuerklasse I · keine Kinder · keine Kirchensteuer · durchschnittlicher Zusatzbeitrag* · gesetzlich versichert · Arbeitnehmer (Beamte: anders) · Midijob-Regeln bei Monatslohn bis 2 000 €",
+    "Tax class I · no children · no church tax · average additional health rate* · statutory insurance · employee (civil servants differ) · Midijob rules up to €2,000 a month",
   ),
+  /** 2024 was the last year with separate East/West pension ceilings; the engine uses the West one. */
+  assumptionsWest2024: bi(" · Beitragsbemessungsgrenze West", " · West contribution ceiling"),
   switchGermany: bi(
     "Alle Steuern und Beiträge, auch die, die niemand vom Lohn zahlt. Rechts: was der Staat eingenommen und ausgegeben hat.",
     "Every tax and contribution, including the ones not taken from wages. Right: what the state took in and spent.",
@@ -108,7 +110,7 @@ const ui = {
   perResidentDay: bi("pro Kopf und Tag", "per resident per day"),
   borrowedSeg: bi("Kredit", "Borrowed"),
   spendingTotal: bi("Ausgaben gesamt", "Total spending"),
-  pooled: bi("Alle Einnahmen decken alle Ausgaben (§ 8 BHO)", "All revenue covers all spending (§ 8 BHO)"),
+  pooled: bi("Der ganze Staat zusammengezählt: keine Ausgabe lässt sich einer Steuer oder einem Beitrag zuordnen", "Whole state added up: no spending item can be traced to one tax or contribution"),
   legalShares: bi("Gesetzlicher Anteil", "Statutory share"),
   yours: bi("Ihr Anteil", "Your share"),
   amount: bi("Betrag", "Amount"),
@@ -150,7 +152,10 @@ const ui = {
   highlightName: bi("Wege hervorheben: {X}", "Highlight flows: {X}"),
   ticksMinimumShort: bi("Min.*", "min*"),
   ticksAverageShort: bi("Ø", "avg"),
-  euLeaves: bi("verlässt den deutschen Staat: EU-Haushalt", "leaves the German state: EU budget"),
+  euLeaves: bi(
+    "Nur die Zölle (75 %) stehen der EU direkt zu. Die größeren MwSt-, BNE- und Kunststoff-Eigenmittel zahlt der Bund aus seinem Anteil: siehe die EU-Rundreise im Detail.",
+    "Only customs duties (75 %) go to the EU directly. The larger VAT-, GNI- and plastics-based own resources are paid by the Federation from its share: see the EU round trip in the details.",
+  ),
 };
 
 export type UiKey = keyof typeof ui;
@@ -225,3 +230,6 @@ export function pct(share: number, lang: Lang, digits = 1): string {
   const body = nf(lang, digits, digits).format(share * 100);
   return lang === "de" ? `${body} %` : `${body}%`;
 }
+
+/** The payslip assumptions line; 2024 adds the West ceiling (the last year with an East/West split). */
+export const assumptionsText = (lang: Lang, year: number): string => t("assumptions", lang) + (year === 2024 ? t("assumptionsWest2024", lang) : "");

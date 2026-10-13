@@ -869,15 +869,15 @@ export function renderComposition(svg: SVGSVGElement, pot: Pot, inflow: number, 
     );
   });
   let fy = barBottom + 16;
+  if (pot.borrowed) {
+    svgEl(g, "rect", { x: o.x, y: fy - 9, width: barW, height: 9, class: "pot-borrowed" });
+    svgEl(g, "text", { x: labelX, y: fy, class: "panel-note" }, `${t("borrowed", lang)}: ${bn(pot.borrowed, lang)} (${lang === "de" ? "Nettokreditaufnahme" : "net borrowing"})`);
+    fy += 30;
+  }
   if (pot.transferOut) {
     const lines = wrap(`${tr(pot.transferOut.label, lang)}: ${bn(pot.transferOut.value, lang)}${yours ? ` · ≈ ${eur(inflow - own, lang)} ${t("ofYours", lang)}*` : ""}`, o.width - 20, 11.5, 400, 2);
     svgEl(g, "rect", { x: o.x + 0.75, y: fy - 9, width: barW - 1.5, height: 9, class: "pot-transfer", stroke: entityFill(pot.entity) });
     multiline(g, lines, { x: labelX, y: fy, class: "panel-note" }, 13);
-    fy += 30;
-  }
-  if (pot.borrowed) {
-    svgEl(g, "rect", { x: o.x, y: fy - 9, width: barW, height: 9, class: "pot-borrowed" });
-    svgEl(g, "text", { x: labelX, y: fy, class: "panel-note" }, `${t("borrowed", lang)}: ${bn(pot.borrowed, lang)} (${lang === "de" ? "Nettokreditaufnahme" : "net borrowing"})`);
     fy += 30;
   }
   if (noteLines.length) {
