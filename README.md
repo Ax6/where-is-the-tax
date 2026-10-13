@@ -11,8 +11,6 @@ Everyone should be able to see where their taxes go. And AI does the tedious wor
 </p>
 
 <p align="center">
-  <a href="https://github.com/Ax6/where-is-the-tax/actions/workflows/ci.yml"><img src="https://github.com/Ax6/where-is-the-tax/actions/workflows/ci.yml/badge.svg" alt="CI status"></a>
-  &nbsp;
   <a href="research/README.md">How the data works</a> ·
   <a href="ROADMAP.md">Project status</a> ·
   <a href="#run-locally">Run locally</a> ·
