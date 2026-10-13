@@ -19,6 +19,13 @@ Everyone should be able to see where their taxes go. And AI does the tedious wor
   <a href="#contribute">Contribute</a>
 </p>
 
+<p align="center">
+  👌✔️ Independently fact-checked with
+  <img alt="Opus said OK." src="https://img.shields.io/badge/Opus_5.5-OK-green?logo=Claude">
+  <img alt="Opus said OK." src="https://img.shields.io/badge/Fable_5.1-OK-green?logo=Claude">
+  <img alt="Opus said OK." src="https://img.shields.io/badge/Sol_6.1-OK-green?logo=openaigym">
+</p>
+
 <a href="https://ax6.github.io/where-is-the-tax/#lang=en&y=2025">
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="docs/screenshots/readme-dark.png">
