@@ -330,6 +330,16 @@ function renderMap(): void {
     return;
   }
   const { lang } = state;
+  // a phone cannot hit Berlin or Bremen: there the map only shows, the select picks
+  map.inert = isMobile();
+  const select = document.querySelector<HTMLSelectElement>("#land-select");
+  if (select) {
+    if (!select.options.length) {
+      const byName = [...lands].sort((a, b) => tr(a.name, lang).localeCompare(tr(b.name, lang), lang));
+      select.innerHTML = [`<option value="${GERMANY_CODE}">${t("allLaender", lang)}</option>`, ...byName.map((land) => `<option value="${land.code}">${tr(land.name, lang)}</option>`)].join("");
+    }
+    select.value = state.land;
+  }
   renderLandMap(map, lands, {
     lang,
     year: state.year,
@@ -367,6 +377,8 @@ function wireDrawerMap(body: HTMLElement): void {
   if (!map) {
     return;
   }
+  // phone: the ranking right under it is the picker
+  map.inert = isMobile();
   renderLandMap(map, lands, {
     lang: state.lang,
     year: state.year,
@@ -435,13 +447,36 @@ function syncControls(): void {
   }
   document.querySelector("#theme-toggle")?.setAttribute("aria-pressed", String(effectiveTheme() === "dark"));
   document.querySelector("#tex-toggle")?.setAttribute("aria-pressed", String(state.tex));
-  const toggle = document.querySelector<HTMLButtonElement>("#controls-toggle");
-  if (toggle) {
-    const place = state.land === GERMANY_CODE ? t("allLaender", state.lang) : (getPlace(state.land)?.name[state.lang] ?? state.land);
-    document.querySelector("#controls-summary")!.textContent = state.zoom === "you" ? `${eur(state.wage, state.lang)} · ${place}` : t("zoomGermany", state.lang);
-    toggle.setAttribute("aria-expanded", String(document.body.classList.contains("controls-open")));
+  document.querySelector("#menu-toggle")?.setAttribute("aria-expanded", String(document.body.classList.contains("menu-open")));
+}
+
+/** Phone: the menu (language, theme, patterns) opens under its button; it closes on Escape or a tap elsewhere. */
+function setMenu(open: boolean, options: { focus?: boolean } = {}): void {
+  document.body.classList.toggle("menu-open", open);
+  const toggle = document.querySelector<HTMLButtonElement>("#menu-toggle");
+  toggle?.setAttribute("aria-expanded", String(open));
+  if (options.focus) {
+    (open ? document.querySelector<HTMLButtonElement>("#display-controls button") : toggle)?.focus({ preventScroll: true });
   }
 }
+
+/**
+ * Phone, You view: the header is sticky with a negative top, so the title and the view row scroll away
+ * and only the wage (figure and slider) stays pinned. Germany view: no slider, nothing pinned.
+ */
+function pinHeader(): void {
+  const header = document.querySelector<HTMLElement>(".top");
+  const wage = document.querySelector<HTMLElement>(".wage-ctl");
+  if (!header || !wage) {
+    return;
+  }
+  const pinned = isMobile() && !wage.hidden;
+  header.classList.toggle("is-pinned", pinned);
+  if (pinned) {
+    header.style.setProperty("--pin", `${Math.round(header.getBoundingClientRect().top - wage.getBoundingClientRect().top + 8)}px`);
+  }
+}
+const headerObserver = new ResizeObserver(pinHeader);
 
 /** Tick labels: each goes to the first row where it does not touch its left neighbour (measured, ≤ 3 rows). */
 function layoutTickLabels(): void {
@@ -581,14 +616,14 @@ function wireControls(): void {
   });
   document.querySelector<HTMLButtonElement>("#tex-toggle")?.addEventListener("click", () => update({ tex: !state.tex }));
   wireTicks();
-  const toggle = document.querySelector<HTMLButtonElement>("#controls-toggle")!;
-  toggle.addEventListener("click", () => {
-    const open = !document.body.classList.contains("controls-open");
-    document.body.classList.toggle("controls-open", open);
-    toggle.setAttribute("aria-expanded", String(open));
-    // tick labels are measured; the sheet was hidden until now
-    requestAnimationFrame(layoutTickLabels);
+  document.querySelector<HTMLButtonElement>("#menu-toggle")?.addEventListener("click", (event) => {
+    setMenu(!document.body.classList.contains("menu-open"), { focus: event.detail === 0 });
   });
+  document.querySelector<HTMLSelectElement>("#land-select")?.addEventListener("change", (event) => {
+    update({ land: (event.target as HTMLSelectElement).value }, { animate: true });
+  });
+  headerObserver.disconnect();
+  headerObserver.observe(document.querySelector<HTMLElement>(".top")!);
   for (const button of document.querySelectorAll<HTMLButtonElement>(".map-panel [data-panel]")) {
     button.addEventListener("click", () => openDrawer({ kind: "panel", id: button.dataset.panel as PanelId }, button));
   }
@@ -729,6 +764,12 @@ function wireDrawer(): void {
   document.querySelector("#drawer-backdrop")!.addEventListener("click", closeDrawer);
 }
 
+document.addEventListener("pointerdown", (event) => {
+  if (document.body.classList.contains("menu-open") && !(event.target as Element).closest("#display-controls, #menu-toggle")) {
+    setMenu(false);
+  }
+});
+
 document.addEventListener("keydown", (event) => {
   const drawer = document.querySelector<HTMLElement>("#drawer");
   if (event.key === "Escape") {
@@ -736,11 +777,8 @@ document.addEventListener("keydown", (event) => {
       closeDrawer();
       return;
     }
-    if (document.body.classList.contains("controls-open")) {
-      document.body.classList.remove("controls-open");
-      const toggle = document.querySelector<HTMLButtonElement>("#controls-toggle");
-      toggle?.setAttribute("aria-expanded", "false");
-      toggle?.focus({ preventScroll: true });
+    if (document.body.classList.contains("menu-open")) {
+      setMenu(false, { focus: true });
     }
   }
   // keep focus inside the open drawer
@@ -793,7 +831,9 @@ window.addEventListener("resize", () => {
     if (window.innerWidth !== lastWidth) {
       lastWidth = window.innerWidth;
       renderHero(false);
+      renderMap();
       layoutTickLabels();
+      pinHeader();
     }
   }, 120);
 });

@@ -99,7 +99,7 @@ export async function audit(scenarios: Scenario[] = SCENARIOS): Promise<Violatio
       await page.goto(url + scenario.hash, { waitUntil: "networkidle" });
       await page.waitForTimeout(300);
       if (scenario.action === "open-settings") {
-        await page.click("#controls-toggle");
+        await page.click("#menu-toggle");
       }
       await page.addScriptTag({ content: AXE_SOURCE });
       const result = (await page.evaluate(async () => {
