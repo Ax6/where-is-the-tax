@@ -252,9 +252,10 @@ function refreshChrome(): void {
 
 function renderHero(animate: boolean): void {
   const flow = document.querySelector<HTMLElement>("#flow")!;
+  const focusedKey = flow.contains(document.activeElement) ? (document.activeElement as HTMLElement).dataset.key : undefined;
   hideTooltip();
   flow.classList.toggle("is-mobile", isMobile());
-  const onOpen = (target: DrawerTarget) => openDrawer(target, document.activeElement as HTMLElement);
+  const onOpen = (target: DrawerTarget, trigger?: HTMLElement) => openDrawer(target, trigger ?? document.activeElement as HTMLElement);
   const onSelectPot = (id: string) => update({ pot: id });
   if (isMobile()) {
     if (state.zoom === "you") {
@@ -274,6 +275,9 @@ function renderHero(animate: boolean): void {
   const twin = document.querySelector<HTMLElement>("#flow-table");
   if (twin) {
     twin.innerHTML = renderHeroTable(state, you, germany);
+  }
+  if (focusedKey) {
+    flow.querySelector<HTMLElement>(`[data-key="${CSS.escape(focusedKey)}"]`)?.focus({ preventScroll: true });
   }
 }
 
@@ -618,7 +622,11 @@ function closeDrawer(): void {
   document.querySelector<HTMLElement>("#drawer-body")!.replaceChildren();
   state = { ...state, open: null };
   syncHash();
-  lastTrigger?.focus?.({ preventScroll: true });
+  // Responsive redraws can replace the trigger while the drawer is open.
+  const trigger = lastTrigger?.isConnected ? lastTrigger : lastTrigger?.dataset.key
+    ? document.querySelector<HTMLElement>(`#flow [data-key="${CSS.escape(lastTrigger.dataset.key)}"]`)
+    : null;
+  (trigger ?? document.querySelector<HTMLElement>(".legend-row button"))?.focus({ preventScroll: true });
   lastTrigger = null;
 }
 

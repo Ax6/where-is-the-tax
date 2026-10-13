@@ -50,12 +50,20 @@ test("header: controls fit at breakpoints and mobile settings preserve state and
     assert.equal(await page.getAttribute("#controls-toggle", "aria-expanded"), "true");
     assert.equal(await page.locator("#wage-range").isVisible(), true);
     const node = page.locator(".stage-row").first();
-    await node.focus();
-    await page.keyboard.press("Enter");
-    await page.locator("#drawer").waitFor({ state: "visible" });
-    await page.keyboard.press("Escape");
-    assert.equal(await node.evaluate((el) => el === document.activeElement), true);
-    assert.equal(await page.getAttribute("#controls-toggle", "aria-expanded"), "true");
+    for (const resize of [false, true]) {
+      await node.focus();
+      await page.keyboard.press("Enter");
+      await page.locator("#drawer").waitFor({ state: "visible" });
+      if (resize) {
+        // A responsive redraw can replace the original trigger while the drawer is open.
+        const originalNode = await node.elementHandle();
+        await page.setViewportSize({ width: 400, height: 844 });
+        await page.waitForFunction((element) => !element!.isConnected, originalNode);
+      }
+      await page.keyboard.press("Escape");
+      assert.equal(await node.evaluate((el) => el === document.activeElement), true);
+      assert.equal(await page.getAttribute("#controls-toggle", "aria-expanded"), "true");
+    }
     await page.keyboard.press("Escape");
     assert.equal(await page.getAttribute("#controls-toggle", "aria-expanded"), "false");
     assert.equal(await page.evaluate(() => document.activeElement?.id), "controls-toggle");
