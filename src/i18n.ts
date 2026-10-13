@@ -23,9 +23,6 @@ const ui = {
   zoomYou: bi("Ich", "You"),
   zoomGermany: bi("Deutschland", "Germany"),
   language: bi("Sprache", "Language"),
-  unit: bi("Einheit", "Unit"),
-  unitBn: bi("Mrd. €", "€ bn"),
-  unitDay: bi("€ pro Kopf und Tag", "€ per resident per day"),
   settings: bi("Einstellungen", "Settings"),
   close: bi("Schließen", "Close"),
   assumptions: bi(
@@ -155,7 +152,15 @@ const ui = {
 };
 
 export type UiKey = keyof typeof ui;
-export const titleFor = (year: number, lang: Lang): string => (lang === "de" ? `Wohin Steuern fließen · Deutschland ${year}` : `Where taxes go · Germany ${year}`);
+/** "Question · context": the You view asks about my taxes, the Germany view about everyone's; both in Germany, in a year. */
+export const titleFor = (year: number, lang: Lang, zoom: "you" | "germany" = "you"): string =>
+  zoom === "germany"
+    ? lang === "de"
+      ? `Wohin gehen alle Steuern? · Deutschland ${year}`
+      : `Where do everyone's taxes go? · Germany ${year}`
+    : lang === "de"
+      ? `Wohin gehen meine Steuern? · Deutschland ${year}`
+      : `Where do my taxes go? · Germany ${year}`;
 export const fill = (text: string, value: string): string => text.replace("{X}", value);
 
 /**

@@ -59,7 +59,6 @@ function hashOf(s: State): string {
   const params = new URLSearchParams({ y: String(s.year), lang: s.lang });
   if (s.zoom === "germany") {
     params.set("zoom", "germany");
-    params.set("unit", s.unit);
   }
   if (s.wageSet) {
     params.set("wage", String(s.wage));
@@ -187,7 +186,7 @@ function update(next: Partial<State>, options: { animate?: boolean; full?: boole
 function mountAll(): void {
   applyDisplay();
   document.documentElement.lang = state.lang;
-  document.title = titleFor(state.year, state.lang);
+  document.title = titleFor(state.year, state.lang, state.zoom);
   document.querySelector('meta[name="description"]')?.setAttribute("content", t("description", state.lang));
   app.innerHTML = renderPage(state, you, germany);
   wireControls();
@@ -205,12 +204,17 @@ function mountAll(): void {
   }
 }
 
+function refreshTitle(): void {
+  const { lang, year, zoom } = state;
+  document.title = titleFor(year, lang, zoom);
+  document.querySelector("#title")!.innerHTML = renderTitle(year, lang, zoom);
+  document.querySelector("#title")!.setAttribute("aria-label", titleFor(year, lang, zoom));
+}
+
 /** Year change: everything that names or reads a year, without rebuilding the controls (focus stays). */
 function refreshYear(): void {
   const { lang, year } = state;
-  document.title = titleFor(year, lang);
-  document.querySelector("#title")!.innerHTML = renderTitle(year, lang);
-  document.querySelector("#title")!.setAttribute("aria-label", titleFor(year, lang));
+  refreshTitle();
   document.querySelector("#map-title")!.textContent = mapTitleFor(year, lang);
   const ticks = document.querySelector("#wage-ticks");
   if (ticks) {
@@ -245,10 +249,21 @@ function refreshChrome(): void {
   if (line) {
     line.textContent = state.zoom === "you" ? t("assumptions", state.lang) : t("switchGermany", state.lang);
   }
-  // the Germany view has no map beside the flow: the map sits in the VAT and Länder drawers there
-  document.querySelector<HTMLElement>(".map-panel")?.toggleAttribute("hidden", state.zoom === "germany");
-  document.querySelector<HTMLElement>(".hero-grid")?.classList.toggle("is-wide", state.zoom === "germany");
-  document.querySelector<HTMLElement>(".ctl-unit")?.toggleAttribute("hidden", state.zoom !== "germany");
+  refreshTitle();
+  // Germany view: the map column shrinks to a dormant, grey, inert thumbnail and the flow takes the width.
+  // The grid animates; the hero is drawn at its final width, measured with the transition switched off.
+  const grid = document.querySelector<HTMLElement>(".hero-grid");
+  const wide = state.zoom === "germany";
+  if (grid && grid.classList.contains("is-wide") !== wide) {
+    grid.classList.add("no-transition");
+    grid.classList.toggle("is-wide", wide);
+    heroWidth = document.querySelector<HTMLElement>("#flow")?.clientWidth;
+    grid.classList.toggle("is-wide", !wide);
+    void grid.offsetWidth;
+    grid.classList.remove("no-transition");
+    grid.classList.toggle("is-wide", wide);
+  }
+  document.querySelector<HTMLElement>(".map-panel")?.toggleAttribute("inert", wide);
   document.querySelector<HTMLElement>(".wage-ctl")?.toggleAttribute("hidden", state.zoom !== "you");
   requestAnimationFrame(layoutTickLabels);
 }
@@ -257,6 +272,9 @@ function refreshChrome(): void {
  * Draws the hero. On a view switch ("crossfade": zooming out to Germany or back in to You) the old chart stays as a
  * ghost that lifts away while the new one rises in (styles.css: flow-out / flow-in); nothing to tween between the two.
  */
+/** width the hero should be drawn at while the grid is still animating towards it */
+let heroWidth: number | undefined;
+
 function renderHero(animate: boolean, options: { crossfade?: "out" | "in" } = {}): void {
   const flow = document.querySelector<HTMLElement>("#flow")!;
   const focusedKey = flow.contains(document.activeElement) ? (document.activeElement as HTMLElement).dataset.key : undefined;
@@ -274,13 +292,14 @@ function renderHero(animate: boolean, options: { crossfade?: "out" | "in" } = {}
     }
     flow.dataset.highlight = state.highlight ?? "";
   } else {
-    const options = { lang: state.lang, year: state.year, unit: state.unit, animate, highlight: state.highlight, selectedPot: state.pot, onSelectPot, onOpen };
+    const options = { lang: state.lang, year: state.year, unit: state.unit, animate, highlight: state.highlight, selectedPot: state.pot, onSelectPot, onOpen, width: heroWidth };
     if (state.zoom === "you") {
       renderYou(flow, you, options);
     } else {
       renderGermany(flow, germany, options);
     }
   }
+  heroWidth = undefined;
   const twin = document.querySelector<HTMLElement>("#flow-table");
   if (twin) {
     twin.innerHTML = renderHeroTable(state, you, germany);
@@ -543,8 +562,6 @@ function wireControls(): void {
           update({ year: Number(value) }, { animate: true });
         } else if (name === "zoom") {
           update({ zoom: value as State["zoom"] });
-        } else if (name === "unit") {
-          update({ unit: value as State["unit"] });
         }
       });
     }

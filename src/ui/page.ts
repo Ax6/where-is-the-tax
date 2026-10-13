@@ -113,15 +113,6 @@ export function renderControls(state: PageState): string {
         ${renderWageTicks(state)}
       </div>
     </div>
-    <div class="ctl-unit"${state.zoom === "germany" ? "" : " hidden"}>${seg(
-      "unit",
-      [
-        { value: "bn", label: t("unitBn", lang) },
-        { value: "day", label: t("unitDay", lang) },
-      ],
-      state.unit,
-      t("unit", lang),
-    )}</div>
     <div class="display-controls">
       <div class="lang-toggle" role="group" aria-label="${esc(t("language", lang))}"><button type="button" data-lang="de" lang="de" aria-pressed="${lang === "de"}">DE</button><button type="button" data-lang="en" lang="en" aria-pressed="${lang === "en"}">EN</button></div>
       <button type="button" class="icon-btn" id="theme-toggle" aria-label="${esc(t("themeDarkName", lang))}" title="${esc(t("themeDarkName", lang))}" aria-pressed="${state.theme === "dark"}">${ICON_THEME}</button>
@@ -130,8 +121,8 @@ export function renderControls(state: PageState): string {
   </div>`;
 }
 
-export function renderTitle(year: number, lang: Lang): string {
-  const [name, context] = titleFor(year, lang).split(" · ");
+export function renderTitle(year: number, lang: Lang, zoom: "you" | "germany" = "you"): string {
+  const [name, context] = titleFor(year, lang, zoom).split(" · ");
   return `<span class="title-name">${esc(name!)}</span><span class="title-context"><span class="sr-only"> · </span>${esc(context!)}</span>`;
 }
 
@@ -333,7 +324,7 @@ export function renderPage(state: PageState, you: YouModel, germany: GermanyMode
   return `
   <a class="skip-link" href="#hero">${esc(t("skip", lang))}</a>
   <header class="top">
-    <h1 class="title" id="title" aria-label="${esc(titleFor(state.year, lang))}">${renderTitle(state.year, lang)}</h1>
+    <h1 class="title" id="title" aria-label="${esc(titleFor(state.year, lang, state.zoom))}">${renderTitle(state.year, lang, state.zoom)}</h1>
     <button type="button" class="controls-toggle" id="controls-toggle" aria-expanded="false" aria-controls="controls"><span>${esc(t("settings", lang))}</span><span class="controls-summary num" id="controls-summary"></span></button>
     ${renderControls(state)}
   </header>
@@ -342,7 +333,7 @@ export function renderPage(state: PageState, you: YouModel, germany: GermanyMode
   <section class="hero" id="hero" aria-labelledby="title">
     ${renderLegendRow(state)}
     <div class="hero-grid${state.zoom === "germany" ? " is-wide" : ""}">
-      <aside class="map-panel" aria-labelledby="map-title"${state.zoom === "germany" ? " hidden" : ""}>
+      <aside class="map-panel" aria-labelledby="map-title"${state.zoom === "germany" ? " inert" : ""}>
         <h2 class="map-title" id="map-title">${esc(mapTitleFor(state.year, lang))}</h2>
         <div class="map" id="map"></div>
         <div class="map-key" id="map-key"></div>
