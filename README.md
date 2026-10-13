@@ -1,8 +1,7 @@
 <h1 align="center">Where do my taxes go?</h1>
 
 <p align="center">
-  <strong>From your payslip to Germany’s public budgets. One interactive page.</strong><br>
-  Vom Gehaltszettel zu den öffentlichen Haushalten. Eine interaktive Seite.
+Everyone should be able to see where their taxes go. And AI does the tedious work of bringing dozens of official sources together. One page makes them easier to explore, understand and question.
 </p>
 
 <p align="center">
