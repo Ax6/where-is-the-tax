@@ -341,8 +341,8 @@ export function renderPage(state: PageState, you: YouModel, germany: GermanyMode
   <p class="sr-only" id="live" aria-live="polite" aria-atomic="true"></p>
   <section class="hero" id="hero" aria-labelledby="title">
     ${renderLegendRow(state)}
-    <div class="hero-grid">
-      <aside class="map-panel" aria-labelledby="map-title">
+    <div class="hero-grid${state.zoom === "germany" ? " is-wide" : ""}">
+      <aside class="map-panel" aria-labelledby="map-title"${state.zoom === "germany" ? " hidden" : ""}>
         <h2 class="map-title" id="map-title">${esc(mapTitleFor(state.year, lang))}</h2>
         <div class="map" id="map"></div>
         <div class="map-key" id="map-key"></div>

@@ -245,6 +245,9 @@ function refreshChrome(): void {
   if (line) {
     line.textContent = state.zoom === "you" ? t("assumptions", state.lang) : t("switchGermany", state.lang);
   }
+  // the Germany view has no map beside the flow: the map sits in the VAT and Länder drawers there
+  document.querySelector<HTMLElement>(".map-panel")?.toggleAttribute("hidden", state.zoom === "germany");
+  document.querySelector<HTMLElement>(".hero-grid")?.classList.toggle("is-wide", state.zoom === "germany");
   document.querySelector<HTMLElement>(".ctl-unit")?.toggleAttribute("hidden", state.zoom !== "germany");
   document.querySelector<HTMLElement>(".wage-ctl")?.toggleAttribute("hidden", state.zoom !== "you");
   requestAnimationFrame(layoutTickLabels);
@@ -321,9 +324,8 @@ function renderMap(): void {
       }
     },
   });
-  const max = Math.max(...lands.map((land) => Math.abs(land.perResident)));
   const money = (v: number) => (lang === "de" ? `${Math.round(v).toLocaleString("de-DE")} €` : `€${Math.round(v).toLocaleString("en-GB")}`);
-  key.innerHTML = `<span class="key-ramp" aria-hidden="true"></span><span class="key-labels"><span>${t("mapPays", lang)} <span class="nowrap">−${money(max)}</span></span><span>${t("mapReceives", lang)} <span class="nowrap">+${money(max)}</span></span></span>`;
+  key.innerHTML = mapKeyHtml();
   const selected = lands.find((land) => land.code === state.land);
   place.textContent = selected
     ? `${tr(selected.name, lang)} · ${selected.perResident >= 0 ? "+" : "−"}${money(Math.abs(selected.perResident))} ${lang === "de" ? "je Einw." : "per resident"}`
@@ -333,6 +335,38 @@ function renderMap(): void {
 }
 
 /** Ranking panel (drawer): sorted bars; clicking selects the Land (again: all Länder). */
+function mapKeyHtml(): string {
+  const { lang } = state;
+  const max = Math.max(...lands.map((land) => Math.abs(land.perResident)));
+  const money = (v: number) => (lang === "de" ? `${Math.round(v).toLocaleString("de-DE")} €` : `€${Math.round(v).toLocaleString("en-GB")}`);
+  return `<span class="key-ramp" aria-hidden="true"></span><span class="key-labels"><span>${t("mapPays", lang)} <span class="nowrap">−${money(max)}</span></span><span>${t("mapReceives", lang)} <span class="nowrap">+${money(max)}</span></span></span>`;
+}
+
+/** A drawer that carries the map (#drawer-map): draw it, its key, and wire its ranking link. */
+function wireDrawerMap(body: HTMLElement): void {
+  const map = body.querySelector<HTMLElement>("#drawer-map");
+  if (!map) {
+    return;
+  }
+  renderLandMap(map, lands, {
+    lang: state.lang,
+    year: state.year,
+    selected: state.land,
+    zoom: "germany",
+    onSelect: (code, trigger) => {
+      update({ land: code });
+      openDrawer({ kind: "panel", id: "ranking" }, trigger);
+    },
+  });
+  const key = body.querySelector<HTMLElement>("#drawer-map-key");
+  if (key) {
+    key.innerHTML = mapKeyHtml();
+  }
+  for (const button of body.querySelectorAll<HTMLButtonElement>("[data-panel]")) {
+    button.addEventListener("click", () => openDrawer({ kind: "panel", id: button.dataset.panel as PanelId }, button));
+  }
+}
+
 function renderRanking(): void {
   const bars = document.querySelector<HTMLElement>("#rank-bars");
   if (bars) {
@@ -625,6 +659,7 @@ function openDrawer(target: DrawerTarget, trigger: HTMLElement | SVGElement | nu
   if (target.kind === "panel" && target.id === "shopping") {
     wirePurchaseRows(body);
   }
+  wireDrawerMap(body);
   drawer.hidden = false;
   backdrop.hidden = false;
   for (const region of document.querySelectorAll<HTMLElement>("#app > header, #app > main, #app > footer, .skip-link")) {

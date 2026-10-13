@@ -42,7 +42,7 @@ import { files, raw } from "../data/sources.ts";
 import { bi, bn, eur, fill, money, pct, t, tr, yearTag, type Bi, type Lang } from "../i18n.ts";
 import type { DrawerTarget } from "../viz/hero.ts";
 import { badge, esc, sourceList, splitBar, swatch } from "./html.ts";
-import { renderEqualisationTable } from "./page.ts";
+import { mapTitleFor, renderEqualisationTable } from "./page.ts";
 
 export interface DrawerContext {
   lang: Lang;
@@ -505,6 +505,7 @@ function germanyNodeDrawer(id: string, ctx: DrawerContext): DrawerContent {
             )
           : ""
       }
+      ${entity === "land" ? mapSection(ctx) : ""}
       ${section(t("sources", lang), sourceList([byRecipientSource(), byTaxSource()], lang))}`,
     };
   }
@@ -574,6 +575,7 @@ function germanyNodeDrawer(id: string, ctx: DrawerContext): DrawerContent {
     title,
     html: `${header(fmt(node.value), `${pct(node.value / germany.taxesTotal, lang, 1)} ${lang === "de" ? `aller eingenommenen Steuern ${Y}` : `of all taxes collected ${Y}`}`, "official", lang)}
       ${section(t("mechanism", lang), mechanism)}
+      ${taxId === "vat" ? mapSection(ctx) : ""}
       ${series.length ? section(lang === "de" ? "1999–2025" : "1999–2025", spark(series, lang, title)) : ""}
       ${section(t("sources", lang), sourceList(srcs, lang))}`,
   };
@@ -720,6 +722,17 @@ function shoppingPanel(ctx: DrawerContext): DrawerContent {
         ${sourceList([purchaseSource(), ...equalisationSource(ctx.year)], lang)}
       </section>`,
   };
+}
+
+/** The equalisation map inside a drawer (Germany view, where the page has no map): main.ts draws into #drawer-map. */
+function mapSection(ctx: DrawerContext): string {
+  const { lang } = ctx;
+  return section(
+    mapTitleFor(ctx.year, lang),
+    `<div class="map drawer-map" id="drawer-map"></div><div class="map-key" id="drawer-map-key"></div>
+    <p class="drawer-note">${esc(t("mapNote", lang))}</p>
+    <button type="button" class="link-btn" data-panel="ranking" aria-haspopup="dialog">${esc(t("ranking", lang))} <span aria-hidden="true">›</span></button>`,
+  );
 }
 
 function rankingPanel(ctx: DrawerContext): DrawerContent {
