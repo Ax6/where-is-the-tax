@@ -210,6 +210,21 @@ select {
   line-height: 1.15;
 }
 
+/* both questions share one cell: the longer one, invisible, holds the width */
+.title-stack {
+  display: grid;
+}
+
+.title-stack > .title-name,
+.title-stack::after {
+  grid-area: 1 / 1;
+}
+
+.title-stack::after {
+  content: attr(data-sizer);
+  visibility: hidden;
+}
+
 .title-context {
   color: var(--muted);
   font-family: var(--sans);
