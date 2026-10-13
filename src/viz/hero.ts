@@ -597,6 +597,11 @@ export function renderYou(container: HTMLElement, model: YouModel, options: Hero
       const h = p.pot.transferOut.value * potLayout.scale;
       svgEl(g, "rect", { x: xp + 0.75, y: p.y + p.h - h + 0.75, width: potW - 1.5, height: Math.max(0, h - 1.5), class: "pot-transfer", stroke: entityFill(p.pot.entity) });
     }
+    if (p.pot.transferIn) {
+      // the grant's share of the receiving pot, drawn at its top: the connector from the federal pot lands on it
+      const h = p.pot.transferIn.value * potLayout.scale;
+      svgEl(g, "rect", { x: xp + 0.75, y: p.y + 0.75, width: potW - 1.5, height: Math.max(0, h - 1.5), class: "pot-transfer", stroke: entityFill(p.pot.entity) });
+    }
     relate(p.pot.id, rect);
     interactive(
       g as unknown as SVGElement,
@@ -617,7 +622,7 @@ export function renderYou(container: HTMLElement, model: YouModel, options: Hero
       if (!tp) {
         continue;
       }
-      const endY = tp.y + Math.min(tp.h / 2, (target.value * potLayout.scale) / 2 + 2);
+      const endY = tp.y + ((tp.pot.transferIn?.value ?? target.value) * potLayout.scale) / 2;
       svgEl(potGroup, "path", {
         d: `M${xp + potW},${startY}H${laneX}V${endY}H${xp + potW + 2}`,
         class: "transfer-line",
