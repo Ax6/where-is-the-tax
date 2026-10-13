@@ -96,7 +96,7 @@ if (!you.pots.some((pot) => pot.id === state.pot)) {
 }
 let germany = buildGermany(state.year);
 let lands = equalisation(state.year);
-let lastTrigger: HTMLElement | null = null;
+let lastTrigger: HTMLElement | SVGElement | null = null;
 
 const isMobile = () => window.matchMedia("(max-width: 760px)").matches;
 const prefersDark = window.matchMedia("(prefers-color-scheme: dark)");
@@ -289,7 +289,19 @@ function renderMap(): void {
     return;
   }
   const { lang } = state;
-  renderLandMap(map, lands, { lang, year: state.year, selected: state.land, zoom: state.zoom, onSelect: (code) => update({ land: code }, { animate: true }) });
+  renderLandMap(map, lands, {
+    lang,
+    year: state.year,
+    selected: state.land,
+    zoom: state.zoom,
+    onSelect: (code, trigger) => {
+      update({ land: code }, { animate: true });
+      // in the Germany view the map is not a place picker: a click shows the ranking with this Land marked
+      if (state.zoom === "germany") {
+        openDrawer({ kind: "panel", id: "ranking" }, trigger);
+      }
+    },
+  });
   const max = Math.max(...lands.map((land) => Math.abs(land.perResident)));
   const money = (v: number) => (lang === "de" ? `${Math.round(v).toLocaleString("de-DE")} €` : `€${Math.round(v).toLocaleString("en-GB")}`);
   key.innerHTML = `<span class="key-ramp" aria-hidden="true"></span><span class="key-labels"><span>${t("mapPays", lang)} <span class="nowrap">−${money(max)}</span></span><span>${t("mapReceives", lang)} <span class="nowrap">+${money(max)}</span></span></span>`;
@@ -568,7 +580,7 @@ function wirePurchaseRows(body: HTMLElement): void {
   }
 }
 
-function openDrawer(target: DrawerTarget, trigger: HTMLElement | null): void {
+function openDrawer(target: DrawerTarget, trigger: HTMLElement | SVGElement | null): void {
   const drawer = document.querySelector<HTMLElement>("#drawer")!;
   const backdrop = document.querySelector<HTMLElement>("#drawer-backdrop")!;
   let content;
@@ -626,7 +638,18 @@ function closeDrawer(): void {
   const trigger = lastTrigger?.isConnected ? lastTrigger : lastTrigger?.dataset.key
     ? document.querySelector<HTMLElement>(`#flow [data-key="${CSS.escape(lastTrigger.dataset.key)}"]`)
     : null;
-  (trigger ?? document.querySelector<HTMLElement>(".legend-row button"))?.focus({ preventScroll: true });
+  const target = trigger ?? document.querySelector<HTMLElement>(".legend-row button");
+  target?.focus({ preventScroll: true });
+  // a focus() in the same task that lifted `inert` can be dropped (seen in CI): retry once next frame,
+  // but only while nothing else has taken focus in the meantime
+  if (target) {
+    requestAnimationFrame(() => {
+      const nowhere = !document.activeElement || document.activeElement === document.body;
+      if (nowhere && target.isConnected) {
+        target.focus({ preventScroll: true });
+      }
+    });
+  }
   lastTrigger = null;
 }
 

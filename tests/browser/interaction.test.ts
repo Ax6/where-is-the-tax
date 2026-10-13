@@ -61,7 +61,17 @@ test("header: controls fit at breakpoints and mobile settings preserve state and
         await page.waitForFunction((element) => !element!.isConnected, originalNode);
       }
       await page.keyboard.press("Escape");
-      assert.equal(await node.evaluate((el) => el === document.activeElement), true);
+      // focus returns to the row (a frame later if the browser dropped the first focus() after `inert` was lifted)
+      try {
+        await page.waitForFunction((el) => el === document.activeElement, await node.elementHandle(), { timeout: 5_000 });
+      } catch (error) {
+        const state = await page.evaluate(() => {
+          const a = document.activeElement;
+          const drawer = document.querySelector<HTMLElement>("#drawer");
+          return { active: a ? `${a.tagName}#${a.id}.${a.className} key=${(a as HTMLElement).dataset?.key}` : null, drawerHidden: drawer?.hidden, mainInert: document.querySelector<HTMLElement>("#app > main")?.inert, rows: document.querySelectorAll(".stage-row").length };
+        });
+        throw new Error(`focus not restored (resize=${resize}): ${JSON.stringify(state)}`, { cause: error });
+      }
       assert.equal(await page.getAttribute("#controls-toggle", "aria-expanded"), "true");
     }
     await page.keyboard.press("Escape");

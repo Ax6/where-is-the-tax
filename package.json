@@ -15,7 +15,7 @@
     "typecheck": "tsc --noEmit",
     "test": "node --experimental-strip-types --test tests/*.test.ts",
     "check:data": "node --experimental-strip-types scripts/check-data.ts && python3 scripts/research/check.py",
-    "test:a11y": "node --experimental-strip-types --test tests/browser/*.test.ts"
+    "test:a11y": "node --experimental-strip-types --test --test-concurrency=1 tests/browser/*.test.ts"
   },
   "dependencies": {
     "d3-geo": "^3.1.1",

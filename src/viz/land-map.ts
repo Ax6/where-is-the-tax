@@ -37,14 +37,64 @@ export function mapScale(lands: EqualisationLand[]): (value: number) => string {
   return (value: number) => scale(value);
 }
 
-export function renderLandMap(
-  container: HTMLElement,
-  lands: EqualisationLand[],
-  options: { lang: Lang; year: number; selected: string; zoom: "you" | "germany"; onSelect: (code: string) => void },
-): void {
+export interface MapOptions {
+  lang: Lang;
+  year: number;
+  selected: string;
+  zoom: "you" | "germany";
+  onSelect: (code: string, trigger: SVGElement) => void;
+}
+
+interface MapInstance {
+  year: number;
+  lang: Lang;
+  svg: SVGSVGElement;
+  paths: Map<string, SVGPathElement>;
+  selected: string;
+  zoom: "you" | "germany";
+  onSelect: MapOptions["onSelect"];
+}
+const instances = new WeakMap<HTMLElement, MapInstance>();
+
+const landLabel = (land: EqualisationLand, selected: boolean, lang: Lang): string =>
+  `${tr(land.name, lang)}: ${land.perResident >= 0 ? t("mapReceives", lang) : t("mapPays", lang)} ${eur(Math.abs(land.perResident), lang)}${selected ? `. ${t("mapDeselect", lang)}` : ""}`;
+
+/**
+ * Draws the map once per year and language; a change of selection, view or theme updates the paths in place,
+ * so the outline and colours transition (styles.css) instead of redrawing. The selected Land is painted last:
+ * neighbours' hairlines never cut into its outline. A hovered Land is raised the same way while the pointer is on it.
+ */
+export function renderLandMap(container: HTMLElement, lands: EqualisationLand[], options: MapOptions): void {
+  const { lang } = options;
+  const byCode = new Map(lands.map((land) => [land.code, land]));
+  const existing = instances.get(container);
+  const inst =
+    existing && existing.year === options.year && existing.lang === lang && existing.svg.isConnected
+      ? Object.assign(existing, { selected: options.selected, zoom: options.zoom, onSelect: options.onSelect })
+      : build(container, lands, options);
+  const color = mapScale(lands);
+  for (const [code, shape] of inst.paths) {
+    const land = byCode.get(code)!;
+    const selected = code === inst.selected;
+    shape.setAttribute("fill", color(land.perResident));
+    shape.classList.toggle("is-selected", selected);
+    shape.setAttribute("aria-pressed", String(selected));
+    shape.setAttribute("aria-label", landLabel(land, selected, lang));
+  }
+  raiseSelected(inst);
+}
+
+/** Paint a Land last. Only moves it when needed: a DOM move re-fires pointerenter and would detach a click's target. */
+const raise = (svg: SVGSVGElement, shape: SVGPathElement | undefined): void => {
+  if (shape && shape !== svg.lastElementChild) {
+    svg.append(shape);
+  }
+};
+const raiseSelected = (inst: MapInstance): void => raise(inst.svg, inst.paths.get(inst.selected));
+
+function build(container: HTMLElement, lands: EqualisationLand[], options: MapOptions): MapInstance {
   const { lang } = options;
   container.replaceChildren();
-  const color = mapScale(lands);
   const status: Status = equalisationStatus(options.year).startsWith("provisional") ? "provisional" : "official";
   const byCode = new Map(lands.map((land) => [land.code, land]));
   const width = 300;
@@ -58,23 +108,17 @@ export function renderLandMap(
   );
   const path = geoPath(projection);
   const svg = svgEl(container, "svg", { class: "map-svg", viewBox: `0 0 ${width} ${height}`, role: "group", "aria-label": `${t("mapTitle", lang)} · ${options.year}` });
+  const inst: MapInstance = { year: options.year, lang, svg, paths: new Map(), selected: options.selected, zoom: options.zoom, onSelect: options.onSelect };
+  instances.set(container, inst);
   for (const feature of geo.features) {
-    const land = byCode.get(feature.properties.code);
+    const code = feature.properties.code;
+    const land = byCode.get(code);
     if (!land) {
       continue;
     }
-    const shape = svgEl(svg, "path", {
-      d: path(feature as never) ?? "",
-      fill: color(land.perResident),
-      class: `land${feature.properties.code === options.selected ? " is-selected" : ""}`,
-      tabindex: 0,
-      role: "button",
-      "aria-pressed": String(feature.properties.code === options.selected),
-      "aria-label": `${tr(land.name, lang)}: ${land.perResident >= 0 ? t("mapReceives", lang) : t("mapPays", lang)} ${eur(Math.abs(land.perResident), lang)}${
-        feature.properties.code === options.selected ? `. ${t("mapDeselect", lang)}` : ""
-      }`,
-    });
-    const select = () => options.onSelect(nextPlace(options.selected, feature.properties.code));
+    const shape = svgEl(svg, "path", { d: path(feature as never) ?? "", class: "land", tabindex: 0, role: "button" });
+    inst.paths.set(code, shape);
+    const select = () => inst.onSelect(nextPlace(inst.selected, code), shape);
     shape.addEventListener("click", select);
     shape.addEventListener("keydown", (event) => {
       if (event.key === "Enter" || event.key === " ") {
@@ -92,16 +136,24 @@ export function renderLandMap(
             `${lang === "de" ? "Bundesergänzungszuweisungen" : "Supplementary federal grants"}: ${money(land.bez, lang)}`,
           ],
           status,
-          body: feature.properties.code === options.selected ? t("mapDeselect", lang) : t(options.zoom === "you" ? "mapClick" : "mapClickGermany", lang),
+          body: code === inst.selected ? t("mapDeselect", lang) : t(inst.zoom === "you" ? "mapClick" : "mapClickGermany", lang),
         },
         { x, y },
         lang,
       );
-    shape.addEventListener("pointerenter", (event) => tip(event.clientX, event.clientY));
+    shape.addEventListener("pointerenter", (event) => {
+      // on top while hovered, so its outline is whole; the selected Land returns to the top on leave
+      raise(svg, shape);
+      tip(event.clientX, event.clientY);
+    });
     shape.addEventListener("pointermove", (event) => tip(event.clientX, event.clientY));
-    shape.addEventListener("pointerleave", hideTooltip);
+    shape.addEventListener("pointerleave", () => {
+      hideTooltip();
+      raiseSelected(inst);
+    });
     shape.addEventListener("blur", hideTooltip);
   }
+  return inst;
 }
 
 /** Clicking the selected Land goes back to all Länder; any other Land becomes the selection. */
