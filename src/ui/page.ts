@@ -106,6 +106,7 @@ export function renderControls(state: PageState): string {
     <div class="wage-ctl"${state.zoom === "you" ? "" : " hidden"}>
       <div class="wage-head">
         <span class="ctl-label" id="wage-label">${esc(t("wage", lang))}</span>
+        <span class="wage-cut num" id="wage-cut"></span>
         <button type="button" class="wage-figure num" id="wage-figure" aria-label="${esc(`${t("wageType", lang)}: ${eur(state.wage, lang)}`)}">${esc(eur(state.wage, lang))}</button>
         <input type="number" class="wage-input num" id="wage-input" min="0" max="999999" step="1" value="${state.wage}" aria-label="${esc(t("wageType", lang))}" hidden />
       </div>

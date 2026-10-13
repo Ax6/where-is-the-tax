@@ -142,6 +142,8 @@ const ui = {
   ),
   provisionalTag: bi("vorläufig", "provisional"),
   sameWage2026: bi("Gleicher Lohn 2026: {X} netto", "Same wage in 2026: {X} net"),
+  deductions: bi("Abzüge", "deductions"),
+  deductionsName: bi("Vom Brutto gehen {X} an Steuern und Sozialbeiträge ab", "Taxes and contributions take {X} off the gross"),
   wageType: bi("Genauen Bruttolohn eingeben", "Type an exact gross wage"),
   estimateToggle: bi("≈ Schätzung*", "≈ estimate*"),
   estimateToggleName: bi("Schätzung der Steuern auf Einkäufe zeigen", "Show the estimate of taxes on purchases"),

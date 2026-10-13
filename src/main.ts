@@ -1,7 +1,7 @@
 import "./styles.css";
 
 import { buildGermany, buildYou, defaultWage, DEFAULT_PAGE_YEAR, ENTITY_ORDER, equalisation, GERMANY_CODE, getPlace, PAGE_YEARS, timeSeries, type EntityId } from "./data/model.ts";
-import { eur, t, titleFor, tr, type Lang } from "./i18n.ts";
+import { eur, fill, pct, t, titleFor, tr, type Lang } from "./i18n.ts";
 import { drawerContent, purchaseDetail } from "./ui/drawer-content.ts";
 import { mapTitleFor, renderDataTable, renderHeroTable, renderLegendRow, renderPage, renderSources, renderTaxTable, renderTitle, renderWageTicks, WAGE_MAX, WAGE_MIN, WAGE_STEP, type PageState } from "./ui/page.ts";
 import { renderGermany, renderYou, type DrawerTarget, type PanelId } from "./viz/hero.ts";
@@ -430,6 +430,14 @@ function syncControls(): void {
       range.value = String(Math.min(WAGE_MAX, Math.max(WAGE_MIN, Math.round(state.wage / WAGE_STEP) * WAGE_STEP)));
     }
     range.setAttribute("aria-valuetext", wageText(state.wage));
+    sliceRange(range);
+  }
+  const cut = document.querySelector<HTMLElement>("#wage-cut");
+  if (cut) {
+    const p = you.payslip;
+    const share = (p.gross - p.totals.net) / p.gross;
+    cut.innerHTML = `<span class="cut-swatch" aria-hidden="true"></span>${pct(share, state.lang, 0)} ${t("deductions", state.lang)}`;
+    cut.title = fill(t("deductionsName", state.lang), eur(p.gross - p.totals.net, state.lang));
   }
   const figure = document.querySelector<HTMLButtonElement>("#wage-figure");
   if (figure) {
@@ -516,6 +524,13 @@ function wireTicks(): void {
   }
 }
 
+/** The slider's filled part is the gross; its stripes at the thumb end are what comes off it (styles.css). */
+function sliceRange(range: HTMLInputElement): void {
+  const p = you.payslip;
+  range.style.setProperty("--p", String((Number(range.value) - Number(range.min)) / (Number(range.max) - Number(range.min))));
+  range.style.setProperty("--cut", String(Math.max(0, Math.min(1, (p.gross - p.totals.net) / p.gross))));
+}
+
 let rangeFrame = 0;
 function wireWage(): void {
   const range = document.querySelector<HTMLInputElement>("#wage-range")!;
@@ -544,6 +559,7 @@ function wireWage(): void {
   range.addEventListener("pointercancel", release);
   range.addEventListener("blur", release);
   range.addEventListener("input", () => {
+    sliceRange(range);
     cancelAnimationFrame(rangeFrame);
     rangeFrame = requestAnimationFrame(() => {
       const { wage } = snapWage(Number(range.value));
