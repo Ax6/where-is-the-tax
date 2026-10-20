@@ -1,5 +1,5 @@
 /** Drawer content: mechanism mini-diagram, one level deeper, benchmarks, sources. HTML strings, data escaped. */
-import { aggregate, aggregatesSource, allocation, allocationKinds, allocationSource, byRecipientRows, byRecipientSource, byTaxRows, byTaxSource, cofogRows, cofogSource, crossSystemTransfers, type EntityId, equalisation, equalisationFile, equalisationSource, equalisationStatus, euRoundTrip, euSource, type GermanyModel, householdCaveats, householdEstimate, householdSource, ownShare, payrollViewOf, payslip, payslipParams, payslipSource, payslipYears, perResidentPerDay, populationSource, type Pot, potInflow, purchases, purchaseSource, SAXONY_CODE, type SourceLink, taxSeries, tradeTaxLevy, vatSplit, type YouModel } from "../data/model.ts";
+import { aggregate, aggregatesSource, allocation, allocationKinds, allocationSource, byRecipientRows, byRecipientSource, byTaxRows, byTaxSource, cofogRows, cofogSource, crossSystemTransfers, type EntityId, equalisation, equalisationFile, equalisationSource, equalisationStatus, euRoundTrip, euSource, type GermanyModel, householdCaveats, householdEstimate, householdSource, ownShare, payrollViewOf, payslip, payslipParams, payslipSource, payslipYears, perResidentPerDay, populationSource, type Pot, type BreakdownRow, potInflow, purchases, purchaseSource, SAXONY_CODE, type SourceLink, taxSeries, tradeTaxLevy, vatSplit, type YouModel } from "../data/model.ts";
 import { files, raw } from "../data/sources.ts";
 import { assumptionsText, bi, type Bi, bn, eur, fill, type Lang, money, pct, t, tr, yearTag } from "../i18n.ts";
 import type { DrawerTarget } from "../viz/hero.ts";
@@ -25,12 +25,12 @@ export interface DrawerContent {
 
 const section = (title: string, body: string): string => `<section class="drawer-section"><h3>${esc(title)}</h3>${body}</section>`;
 
-function rows(items: { label: string; value: string; share?: number; entity?: EntityId; sub?: string; cls?: string }[], max?: number): string {
+function rows(items: { label: string; value: string; share?: number; entity?: EntityId; sub?: string; cls?: string; q?: string; alt?: string }[], max?: number): string {
   const top = max ?? Math.max(...items.map((item) => item.share ?? 0), 0.0001);
   return `<ul class="drawer-rows">${items
     .map(
-      (item) => `<li class="${item.cls ?? ""}">
-        <span class="dr-label">${item.entity ? swatch(item.entity) : ""}${esc(item.label)}${item.sub ? `<span class="dr-sub">${esc(item.sub)}</span>` : ""}</span>
+      (item) => `<li class="${item.cls ?? ""}"${item.q ? ` data-q="${esc(item.q)}"` : ""}${item.alt ? ` data-alt="${esc(item.alt)}"` : ""}>
+        <span class="dr-label">${item.entity ? swatch(item.entity) : ""}<span class="dr-text">${esc(item.label)}</span>${item.sub ? `<span class="dr-sub">${esc(item.sub)}</span>` : ""}</span>
         <span class="dr-value num">${esc(item.value)}</span>
         ${item.share !== undefined ? `<span class="dr-bar" aria-hidden="true"><span${item.entity ? ` data-entity="${item.entity}"` : ""} style="width:${Math.max(0, Math.min(1, item.share / top)) * 100}%;${item.entity ? `background:var(--e-${item.entity})` : ""}"></span></span>` : ""}
       </li>`,
@@ -291,6 +291,20 @@ function estimateDrawer(ctx: DrawerContext): DrawerContent {
 
 // --- pots ------------------------------------------------------------------------------------
 
+/** Both languages are searchable whatever the page language: "Hochwasser" and "flood" find the same row. */
+const searchText = (label: Bi): string => `${label.de} ${label.en.replace(/ \(DE\)$/, "")}`;
+
+/** The label in the other language, shown when only it matches the search. */
+const altLabel = (label: Bi, lang: Lang): string => (lang === "de" ? label.en.replace(/ \(DE\)$/, "") : label.de);
+
+const treeSearch = (lang: Lang): string => `<div class="tree-search" role="search">
+  <svg class="tree-search-icon" viewBox="0 0 16 16" aria-hidden="true"><circle cx="7" cy="7" r="4.6"/><path d="M10.4 10.4 14 14"/></svg>
+  <input type="search" class="tree-search-input" aria-label="${esc(lang === "de" ? "Im Haushalt suchen" : "Search this budget")}" placeholder="${esc(lang === "de" ? "Suchen, z. B. Hochwasser" : "Search, e.g. flood")}" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="search">
+  <output class="tree-search-count" aria-live="polite"></output>
+</div>`;
+
+const hasGermanOnly = (list: BreakdownRow[]): boolean => list.some((row) => row.label.en.endsWith(" (DE)") || hasGermanOnly(row.children ?? []));
+
 /** "≈ €8 of yours*": a pro rata* share of your euros into this budget. */
 const yours = (value: number, lang: Lang): string => `${value < 1 ? `< ${eur(1, lang)}` : `≈ ${eur(value, lang)}`} ${t("ofYours", lang)}*`;
 
@@ -301,31 +315,33 @@ function potDrawer(pot: Pot, ctx: DrawerContext): DrawerContent {
   const viaGrants = ctx.you.grantIn[pot.id] ?? 0;
   const estimateIn = pot.recipients.reduce((sum, id) => sum + (ctx.you.flow.nodes.find((n) => n.id === id)?.estimate ?? 0), 0);
   const tag = yearTag(pot.year, pot.status, 0, lang);
+  const subRow = (child: BreakdownRow, parent: number): string =>
+    rows([{ label: tr(child.label, lang), q: searchText(child.label), alt: altLabel(child.label, lang), value: money(child.value, lang), share: child.value / parent, sub: inflow > 0 ? yours((own * child.value) / pot.compositionBase, lang) : undefined }], 1);
+  // a row with its own breakdown opens one level further; bars stay relative to the parent
+  const subRows = (children: BreakdownRow[], parent: number): string =>
+    children.length
+      ? `<div class="cat-kids">${children
+          .map((child) =>
+            child.children?.length
+              ? `<details class="cat sub"><summary>${subRow(child, parent)}</summary>${subRows(child.children, child.value)}</details>`
+              : subRow(child, parent),
+          )
+          .join("")}</div>`
+      : "";
   const breakdown = pot.categories
     .map((cat) => {
       const share = cat.value / pot.compositionBase;
-      const children = (cat.children ?? []).slice(0, 8);
       return `<details class="cat"${cat === pot.categories[0] ? " open" : ""}><summary>${rows([
         {
           label: tr(cat.label, lang),
+          q: searchText(cat.label),
+          alt: altLabel(cat.label, lang),
           value: `${pct(share, lang, 1)} · ${bn(cat.value, lang)}`,
           share,
           entity: pot.entity,
           sub: inflow > 0 ? yours(own * share, lang) : undefined,
         },
-      ], 1)}</summary>${
-        children.length
-          ? rows(
-              children.map((child) => ({
-                label: tr(child.label, lang),
-                value: bn(child.value, lang),
-                share: child.value / cat.value,
-                sub: inflow > 0 ? yours((own * child.value) / pot.compositionBase, lang) : undefined,
-              })),
-              1,
-            )
-          : ""
-      }</details>`;
+      ], 1)}</summary>${subRows(cat.children ?? [], cat.value)}</details>`;
     })
     .join("");
   const transfers = [
@@ -337,9 +353,9 @@ function potDrawer(pot: Pot, ctx: DrawerContext): DrawerContent {
     title: tr(pot.label, lang),
     html: `${header(bn(pot.total, lang), `${tag} · ${tr(pot.basis, lang)}`, pot.status, lang)}
       ${inflow > 0 ? `<p class="drawer-joins">${esc(`${eur(inflow, lang)} ${t("joins", lang)} ${bn(pot.total, lang)}${viaGrants > 0 ? ` (${lang === "de" ? "davon" : "of which"} ≈ ${eur(viaGrants, lang)} ${lang === "de" ? "über den Bundeszuschuss" : "via the federal grant"})` : ""}${estimateIn > 0 ? ` · + ≈ ${eur(estimateIn, lang)}* ${lang === "de" ? "aus Ihren Einkäufen (Schätzung)" : "from your purchases (estimate)"}` : ""}`)}</p>` : ""}
-      ${section(`${t("breakdown", lang)} · ${tr(pot.compositionLabel, lang)}`, breakdown)}
+      ${section(`${t("breakdown", lang)} · ${tr(pot.compositionLabel, lang)}`, `${treeSearch(lang)}<div class="cat-tree">${breakdown}</div>`)}
       ${
-        lang === "en" && pot.categories.some((cat) => cat.children?.some((child) => child.label.en.endsWith(" (DE)")))
+        lang === "en" && pot.categories.some((cat) => hasGermanOnly(cat.children ?? []))
           ? `<p class="drawer-note">${esc("(DE): sub-function name published in German only.")}</p>`
           : ""
       }

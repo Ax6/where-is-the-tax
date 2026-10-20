@@ -38,7 +38,7 @@ test("budget segments: exact amounts, selective focus, dismissal and source navi
       await page.locator(".pot[data-pot='pot-pension'] .pot-bar").hover();
       assert.equal(await page.textContent(".tip-value"), "€421.3bn");
       assert.equal(await page.locator(".has-segment-focus").count(), 0);
-      assert.equal(await page.locator(".pot.is-selected").getAttribute("data-pot"), "pot-fed");
+      assert.equal(await page.locator(".pot.is-selected").getAttribute("data-pot"), "pot-land"); // land=BY opens on the Land budget
 
       // The three grant rectangles share context, but each keeps its own amount and tooltip.
       for (const [pot, kind, amount] of [["fed", "outgoing", "€132.4bn"], ["pension", "incoming", "€112.4bn"], ["health", "incoming", "€17.6bn"]] as const) {

@@ -226,7 +226,7 @@ export function renderYouStages(
     lang,
     onOpen: options.onOpen,
     base: selected.compositionBase,
-    note: `${bn(selected.compositionBase, lang)} ${label(selected.compositionLabel, lang)}.${inflow > 0 ? ` * ${t("proRataIfYour", lang).replace("{eur}", eur(inflow, lang)).replace("{pot}", label(selected.label, lang))}` : ""}`,
+    note: `${bn(selected.compositionBase, lang)} ${label(selected.compositionLabel, lang)}${yearTag(selected.year, selected.status, options.year, lang) ? ` · ${yearTag(selected.year, selected.status, options.year, lang)}` : ""}.${inflow > 0 ? ` * ${t("proRataIfYour", lang).replace("{eur}", eur(inflow, lang)).replace("{pot}", label(selected.label, lang))}` : ""}`,
   });
 }
 

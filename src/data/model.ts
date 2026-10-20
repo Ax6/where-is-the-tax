@@ -209,7 +209,27 @@ export interface PotCategory {
   label: Bi;
   value: number;
   star?: boolean;
-  children?: { label: Bi; value: number }[];
+  children?: BreakdownRow[];
+}
+
+/** A drill-down row; nests as deep as the source publishes. */
+export interface BreakdownRow {
+  label: Bi;
+  value: number;
+  children?: BreakdownRow[];
+}
+
+/** Sort rows; beyond the top `keep`, group the rest into one expandable "other" row so nothing is dropped. */
+function foldRows(rows: BreakdownRow[], keep = 8): BreakdownRow[] {
+  const sorted = rows.filter((row) => Math.abs(row.value) >= 0.5).sort((a, b) => b.value - a.value);
+  if (sorted.length <= keep + 1) {
+    return sorted;
+  }
+  const tail = sorted.slice(keep);
+  return [
+    ...sorted.slice(0, keep),
+    { label: bi(`Übrige (${tail.length})`, `Other (${tail.length})`), value: tail.reduce((sum, row) => sum + row.value, 0), children: tail },
+  ];
 }
 
 export interface Pot {
@@ -285,7 +305,7 @@ function fold(categories: PotCategory[], keep = 7, minShare = 0.01): PotCategory
         `Other (${tail.length})`,
       ),
       value: tail.reduce((sum, c) => sum + c.value, 0),
-      children: tail.map((c) => ({ label: c.label, value: c.value })),
+      children: tail.map((c) => ({ label: c.label, value: c.value, children: c.children })),
     },
   ];
 }
@@ -364,19 +384,25 @@ export const federalGrantsOf = (year: number) => ({
 });
 export const federalGrants = federalGrantsOf(2024);
 
+/** Function codes shown as the transfer to social insurance, not as federal spending. */
+const TRANSFER_CODES = new Set(["221", "224"]);
+
+function fedRow(fn: FedFunction, transfer: number): BreakdownRow {
+  const inner = (fn.funktionen ?? []).filter((sub) => !TRANSFER_CODES.has(sub.code));
+  return {
+    label: fnLabel(fn),
+    value: fn.code === "22" ? fn.amount_eur - transfer : fn.amount_eur,
+    children: inner.length > 1 ? foldRows(inner.map((sub) => fedRow(sub, transfer))) : undefined,
+  };
+}
+
 function federalPot(year: number): Pot {
   const federal = federalFile(year);
   const grants = federalGrantsOf(year);
   const transfer = grants.pension + grants.health;
   const categories: PotCategory[] = federal.hauptfunktionen.map((hf) => {
     const removed = hf.code === "2" ? transfer : 0;
-    const children = (hf.funktionen ?? [])
-      .map((fn) => ({
-        label: fnLabel(fn),
-        value: fn.code === "22" ? fn.amount_eur - transfer : fn.amount_eur,
-      }))
-      .filter((child) => Math.abs(child.value) > 0.5e9)
-      .sort((a, b) => b.value - a.value);
+    const children = foldRows((hf.funktionen ?? []).map((fn) => fedRow(fn, transfer)));
     return { id: `hf${hf.code}`, label: FUNCTION_LABEL_OVERRIDES[hf.code] ?? functionName(hf.code, hf.label), value: hf.amount_eur - removed, children };
   });
   const own = federal.official_total_eur - transfer;
