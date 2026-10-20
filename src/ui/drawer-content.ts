@@ -299,7 +299,7 @@ const altLabel = (label: Bi, lang: Lang): string => (lang === "de" ? label.en.re
 
 const treeSearch = (lang: Lang): string => `<div class="tree-search" role="search">
   <svg class="tree-search-icon" viewBox="0 0 16 16" aria-hidden="true"><circle cx="7" cy="7" r="4.6"/><path d="M10.4 10.4 14 14"/></svg>
-  <input type="search" class="tree-search-input" aria-label="${esc(lang === "de" ? "Im Haushalt suchen" : "Search this budget")}" placeholder="${esc(lang === "de" ? "Suchen, z. B. Hochwasser" : "Search, e.g. flood")}" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="search">
+  <input type="search" class="tree-search-input" aria-label="${esc(lang === "de" ? "Im Haushalt suchen" : "Search this budget")}" placeholder="${esc(lang === "de" ? "Suchen, z. B. Energie" : "Search, e.g. energy")}" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="search">
   <output class="tree-search-count" aria-live="polite"></output>
 </div>`;
 
