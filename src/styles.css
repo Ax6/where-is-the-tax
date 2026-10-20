@@ -59,16 +59,16 @@
 @media (prefers-color-scheme: dark) {
   :root:where(:not([data-theme="light"])) {
     color-scheme: dark;
-    --page: #1c272d;
-    --raise: #25333b;
+    --page: #11181c;
+    --raise: #16242b;
     --ink: #e8edeb;
     --ink-2: #c0cdd0;
     --muted: #a0b3b9;
     --hair: #3b4a51;
     --axis: #627a84;
     --flow-neutral: #8fa4ac;
-    --flow-yours: #435a64;
-    --flow-ghost: #2b3c44;
+    --flow-yours: #334953;
+    --flow-ghost: #1c2c34;
     --borrowed: #becdd1;
     --neutral-1: #98aeb7;
     --neutral-2: #74909c;
@@ -87,23 +87,23 @@
     --map-pays: #c4b18d;
     --map-mid: #40525a;
     --map-receives: #91b7c0;
-    --accent: #3c5760;
+    --accent: #2c464f;
     --accent-ink: #e8edeb;
   }
 }
 
 :root[data-theme="dark"] {
   color-scheme: dark;
-    --page: #1c272d;
-    --raise: #25333b;
+    --page: #11181c;
+    --raise: #16242b;
     --ink: #e8edeb;
     --ink-2: #c0cdd0;
     --muted: #a0b3b9;
     --hair: #3b4a51;
     --axis: #627a84;
     --flow-neutral: #8fa4ac;
-    --flow-yours: #435a64;
-    --flow-ghost: #2b3c44;
+    --flow-yours: #334953;
+    --flow-ghost: #1c2c34;
     --borrowed: #becdd1;
     --neutral-1: #98aeb7;
     --neutral-2: #74909c;
@@ -122,7 +122,7 @@
     --map-pays: #c4b18d;
     --map-mid: #40525a;
     --map-receives: #91b7c0;
-    --accent: #3c5760;
+    --accent: #2c464f;
     --accent-ink: #e8edeb;
 }
 
@@ -2366,7 +2366,7 @@ code {
     border: 1px solid var(--hair);
     border-radius: 8px;
     background: var(--raise);
-    box-shadow: 0 6px 20px rgb(0 0 0 / 0.12);
+    box-shadow: 0 6px 20px var(--shadow);
   }
 
   .menu-open .display-controls {
