@@ -77,6 +77,8 @@ test("budget segments: exact amounts, selective focus, dismissal and source navi
       assert.match(await page.textContent("#drawer-body") ?? "", /privately insured pensioners/);
       assert.ok(await page.locator("#drawer a[href^='http']").count() > 0);
       await page.setViewportSize({ width: 1300, height: 800 });
+      // let the debounced (120 ms) responsive redraw replace the trigger while the drawer is still open
+      await page.waitForTimeout(400);
       await page.keyboard.press("Escape");
       await page.waitForFunction(() => (document.activeElement as SVGElement)?.dataset.key === "p-pot-pension-outgoing");
       await page.keyboard.press("Tab");
