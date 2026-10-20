@@ -3,6 +3,7 @@ import "./styles.css";
 import { buildGermany, buildYou, defaultWage, DEFAULT_PAGE_YEAR, ENTITY_ORDER, equalisation, GERMANY_CODE, getPlace, PAGE_YEARS, timeSeries, type EntityId } from "./data/model.ts";
 import { assumptionsText, eur, fill, type Lang, pct, t, titleFor, tr } from "./i18n.ts";
 import { drawerContent, purchaseDetail } from "./ui/drawer-content.ts";
+import { wireTreeSearch } from "./ui/tree-search.ts";
 import { mapTitleFor, renderDataTable, renderHeroTable, renderLegendRow, renderPage, renderSources, renderTaxTable, renderTitle, renderWageTicks, WAGE_MAX, WAGE_MIN, WAGE_STEP, type PageState } from "./ui/page.ts";
 import { renderGermany, renderYou, type DrawerTarget, type PanelId } from "./viz/hero.ts";
 import { renderLandBars, renderLandMap } from "./viz/land-map.ts";
@@ -22,7 +23,8 @@ interface State extends PageState {
   open: string | null;
 }
 
-const DEFAULT_POT = "pot-fed";
+/** The composition column follows the place: a picked Land opens its own budget, Germany the federal one. */
+const defaultPotFor = (land: string): string => (land === GERMANY_CODE ? "pot-fed" : "pot-land");
 
 const isPageYear = (year: number): boolean => (PAGE_YEARS as readonly number[]).includes(year);
 
@@ -35,14 +37,15 @@ function parseHash(): State {
   const wage = Number(params.get("wage"));
   const wageSet = params.has("wage") && Number.isFinite(wage) && wage > 0 && wage < 1e7;
   const lang = params.get("lang") === "de" || params.get("lang") === "en" ? (params.get("lang") as Lang) : navigator.language.toLowerCase().startsWith("de") ? "de" : "en";
-  const land = params.get("land")?.toUpperCase() ?? GERMANY_CODE;
+  const landParam = params.get("land")?.toUpperCase() ?? GERMANY_CODE;
+  const land = landParam === GERMANY_CODE || getPlace(landParam) ? landParam : GERMANY_CODE;
   const highlight = params.get("hl") as EntityId | null;
   return {
     zoom: params.get("zoom") === "germany" ? "germany" : "you",
     wage: wageSet ? Math.round(wage) : Math.round(defaultWage(year)),
     wageSet,
     year,
-    land: land === GERMANY_CODE || getPlace(land) ? land : GERMANY_CODE,
+    land,
     lang,
     unit: params.get("unit") === "day" ? "day" : "bn",
     // old links: "layer=payday" isolated the payslip, so the purchase estimate stays off
@@ -50,7 +53,7 @@ function parseHash(): State {
     highlight: highlight && ENTITY_ORDER.includes(highlight) ? highlight : null,
     theme: params.get("theme") === "dark" || params.get("theme") === "light" ? (params.get("theme") as "light" | "dark") : "auto",
     tex: params.get("tex") === "1",
-    pot: params.get("pot") ?? DEFAULT_POT,
+    pot: params.get("pot") ?? defaultPotFor(land),
     open: params.get("open"),
   };
 }
@@ -78,7 +81,7 @@ function hashOf(s: State): string {
   if (s.tex) {
     params.set("tex", "1");
   }
-  if (s.zoom === "you" && s.pot !== DEFAULT_POT) {
+  if (s.zoom === "you" && s.pot !== defaultPotFor(s.land)) {
     params.set("pot", s.pot);
   }
   if (s.open) {
@@ -91,7 +94,7 @@ let state = parseHash();
 const withEstimate = (s: State): boolean => s.zoom === "you" && s.estimate;
 let you = buildYou(state.year, state.wage, state.land, { estimate: withEstimate(state) });
 if (!you.pots.some((pot) => pot.id === state.pot)) {
-  state.pot = DEFAULT_POT;
+  state.pot = defaultPotFor(state.land);
 }
 let germany = buildGermany(state.year);
 let lands = equalisation(state.year);
@@ -150,8 +153,11 @@ function update(next: Partial<State>, options: { animate?: boolean; full?: boole
   }
   if (state.year !== before.year || state.wage !== before.wage || state.land !== before.land || withEstimate(state) !== withEstimate(before)) {
     you = buildYou(state.year, state.wage, state.land, { estimate: withEstimate(state) });
+    if (state.land !== before.land && next.pot === undefined) {
+      state.pot = defaultPotFor(state.land);
+    }
     if (!you.pots.some((pot) => pot.id === state.pot)) {
-      state.pot = DEFAULT_POT;
+      state.pot = defaultPotFor(state.land);
     }
   }
   syncHash();
@@ -732,11 +738,14 @@ function openDrawer(target: DrawerTarget, trigger: HTMLElement | SVGElement | nu
     wirePurchaseRows(body);
   }
   wireDrawerMap(body);
+  wireTreeSearch(body, state.lang);
   drawer.hidden = false;
   backdrop.hidden = false;
   for (const region of document.querySelectorAll<HTMLElement>("#app > header, #app > main, #app > footer, .skip-link")) {
     region.inert = true;
   }
+  // the search sticks right under the (sticky) drawer head, whose height depends on the title
+  drawer.style.setProperty("--drawer-head-h", `${document.querySelector<HTMLElement>(".drawer-head")!.offsetHeight}px`);
   requestAnimationFrame(() => drawer.classList.add("is-open"));
   document.querySelector<HTMLButtonElement>("#drawer-close")?.focus({ preventScroll: true });
   if (state.open !== encodeTarget(target)) {
@@ -804,7 +813,7 @@ document.addEventListener("keydown", (event) => {
   }
   // keep focus inside the open drawer
   if (event.key === "Tab" && drawer && !drawer.hidden) {
-    const focusable = [...drawer.querySelectorAll<HTMLElement>("a, button, summary, [tabindex='0']")].filter((el) => el.offsetParent !== null);
+    const focusable = [...drawer.querySelectorAll<HTMLElement>("a, button, input, summary, [tabindex='0']")].filter((el) => el.offsetParent !== null);
     const first = focusable[0];
     const last = focusable[focusable.length - 1];
     if (!first || !last) {

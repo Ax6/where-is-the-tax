@@ -1621,12 +1621,128 @@ li.legend-note {
   display: none;
 }
 
-.cat > .drawer-rows {
+.tree-search {
+  position: sticky;
+  z-index: 1;
+  top: var(--drawer-head-h, 58px);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 -20px 8px;
+  padding: 8px 20px;
+  background: var(--raise);
+}
+
+.tree-search-icon {
+  flex: none;
+  width: 15px;
+  height: 15px;
+  position: relative;
+  z-index: 1;
+  margin-right: -31px;
+  margin-left: 12px;
+  fill: none;
+  stroke: var(--muted);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  pointer-events: none;
+}
+
+.tree-search-input {
+  flex: 1;
+  min-width: 0;
+  height: 36px;
+  padding: 0 40px 0 32px;
+  border: 1px solid var(--hair);
+  border-radius: 18px;
+  background: var(--page);
+  color: var(--ink);
+  font: inherit;
+  font-size: 14px;
+  transition: border-color 120ms ease;
+}
+
+.tree-search-input::placeholder {
+  color: var(--muted);
+}
+
+.tree-search-input:hover,
+.tree-search-input:focus {
+  border-color: var(--ink);
+  outline: none;
+}
+
+.tree-search-input:focus-visible {
+  box-shadow: 0 0 0 2px var(--accent);
+}
+
+.tree-search-input::-webkit-search-cancel-button {
+  cursor: pointer;
+}
+
+.tree-search-count {
+  position: relative;
+  margin-left: -48px;
+  min-width: 48px;
+  padding-right: 12px;
+  color: var(--muted);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+  pointer-events: none;
+}
+
+.tree-search-input:not(:placeholder-shown) + .tree-search-count {
+  padding-right: 30px;
+}
+
+.tree-search-empty {
+  margin: 4px 0;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.cat-tree.is-searching li:not(.is-hit) {
+  color: var(--ink-2);
+}
+
+.dr-alt {
+  display: block;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.cat-tree mark {
+  border-radius: 2px;
+  background: var(--accent);
+  box-shadow: 0 0 0 1px var(--accent);
+  color: var(--accent-ink);
+  font-weight: 650;
+}
+
+.cat-kids {
   margin: 0 0 6px 14px;
 }
 
-.cat > .drawer-rows li {
+.cat-kids .drawer-rows {
+  margin: 0;
+}
+
+.cat-kids .drawer-rows li {
   font-size: 12.5px;
+}
+
+.cat.sub > summary .dr-label::before {
+  content: "›";
+  display: inline-block;
+  width: 0.9em;
+  margin-left: -0.9em;
+  color: var(--muted);
+  transition: transform 0.15s;
+}
+
+.cat.sub[open] > summary .dr-label::before {
+  transform: rotate(90deg);
 }
 
 .split-bar {
@@ -2467,6 +2583,11 @@ code {
   .drawer {
     width: 100vw;
     border-left: 0;
+  }
+
+  .tree-search-input {
+    height: 42px;
+    font-size: 16px;
   }
 }
 

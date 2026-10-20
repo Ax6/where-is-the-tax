@@ -196,6 +196,11 @@ test("budget column: clicking a budget switches its composition and every row ca
     await page.click(".composition .panel-more");
     await page.waitForSelector("#drawer:not([hidden]) .dr-sub");
     assert.match((await page.locator("#drawer .dr-sub").first().textContent()) ?? "", /of yours\*/);
+    // a picked Land opens its own budget in the column, with the budget's year where it differs
+    await page.goto(`${url}#y=2025&lang=en&land=BE`, { waitUntil: "networkidle" });
+    await page.reload({ waitUntil: "networkidle" });
+    assert.match((await page.locator(".composition .stage-label").textContent()) ?? "", /Berlin budget/);
+    assert.match((await page.locator(".composition .panel-sub").first().textContent()) ?? "", /2024/);
   } finally {
     await browser.close();
     server.close();

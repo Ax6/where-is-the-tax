@@ -691,6 +691,7 @@ export function renderYou(container: HTMLElement, model: YouModel, options: Hero
     top,
     bottom,
     lang,
+    year: options.year,
     onOpen: () => options.onOpen({ kind: "pot", id: selected.pot.id }),
   });
 
@@ -778,6 +779,8 @@ interface PanelOptions {
   top: number;
   bottom: number;
   lang: Lang;
+  /** the page's year: the header names the budget's own year when it differs */
+  year: number;
   onOpen: () => void;
 }
 
@@ -792,7 +795,8 @@ export function renderComposition(svg: SVGSVGElement, pot: Pot, inflow: number, 
   const { lang } = o;
   const g = svgEl(svg, "g", { class: "composition" });
   svgEl(g, "text", { x: o.x, y: 14, class: "stage-label" }, `${t("ofEvery100", lang)} · ${tr(pot.label, lang)}`);
-  const headerLines = wrap(`${bn(pot.compositionBase, lang)} ${tr(pot.compositionLabel, lang)}`, o.width - 8, 11.5, 400, 2);
+  const tag = yearTag(pot.year, pot.status, o.year, lang);
+  const headerLines = wrap(`${bn(pot.compositionBase, lang)} ${tr(pot.compositionLabel, lang)}${tag ? ` · ${tag}` : ""}`, o.width - 8, 11.5, 400, 2);
   multiline(g, headerLines, { x: o.x, y: o.top + 10, class: "panel-sub" }, 13);
   const yours = inflow > 0;
   // what the pot keeps of your euros: the rest leaves with its transfer (federal grants, KVdR …)
